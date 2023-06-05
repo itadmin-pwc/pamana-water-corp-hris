@@ -1,0 +1,159 @@
+<?
+/*$arrurl =  explode('/',$_SERVER['SCRIPT_NAME']);
+if (in_array('201',$arrurl)) {
+	header('Location: http://192.168.200.225/PG-HRIS-SYSTEM/201/index.php');
+}
+*/include("config.php");
+class dbHandler {
+
+	const HOST = 'PG-PAYSRV';
+	
+	const USER = 'pg_payroll';
+	
+	const PASS = 'pg_2011';
+	//const DBASE = 'PG_PAYROLL';
+
+	var $conn_id;
+	var $qry_id;
+	var $dbConn;
+	
+	function __construct(){
+		
+		$this->conn_id = mssql_connect(self::HOST,self::USER,self::PASS);
+		if($this->conn_id){
+			switch($_SESSION["company_code"])
+			{
+				case "1":
+					 $this->dbConn = mssql_select_db('PGJR_PAYROLL');	
+				break;
+				
+				case "2":
+					 $this->dbConn = mssql_select_db('PG_PAYROLL');	
+				break;
+				case "3":
+					 $this->dbConn = mssql_select_db('LUSITANO');	
+				break;
+				
+				case "4":
+					 $this->dbConn = mssql_select_db('DFCLARK_PAYROLL');	
+				break;
+				
+				case "5":
+					 $this->dbConn = mssql_select_db('DFSUBIC_PAYROLL');	
+				break;
+				case "7":
+					 $this->dbConn = mssql_select_db('PARCO_GANT_DIAMOND');	
+				break;
+				case "8":
+					 $this->dbConn = mssql_select_db('PARCO_GANT_D3');	
+				break;
+				case "9":
+					 $this->dbConn = mssql_select_db('PARCO_SUPER_RETAIL_XV');	
+				break;
+				case "10":
+					 $this->dbConn = mssql_select_db('PARCO_SUPER_AGORA');	
+				break;
+				case "11":
+					 $this->dbConn = mssql_select_db('PARCO_SUPER_RETAIL_VII');	
+				break;
+				case "12":
+					 $this->dbConn = mssql_select_db('PARCO_SCV');	
+				break;
+				case "13":
+					 $this->dbConn = mssql_select_db('PG_SUBIC');	
+				break;
+				case "14":
+					 $this->dbConn = mssql_select_db('ACACIA_PAYROLL');	
+				break;
+				case "15":
+					 $this->dbConn = mssql_select_db('COMPANY_E_PAYROLL');	
+				break;				
+				default:
+					$this->dbConn = mssql_select_db('PAYROLL_COMPANY');	
+				break;
+			}
+		}
+		
+		return $this->conn_id;
+	}
+
+	function execQry($qry){
+		$this->qry_id = mssql_query($qry,self::__construct());
+		return $this->qry_id;
+	}	
+	
+	function getRecCount($res){
+		$cnt = mssql_num_rows($res);
+		return $cnt;
+	}
+
+	function getSqlAssoc($res){
+		$row = mssql_fetch_assoc($res);
+		return $row;
+	}
+	
+	function getArrRes($res=NULL){
+		
+		$arrRes = array();
+		
+		while($row = mssql_fetch_assoc($res)){
+			$arrRes[] = $row;
+			 
+		}
+		return $arrRes;
+	}
+		
+   function getSQLObj($res=NULL){
+   	
+		return mssql_fetch_object($res);	
+   }   	
+	
+   function getSQLArrayObj($res=NULL){
+   	
+        $objList = array();
+		while($obj = $this->getSQLObj($res)) {
+	       $objList[] = $obj;
+		   
+        }
+		return $objList;
+   }	
+	
+	function beginTran(){
+		return $this->execQry("BEGIN TRAN");
+	}
+	
+	function commitTran(){
+		return $this->execQry("COMMIT TRAN");
+	}
+	
+	function rollbackTran(){
+		return $this->execQry("ROLLBACK TRAN");
+	}   
+   
+	function disConnect(){
+		return mssql_close($this->conn_id);
+	}
+
+	function DropDownMenu($arrRes,$id,$selected='',$attr){
+	
+		echo "<select id=\"$id\" name=\"$id\" $attr>\n";
+			foreach ((array)$arrRes as $index => $value){
+				echo "<option value=\"$index\" ";
+				if($index == $selected){
+					
+					echo "selected=\"selected\">\n";
+				}
+				else{
+					echo " >\n";
+				}
+					echo ucwords(strtoupper($value))."\n";
+				echo "</option>\n";
+			}
+		echo "</select>\n";
+	}	
+	
+	
+}
+
+
+?>

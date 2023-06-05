@@ -1,0 +1,50 @@
+List of Employees with No RestDay within 01/19/2010 - 02/03/2010 cut - off
+BRANCH CODE.       LOCATION CODE      EMP. NO.           LAST NAME          FIRST NAME         MIDDLE NAME        RESTDAY            
+40                 40                 150000195          ELLA RUTH          PARAGAS            CASTAÑEDA          
+40                 40                 150000146          LUISITO            SANTOS             CONCEPCION         
+40                 40                 400000151          JENNETTE           DOMINGO            GOMEZ              
+63                 63                 140000026          JOCELYN            JIMENEZ            ALMARIO            
+63                 63                 630000018          LEANDRO            GARCIA             BACLAGON           
+63                 63                 630000013          REAGAN             MESA               BARRAMEDA          
+63                 63                 140001465          JOSE               GARCIA             BERIÑA             
+63                 63                 140001634          JELSON             DIWA               CANICOSA           
+63                 63                 140000856          HERMIN             GERONIMO           CEREZO             
+63                 63                 140001600          ERIC               OCAMPO             DAVID              
+63                 63                 630000025          MARICRIS           ABELLA             DEALA              
+63                 63                 630000021          GLORIA             GALANG             DIMATULAC          
+63                 63                 630000002          ADELINE            BACULI             ENRIQUEZ           
+63                 63                 630000026          RUSTY              BOCALA             ESTRADA            
+63                 63                 040001820          NOLY               MANUNTAG           FIGUEROA           
+63                 63                 140000607          MARLON             NACPIL             GUNDAYAO           
+63                 63                 630000004          KRISTINE           PACLA              HIPOLITO           
+63                 63                 630000027          JOYCE              DOMINGO            LABOR              
+63                 63                 040000290          MILTON             SALUNGA            LAGUNA             
+63                 63                 630000005          JENIFER            MIRANDA            LUCES              
+63                 63                 140001135          GLEM               BELTRAN            MALONG             
+63                 63                 040001626          CARLITO            QUINTANA           MANALO             
+63                 63                 040001097          CARLITO            GOMEZ              MARIANO JR.        
+63                 63                 040002166          MELBA              CADION             MIRANDA            
+63                 63                 630000001          JOSE III           TABAGO             NUQUI              
+63                 63                 630000015          CRISTINA           SAMIA              PANGILINAN         
+63                 63                 630000006          ALMA               BELLEN             PARAN              
+63                 63                 630000014          RENE ROSE          DUNGO              PARAS              
+63                 63                 630000012          JANICE             BALAGUER           RODRIGUEZ          
+63                 63                 630000009          AILYN              ZAPATA             ROQUE              
+63                 63                 630000003          ERWIN              LOPEZ              SANCHEZ            
+63                 63                 140001633          GOMER              PALMA              SINIO              
+63                 63                 630000023          EDEN               GARCIA             TAPNIO             
+63                 63                 630000019          JOEL               MERCADO            TOLENTINO          
+63                 63                 140001635          HYNES              SISON              TOLENTINO          
+63                 63                 140001596          JOANA MARIE        CABBAT             VITAL              
+                   
+
+
+List of Employees with Incomplete RestDay within 01/19/2010 - 02/03/2010 cut - off
+BRANCH CODE.       LOCATION CODE      EMP. NO.           LAST NAME          FIRST NAME         MIDDLE NAME        RESTDAY            
+40                 40                 120000962          MA. LUISA          ARGONSOLA          CARIÑO                                
+40                 40                 150000617          ERIC               BERBOSO            GONZALES                              
+40                 40                 120000284          CRISTY             OCENAR             KATIPUNAN                             
+40                 40                 360000140          PAULITO            APRECTO            MARCELO                               
+40                 40                 400000015          MARY ANNE          CUENCO             MENDOZA                               
+40                 40                 400000105          JINKY              JATULAN            VALENTIN                              
+                   

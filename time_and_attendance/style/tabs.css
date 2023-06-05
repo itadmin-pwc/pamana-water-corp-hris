@@ -1,0 +1,66 @@
+div.tab1, div.tab2, div.tab3, div.tab4, div.tab5, div.tab6, div.tab7, 
+div.tab1-focus, div.tab2-focus, div.tab3-focus, div.tab4-focus, div.tab5-focus, div.tab6-focus, div.tab7-focus {
+  text-align: center;
+  border-width: 1px;
+  border-color: #6495ED;
+  border-style: solid solid none solid;
+  padding: 3px 0px 0px 0px;
+  width: 84px;
+  height: 20px;
+  position: absolute;
+  cursor: pointer;
+  font-family:verdana;
+  font-size:12px;
+  top:48
+}
+
+div.tab1, div.tab2, div.tab3, div.tab4, div.tab5, div.tab6, div.tab7 {
+  background-color: #c3daf9;
+}
+
+div.tab1-focus, div.tab2-focus, div.tab3-focus, div.tab4-focus, div.tab5-focus, div.tab6-focus, div.tab7-focus {
+  background-color: #FFF;
+}
+
+div.tab1, div.tab1-focus {
+  left: 30px;
+}
+
+div.tab2, div.tab2-focus {
+  left: 120px;
+}
+
+div.tab3, div.tab3-focus {
+  left: 210px;
+}
+div.tab4, div.tab4-focus {
+  left: 300px;
+}
+div.tab5, div.tab5-focus {
+  left: 390px;
+}
+div.tab6, div.tab6-focus {
+  left: 480px;
+}
+div.tab7, div.tab7-focus {
+  left: 570px;
+}
+
+div.content1, div.content2, div.content3, div.content4, div.content5, div.content6, div.content7, 
+div.content1-focus, div.content2-focus, div.content3-focus, div.content4-focus, div.content5-focus, div.content6-focus, div.content7-focus {
+  width: 694px;
+  height: 310px;
+  padding: 10px;
+  border: 1px solid #6495ED;
+  position: absolute;
+  top: 71px;
+  left: 30px;
+}
+
+div.content1, div.content2, div.content3, div.content4, div.content5, div.content6, div.content7 {
+  background-color: #EEE;
+}
+
+div.content1-focus, div.content2-focus, div.content3-focus, div.content4-focus, div.content5-focus, div.content6-focus, div.content7-focus {
+  background-color: #FFF;
+}

@@ -1,0 +1,33 @@
+BODY {
+	background : #c3daf9;
+}
+
+.logInCont {
+	width : 100%;
+	height : 500px;	
+}
+
+.logInTitle {
+	color :maroon;
+	font : normal bold 20px "Times New Roman",arial;
+	text-decoration: underline;
+}
+
+.logInLabel {
+	color : #000066;
+	text-decoration: none;
+	font : normal bold 13px arial;
+}
+
+.logInInputs {
+	font : normal bold 15px arial;
+	color : teal;
+}
+
+.errMsg {
+	font : italic bold 13px "Times New Roman",arial;
+	color : red;
+}
+
+
+

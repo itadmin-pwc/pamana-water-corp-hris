@@ -1,0 +1,5 @@
+<?
+class rptGender extends commonObj{
+	
+	}
+?>

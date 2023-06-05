@@ -1,0 +1,4 @@
+List of Transactions Not Within 01/19/2010 - 02/03/2010
+EMP. NO.           TRAN. DATE           HRS. ABSENT           HRS. TARDY           HRS. UT           HRS. OTLE8           HRS. OTGT8           HRS. ND           INCOME TYPE           OTH. ADJ           
+010001107          01-18-2010                                                                        2.65                                                        B-ADJ                 259.62             
+010001679          01-18-2010                                                                        3.05                                                                                                 

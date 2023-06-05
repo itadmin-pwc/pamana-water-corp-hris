@@ -1,0 +1,19 @@
+List of Employees with No RestDay within 01/19/2010 - 02/03/2010 cut - off
+BRANCH CODE.       LOCATION CODE      EMP. NO.           LAST NAME          FIRST NAME         MIDDLE NAME        RESTDAY            
+40                 40                 150000195          ELLA RUTH          PARAGAS            CASTAÑEDA          
+40                 40                 150000146          LUISITO            SANTOS             CONCEPCION         
+40                 40                 400000212          ROSALYN            ORTEGA             DIAZ               
+40                 40                 400000151          JENNETTE           DOMINGO            GOMEZ              
+                   
+
+
+List of Employees with Incomplete RestDay within 01/19/2010 - 02/03/2010 cut - off
+BRANCH CODE.       LOCATION CODE      EMP. NO.           LAST NAME          FIRST NAME         MIDDLE NAME        RESTDAY            
+40                 40                 120000962          MA. LUISA          ARGONSOLA          CARIÑO                                
+40                 40                 150000617          ERIC               BERBOSO            GONZALES                              
+40                 40                 120000284          CRISTY             OCENAR             KATIPUNAN                             
+40                 40                 360000140          PAULITO            APRECTO            MARCELO                               
+40                 40                 400000015          MARY ANNE          CUENCO             MENDOZA                               
+40                 40                 030000129          LILIAN             NOCILLADO          SALOMA                                
+40                 40                 400000105          JINKY              JATULAN            VALENTIN                              
+                   

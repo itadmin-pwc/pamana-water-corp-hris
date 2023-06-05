@@ -1,0 +1,25 @@
+List of Employees with No RestDay within 02/04/2010 - 02/18/2010 cut - off
+BRANCH CODE.       LOCATION CODE      EMP. NO.           LAST NAME          FIRST NAME         MIDDLE NAME        RESTDAY            
+40                 40                 150000195          CASTAÑEDA          ELLA RUTH          PARAGAS            
+63                 63                 630000020          GUTIERREZ          LEILANI            LACSINA            
+63                 63                 630000009          ROQUE              AILYN              ZAPATA             01/24/2010         
+63                 63                 630000009          ROQUE              AILYN              ZAPATA             01/31/2010         
+                   
+
+
+List of Employees with Incomplete RestDay within 02/04/2010 - 02/18/2010 cut - off
+BRANCH CODE.       LOCATION CODE      EMP. NO.           LAST NAME          FIRST NAME         MIDDLE NAME        RESTDAY            
+40                 40                 400000028          SHAIDA             LACAÑA             ACOSTA                                
+40                 40                 150001084          JOHN RIO           JAPSON             CAÑEDA                                
+40                 40                 120000962          MA. LUISA          ARGONSOLA          CARIÑO                                
+40                 40                 150000460          CHERRILOU          CALBANG            CAYETANO                              
+40                 40                 120000101          ROCELLE            BAISA              CONDONAR                              
+40                 40                 400000153          WENDELL            CERVANTES          DE LEON                               
+40                 40                 400000164          BERNABE            DAIZ               DIMA-ANGAY                            
+40                 40                 120000284          CRISTY             OCENAR             KATIPUNAN                             
+40                 40                 360000140          PAULITO            APRECTO            MARCELO                               
+40                 40                 400000015          MARY ANNE          CUENCO             MENDOZA                               
+40                 40                 240000568          RICHARD            GUEVARRA           RUBI CRUZ                             
+40                 40                 030000129          LILIAN             NOCILLADO          SALOMA                                
+40                 40                 010001607          RONALD             JANORAS            TRILLANA                              
+                   

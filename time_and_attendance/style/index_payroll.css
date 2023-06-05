@@ -1,0 +1,56 @@
+.pgLogo {
+	
+	height : 56px;
+	width : 178px;
+	border: 1px solid #6495ED;
+	-moz-border-radius: 3px 3px 3px 3px;
+}
+
+.headerLabel {
+	position : relative;
+	left  : 5px;
+	font : normal bold 10px Verdana, Arial, Helvetica, sans-serif;
+	color : #000080;
+}
+
+.headerLabelVal {
+	position : relative;
+	left  : 15px;	
+	font : normal bold 11px Verdana, Arial, Helvetica, sans-serif;
+	color :   #FF3300; 
+}
+
+.logOut {
+	font : normal bold 9px Verdana, Arial, Helvetica, sans-serif;
+	color : #000080;
+	text-decoration: none;
+}
+
+.logOutLabel {
+	position : relative;
+	left :35px;
+}
+
+.logOut:hover {
+	font : normal bold 9px Verdana, Arial, Helvetica, sans-serif;
+	color : #FF0000;
+	text-decoration: underline;
+}
+
+#myDialogId .myButtonClass { 
+	
+	padding:3px; 
+	font-size:20px; 
+	width:100px; 
+}
+ 
+.cnfrmLbl {
+	font : normal bold 15px Verdana, Arial, Helvetica, sans-serif;
+	color :  #000080;
+}
+
+/*lock input fields*/
+.inputsLock {
+	font : normal normal 23px Verdana, Arial, Helvetica, sans-serif;
+}
+/*end lock input fields*/

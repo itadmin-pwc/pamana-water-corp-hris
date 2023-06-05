@@ -1,0 +1,58 @@
+.parentGrid {
+	border : 1px solid #6495ED;
+	-moz-border-radius: 3px 3px 3px 3px;
+}
+
+.parentGridHdr {
+	background-color: #c3daf9;
+	color : #000066;
+	height : 25px;
+	font : normal bold 11px Verdana, Arial, Helvetica, sans-serif;
+	border-bottom: 1px solid #6495ED;
+}
+
+.parentGridDtl {
+	background-color: #F0F8FF;
+	padding : 5px 5px 5px 5px;
+	
+}
+
+.childGrid {
+	border : 2px groove #6699FF;
+	-moz-border-radius: 10px 10px 10px 10px;
+}
+.childGrid2 {
+	border : 2px inset #6699FF;
+}
+.gridToolbar {
+	border-bottom : 1px solid #6495ED;
+	font : normal normal 11px Verdana, Arial, Helvetica, sans-serif;
+}
+
+.gridDtlLbl {
+	background-color:#E8E8E8;
+	font : normal bold 11px Verdana, Arial, Helvetica, sans-serif;
+}
+
+.gridDtlVal {
+	font : normal normal 11px Verdana, Arial, Helvetica, sans-serif;
+}
+
+.inputs {
+	font : normal normal 12px Verdana, Arial, Helvetica, sans-serif;
+}
+
+.childGridFooter {
+	font : normal normal 12px Verdana, Arial, Helvetica, sans-serif;
+	border-top: 1px solid #6495ED;
+	height : 25px;
+}
+
+.ToolBarseparator {
+	font : normal bold 15px Verdana, Arial, Helvetica, sans-serif;
+	color : silver;
+}
+
+.actionImg {
+	border:none;
+}

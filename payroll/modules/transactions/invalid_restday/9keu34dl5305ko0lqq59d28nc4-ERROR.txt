@@ -1,0 +1,6 @@
+
+
+
+
+List of Employees with Incomplete RestDay within 01/19/2010 - 02/03/2010 cut - off
+BRANCH CODE.       LOCATION CODE      EMP. NO.           LAST NAME          FIRST NAME         MIDDLE NAME        RESTDAY            

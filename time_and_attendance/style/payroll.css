@@ -1,0 +1,176 @@
+.parentGrid {
+	border : 1px solid #6495ED;
+	-moz-border-radius: 3px 3px 3px 3px;
+}
+
+.parentGridHdr {
+	background-color: #c3daf9;
+	color : #000066;
+	font : normal bold 11px Verdana, Arial, Helvetica, sans-serif;
+	border-bottom: 1px solid #6495ED;
+}
+
+.parentGridDtl {
+	background-color: #F0F8FF;
+	padding : 5px 5px 5px 5px;
+	
+}
+
+.childGrid {
+	border : 2px groove #6699FF;
+	-moz-border-radius: 10px 10px 10px 10px;
+}
+
+.hdrLblRow {
+	
+	color : #FFFFFF;
+	border-bottom : 2px solid #000080;
+	padding: 0 0 0 0;
+}
+
+.hdrLbl {
+	font : normal bold 12px Verdana, Arial, Helvetica, sans-serif;
+	background-color: #000080;
+}
+
+.gridToolbar {
+	border-bottom : 1px solid #6495ED;
+	font : normal normal 11px Verdana, Arial, Helvetica, sans-serif;
+}
+
+.ToolBarseparator {
+	font : normal bold 10px Verdana, Arial, Helvetica, sans-serif;
+	color : silver;
+	position : relative;
+	top: -3px;
+}
+
+.gridDtlVal, .inputs {
+	font : normal normal 11px Verdana, Arial, Helvetica, sans-serif;
+}
+
+.gridDtlVal2 {
+	font : normal normal 15px Verdana, Arial, Helvetica, sans-serif;
+	background-color: #FFFFFF;
+}
+
+.gridDtlLbl {
+	background-color:#E8E8E8;
+	font : normal bold 9px Verdana, Arial, Helvetica, sans-serif;
+}
+
+.gridDtlLbl2 {
+	background-color:#E8E8E8;
+	font : normal bold 13px Verdana, Arial, Helvetica, sans-serif;
+}
+
+.inputs, .hdrInputsLvl {
+	font : normal normal 11px Verdana, Arial, Helvetica, sans-serif;
+}
+
+.inputsAddDtl {
+	font : normal normal 11px Verdana, Arial, Helvetica, sans-serif;
+	width : 100%;
+	border:1px solid silver;
+}
+
+.inputsAddDtlRO {
+
+	font : normal normal 11px Verdana, Arial, Helvetica, sans-serif;
+	width : 100%;
+	background : #FFFFF0;
+	border:1px solid silver;
+}
+
+.inputsRO {
+
+	font : normal normal 12px Verdana, Arial, Helvetica, sans-serif;
+	background : #FFFFF0;
+	border: 1px solid silver;
+}
+
+.zeroMsg {
+	font : normal bold 15px Verdana, Arial, Helvetica, sans-serif;
+	color : #FF3300;
+}
+
+
+.childGridFooter {
+	font : normal normal 12px Verdana, Arial, Helvetica, sans-serif;
+	border-top: 1px solid #6495ED;
+	height : 25px;
+	background-color: #F0F8FF;
+}
+
+.gridDtlLblTxt {
+	position : relative ;
+	left: 5px;
+}
+
+.toolbarImg {
+	border:none;
+}
+
+.anchor {
+	cursor:pointer;
+	border:none;
+	text-decoration:none;
+	font : normal normal 9px Verdana, Arial, Helvetica, sans-serif;
+}
+
+.anchor:hover {
+	cursor:pointer;
+	text-decoration:underline;
+	font : normal normal 9px Verdana, Arial, Helvetica, sans-serif;
+	color : red;
+}
+
+.btnClendar {
+	cursor:pointer;
+	position:relative;
+	top:3px;
+	border:none;
+}
+
+.infoLabel {
+	background-color:#FFFFFF;
+	font : normal bold 11px Verdana, Arial, Helvetica, sans-serif;
+}
+
+/*previous employer*/
+.tblPrevEmp {
+	background-color:#c3daf9;
+	border: 2px inset #000;
+	-moz-border-radius: 2px 2px 2px 2px;
+	
+}
+
+.prevEmpHdr {
+	font : normal bold 9px Verdana, Arial, Helvetica, sans-serif;
+	color : #000066;
+}
+
+.prevEmpArrw {
+	position : relative;
+	top:3px;
+}
+
+.rowDtlEmplyrLst {
+	background-color: #FFFFCC;
+	cursor:pointer;
+}
+
+.prevEmpZeroMsg {
+	font : normal normal 11px Verdana, Arial, Helvetica, sans-serif;
+	color : #FF3300;
+}
+
+.prevEmpHeader {
+	background-color:#F0F8FF;
+	font : normal normal 11px Verdana, Arial, Helvetica, sans-serif;
+	border-bottom: 1px solid #6495ED;
+}
+/*end previous employer*/
+
+
+

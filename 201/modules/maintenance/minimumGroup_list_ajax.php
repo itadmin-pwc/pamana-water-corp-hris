@@ -1,0 +1,121 @@
+<?
+session_start();
+include("../../../includes/userErrorHandler.php");
+include("../../../includes/db.inc.php");
+include("../../../includes/common.php");
+include("../../../includes/pager.inc.php");
+include("minimumGroup.obj.php");
+
+$deptObj = new deptObj($_GET,$_SESSION);
+$pager = new AjaxPager(15,'../../../images/');
+
+$qryIntMaxRec = "SELECT * FROM tblMinGroup 
+				WHERE (compCode = '{$_SESSION['company_code']}')";
+        if($_GET['isSearch'] == 1){
+        	if($_GET['srchType'] == 0){
+        		$qryIntMaxRec .= "AND minGroupID LIKE '{$_GET['txtSrch']}%' ";
+        	}
+        	if($_GET['srchType'] == 1){
+        		$qryIntMaxRec .= "AND minGroupName LIKE '{$_GET['txtSrch']}%' ";
+        	}
+        }
+
+$resIntMaxRec = $deptObj->execQryI($qryIntMaxRec);
+$intMaxRec = $pager->_getMaxRec($resIntMaxRec);
+
+$intLimit = $pager->_limit;
+$intOffset = $pager->_watToDo($_GET['action'],$_GET['offSet'],$_GET['isSearch']);
+
+$qryDivList = "SELECT  * FROM tblMinGroup
+		        WHERE compCode = '{$_SESSION['company_code']}'"; 
+
+        if($_GET['isSearch'] == 1){
+        	if($_GET['srchType'] == 0){
+        		$qryDivList .= "AND minGroupID LIKE '{$_GET['txtSrch']}%' ";
+        	}
+        	if($_GET['srchType'] == 1){
+        		$qryDivList .= "AND minGroupName LIKE '{$_GET['txtSrch']}%' ";
+        	}
+        }
+//$intLimit = (($intMaxRec-$intOffset)<$intLimit) ? $intMaxRec-$intOffset:$intLimit;		
+$qryDivList .=	"ORDER BY minGroupName limit $intOffset,$intLimit";
+
+$resDivList = $deptObj->execQry($qryDivList);
+$arrDivList = $deptObj->getArrRes($resDivList);
+
+?>
+<div class="niftyCorner">
+	<TABLE border="0" width="100%" cellpadding="1" cellspacing="0" class="parentGrid">
+		<tr>
+			<td colspan="4" class="parentGridHdr">
+				&nbsp;<img src="../../../images/grid.png">&nbsp;MINIMUM GROUP NAME</td>
+		</tr>
+		<tr>
+			<td class="parentGridDtl" valign="top">
+			
+				<TABLE border="0" width="100%" cellpadding="1" cellspacing="1" class="childGrid" >
+					<td colspan="7" class="gridToolbar">
+                    	<?php if($_SESSION['user_level']==1){ ?>
+						<a href="#"  class="anchor" onclick="maintDiv('ADD','','minimumGroup_list_ajax.php','divMasterCont',<?=$intOffset?>,<?=$_GET['isSearch']?>,'txtSrch','cmbSrch')">
+                        <img class="anchor" src="../../../images/add.gif">Add Group Name</a> 
+                        <FONT class="ToolBarseparator">|</font>
+						<?php } ?>
+                        <!--
+                        <a href="#" onclick="location.href='view_edit_employee.php?transType=add'" class="anchor" ><img class="anchor" src="../../../images/add.gif">Add Employee<a> <FONT class="ToolBarseparator">|</font>
+						-->
+						<?
+						if(isset($_GET['action']) != 'load' || isset($_GET['action']) != 'refresh'){
+							if(isset($_GET['srchType']) ){ 
+								$srchType = $_GET['srchType'];
+							}
+						}
+						?>
+						Search<INPUT type="text" name="txtSrch" id="txtSrch" value="<?if(isset($_GET['txtSrch'])){echo $_GET['txtSrch'];} ?>" class="inputs">In<?=$deptObj->DropDownMenu(array("Code","Description"),'cmbSrch',$srchType,'class="inputs"');?>
+						<INPUT class="inputs" type="button" name="btnSrch" id="btnSrch" value="SEARCH" onclick="pager('minimumGroup_list_ajax.php','divMasterCont','Search',0,1,'txtSrch','cmbSrch','','../../../images/')">
+					</td>
+					<tr>
+						<td width="2%" class="gridDtlLbl" align="center">#</td>
+						<td width="5%" class="gridDtlLbl" align="center">CODE</td>
+						<td width="54%" class="gridDtlLbl" align="center">DESCRIPTION</td>
+						<td width="25%" class="gridDtlLbl" align="center">STATUS</td>
+						<td width="14%" colspan="42" align="center" class="gridDtlLbl">ACTION</td>
+					</tr>
+					<?
+					if($deptObj->getRecCount($resDivList) > 0){
+						$i=0;
+						foreach ($arrDivList as $divListVal){
+						$bgcolor = ($i++ % 2) ? "#FFFFFF" : "#F8F8FF";
+						$on_mouse = ' onmouseover="this.style.backgroundColor=\'' . '#F0F0F0' . '\';"'
+						. ' onmouseout="this.style.backgroundColor=\'' . $bgcolor  . '\';"';						
+					?>
+					<tr bgcolor="<?php echo $bgcolor; ?>" <?php echo $on_mouse; ?>>
+						<td class="gridDtlVal"><?=$i?></td>
+						<td class="gridDtlVal"><font class="gridDtlLblTxt"><?=$divListVal['minGroupID']?></font></td>
+						<td class="gridDtlVal"><font class="gridDtlLblTxt">
+						  <?=$divListVal['minGroupName']?>
+						</font></td>
+						<td class="gridDtlVal" align="center"><font class="gridDtlLblTxt">
+						  <?=($divListVal['stat']=="A")? "Active" : "Held";?>
+						</font></td>
+						<td class="gridDtlVal" align="center">
+							<font class="gridDtlLblTxt">
+								<a href="#" onclick="maintDiv('EDIT','<?=$divListVal['minGroupID']?>','minimumGroup_list_ajax.php','divMasterCont',<?=$intOffset?>,<?=$_GET['isSearch']?>,'txtSrch','cmbSrch')"><img class="toolbarImg" src="../../../images/application_form_edit.png" title="Edit Group Name"></a>
+							</font>
+						</td>
+					</tr>
+					<?
+                    	}
+					}
+					?>
+					<tr>
+						<td colspan="7" align="center" class="childGridFooter">
+							<? $pager->_viewPagerButton("minimumGroup_list_ajax.php",'divMasterCont',$intOffset,$_GET['isSearch'],'txtSrch','cmbSrch','');?>
+						</td>
+					</tr>
+				</TABLE>
+				
+			</td>
+		</tr>
+	</TABLE>
+</div>
+<?$deptObj->disConnect();?>

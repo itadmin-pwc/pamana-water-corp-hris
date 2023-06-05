@@ -1,0 +1,193 @@
+<?php
+####Include files
+session_start();
+include("../../../includes/db.inc.php");
+include("../../../includes/common.php");
+include("movement_obj.php");
+include("../../../includes/pdf/fpdf.php");
+
+####Create class
+class PDF extends FPDF
+{
+	var $printedby;
+	var $company;
+	var $rundate;
+	var $table;
+	var $reportlabel;
+	var $arrPayPd;
+	
+####Set up header	
+	function Header()
+	{
+		$this->SetFont('Courier','','9'); 
+		$this->Cell(100,5,"Run Date: " . $this->rundate);
+		$this->Cell(200,5,$this->company);
+		$this->Cell(35,5,'Page '.$this->PageNo().' of {nb}',0,0,'R');		
+		$this->Ln();
+		$this->Cell(100,5,"Report ID: PAFPROOFLST");
+		if ($_GET['from'] != "" && $_GET['to'] != "") {
+			$fromdt = $_GET['from'];
+			$todt = $_GET['to'];
+			$date = "$fromdt - $todt";
+		} 
+		$this->Cell(184,5,$this->reportlabel.'PAF Proof List');
+		$this->Cell(60,5,$this->reportlabel.$date);
+		$this->Ln();
+		
+		$this->SetFont('Courier','B','9'); 
+		$this->Cell(8,6,'#',0,'','C');
+		$this->Cell(20,6,'EMP. NO.',0);
+		$this->Cell(57,6,'EMPLOYEE NAME',0);
+		$this->Cell(57,6,'MOVEMENT',0);
+		$this->Cell(60,6,'OLD VALUE',0);
+		$this->Cell(60,6,'NEW VALUE',0);
+		$this->Cell(60,6,'EFFECTIVITY DATE',0);
+		$this->Ln();
+	}
+	
+####Set up data/details	
+	function Data($ctr,$empNo,$empName,$Movement,$old_value,$new_value,$effdate) {
+		$this->SetFont('Courier','','9'); 
+		$this->Cell(8,6,$ctr,0,'','C');
+		$this->Cell(20,6,$empNo,0);
+		$this->Cell(57,6,$empName,0);
+		$this->Cell(57,6,$Movement,0);
+		$this->Cell(60,6,$old_value,0);
+		$this->Cell(60,6,$new_value,0);
+		$this->Cell(60,6,$effdate,0);
+		$this->Ln();	
+	}
+	
+####Set up footer	
+	function Footer()
+	{
+		$this->SetY(-20);
+		$this->Cell(335,1,'','T');
+		$this->Ln();
+		$this->SetFont('Courier','B',9);
+		$this->Cell(235,6,"Printed By : ".$this->printedby['empFirstName']." ".$this->printedby["empLastName"]);
+	}
+}
+
+####Initialize objects
+$pdf=new PDF('L', 'mm', 'LEGAL');
+$psObj=new inqTSObj();
+$sessionVars = $psObj->getSeesionVars();
+
+####Query to limit the output to encoder
+$qryuser=$psObj->getUserLogInInfo($_SESSION['company_code'],$_SESSION['employee_number']);
+if($qryuser['userLevel']==3){
+	$userview = " AND userid='{$qryuser['userId']}'";	
+}
+
+####Variable passing
+$type = ($_GET['type']==1) ? "hist" : "";
+$empNo = $_GET['empNo'];
+$empName = $_GET['txtEmpName'];
+if ($_GET['nameType']=="1") {
+	$nameType="empLastName";
+}
+elseif ($_GET['nameType']=="2") {
+	$nameType="empFirstName";
+}	
+else {
+	$nameType="empMidName";
+}
+$cmbDiv = $_GET['empDiv'];
+$empDept = $_GET['empDept'];
+$empSect = $_GET['empSect'];
+$pafType = $_GET['pafType'];
+
+
+####Set up to filter data
+$empNo1 = ($empNo>""?" AND (tblEmpMast.empNo LIKE '{$empNo}%')":"");
+$cmbDiv1 = ($cmbDiv>"" && $cmbDiv>0 ? " AND (empDiv = '{$cmbDiv}')":"");
+$empDept1 = ($empDept>"" && $empDept>0 ? " AND (empDepCode = '{$empDept}')":"");
+$empSect1 = ($empSect>"" && $empSect>0 ? " AND (empSecCode = '{$empSect}')":"");
+$empName1=($empName>""?" AND ($nameType LIKE '{$empName}%')":"");
+
+if ($_GET['from'] != "" && $_GET['to'] != "") {
+	$fromdt = $_GET['from'];
+	$todt = $_GET['to'];
+	$datefilter = " and dateadded >= '$fromdt' and dateadded <='$todt'";
+}
+if (empty($pafType) || $pafType =="others") {
+	$psObj->arrOthers 		= $psObj->convertArr("tblPAF_Others$type", " AND stat='H' $datefilter $empNo1 $empName1 $empDiv1 $empDept1 $empSect1 $userview");
+}
+if (empty($pafType) || $pafType =="empstat") {
+	$psObj->arrEmpStat 		= $psObj->convertArr("tblPAF_EmpStatus$type", " AND stat='H' $datefilter $empNo1 $empName1 $empDiv1 $empDept1 $empSect1 $userview");
+}
+if (empty($pafType) || $pafType =="branch") {	
+	$psObj->arrBranch 		= $psObj->convertArr("tblPAF_Branch$type", " AND stat='H' $datefilter $empNo1 $empName1 $empDiv1 $empDept1 $empSect1 $userview");
+}
+if (empty($pafType) || $pafType =="position") {	
+	$psObj->arrPosition 		= $psObj->convertArr("tblPAF_Position$type", " AND stat='H' $datefilter $empNo1 $empName1 $empDiv1 $empDept1 $empSect1 $userview");
+}
+if (empty($pafType) || $pafType =="payroll") {
+	$psObj->arrPayroll 		= $psObj->convertArr("tblPAF_PayrollRelated$type", " AND stat='H' $datefilter $empNo1 $empName1 $empDiv1 $empDept1 $empSect1 $userview");
+}
+if (empty($pafType) || $pafType =="allow") {
+	$psObj->arrAllow 		= $psObj->convertArr("tblPAF_Allowance$type", "  AND stat='H' $datefilter $empNo1 $empName1 $empDiv1 $empDept1 $empSect1 $userview");
+}
+$arrPAF = array_unique(array_merge($psObj->arrOthers,$psObj->arrOthers,$psObj->arrEmpStat,$psObj->arrBranch,$psObj->arrPosition,$psObj->arrPayroll,$psObj->arrAllow ));
+$strPAF = implode(",",$arrPAF);
+$strPAF = ($strPAF != "" ? " AND empNo IN ($strPAF)" : "");
+
+####SQL Query####	
+$qryIntMaxRec = "SELECT tblEmpMast.empNo,tblEmpMast.empLastName,tblEmpMast.empFirstName,
+				tblEmpMast.empMidName,tblDepartment.deptShortDesc 
+				FROM tblEmpMast INNER JOIN tblDepartment ON 
+				tblEmpMast.compCode = tblDepartment.compCode 
+				AND tblEmpMast.empDiv = tblDepartment.divCode 
+			    WHERE tblEmpMast.compCode = '{$sessionVars['compCode']}'
+			    AND tblDepartment.deptLevel = '1' 
+				and empBrnCode IN (Select brnCode from tblUserBranch where compCode='{$_SESSION['company_code']}' and empNo='{$_SESSION['employee_number']}')
+				$empNo1 $empName1 $cmbDiv1 $empDept1 $empSect1 $strPAF
+				order by empDiv,empLastName,empFirstName,empMidName
+				 ";
+
+$resEmpList = $psObj->execQry($qryIntMaxRec);
+$arrEmpList = $psObj->getArrRes($resEmpList);
+
+####Set up footer
+$pdf->AliasNbPages();
+$pdf->reportlabel = $reportLabel;
+$pdf->company = $psObj->getCompanyName($_SESSION['company_code']);
+$pdf->printedby = $psObj->getUserHeaderInfo($sessionVars['empNo'],$_SESSION['employee_id']); 
+$pdf->rundate=$psObj->currentDateArt();
+
+####Set up for next page
+$pdf->AddPage();
+
+####Set up to get all data/details
+	$no=1;
+	$divdesc="";
+	foreach($arrEmpList as $empListVal){
+		$resArrOthers = $psObj->getPAF_others($empListVal['empNo'],$pafType,$datefilter,$type);
+		$ctr=count($resArrOthers['value1']);
+		$empNo = $empListVal['empNo'];
+		$divdesc2 = $empListVal['deptShortDesc'];
+		if ($divdesc != $divdesc2 || $divdesc =="") {
+			$pdf->SetFont('Courier','B','9'); 
+			$pdf->Cell(293,6,$empListVal['deptShortDesc'],0,'','L');
+			$pdf->LN();
+		}	
+		$divdesc = $empListVal['deptShortDesc'];
+		for($x=0;$x<$ctr; $x++) {
+			$name = "";
+			$empNo = "";
+			$q = "";
+			if ($x == 0) {
+				$q = $no;
+				$no++;
+				$name = $empListVal['empLastName']. " " . $empListVal['empFirstName'][0] . "." . $empListVal['empMidName'][0].".";
+				$empNo = $empListVal['empNo'];
+			}		
+			$pdf->Data($q,$empNo,$name,$resArrOthers['field'][$x],$resArrOthers['value1'][$x],$resArrOthers['value2'][$x],date("m/d/Y",strtotime($resArrOthers['effdate'][$x])));
+		}	
+	}
+
+####Set up to show data	
+$pdf->Output('HELD_PAF_PROOFLIST.pdf','D');
+
+?>

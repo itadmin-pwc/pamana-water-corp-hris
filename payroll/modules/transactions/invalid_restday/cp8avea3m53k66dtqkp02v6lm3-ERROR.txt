@@ -1,0 +1,12 @@
+List of Employees with No RestDay within 02/04/2010 - 02/18/2010 cut - off
+BRANCH CODE.       LOCATION CODE      EMP. NO.           LAST NAME          FIRST NAME         MIDDLE NAME        RESTDAY            
+63                 63                 630000020          GUTIERREZ          LEILANI            LACSINA            
+63                 63                 630000009          ROQUE              AILYN              ZAPATA             01/24/2010         
+63                 63                 630000009          ROQUE              AILYN              ZAPATA             01/31/2010         
+                   
+
+
+List of Employees with Incomplete RestDay within 02/04/2010 - 02/18/2010 cut - off
+BRANCH CODE.       LOCATION CODE      EMP. NO.           LAST NAME          FIRST NAME         MIDDLE NAME        RESTDAY            
+63                 63                 140001634          JELSON             DIWA               CANICOSA                              
+                   
