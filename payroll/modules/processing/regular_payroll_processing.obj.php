@@ -1255,9 +1255,10 @@ WHERE tk.compCode = '".$_SESSION["company_code"]."'
 		$qrycomputeWithTax = "Select * from tblAnnTax where $taxInc between txLowLimit and txUpLimit";
                                 $rescomputeWithTax = $this->execQryI($qrycomputeWithTax);
                                 $rowcomputeWithTax = $this->getSqlAssocI($rescomputeWithTax);
-                                $compTax = ((($taxInc-$rowcomputeWithTax["txLowLimit"]-0.01)*$rowcomputeWithTax["txAddPcent"])+$rowcomputeWithTax["txFixdAmt"]);
-                               
-                                return (float)$compTax;
+								//original code until 060623
+                                //$compTax = ((($taxInc-$rowcomputeWithTax["txLowLimit"]-0.01)*$rowcomputeWithTax["txAddPcent"])+$rowcomputeWithTax["txFixdAmt"]);
+								$compTax = ((($taxInc-$rowcomputeWithTax["txLowLimit"])*$rowcomputeWithTax["txAddPcent"])+$rowcomputeWithTax["txFixdAmt"]);
+								return (float)$compTax;
 	}
 	private function TaxAdjsutment() {
 		$sqlEmptax = "Select * from tblEmpTax where compCode='{$_SESSION['company_code']}' AND stat IS NULL";
@@ -1293,8 +1294,6 @@ WHERE tk.compCode = '".$_SESSION["company_code"]."'
                                                 $empPrevTaxes = $this->getPrevEmplr($empNo,'prevTaxes');
                                                 //Prev Employer (Puregold Company)
                                                 $empPrevGovDed = $this->getPrevEmplr($empNo,'nonTaxSss');
- 
-
                                 }
                                 else
                                 {
@@ -1322,11 +1321,11 @@ WHERE tk.compCode = '".$_SESSION["company_code"]."'
                                                 //echo $empNo."==".$gross_Taxable."+".$arrYtdDataHist["YtdTaxable"]."+".$empPrevEarnings."-".
                                                                                 //$arrYtdDataHist["YtdGovDed"]."-".$sumGov."\n";
                                                
-                                                $estEarn =  (float) $gross_Taxable + (float) $arrYtdDataHist["YtdTaxable"] + (float)$empPrevEarnings -  (float) $arrYtdDataHist["YtdGovDed"] - (float)$sumGov - (float)$empPrevGovDed;
+                                                $estEarn =  (float)$gross_Taxable + (float)$arrYtdDataHist["YtdTaxable"] + (float)$empPrevEarnings -  (float)$arrYtdDataHist["YtdGovDed"] - (float)$sumGov - (float)$empPrevGovDed;
                                                 //echo $empNo."==".$estEarn."\n";
-                                                $estEarn = (float) $estEarn / $this->get['pdNum'];
+                                                $estEarn = (float)$estEarn / $this->get['pdNum'];
                                                 //echo $empNo."==".$estEarn."\n";
-                                                $estEarn = (float) $estEarn * 24 ;
+                                                $estEarn = (float)$estEarn * 24 ;
                                                 //echo $empNo."==".$estEarn."\n";
                                 }
                                
@@ -1340,9 +1339,8 @@ WHERE tk.compCode = '".$_SESSION["company_code"]."'
                                 $estTaxYear = $this->getAnnualTax($netTaxable);
                                 //echo $empNo."==".$estTaxYear."\n";
                                
-
                                 //Compute Taxes
-                                $taxDue = ($estTaxYear / 24)* $this->get['pdNum'];
+                                $taxDue = ($estTaxYear / 24) * $this->get['pdNum'];
                                 //echo $empNo."==".$taxDue."\n";
                                
                                 $taxPeriod = $taxDue -  $arrYtdDataHist["YtdTax"] - $empPrevTaxes;
@@ -1353,9 +1351,9 @@ WHERE tk.compCode = '".$_SESSION["company_code"]."'
                                                 $taxPeriod = $taxPeriod;
                                 }             
                                 else*/
-                               
+
                                 if ($this->get['pdNum'] < 24)
-                                                $taxPeriod = ($taxPeriod<0?0:$taxPeriod);
+                                                $taxPeriod = ($taxPeriod < 0 ? 0 : $taxPeriod);
  
 
                                 return sprintf("%01.2f", $taxPeriod);
@@ -1682,7 +1680,7 @@ $qryUpdateEmpLoans = "UPDATE tblEmpLoansDtl SET dedTag = ''
 			else{//daily
 				
 				//basic	
-				$arrDailiesBasic = explode("-",$this->getDailiesBasic($empToProcPayBaicVal['empNo'],$empToProcPayBaicVal['empDrate']));
+				$arrDailiesBasic = explode("-", $this->getDailiesBasic($empToProcPayBaicVal['empNo'],$empToProcPayBaicVal['empDrate']));
 				$trnCodePayBasicDailiesBasic = $arrDailiesBasic[0];
 				$trnAmountPayBasicDailiesBasic = $arrDailiesBasic[1];
 				$emp_AccruedDays[$empToProcPayBaicVal['empNo']] = $arrDailiesBasic[2];
@@ -1931,13 +1929,10 @@ $qryUpdateEmpLoans = "UPDATE tblEmpLoansDtl SET dedTag = ''
 					
 					$Trns = $this->execQryI($qryUpdtProctagOthAdjAllow);
 					$Trns = $this->writeToTblEarningsAllow('E1',$AdjustmentAllowanceProcVal['empNo'],$AdjustmentAllowanceProcVal['trnCode'],$AdjustmentAllowanceProcVal['sumEarnAmnt'],$AdjustmentAllowanceProcVal['sprtPS']);
-					
 				}
 		}//end foreach for Adjustment Allowance
 		
 		foreach ((array)$this->getArrAllow($emp_AccruedDays,$emp_AmntTardy,$emp_AmntUt,$emp_LegalDays) as $arrAllwIndex => $arrAllwVal){//foeach for allowance
-		
-			
 			$tmpAllwIndex = explode("-",$arrAllwIndex);
 			$arrEmpAllow = $this->getEmpAllowance('tblAllowance',$tmpAllwIndex[0],'AND tblAllowance.allowCode = '.$tmpAllwIndex[2]);
 			
@@ -1974,7 +1969,6 @@ $qryUpdateEmpLoans = "UPDATE tblEmpLoansDtl SET dedTag = ''
 			unset($arrAllwVal,$arrEmpAllow,$tmpAllwIndex);
 		}//end of foreach for allowance
 		
-		
 		$arrEmpTaxAdj = $this->TaxAdjsutment();
 		foreach ((array)$this->getEmpForDeduction() as $empForDedVal){//foreach for deductions
 			$totalTaxDeducted = $empAddedTaxEarn = $YtdGovDedMinWage = 0;
@@ -1983,28 +1977,26 @@ $qryUpdateEmpLoans = "UPDATE tblEmpLoansDtl SET dedTag = ''
 			
 			/*gross earnings = taxable and non taxable except allowance*/
 			$grossEarnings = (float)$this->computeEmpGrossEarnings($empForDedVal['empNo'],"AND (sprtPS IS NULL or sprtPS ='' or sprtPS='N') ",'');
-			
-			//echo "Gross Earnings = ".$grossEarnings."\n\n";
+			echo "Gross Earnings = ".$grossEarnings."<br/>";
 			
 			/*net pay earnings =company retention/100*gross earnings 
 			where :
 			retention = company retention
-			*/	
-									
+			*/
 			$netPayEarnings = ($earnRetention/100)*$grossEarnings;//net pay earnings
-			//echo "Net Pay Earnings = ".$netPayEarnings."\n";
+			echo "Net Pay Earnings = ".$netPayEarnings."<br/>";
 			
 			/*amount Limit Deductions = Gross Earnings - net pay Earnings*/
 			$amntLimitDed = $grossEarnings-$netPayEarnings;
-			//echo "Amount Limit Ded = ".$amntLimitDed."\n";
+			echo "Amount Limit Ded = ".$amntLimitDed."<br/>";
 			
 			/*non tax Earnings*/
 			$nonTaxEarn = (float)$this->computeEmpGrossEarnings($empForDedVal['empNo'],"AND (trn.trnTaxCd = 'N' or trn.trnTaxCd='' or trn.trnTaxCd is null) AND (sprtPS IS NULL or sprtPS ='' or sprtPS='N') ",'');
-			//echo "Non Taxable Earnings = ".$nonTaxEarn."\n";
+			echo "Non Taxable Earnings = ".$nonTaxEarn."<br/>";
 			
 			/*table gross earnings = gross earnings - nontax gross earnings*/
 			$taxableGrossEarn = (float)$this->computeEmpGrossEarnings($empForDedVal['empNo'],"AND (trn.trnTaxCd = 'Y') AND (sprtPS IS NULL or sprtPS ='' or sprtPS='N') ",$empForDedVal['empWageTag']);
-			//echo "Taxable Earnings = ".$taxableGrossEarn."\n";
+			echo "Taxable Earnings = ".$taxableGrossEarn."<br/><br/>";
 			
 			/*If the Branch.Minimum Wage!=0, Get 0100(Basic) of the Employee*/
 			
@@ -2052,18 +2044,15 @@ $qryUpdateEmpLoans = "UPDATE tblEmpLoansDtl SET dedTag = ''
 					{
 						$prevEarn = (float)$this->getPrevGrossEarn($empForDedVal['empNo']);
 						$empSC = (float)$this->getEmpServiceCharge($empForDedVal['empNo']);
-						// $monthLyGrossEarn = $grossEarnings+$prevEarn-$empSC;  //ito yun 
-						 $monthLyGrossEarn = $taxableGrossEarn+$prevEarn-$empSC;  //alejo edot 
+						//$monthLyGrossEarn = $grossEarnings+$prevEarn-$empSC;  //ito yun 
+						$monthLyGrossEarn = $taxableGrossEarn+$prevEarn-$empSC;  //alejo edot 
 
-						
 						$arrGovDedAmnt = $this->getGovDedAmnt($monthLyGrossEarn);
 						$mrate=$empInfo['empMrate'];
 						$PhicEmplr = $PhicEmp =$this->getGovDedAmntPhic($empForDedVal["empMrate"]);
 						$mrate="";
 						if($monthLyGrossEarn != 0 || $monthLyGrossEarn != "")
 						{
-
-
 							///if($empGovtDeduct!=1){
 								//$HdmfEmp=((float)$empForDedVal['amount_hdmf']>0)?$empForDedVal['amount_hdmf']:100;
 							//}
@@ -2122,11 +2111,8 @@ $qryUpdateEmpLoans = "UPDATE tblEmpLoansDtl SET dedTag = ''
 			//$withTax = $this->computeEmpWithTax($empForDedVal['empNo'],$txbleEarningsPd,$taxableGrossEarn,$empForDedVal["empTeu"],$empForDedVal["empMrate"],$sumGov);
 			
 			//Annual Computation
-			
 			$withTax = $this->computeWithTax($empForDedVal['empNo'],$txbleEarningsPd,$empForDedVal["empTeu"],$sumGov,$empMinWage_Basic);
 			//tax adjustments
-			
-			
 			
 			foreach($arrEmpTaxAdj as $valTaxAdj) {
 				if ($valTaxAdj['empNo']==$empForDedVal['empNo'])  {
@@ -2502,7 +2488,7 @@ $qryUpdateEmpLoans = "UPDATE tblEmpLoansDtl SET dedTag = ''
 					$trns = $this->writeToTblDeduction($valSumLoans['empNo'],$valSumLoans['trnCode'],(float)$valSumLoans['sumamount'],$valSumLoans['dedtoAdv']);		
 				}
 			}
-			/*End of Loan with regard to level of priority*/
+			//End of Loan with regard to level of priority
 
 			
 			$sprtAllowPSTotAmnt -= 	$totDedAdv;
@@ -2511,16 +2497,16 @@ $qryUpdateEmpLoans = "UPDATE tblEmpLoansDtl SET dedTag = ''
 			//echo "Total Ded = ".$totDedForPeriod."\n";
 			//echo "Sum Gov = ".$sumGov."\n";
 			
-/*			$arrEmpNonTaxAllowTot = $this->getEmpAllowance('tblAllowanceBrkDwn',$empForDedVal['empNo'],"AND (tblPayTransType.trnTaxCd = 'N' or tblPayTransType.trnTaxCd='' or tblPayTransType.trnTaxCd is null) AND (tblAllowanceBrkDwn.sprtPS IS NULL or tblAllowanceBrkDwn.sprtPS ='' or tblAllowanceBrkDwn.sprtPS='N') ");
+   			//$arrEmpNonTaxAllowTot = $this->getEmpAllowance('tblAllowanceBrkDwn',$empForDedVal['empNo'],"AND (tblPayTransType.trnTaxCd = 'N' or tblPayTransType.trnTaxCd='' or tblPayTransType.trnTaxCd is null) AND (tblAllowanceBrkDwn.sprtPS IS NULL or tblAllowanceBrkDwn.sprtPS ='' or tblAllowanceBrkDwn.sprtPS='N') ");
 			
-			foreach ($arrEmpNonTaxAllowTot as $empNonTaxAllowTotVal){
-				$totEmpNonTaxAllow += (float)$empNonTaxAllowTotVal['allowAmt'];
-			}*/
+			//foreach ($arrEmpNonTaxAllowTot as $empNonTaxAllowTotVal){
+			//	$totEmpNonTaxAllow += (float)$empNonTaxAllowTotVal['allowAmt'];
+			//}
 			
 			$totEmpNonTaxAllow = $this->getEmpNonTaxAllow($empForDedVal['empNo']);
 			
 			//$netsalary = ($grossEarnings+$txbleEarningsPd)-($totDedForPeriod+$totalTaxDeducted);
-			/*echo "Gross Earnings = ".$grossEarnings."\n";*/
+			//*echo "Gross Earnings = ".$grossEarnings."\n";*/
 			
 			//echo "Tax = ".$totalTaxDeducted."\n";
 			$totalTaxDeducted += $totalTaxAdj;
@@ -2643,8 +2629,6 @@ $qryUpdateEmpLoans = "UPDATE tblEmpLoansDtl SET dedTag = ''
 		}//end foreach for Unposted Other Ded
 		/*End of Insert Other Earnings and Other Transactions where ProcessTag is null or ="N"*/
 		
-		
-		
 		$qryUpdateEarnTag = "UPDATE tblPayPeriod SET pdEarningsTag = 'Y' 
 							 WHERE compCode = '{$this->session['company_code']}'
 							 AND payGrp = '{$this->session['pay_group']}'
@@ -2655,8 +2639,6 @@ $qryUpdateEmpLoans = "UPDATE tblEmpLoansDtl SET dedTag = ''
 			$Trns = $this->execQryI($qryUpdateEarnTag);
 		}		
 		
-		
-		
 		if(!$Trns){
 			$Trns = $this->rollbackTranI();//rollback regular payroll transaction
 			return false;
@@ -2665,8 +2647,6 @@ $qryUpdateEmpLoans = "UPDATE tblEmpLoansDtl SET dedTag = ''
 			$Trns = $this->commitTranI();//commit regular payroll transaction
 			return true;	
 		}
-		
-		
 	}
 	
 	function chkUnpostedTran()
