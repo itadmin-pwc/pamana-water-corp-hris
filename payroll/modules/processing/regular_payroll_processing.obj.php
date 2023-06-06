@@ -1267,97 +1267,94 @@ WHERE tk.compCode = '".$_SESSION["company_code"]."'
 
 	private function computeWithTax($empNo,$gross_Taxable,$empTeu,$sumGov,$minBasicPay)
 	{
-								$empPrevTag = "";
-                                $empMinTag = "";
-                                $empPrevEarnings = 0;
-                                $empPrevTaxes = 0;
-                                $estEarn = 0;
-                                $netTaxable = 0;
-                                $estTaxYear = 0;
-                                $taxDue = 0;
-                                $taxPeriod = 0;
+		$empPrevTag = "";
+        $empMinTag = "";
+        $empPrevEarnings = 0;
+        $empPrevTaxes = 0;
+        $estEarn = 0;
+        $netTaxable = 0;
+        $estTaxYear = 0;
+        $taxDue = 0;
+        $taxPeriod = 0;
                                
-                                $basicPay = (float)$minBasicPay;
+        $basicPay = (float)$minBasicPay;
                                
-                                //Get the tblYtdDataHist of the Employee
-                                $arrYtdDataHist = $this->getEmpYtdDataHist($empNo);
+        //Get the tblYtdDataHist of the Employee
+        $arrYtdDataHist = $this->getEmpYtdDataHist($empNo);
                                
-                                //Get the Previous Employe Tag / Mimimum Wage Earnner
-                                $arrEmpInfo = $this->getUserInfo($_SESSION["company_code"],$empNo,'');
-                                $empPrevTag = $arrEmpInfo["empPrevTag"];
-                                $empMinTag = $arrEmpInfo["empWageTag"];
+        //Get the Previous Employe Tag / Mimimum Wage Earnner
+        $arrEmpInfo = $this->getUserInfo($_SESSION["company_code"],$empNo,'');
+        $empPrevTag = $arrEmpInfo["empPrevTag"];
+        $empMinTag = $arrEmpInfo["empWageTag"];
                                
-                                if($empPrevTag=='Y')
-                                {
-                                                //Get Previous Employer Data to tblPrevEmployer
-                                                $empPrevEarnings = $this->getPrevEmplr($empNo,'prevEarnings');
-                                                $empPrevTaxes = $this->getPrevEmplr($empNo,'prevTaxes');
-                                                //Prev Employer (Puregold Company)
-                                                $empPrevGovDed = $this->getPrevEmplr($empNo,'nonTaxSss');
-                                }
-                                else
-                                {
-                                                $empPrevEarnings = 0;
-                                                $empPrevTaxes = 0;
-                                }
+        if($empPrevTag=='Y')
+        {
+            //Get Previous Employer Data to tblPrevEmployer
+            $empPrevEarnings = $this->getPrevEmplr($empNo,'prevEarnings');
+            $empPrevTaxes = $this->getPrevEmplr($empNo,'prevTaxes');
+            //Prev Employer (Puregold Company)
+            $empPrevGovDed = $this->getPrevEmplr($empNo,'nonTaxSss');
+        }
+        else
+        {
+            $empPrevEarnings = 0;
+            $empPrevTaxes = 0;
+        }
                                
-                                //echo $empNo."==".$gross_Taxable."\n";
-                                //Estimate the Total Taxable Earnings for the Year
-                                if($empMinTag=='Y')
-                                {
+        //echo $empNo."==".$gross_Taxable."\n";
+        //Estimate the Total Taxable Earnings for the Year
+        if($empMinTag=='Y')
+        {
                                                
-                                                /*echo                 $empNo."==".$gross_Taxable."+".$arrYtdDataHist["YtdTaxable"]."+".$empPrevEarnings."-".
-                                                                                $arrYtdDataHist["YtdGovDed"]."-".$arrYtdDataHist["YtdBasic"]."-".$basicPay."-".$sumGov."\n";*/
+            /*echo                 $empNo."==".$gross_Taxable."+".$arrYtdDataHist["YtdTaxable"]."+".$empPrevEarnings."-".
+            $arrYtdDataHist["YtdGovDed"]."-".$arrYtdDataHist["YtdBasic"]."-".$basicPay."-".$sumGov."\n";*/
                                                
-/*                                           $estEarn =             (float) $gross_Taxable + (float) $arrYtdDataHist["YtdTaxable"] + (float)$empPrevEarnings -  (float) $arrYtdDataHist["YtdGovDed"] - (float) $arrYtdDataHist["YtdBasic"]
-                                                                                                - (float) $basicPay - (float)$sumGov - (float)$empPrevGovDed;
+			/* $estEarn =             (float) $gross_Taxable + (float) $arrYtdDataHist["YtdTaxable"] + (float)$empPrevEarnings -  (float) $arrYtdDataHist["YtdGovDed"] - (float) $arrYtdDataHist["YtdBasic"]
+                - (float) $basicPay - (float)$sumGov - (float)$empPrevGovDed;
                                                
-                                                $estEarn = (float) $estEarn / $this->get['pdNum'];
-                                                $estEarn = (float) $estEarn * 24 ;*/
-                                                $estEarn = 0;
-                                }
-                                else
-                                {
-                                                //echo $empNo."==".$gross_Taxable."+".$arrYtdDataHist["YtdTaxable"]."+".$empPrevEarnings."-".
-                                                                                //$arrYtdDataHist["YtdGovDed"]."-".$sumGov."\n";
+            $estEarn = (float) $estEarn / $this->get['pdNum'];
+            $estEarn = (float) $estEarn * 24 ;*/
+            $estEarn = 0;
+        }
+        else
+        {
+        	//echo $empNo."==".$gross_Taxable."+".$arrYtdDataHist["YtdTaxable"]."+".$empPrevEarnings."-".
+        	//$arrYtdDataHist["YtdGovDed"]."-".$sumGov."\n";
                                                
-                                                $estEarn =  (float)$gross_Taxable + (float)$arrYtdDataHist["YtdTaxable"] + (float)$empPrevEarnings -  (float)$arrYtdDataHist["YtdGovDed"] - (float)$sumGov - (float)$empPrevGovDed;
-                                                //echo $empNo."==".$estEarn."\n";
-                                                $estEarn = (float)$estEarn / $this->get['pdNum'];
-                                                //echo $empNo."==".$estEarn."\n";
-                                                $estEarn = (float)$estEarn * 24 ;
-                                                //echo $empNo."==".$estEarn."\n";
-                                }
+            $estEarn =  (float)$gross_Taxable + (float)$arrYtdDataHist["YtdTaxable"] + (float)$empPrevEarnings -  (float)$arrYtdDataHist["YtdGovDed"] - (float)$sumGov - (float)$empPrevGovDed;
+            //echo $empNo."==".$estEarn."\n";
+            $estEarn = (float)$estEarn / $this->get['pdNum'];
+            //echo $empNo."==".$estEarn."\n";
+            $estEarn = (float)$estEarn * 24 ;
+            //echo $empNo."==".$estEarn."\n";
+        }
+                                                 
+        //Compute for the Net Taxable Earnings
+        //$netTaxable = (float) $estEarn - (float) $this->getTaxExemption($empTeu);
+        $netTaxable = (float) $estEarn;
+        // echo $empNo."==".$netTaxable."\n";
                                
+        //Compute the Estimated Tax using the Annual Tax Table
+        $estTaxYear = $this->getAnnualTax($netTaxable);
+        //echo $empNo."==".$estTaxYear."\n";
                                
-                                //Compute for the Net Taxable Earnings
-                                //$netTaxable = (float) $estEarn - (float) $this->getTaxExemption($empTeu);
-                                $netTaxable = (float) $estEarn;
-                               // echo $empNo."==".$netTaxable."\n";
+        //Compute Taxes
+        $taxDue = ($estTaxYear / 24) * $this->get['pdNum'];
+        //echo $empNo."==".$taxDue."\n";
                                
-                                //Compute the Estimated Tax using the Annual Tax Table
-                                $estTaxYear = $this->getAnnualTax($netTaxable);
-                                //echo $empNo."==".$estTaxYear."\n";
+        $taxPeriod = $taxDue -  $arrYtdDataHist["YtdTax"] - $empPrevTaxes;
+        //echo $empNo."==".$taxPeriod."\n";
                                
-                                //Compute Taxes
-                                $taxDue = ($estTaxYear / 24) * $this->get['pdNum'];
-                                //echo $empNo."==".$taxDue."\n";
-                               
-                                $taxPeriod = $taxDue -  $arrYtdDataHist["YtdTax"] - $empPrevTaxes;
-                                //echo $empNo."==".$taxPeriod."\n";
-                               
-                                /*if($this->get['pdNum']=='24')
-                                {
-                                                $taxPeriod = $taxPeriod;
-                                }             
-                                else*/
+        /*if($this->get['pdNum']=='24')
+        {
+            $taxPeriod = $taxPeriod;
+        }             
+        else*/
 
-                                if ($this->get['pdNum'] < 24)
-                                                $taxPeriod = ($taxPeriod < 0 ? 0 : $taxPeriod);
+        if ($this->get['pdNum'] < 24)
+            $taxPeriod = ($taxPeriod < 0 ? 0 : $taxPeriod);
  
-
-                                return sprintf("%01.2f", $taxPeriod);
-		
+		return sprintf("%01.2f", $taxPeriod);
 	}
 	
 	
@@ -2007,7 +2004,7 @@ $qryUpdateEmpLoans = "UPDATE tblEmpLoansDtl SET dedTag = ''
 			$emp_VLOP			=  (float)$this->computeEmpGrossEarnings($empForDedVal['empNo'],"AND ern.trnCode='".EARNINGS_VLOP."'",'');	
 			$emp_SLOP			=  (float)$this->computeEmpGrossEarnings($empForDedVal['empNo'],"AND ern.trnCode='".EARNINGS_SLOP."'",'');	
 			$emp_AdjBasic		=  (float)$this->computeEmpGrossEarnings($empForDedVal['empNo'],"AND ern.trnCode='".ADJ_BASIC."'",'');	
-			$empMinWage_Basic 	=  (float) (($emp_BRate +  $emp_Tard + $emp_Ut + $emp_Absence + $emp_VLOP + $emp_SLOP) + $emp_AdjBasic);
+			$empMinWage_Basic 	=  (float)(($emp_BRate +  $emp_Tard + $emp_Ut + $emp_Absence + $emp_VLOP + $emp_SLOP) + $emp_AdjBasic);
 			
 			/*echo $empForDedVal['empNo']."\n";
 				echo $emp_BRate."\n";
@@ -2018,8 +2015,6 @@ $qryUpdateEmpLoans = "UPDATE tblEmpLoansDtl SET dedTag = ''
 				echo $emp_SLOP."\n";
 				echo $emp_AdjBasic."\n";
 				echo "Minimum Wage = ".$empMinWage_Basic."\n";*/
-			
-
 			
 			$empEcola 	=  $this->getEmpeCola($empForDedVal['empNo']);	
 			$empEcola 	= (float)$empEcola['ecola'];
@@ -2064,7 +2059,6 @@ $qryUpdateEmpLoans = "UPDATE tblEmpLoansDtl SET dedTag = ''
 								if ($arrGovDedAmnt['mProveFund_ER']!="") {$mProveER=$arrGovDedAmnt['mProveFund_ER'];} else {$mProveER=0;}
 								if ($arrGovDedAmnt['mProveFund_EE']!="") {$mProveEE=$arrGovDedAmnt['mProveFund_EE'];} else {$mProveEE=0;}
 
-								
 								if ($arrGovDedAmnt['EC']!="") {$EcEmp=$arrGovDedAmnt['EC'];} else {$EcEmp=0;}
 								//if ($arrGovDedAmnt['phicEmployee']!="") {$PhicEmp=$arrGovDedAmnt['phicEmployee'];} else {$PhicEmp=0;}
 								//if ($arrGovDedAmnt['phicEmployer']!=""){$PhicEmplr=$arrGovDedAmnt['phicEmployee'];} else {$PhicEmplr=0;}
@@ -2085,30 +2079,8 @@ $qryUpdateEmpLoans = "UPDATE tblEmpLoansDtl SET dedTag = ''
 					}
 				}
 			
-			//echo "Sum of Governmentals = ".$sumGov ."\n";
-			
-			//taxable earnings for the period
-			//$txbleEarningsPd = $taxableGrossEarn-(float)$sumGov;
 			$txbleEarningsPd = $taxableGrossEarn;
 			//Get Data of Employee in tblGov_Tax_Added for Tax Spread in Group 1
-			
-			/*$arrGetAddTax = $this->getEmpAddTaxableIncome($empForDedVal['empNo']);
-			if($arrGetAddTax["amountToDed"]>0)
-			{
-				$empAddedTaxEarn = (float) $arrGetAddTax["amountToDed"];
-			}*/
-			
-			//echo $empForDedVal['empNo']."=".$empAddedTaxEarn."\n";
-			//$sum_txbleEarningsPd_addTax = $txbleEarningsPd + $empAddedTaxEarn;
-			
-			//echo "Taxable Earnings = ".$txbleEarningsPd."\n";
-			
-			/* 	Computation of Witholding tax
-				Created By		:	Genarra Jo - Ann Arong
-				Date Created	:	10272009 Tuesday
-			*/
-		
-			//$withTax = $this->computeEmpWithTax($empForDedVal['empNo'],$txbleEarningsPd,$taxableGrossEarn,$empForDedVal["empTeu"],$empForDedVal["empMrate"],$sumGov);
 			
 			//Annual Computation
 			$withTax = $this->computeWithTax($empForDedVal['empNo'],$txbleEarningsPd,$empForDedVal["empTeu"],$sumGov,$empMinWage_Basic);
