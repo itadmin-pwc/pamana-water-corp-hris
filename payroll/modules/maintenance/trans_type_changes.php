@@ -255,11 +255,11 @@ if($_GET['action'] == 'EDIT'){
 			$('recCode').focus();
 			return false;			
 		}
-		if(trim(frm['cmbGLMajor']) == 0){
-			alert('Major GL Code is Required');
-			$('cmbGLMajor').focus();
-			return false;
-		}
+		// if(trim(frm['cmbGLMajor']) == 0){
+		// 	alert('Major GL Code is Required');
+		// 	$('cmbGLMajor').focus();
+		// 	return false;
+		// }
 		if(trim(frm['brnCat']) == 'D'){
 			if(trim(frm['prior']) == ''){
 				alert('Priority is Required');

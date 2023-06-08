@@ -94,7 +94,7 @@
        return $this->monthDiff;
        //return the difference in days
        default:
-       return(floor($this->dif/86400));
+       return(floor($this->diff/86400));
      }
    }
  }

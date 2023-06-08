@@ -1717,7 +1717,7 @@ $qryUpdateEmpLoans = "UPDATE tblEmpLoansDtl SET dedTag = ''
 			unset($trnAmountPayBasicNotReg);
 		}//end of foreach pay basic	
 		
-		
+		//BALIK
 		foreach ((array)$this->summarizeCorrection() as $arrSumCorrVal){//foreach timesheet	
 			if($arrSumCorrVal['sumAmtAbsnt']){
 				if((float)$arrSumCorrVal['sumAmtAbsnt'] != 0){
@@ -1733,14 +1733,13 @@ $qryUpdateEmpLoans = "UPDATE tblEmpLoansDtl SET dedTag = ''
 							$trnAmountAbsent = $empBasicPay[$arrSumCorrVal['empNo']]*-1;
 						}
 						
-						
 						if($Trns){
 							$Trns = $this->writeToTblEarnings('E1',$arrSumCorrVal['empNo'],'0113',$trnAmountAbsent);
 						}
 				}
 			}
 			
-				
+			//add grace period 15 mins
 			if($arrSumCorrVal['sumAmtTardy']){
 				if((float)$arrSumCorrVal['sumAmtTardy'] != 0){			
 					if(($arrSumCorrVal['sumAmtTardy']*-1)>$empBasicPay[$arrSumCorrVal['empNo']])
@@ -1755,7 +1754,7 @@ $qryUpdateEmpLoans = "UPDATE tblEmpLoansDtl SET dedTag = ''
 				}	
 			}		
 
-
+			
 			if($arrSumCorrVal['sumAmtUt']){
 				if((float)$arrSumCorrVal['sumAmtUt'] != 0){								
 					if($Trns){
@@ -1809,8 +1808,6 @@ $qryUpdateEmpLoans = "UPDATE tblEmpLoansDtl SET dedTag = ''
 					}
 				}	
 
-			
-			
 				if($arrSumOtNNdVal['sumAmtNdLe8']){
 					
 					if((float)$arrSumOtNNdVal['sumAmtNdLe8'] != 0){
@@ -1974,26 +1971,26 @@ $qryUpdateEmpLoans = "UPDATE tblEmpLoansDtl SET dedTag = ''
 			
 			/*gross earnings = taxable and non taxable except allowance*/
 			$grossEarnings = (float)$this->computeEmpGrossEarnings($empForDedVal['empNo'],"AND (sprtPS IS NULL or sprtPS ='' or sprtPS='N') ",'');
-			echo "Gross Earnings = ".$grossEarnings."<br/>";
+			//echo "Gross Earnings = ".$grossEarnings."<br/>";
 			
 			/*net pay earnings =company retention/100*gross earnings 
 			where :
 			retention = company retention
 			*/
 			$netPayEarnings = ($earnRetention/100)*$grossEarnings;//net pay earnings
-			echo "Net Pay Earnings = ".$netPayEarnings."<br/>";
+			//echo "Net Pay Earnings = ".$netPayEarnings."<br/>";
 			
 			/*amount Limit Deductions = Gross Earnings - net pay Earnings*/
 			$amntLimitDed = $grossEarnings-$netPayEarnings;
-			echo "Amount Limit Ded = ".$amntLimitDed."<br/>";
+			//echo "Amount Limit Ded = ".$amntLimitDed."<br/>";
 			
 			/*non tax Earnings*/
 			$nonTaxEarn = (float)$this->computeEmpGrossEarnings($empForDedVal['empNo'],"AND (trn.trnTaxCd = 'N' or trn.trnTaxCd='' or trn.trnTaxCd is null) AND (sprtPS IS NULL or sprtPS ='' or sprtPS='N') ",'');
-			echo "Non Taxable Earnings = ".$nonTaxEarn."<br/>";
+			//echo "Non Taxable Earnings = ".$nonTaxEarn."<br/>";
 			
 			/*table gross earnings = gross earnings - nontax gross earnings*/
 			$taxableGrossEarn = (float)$this->computeEmpGrossEarnings($empForDedVal['empNo'],"AND (trn.trnTaxCd = 'Y') AND (sprtPS IS NULL or sprtPS ='' or sprtPS='N') ",$empForDedVal['empWageTag']);
-			echo "Taxable Earnings = ".$taxableGrossEarn."<br/><br/>";
+			//echo "Taxable Earnings = ".$taxableGrossEarn."<br/><br/>";
 			
 			/*If the Branch.Minimum Wage!=0, Get 0100(Basic) of the Employee*/
 			
@@ -2084,8 +2081,8 @@ $qryUpdateEmpLoans = "UPDATE tblEmpLoansDtl SET dedTag = ''
 			
 			//Annual Computation
 			$withTax = $this->computeWithTax($empForDedVal['empNo'],$txbleEarningsPd,$empForDedVal["empTeu"],$sumGov,$empMinWage_Basic);
-			//tax adjustments
 			
+			//tax adjustments
 			foreach($arrEmpTaxAdj as $valTaxAdj) {
 				if ($valTaxAdj['empNo']==$empForDedVal['empNo'])  {
 					if ($valTaxAdj['wtax']<$withTax) {
@@ -2265,6 +2262,7 @@ $qryUpdateEmpLoans = "UPDATE tblEmpLoansDtl SET dedTag = ''
 					}
 				}
 			}
+			
 			$resultSumloans = $this->getdeductionlist($empForDedVal['empNo'],"","");			
 			$totDedAdv = 0;
 			foreach($resultSumloans as $valSumLoans) {
@@ -2462,7 +2460,6 @@ $qryUpdateEmpLoans = "UPDATE tblEmpLoansDtl SET dedTag = ''
 			}
 			//End of Loan with regard to level of priority
 
-			
 			$sprtAllowPSTotAmnt -= 	$totDedAdv;
 			$empInfo = $this->getUserInfo($this->session['company_code'],$empForDedVal['empNo'],'');
 			$totDedForPeriod+= (float)$sumGov_Deduct;

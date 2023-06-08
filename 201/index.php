@@ -60,7 +60,12 @@ if($_GET['action'] == 'unlockSys'){
 	<STYLE>@import url("../js/themes/mac_os_x.css");</STYLE>
 	<STYLE>@import url('style/index_payroll.css');</STYLE>
     
-    
+    <style>
+		.x-panel-body {
+			overflow-y: auto;
+			overflow-x: hidden;
+		}
+	</style>
 	  
 	<script type="text/javascript">
 	//disableRightClick();	

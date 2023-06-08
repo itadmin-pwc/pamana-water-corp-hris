@@ -28,10 +28,9 @@ if ($payPd=="") {
 
 $option_menu = $_REQUEST["hide_option"];
 
-
 if ($option_menu=="") { $option_menu="refresh_"; } 
 if ($groupType=="" || $groupType==0 || $groupType=="0") 
-{ 
+{
 	$groupType=$_SESSION['pay_group']; 
 }
 

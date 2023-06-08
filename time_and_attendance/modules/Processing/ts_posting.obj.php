@@ -1038,13 +1038,11 @@ if ($cday!='Y'){$hrsWrk=$hrsWrk;}else {
 
 			}
 			else{
-					
 					if ((float)str_replace(":",".",$arr['shftTimeIn'])<(float)str_replace(":",".",$arr['timeIn'])) {
 					 	$time['In'] = $arr['timeIn'];
 						$time['hrsTardy'] = round($this->calDiff("{$arr['tsDate']} {$arr['shftTimeIn']}","{$arr['tsDate']} {$arr['timeIn']}",'m')/60,2);	
 					} else {
 						$time['In'] = ($arr['timeIn'] == "" ) ? "00:00":$arr['shftTimeIn'];
-						
 					}
 
 					if ((float)str_replace(":",".",$arr['shftTimeOut'])>(float)str_replace(":",".",$arr['timeOut']) && $arr['otCrossTag']!='Y' && $arr['timeOut'] !="") {
@@ -1058,9 +1056,6 @@ if ($cday!='Y'){$hrsWrk=$hrsWrk;}else {
 								$time['hrsUT'] = round($this->calDiff("{$arr['tsDate']} {$arr['timeOut']}","{$arr['tsDate']} {$arr['shftTimeOut']}",'m')/60,2);
 							} 						
 						} else {
-							
-							
-							
 							if ($arr['empBrnCode']=='0001' && $SchedHrsWork<1  && $valTSList['CWWTag']=='') {
 								$time['Out'] = $arr['lunchOut'];
 								$time['hrsUT'] = round($this->calDiff("{$arr['tsDate']} {$arr['timeOut']}",$this->DateAdd($arr['tsDate'])." {$arr['shftLunchOut']}",'m')/60,2);
@@ -1110,7 +1105,6 @@ if ($cday!='Y'){$hrsWrk=$hrsWrk;}else {
 					else
 						$hrsLunch = round($this->calDiff("{$arr['tsDate']} {$arr['lunchOut']}","{$arr['tsDate']} {$arr['lunchIn']}",'m')/60,2);
 					
-				
 					if ($arr['empBrnCode']=='0001' && $SchedHrsWork<1  && $valTSList['CWWTag']=='') {
 						$hrsLunch = 0;
 					} 

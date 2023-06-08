@@ -35,7 +35,7 @@ if(isset($_POST['btnUpload'])) {
 				$resPayPeriod = $commonObj->getSqlAssocI($commonObj->execQryI($sqlGetPayDate));
 				$frDate = date('Ymd',strtotime($resPayPeriod['pdFrmDate']));
 				$toDate = date('Ymd',strtotime($resPayPeriod['pdToDate'])); 
-				$_SESSION['toDate'] 	= $toDate;
+				$_SESSION['toDate'] = $toDate;
 				//		and len(ETAG)>=$BioLength	$sqlDelete = "Delete from tblTK_EventLogs where cStoreNum='{$_GET['brnCode']}' AND (EDATE>='". $frDate."' AND EDATE<='".$toDate."') and len(ETAG)<8";
 				$BioLength = ($_GET['brnCode'] == 1)? 4:5;
 				$sqlDelete = "Delete from tblTK_EventLogs where (EDATE>='". $frDate."' AND EDATE<='".$toDate."') ";
@@ -76,6 +76,15 @@ if(isset($_POST['btnUpload'])) {
 
 					// Convert time to desired format (120100)
 					$timeFormatted = date('His', strtotime($time));
+
+					// GRACE PERIOD
+					$grace_start = "080000";
+					$grace_end = "081500";
+
+					if ($timeFormatted >= $grace_start && $timeFormatted <= $grace_end) {
+						$timeFormatted = $grace_start;
+					}
+					// END GRACE PERIOD
 
 					$datebio=$dateFormatted;
 					$timebio =$timeFormatted;
@@ -344,7 +353,7 @@ $sqlInsert = "";
 	
 			while($data = odbc_fetch_array($res) ) {
 			$datebio=date('Ymd',strtotime($data['EDATE']));
-			$timebio =$data['ETIME'];
+			$timebio=$data['ETIME'];
 			$bionum=$data['ETAG'];
 
 			$checkifexist="select EDATE,ETIME,ETAG from tblTK_EventLogs where EDATE = '$datebio' and ETIME='$timebio' and ETAG='$bionum'";

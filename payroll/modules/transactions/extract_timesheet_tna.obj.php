@@ -105,7 +105,7 @@ class extractTNATSObj extends commonObj {
 				$hrsAbsent 	= 0;
 				
 				if ($val['hrsWorked'] == 0) {
-					if (!in_array($val['dayType'],array(2,4,5,6)) && $val['empPayType']=='M') {
+					if (!in_array($val['dayType'], array(2,4,5,6)) && $val['empPayType']=='M') {
 						if ($val['tsAppTypeCd']==11)
 							$hrsAbsent = 8;
 						if ($val['dayType']==3 && $val['legalPayTag']!="Y") {	
@@ -116,11 +116,7 @@ class extractTNATSObj extends commonObj {
 					}  else {
 						if ($val['tsAppTypeCd']==11)
 							$hrsAbsent = 8;
-					}
-					
-					
-					
-						
+					}	
 				} else {
 					$hrsAbsent	= (in_array($val['tsAppTypeCd'],array(14,15,21))) ? 4:0;
 				}

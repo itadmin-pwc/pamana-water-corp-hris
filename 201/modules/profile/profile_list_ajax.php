@@ -16,9 +16,6 @@ elseif ($_SESSION['user_level'] == 2) {
 	$brnCodelist = " AND empbrnCode IN (Select brnCode from tblUserBranch where empNo='{$_SESSION['employee_number']}' AND compCode='{$_SESSION['company_code']}')";
 }
 
-
-
-
 $array_userPayCat = explode(',', $_SESSION['user_payCat']);
 
 if(in_array(9,$array_userPayCat))
@@ -32,7 +29,7 @@ else
 
 
 //alejocode viewing of CONFI PAF for PAYROLL DEPT ONLY
-if($_SESSION['employee_number']!='000000001'){
+if($_SESSION['employee_number']!='999999999' || $_SESSION['Confiaccess'] != 'Y'){
 	$user_payCat_view = " AND empPayCat IN (1,3,9)";
 }else{
 	//$user_payCat_view = " AND empPayCat ='2'";
@@ -61,7 +58,6 @@ if($brnCode_View ==""){
 	$arrBrnches = $common->getArrRes($resBrnches);
 	$arrBrnch = $common->makeArr($arrBrnches,'brnCode','brnDesc','All');
 }
-
 
 $qryIntMaxRec = "SELECT * FROM tblEmpMast 
 			     WHERE compCode = '{$sessionVars['compCode']}' 

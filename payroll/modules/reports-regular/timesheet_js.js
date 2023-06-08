@@ -438,8 +438,6 @@
 	
 
 	function PaySlip(act) {
-		
-	
 		var optionId=document.frmTS.hide_option.value;
 		var empNo=document.frmTS.empNo.value;
 		var empName=document.frmTS.empName.value;
@@ -458,20 +456,19 @@
 		tbl=document.frmTS.tblEarnType.value;
 		extUrl='&empBrnCode='+document.frmTS.empBrnCode.value+'&locType='+locType+'&act='+act;
 
-		if (payPd=="" || payPd<0 || payPd=="0") {
+		if (payPd == "" || payPd < 0 || payPd == "0") {
 			alert("Invalid Payroll Period.");
 			return false;
 		}
 
-		
 		new Ajax.Request(
 		  'timesheet_ajax.php?hide_empSect='+hide_empSect+'&hide_empDept='+hide_empDept+'&inputId=empSearch&empNo='+empNo+'&empName='+empName+'&empDiv='+empDiv+'&empDept='+empDept+'&empSect='+empSect+'&optionId='+optionId+'&fileName='+fileName+'&orderBy='+orderBy+'&payPd='+payPd+'&thisValue='+thisValue+'&tbl='+tbl+extUrl,
-		  {
-			 asynchronous : true,     
-			 onComplete   : function (req){
-				eval(req.responseText);
-			 }
-		  }
+			{
+				asynchronous : true,     
+				onComplete   : function (req){
+					eval(req.responseText);
+				}
+			}
 		);
 	}
 	
