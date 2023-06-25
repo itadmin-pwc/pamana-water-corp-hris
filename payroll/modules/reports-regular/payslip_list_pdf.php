@@ -78,7 +78,7 @@ class PDF extends FPDF
 			$this->SetFont('Arial','B'); 
 			$this->Cell(8,6,'DEPT:' ,'LT');
 			$this->SetFont('Arial',''); 
-			$this->Cell(17,6,$Department['deptShortDesc'] ,'TR');
+			$this->Cell(17,6,$Department['deptShortDesc'],'TR');
 			$this->SetFont('Arial','B'); 
 			$this->Cell(12,6,'EMP No.:','LT',0);
 			$this->SetFont('Arial',''); 

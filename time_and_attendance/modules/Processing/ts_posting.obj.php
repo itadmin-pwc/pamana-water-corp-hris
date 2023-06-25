@@ -41,7 +41,7 @@ class TSPostingObj extends dateDiff {
 		}
 		$arrBrnCode = $arrEmpOTs = $arrEmpDeds = $arrEmpCWW = array();
 		
-		foreach($this->getEmpList() as $valTSList) 
+		foreach($this->getEmpList() as $valTSList)
 		{
 			$dedTag=false;
 			$hrsOt = $hrsND = $hrsregND = $halfDayLeavePay = 0 ;
@@ -106,7 +106,7 @@ class TSPostingObj extends dateDiff {
 						if ($hrsLunch>$shfthrsLunch){
 							$hrsTardy += $hrsLunch-$shfthrsLunch;
 						}
-					}else {
+					}else{
 						if ($hrsLunch>0 && $shfthrsLunch!=0.5){
 							$hrsWrk = $hrsWrk-$shfthrsLunch;
 						}
@@ -144,12 +144,11 @@ class TSPostingObj extends dateDiff {
 			}
 
 				
-			
-				if($valTSList['hrs8Deduct']=='Y') {
-					$hrsWrk = $SchedHrsWork;
-					$hrsTardy = 0;
-					$hrsUT = 0;
-				} 
+			if($valTSList['hrs8Deduct']=='Y') {
+				$hrsWrk = $SchedHrsWork;
+				$hrsTardy = 0;
+				$hrsUT = 0;
+			} 
 
 
 				/*if (($hrsUT+$hrsWrk) > $SchedHrsWork && $hrsUT>0) {
@@ -161,8 +160,6 @@ class TSPostingObj extends dateDiff {
 					$hrsTardy = 0;
 				}*/
 				
-		
-
 				if ($valTSList['otIn'] != '' && $valTSList['otOut']!='') {
 					if ($valTSList['empBrnCode']=='0001' && $SchedHrsWork<1  && $valTSList['CWWTag']=='')
 						$OTOut = ((float)str_replace(":",".",$valTSList['otOut'])<(float)str_replace(":",".",$valTSList['lunchOut'])) ? $valTSList['otOut']:$valTSList['lunchOut'];
@@ -240,7 +237,7 @@ class TSPostingObj extends dateDiff {
 					} elseif(in_array($valTSList['tsAppTypeCd'],array('04','05','06','07','18','22'))) {//compute hours work for leave w/ pay
 						$hrsWrk = $SchedHrsWork;
 						$hrsOt = $hrsND = $hrsregND = 0;
-					} elseif (in_array($valTSList['tsAppTypeCd'],array(16,17,08,11,19,20))) {//compute hours work for leave w/o pay
+					} elseif (in_array($valTSList['tsAppTypeCd'],array(16,17,08,11,19,20))) { //compute hours work for leave w/o pay
 						$hrsWrk = $hrsOt = $hrsND = $hrsregND = $hrsUT = 0;
 					} elseif (in_array($valTSList['tsAppTypeCd'],array(21))) {//compute hours work for leave combi
 						$hrsWrk = 4;
@@ -288,8 +285,6 @@ class TSPostingObj extends dateDiff {
 				//edited by Nhomer
 				//old codes
 				//$hrsTardy = ($hrsTardy>$SchedHrsWork) ? 0: $hrsTardy;
-
-
 
 				$hrsTardy = ((float)$hrsTardy>(float)$SchedHrsWork) ? $SchedHrsWork: $hrsTardy;
 
@@ -592,26 +587,49 @@ if ($valTSList['CWWTag'] !='Y' && $hrsWrk>8 && $arr['obTag']=='Y'  && $valTSList
 		//convert hrsOT to amtOT
 		$sqlUpdateOTtable = "";
 		foreach($this->getOTforComputation() as $valOT) {
-			$amtOTLe8 = round((float)$valOT['hrsOTLe8'] * (float)$valOT['otPrem8'] * ((float)$valOT['empDrate']/8),2);
-			$amtOTGt8 = round((float)$valOT['hrsOTGt8'] * (float)$valOT['otPremOvr8'] * ((float)$valOT['empDrate']/8),2);
+			$getCompInfo = $this->getCompany($_SESSION['company_code']);
+			$emp_allowance = $this->getEmpAllowance($_SESSION['company_code'], $valOT['empNo']);
+
+			$allowance = 0;
+			if($emp_allowance['allowAmt'] != '') {
+				$allowance = $emp_allowance['allowAmt'];
+			}
+
+			$DailyWithAllowance = round((((float)$valOT['empMrate'] + $allowance) * 12) / (float)$getCompInfo['compDaysInYear'], 2);
+			$HourWithAllowance = $DailyWithAllowance / 8;
+
+			//echo "Emp No : " . $valOT['empNo'] . "</br>";
+			//echo "Monthly : " . $valOT['empMrate'] . "</br>";
+			//echo "Allowance : " . $allowance . "</br>";
+			//echo "Daily With Allowance : " . $DailyWithAllowance . "</br>";
+			//echo "Hour With Allowance : " . $HourWithAllowance . "</br>";
+
+			$amtOTLe8 = round((float)$valOT['hrsOTLe8'] * (float)$valOT['otPrem8'] * $HourWithAllowance,2);
+			$amtOTGt8 = round((float)$valOT['hrsOTGt8'] * (float)$valOT['otPremOvr8'] *$HourWithAllowance,2);
+			//echo "amtOTLe8 : " . $amtOTLe8 . "</br>";
+			//echo "amtOTGt8 : " . $amtOTGt8 . "</br>";
+
+			// $amtOTLe8 = round((float)$valOT['hrsOTLe8'] * (float)$valOT['otPrem8'] * ((float)$valOT['empDrate']/8),2);
+			// $amtOTGt8 = round((float)$valOT['hrsOTGt8'] * (float)$valOT['otPremOvr8'] * ((float)$valOT['empDrate']/8),2);
 			
 			/*if ($valOT['daytype']=="07" && $valOT['hrsOTGt8'] !="" ) {
 				$amtOTGt8 = round((float)$valOT['hrsOTGt8'] * (float)$valOT['otPremOvr8'] * ((float)$valOT['empDrate']/8),2);
 			}else{
 			$amtOTGt8 = round((float)$valOT['hrsOTGt8'] * (float)$valOT['otPremOvr8'] * ((float)$valOT['empDrate']/8),2);
 			}*/
-			$amtRegNDLe8 = round((float)$valOT['hrsRegNDLe8'] * (float)$valOT['ndreg'] * ((float)$valOT['empDrate']/8),2);
+			$amtRegNDLe8 = round((float)$valOT['hrsRegNDLe8'] * (float)$valOT['ndreg'] * $HourWithAllowance,2);
 
-			$amtNDLe8 = round((float)($valOT['hrsNDLe8']) * (float)$valOT['ndPrem8'] * ((float)$valOT['empDrate']/8),2);
-
+			$amtNDLe8 = round((float)($valOT['hrsNDLe8']) * (float)$valOT['ndPrem8'] * $HourWithAllowance,2);
+			//echo "amtRegNDLe8 : " . $amtRegNDLe8 . "</br>";
+			//echo "amtNDLe8 : " . $amtNDLe8 . "</br></br></br>";
 
 			$sqlUpdateOTtable = " Update tblTK_Overtime set amtOTLe8='$amtOTLe8',amtOTGt8='$amtOTGt8',amtNDLe8='$amtNDLe8',amtRegNDLe8='$amtRegNDLe8' where compCode='{$_SESSION['company_code']}' AND empNo='{$valOT['empNo']}' AND tsDate='{$valOT['tsDate']}'";	
 			
-		if ($sqlUpdateOTtable != "") {
-			if ($Trns) {
-				$Trns = $this->execQryI($sqlUpdateOTtable);
-			} 
-		}	
+			if ($sqlUpdateOTtable != "") {
+				if ($Trns) {
+					$Trns = $this->execQryI($sqlUpdateOTtable);
+				} 
+			}	
 		}
 		
 		if ($sqlUpdateOTtable != "") {
@@ -1650,7 +1668,7 @@ if ($cday!='Y'){$hrsWrk=$hrsWrk;}else {
 	}
 	
 	function getOTforComputation() {
-		$sqlOT= "SELECT tblTK_Overtime.empNo, tblTK_Overtime.tsDate, tblTK_Overtime.dayType, tblTK_Overtime.hrsOTLe8, tblTK_Overtime.hrsOTGt8, tblTK_Overtime.hrsNDLe8, tblEmpMast.empDrate, tblOtPrem.otPrem8, tblOtPrem.otPremOvr8, tblOtPrem.ndPrem8,hrsRegNDLe8,ndreg
+		$sqlOT= "SELECT tblTK_Overtime.empNo, tblTK_Overtime.tsDate, tblTK_Overtime.dayType, tblTK_Overtime.hrsOTLe8, tblTK_Overtime.hrsOTGt8, tblTK_Overtime.hrsNDLe8, tblEmpMast.empDrate, tblEmpMast.empMrate, tblOtPrem.otPrem8, tblOtPrem.otPremOvr8, tblOtPrem.ndPrem8,hrsRegNDLe8,ndreg
 				FROM tblTK_Overtime INNER JOIN tblEmpMast ON tblTK_Overtime.compCode = tblEmpMast.compCode AND tblTK_Overtime.empNo = tblEmpMast.empNo INNER JOIN tblOtPrem ON tblTK_Overtime.dayType = tblOtPrem.dayType
 				Where tblTK_Overtime.compCode = '{$_SESSION['company_code']}' AND empPayGrp='{$this->Group}' 
 						AND empBrnCode IN (Select brnCode from tblTK_UserBranch where empNo='{$_SESSION['employee_number']}' 
@@ -2040,6 +2058,21 @@ order by tsDate desc";
 			$sqlupdateTSsatDate="update tblTK_Timesheet set satPaytag='$paytagsat' where empNo='{$satlist['empNo']}' and tsDate='".date('Y-m-d',strtotime($satlist['tsDate'])). "'";
 			$this->execQryI($sqlupdateTSsatDate);
 			}
+	}
+
+	function getEmpAllowance($compCode,$empNo){
+
+		$query = "SELECT * FROM tblallowance 
+						   WHERE compCode = '{$compCode}'
+						   AND   empNo    = '".trim($empNo)."'
+						   AND   allowCode=3";
+
+		return $this->getSqlAssocI($this->execQryI($query));
+	}
+
+	function getCompany($compCode){
+		$qry = "SELECT * FROM tblCompany WHERE compStat = 'A' AND compCode={$compCode}";
+		return $this->getSqlAssocI($this->execQryI($qry));
 	}
 	
 }

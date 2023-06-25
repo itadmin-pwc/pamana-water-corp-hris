@@ -159,7 +159,7 @@ class extractTNATSObj extends commonObj {
 				}
 				if ($val['empPayType']=='D' && $hrsWorked==0 && $val['hrsOTLe8']==0  && $val['legalPayTag']!='Y') {
 					$sqlInsertTS .= "";
-				} else { 
+				} else {
 					if ($val['empPayType']=='D') {
 						$amtAbsent	= 0;
 						if (in_array($val['dayType'],array(4))) {

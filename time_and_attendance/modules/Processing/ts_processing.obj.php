@@ -88,9 +88,7 @@ class TSProcessingObj extends dateDiff {
 				}
 				$sqlUnpostedRD .= " Update tblTK_ChangeRDApp  set completeTag='C' where empNo = '{$valRD['empNo']}' AND cast(cRDDateTo as date) = '".date('Y-m-d',strtotime($valRD['cRDDateTo']))."' AND  compCode='{$_SESSION['company_code']}';";
 			}
-		}	
-
-		
+		}
 
 		//Process Change Shift
 		$sqlUpdateCS = "";
@@ -105,11 +103,6 @@ class TSProcessingObj extends dateDiff {
 				
 			}
 		}
-		
-		
-	
-
-		
 		
 		//Process Leaves
 		if ($Trns) {

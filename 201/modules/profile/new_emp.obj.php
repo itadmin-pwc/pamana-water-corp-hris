@@ -95,16 +95,22 @@ switch ($_GET['code']) {
 				$brhobj=new commonObj();
 				$getCompInfo = $brhobj->getCompany($_GET['compcode']);
 				if ($_GET['cat']=="1") {
-					$Mrate = sprintf('%01.2f',(float)$_GET['Rate']);
-					$Drate = sprintf('%01.2f',$Mrate/(float)$getCompInfo['compNoDays']);
+					// $Mrate = sprintf('%01.2f',(float)$rate);
+					// $Drate = sprintf('%01.2f',$Mrate/(float)$getCompInfo['compNoDays']);
+					// $Hrate =  sprintf('%01.2f',$Drate/8);
+
+					$Mrate = sprintf('%01.2f',(float)$rate);
+					$Drate = sprintf('%01.2f',($Mrate * 12) / (float)$getCompInfo['compDaysInYear']);
 					$Hrate =  sprintf('%01.2f',$Drate/8);
-				
 				}
 				else {
-					$Mrate = sprintf('%01.2f',(float)$_GET['Rate']*(float)$getCompInfo['compNoDays']);
-					$Drate = sprintf('%01.2f',(float)$_GET['Rate']);
+					// $Mrate = sprintf('%01.2f',(float)$rate*(float)$getCompInfo['compNoDays']);
+					// $Drate = sprintf('%01.2f',(float)$rate);
+					// $Hrate =  sprintf('%01.2f',$Drate/8);
+
+					$Mrate = sprintf('%01.2f',((float)$getCompInfo['compDaysInYear'] / 12) * (float)$rate);
+					$Drate = sprintf('%01.2f',(float)$rate);
 					$Hrate =  sprintf('%01.2f',$Drate/8);
-				
 				}
 /*				$Mrate = number_format($Mrate,2);
 				$Drate = number_format($Drate,2);

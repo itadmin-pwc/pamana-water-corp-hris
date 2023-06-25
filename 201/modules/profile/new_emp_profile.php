@@ -33,7 +33,6 @@ if ($_POST['save']!="") {
 	$maintEmpObj->ECPerson		=	(isset($_POST['txtECPerson'])) ? $_POST['txtECPerson'] : "";
 	$maintEmpObj->ECNumber		=	(isset($_POST['txtECNumber'])) ? $_POST['txtECNumber'] : "";
  	
-	
 	//Personal Tab
 	$maintEmpObj->sex	   	 = (isset($_POST['cmbgender'])) ? $_POST['cmbgender'] : 0;
 	$maintEmpObj->NickName	 = (isset($_POST['txtnickname'])) ? $_POST['txtnickname'] : "";
@@ -633,7 +632,12 @@ include("../../../includes/calendar.php");
 					    <td class="gridDtlVal"><input class='inputs' maxlength="3" type="text" value="<?=$maintEmpObj->Weight?>"  name="txtweight" id="txtweight" size="10" onKeyDown="javascript:return dFilter (event.keyCode, this, '###');"/>&nbsp;kg.</td>
 					    <td class="headertxt">Daily Rate</td>
 						<td class="headertxt">:</td>
-						<td class="gridDtlVal"><div id="dvdailyrate"><input class='inputs' type="text" value="<?=$maintEmpObj->Drate?>" style="<?=$visible?>" onBlur="return computeRates(this.value,<?=$maintEmpObj->compCode?>,'0',event);"  name="txtdailyrate" maxlength="9" id="txtdailyrate" readonly /></DIV><input class='inputs' type="hidden" value="<?=$maintEmpObj->Hrate?>"  name="txthourlyrate" style="<?=$visible?>" readonly maxlength="9" id="txthourlyrate" /></td>
+						<td class="gridDtlVal">
+							<div id="dvdailyrate">
+								<input class='inputs' type="text" value="<?=$maintEmpObj->Drate?>" style="<?=$visible?> width: 105px;" onBlur="return computeRates(this.value,<?=$maintEmpObj->compCode?>,'0',event);"  name="txtdailyrate" maxlength="9" id="txtdailyrate" readonly />
+								<button type="button" onClick="return computeRates(this.value,<?=$maintEmpObj->compCode?>,'1',event);">!</button>
+							</div>
+						<input class='inputs' type="hidden" value="<?=$maintEmpObj->Hrate?>"  name="txthourlyrate" style="<?=$visible?>" readonly maxlength="9" id="txthourlyrate" /></td>
 				      </tr>
 					  <tr>
 					    <td class="headertxt">Citizenship</td>
@@ -754,7 +758,7 @@ include("../../../includes/calendar.php");
 //		}
 //	)
 
-	pager("contact_list_ajax.php","TSCont",'load',0,0,'','','','../../../images/');  
+	pager("contact_list_ajax.php","TSCont",'load',0,0,'','','','../../../images/');
 	pager("employee_profile_allowance_list_ajax_result.php","Allowance",'load',0,0,'','','','../../../images/');  
 	pager("employee_profile_performance_list_ajax_result.php","Performance",'load',0,0,'','','','../../../images/');  
 	pager("employee_profile_trainings_list_ajax_result.php","Trainings",'load',0,0,'','','','../../../images/');  

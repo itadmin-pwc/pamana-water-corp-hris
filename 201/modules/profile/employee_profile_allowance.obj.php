@@ -50,11 +50,11 @@ class empProfileAllowanceObj extends commonObj{
 		}
 	
 	function empProfileCheckAllowance($compCode,$empNo){
-			$qry="Select * from tblAllowance_New where compCode='{$compCode}'
+		$qry="Select * from tblAllowance_New where compCode='{$compCode}'
 			and empNo='{$empNo}'
 			and allowCode='{$_GET['AllowType']}'";
-			return $this->execQry($qry);
-		}	
+		return $this->execQry($qry);
+	}	
 		
 		
 	function updateEmpProfileAllowance($compCode,$empNo,$seriesNo){
