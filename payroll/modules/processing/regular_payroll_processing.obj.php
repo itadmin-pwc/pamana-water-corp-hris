@@ -443,7 +443,6 @@ class regPayrollProcObj extends commonObj {
 		if($and != ""){
 			$qryGetEmpAllow .= $and;	
 		}
-		
 		$resGetEmpAllow = $this->execQryI($qryGetEmpAllow);
 		
 		return $this->getArrResI($resGetEmpAllow);
@@ -476,6 +475,7 @@ class regPayrollProcObj extends commonObj {
 	}
 	
 		private function getArrAllow($emp_AccruedDays,$emp_AmntTardy,$emp_AmntUt,$emp_LegalDays){
+		
 		$arrChecker = array();
 		$noCompDays = $empEarnings_numerator = $cnt_employee_absent_current = $cnt_employee_absent_previous = $sum_employee_absent= 0;
 		
@@ -489,7 +489,7 @@ class regPayrollProcObj extends commonObj {
 		$compNoDays = ($arrcompNoDays["compNoDays"]!=""?$arrcompNoDays["compNoDays"]:26);
 			
 		foreach ((array)$this->getEmpAllowance('tblAllowance','','') as $allowArrVal){//allowance
-		
+			
 			$qryWhereTS = $qryGetTimeSheet = $qryWhereTSPrev = $qryGetTimeSheet_Temp  = $qryGetTimeSheet_Prev_Temp = "";
 			$dai_allowAmnt = $totalAllowAmnt = 0;
 			
@@ -582,17 +582,24 @@ class regPayrollProcObj extends commonObj {
 					}
 					else
 					{
-
+						//BALIK AGAD
 						$noCompDays =  $this->getCalendarDays($this->get['dtFrm'],$this->get['dtTo'])+1;
 						//$noCompDays = ($noCompDays=='16'?13.5:13);
 						$noCompDays = ($noCompDays=='16'?13:13);
 						
 						//$dai_allowAmnt  = ($allowArrVal['allowTag']=='D'?$allowArrVal['allowAmt']:$allowArrVal['allowAmt']/$noCompDays);
-						$dai_allowAmnt  = ($allowArrVal['allowTag']=='D'?$allowArrVal['allowAmt']*$noCompDays:$allowArrVal['allowAmt']);
+						//$dai_allowAmnt  = ($allowArrVal['allowTag']=='D'?$allowArrVal['allowAmt']*$noCompDays:$allowArrVal['allowAmt']);
+						//Pamana Update
+						$allowance_pamana = $allowArrVal['allowAmt'] / 2;
+						$dai_allowAmnt  = ($allowArrVal['allowTag']=='D'?$allowance_pamana*$noCompDays:$allowance_pamana);
 						switch (trim($allowArrVal['allowPayTag'])){
 							case 'P':
+								//$totalAllowAmnt = $dai_allowAmnt * ($arr_empEarnings_curr["sumBasic"]/$arr_empEarnings_denom_curr["sumBasic"]);
+								//Pamana Update
 								$totalAllowAmnt = $dai_allowAmnt * ($arr_empEarnings_curr["sumBasic"]/$arr_empEarnings_denom_curr["sumBasic"]);
-									if ($allowArrVal['empNo']=='121203139')
+								//echo $totalAllowAmnt = ($dai_allowAmnt/2) * (27692.31/$arr_empEarnings_denom_curr["sumBasic"]);
+								/*
+								if ($allowArrVal['empNo']=='121203139')
 										echo "$totalAllowAmnt =$dai_allowAmnt * ({$arr_empEarnings_curr['sumBasic']}/{$arr_empEarnings_denom_curr['sumBasic']})\n";
 
 									$LegalOthrs = $this->getLegalOThrs($allowArrVal['empNo']);
@@ -1948,7 +1955,7 @@ $qryUpdateEmpLoans = "UPDATE tblEmpLoansDtl SET dedTag = ''
 				}
 		}//end foreach for Adjustment Allowance
 		
-		foreach ((array)$this->getArrAllow($emp_AccruedDays,$emp_AmntTardy,$emp_AmntUt,$emp_LegalDays) as $arrAllwIndex => $arrAllwVal){//foeach for allowance
+		foreach ((array)$this->getArrAllow($emp_AccruedDays,$emp_AmntTardy,$emp_AmntUt,$emp_LegalDays) as $arrAllwIndex => $arrAllwVal){//foreach for allowance
 			$tmpAllwIndex = explode("-",$arrAllwIndex);
 			$arrEmpAllow = $this->getEmpAllowance('tblAllowance',$tmpAllwIndex[0],'AND tblAllowance.allowCode = '.$tmpAllwIndex[2]);
 			
@@ -1956,10 +1963,10 @@ $qryUpdateEmpLoans = "UPDATE tblEmpLoansDtl SET dedTag = ''
 				if($Trns){
 					//to be confirmed
 					$allowanceAmount = $arrEmpAllow[0]['allowAmt'];
-					if($arrEmpAllow[0]['allowCode'] == 3) {
-						$allowanceAmount = $arrEmpAllow[0]['allowAmt'] / 2;
-						$arrAllwVal = $arrAllwVal / 2;
-					}
+					// if($arrEmpAllow[0]['allowCode'] == 3) {
+					// 	$allowanceAmount = $arrEmpAllow[0]['allowAmt'] / 2;
+					// 	$arrAllwVal = $arrAllwVal / 2;
+					// }
 					
 					$qryToAllowBrkDwn = "INSERT INTO tblAllowanceBrkDwn(compCode,empNo,allowCode,allowAmt,allowSked,allowTaxTag,allowPayTag,allowStart,allowEnd,allowStat,pdYear,pdNumber,actualAmt,sprtPS,allowTag)
 										VALUES('{$arrEmpAllow[0]['compCode']}',

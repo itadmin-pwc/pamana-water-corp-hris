@@ -328,14 +328,13 @@ class reg13thMonthProcObj extends commonObj
 			
 			//echo 	$empNo."==".$gross_Taxable."\n";
 			//Estimate the Total Taxable Earnings for the Year
-				$estEarn = 	  (float) $gross_Taxable + (float) $arrYtdDataHist["YtdTaxable"] + (float)$empPrevEarnings -  (float) $arrYtdDataHist["YtdGovDed"] - (float)$sumGov;
-				//echo $gross_Taxable."+". (float) $arrYtdDataHist["YtdTaxable"]."+". (float)$empPrevEarnings."-".(float) $arrYtdDataHist["YtdGovDed"]."-".(float)$sumGov."\n";
-				//echo 	$empNo."==".$estEarn."\n";
-				$estEarn = (float) $estEarn / 22;
-				//echo 	$empNo."==".$estEarn."\n";
-				$estEarn = (float) $estEarn * 24 ;
-				//echo 	$empNo."==".$estEarn."\n";
-			
+			$estEarn = 	  (float) $gross_Taxable + (float) $arrYtdDataHist["YtdTaxable"] + (float)$empPrevEarnings -  (float) $arrYtdDataHist["YtdGovDed"] - (float)$sumGov;
+			//echo $gross_Taxable."+". (float) $arrYtdDataHist["YtdTaxable"]."+". (float)$empPrevEarnings."-".(float) $arrYtdDataHist["YtdGovDed"]."-".(float)$sumGov."\n";
+			//echo 	$empNo."==".$estEarn."\n";
+			$estEarn = (float) $estEarn / 22;
+			//echo 	$empNo."==".$estEarn."\n";
+			$estEarn = (float) $estEarn * 24 ;
+			//echo 	$empNo."==".$estEarn."\n";
 			
 			//Compute for the Net Taxable Earnings
 			$netTaxable = (float) $estEarn - (float) $this->getTaxExemption($empTeu);
@@ -559,8 +558,8 @@ class reg13thMonthProcObj extends commonObj
 		
 		private function CloseOpenRegPayRoll() 
 		{
-			$sqlPayPd = "Update tblPayPeriod set pdStat='H' where compCode = '{$this->session['company_code']}' AND payGrp='{$this->session['pay_group']}' AND payCat='{$this->session['pay_category']}'  AND pdStat='O';
-						Update tblPayPeriod set pdStat='O' where compCode = '{$this->session['company_code']}' AND payGrp='{$this->session['pay_group']}' AND payCat='{$this->session['pay_category']}' AND pdNumber=25 and pdYear='".date('Y')."';";
+			$sqlPayPd = "Update tblPayPeriod set pdStat='H', pdTSStat='H' where compCode = '{$this->session['company_code']}' AND payGrp='{$this->session['pay_group']}' AND payCat='{$this->session['pay_category']}'  AND pdStat='O';
+						Update tblPayPeriod set pdStat='O', pdTSStat='O' where compCode = '{$this->session['company_code']}' AND payGrp='{$this->session['pay_group']}' AND payCat='{$this->session['pay_category']}' AND pdNumber=25 and pdYear='".date('Y')."';";
 			return $this->execMultiQryI($sqlPayPd);	
 		}
 		

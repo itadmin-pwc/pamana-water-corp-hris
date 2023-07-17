@@ -32,7 +32,7 @@ class generateBooking extends commonObj {
 			$pdYear=(int)$this->get['pdYear'];
 			$pdNum=(int)$this->get['pdNumber'] + 1;
 		}
-		$qryOpen="Update tblPayPeriod set pdStat='O' 
+		$qryOpen="Update tblPayPeriod set pdStat='O', odTSStat='O' 
 			where (compCode = '" . $this->session['company_code'] . "') 
 			AND (pdYear = '" . $pdYear . "') 
 			AND (pdNumber = '" . $pdNum . "')

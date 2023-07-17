@@ -451,7 +451,7 @@ class closereg13thMonth extends commonObj {
 		
 		function OpenPayPeriod() 
 		{
-			$qryOpen="Update tblPayPeriod set pdStat='O' 
+			$qryOpen="Update tblPayPeriod set pdStat='O', pdTSStat='O' 
 				where (compCode = '" . $this->session['company_code'] . "') 
 				AND (pdYear = '" . $this->get['pdYear'] . "') 
 				AND (payGrp='" . $this->session['pay_group'] . "')

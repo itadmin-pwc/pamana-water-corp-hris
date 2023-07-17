@@ -33,7 +33,7 @@ class closeRegPayroll extends commonObj {
 			$pdYear=(int)$this->get['pdYear'];
 			$pdNum=(int)$this->get['pdNum'] + 1;
 		}
-		$qryOpen="Update tblPayPeriod set pdStat='O' 
+		$qryOpen="Update tblPayPeriod set pdStat='O', pdTSStat='O'
 			where (compCode = '" . $this->session['company_code'] . "') 
 			AND (pdYear = '" . $pdYear . "') 
 			AND (pdNumber = '" . $pdNum . "')

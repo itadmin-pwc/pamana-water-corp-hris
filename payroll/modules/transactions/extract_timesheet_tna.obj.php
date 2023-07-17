@@ -227,8 +227,7 @@ class extractTNATSObj extends commonObj {
 							)";
 						if ($Trns) {
 							$Trns = $this->execQryI($sqlInsertTS);	
-						}
-										
+						}			
 				}
 		}
 
