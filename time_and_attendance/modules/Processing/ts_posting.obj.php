@@ -237,7 +237,6 @@ class TSPostingObj extends dateDiff {
 						$hrsWrk = 4;
 					}
 			}
-
 		
 
 			}//end of crossDay
@@ -249,9 +248,21 @@ class TSPostingObj extends dateDiff {
 				
 				$hrsWrk 	= ((float)$time['hrsWork']<0) ? 0: (float)$time['hrsWork'];
 				//echo $valTSList['empNo'] == '010000000' ? $hrsWrk . '<br>' : '';
+				//echo $valTSList['empNo'] == '010000000' ? $valTSList['timeIn'] . '<br>' : '';
+				//echo $valTSList['empNo'] == '010000000' ? $valTSList['timeOut'] . '<br>' : '';
+				//echo $valTSList['empNo'] == '010000000' ? $valTSList['dayType'] . '<br>' : '';
+
+				if($valTSList['dayType'] == '03') {
+					$hrsWrk = round($this->calDiff("{$valTSList['otIn']}","{$valTSList['otOut']}",'m')/60,2);
+					if($hrsWrk > 8) 
+						$hrsWrk = $hrsWrk - 1;
+				}
+				//echo $valTSList['empNo'] == '010000000' ? $hrsWrk . '<br>' : '';
 
 				$hrsTardy 	= ($valTSList['dayType'] == '01') ? $time['hrsTardy']:0;
 				//echo $valTSList['empNo'] == '010000000' ? $hrsTardy . '<br>' . '<br>' : '';
+
+				//round($this->calDiff("{$valTSList['tsDate']} {$valTSList['lunchOut']}","{$valTSList['tsDate']} {$valTSList['lunchIn']}",'m')/60,2)
 						
 				if ($valTSList['dayType'] == '01')
 					$hrsregND 	= $time['hrsregND'];
@@ -304,12 +315,11 @@ class TSPostingObj extends dateDiff {
 			if ($this->checkExemp($valTSList['empNo'],'Tardy')) {	
 				$hrsWrk += $hrsTardy;
 				$hrsTardy = 0;
-				
 			}
 			if ($this->checkExemp($valTSList['empNo'],'Absent')) {
 				if($valTSList['dayType']=='01')
 					$hrsWrk = $SchedHrsWork;
-			}						
+			}
 			
 			$otTag = "";
 			//OT
@@ -350,37 +360,29 @@ class TSPostingObj extends dateDiff {
 							$hrsOt = 0;
 						}
 					}
-					if ($hrsTardy>0 || $hrsUT > 0 && $valTSList['crossDay']=='Y') {
+				if ($hrsTardy>0 || $hrsUT > 0 && $valTSList['crossDay']=='Y') {
 					if($hrsOt>=($hrsUT+$hrsTardy)){
-							$hrsOt=$hrsOt-$hrsUT-$hrsTardy;
-							$hrsTardy =0;
-							$hrsUT=0;
-							$hrsWrk = $hrsWrk -$hrsUT-$hrsTardy;
-						}else{
-							$hrsWrk =$hrsWrk-$hrsUT -$hrsTardy;
+						$hrsOt=$hrsOt-$hrsUT-$hrsTardy;
+						$hrsTardy =0;
+						$hrsUT=0;
+						$hrsWrk = $hrsWrk -$hrsUT-$hrsTardy;
+					}else{
+						$hrsWrk =$hrsWrk-$hrsUT -$hrsTardy;
+					}
 				}
-				}
-					if ($hrsOt>0) {
-						if ($hrsOt>8 && $valTSList['dayType']!='01') {
-							$hrsOTLe8 = 8;
-							$hrsOTGt8 = $hrsOt-8;
-						} else {
-
-							
-							if ($hrsOt<=8) {
-								//alejo ot halfday duty deduct 1 hr for break
-								$sat=date("N",strtotime($valTSList['tsDate']));
-				if ($valTSList['empBrnCode'] == 0001 && $valTSList['CWWTag']=='' && $sat==6  && $hrsOt>=5 ){
-
-					$hrsOTLe8 = $hrsOt;
-
-				}else{
-					
-					
-
-					$hrsOTLe8 = $hrsOt;//original code
-				}
-								
+				if ($hrsOt>0) {
+					if ($hrsOt>8 && $valTSList['dayType']!='01') {
+						$hrsOTLe8 = 8;
+						$hrsOTGt8 = $hrsOt-8;
+					} else {
+						if ($hrsOt<=8) {
+							//alejo ot halfday duty deduct 1 hr for break
+							$sat=date("N",strtotime($valTSList['tsDate']));
+							if ($valTSList['empBrnCode'] == 0001 && $valTSList['CWWTag']=='' && $sat==6  && $hrsOt>=5 ){
+								$hrsOTLe8 = $hrsOt;
+							}else{
+								$hrsOTLe8 = $hrsOt;//original code
+							}
 								$hrsOTGt8 = 0;
 							} else {
 								$hrsOTLe8 = 8;
@@ -1347,7 +1349,6 @@ if ($cday!='Y'){$hrsWrk=$hrsWrk;}else {
 						$time['hrsWork'] = round($this->calDiff("{$arr['tsDate']} $OTIn","{$arr['tsDate']} $OTOut",'m')/60,2);	
 						
 					}
-
 				} 
 				else 
 				{
@@ -1481,11 +1482,14 @@ if ($cday!='Y'){$hrsWrk=$hrsWrk;}else {
 						} 
 						else 
 						{
-							if ($hrsLunch>0)
-									if($hrsWrk>8){
-								$time['hrsWork'] =  $hrsWrk-1;}
-							else{
-										$time['hrsWork'] = $hrsWrk;} //alejo on workon holiday wo OT app
+							if ($hrsLunch>0){
+								if($hrsWrk>8){
+									$time['hrsWork'] =  $hrsWrk-1;
+								}
+								else{
+									$time['hrsWork'] = $hrsWrk;
+								} //alejo on workon holiday wo OT app
+							}
 							else
 								$time['hrsWork'] = $hrsWrk;
 						}
@@ -1622,7 +1626,7 @@ if ($cday!='Y'){$hrsWrk=$hrsWrk;}else {
 				}else{
 					//original code
 					$hrsWork = round($this->calDiff("{$arr['tsDate']} {$arr['shftTimeIn']}","{$arr['tsDate']} {$arr['shftTimeOut']}",'m')/60,2)-1;
-					//original coe
+					//original code
 				}
 
 			}

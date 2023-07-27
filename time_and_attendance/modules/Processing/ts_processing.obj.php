@@ -202,7 +202,7 @@ class TSProcessingObj extends dateDiff {
 					$field .= ",editReason='{$valCor['editReason']}' ";
 	
 	
-					if ($field != "") {
+				if ($field != "") {
 					if ($Trns) {
 						$Trns = $this->execQryI(" Update tblTK_Timesheet set empNo='{$valCor['empNo']}',checkTag='P' $field where empNo='{$valCor['empNo']}' AND cast(tsDate as date)='".date('Y-m-d',strtotime($valCor['tsDate']))."' AND compCode='{$_SESSION['company_code']}'; ");
 					}  else {
