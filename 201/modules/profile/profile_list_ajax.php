@@ -29,11 +29,13 @@ else
 
 
 //alejocode viewing of CONFI PAF for PAYROLL DEPT ONLY
+//create user for confi access
+//change $_SESSION['employee_number']!='**********' to the users id number 
 if($_SESSION['employee_number']!='999999999' || $_SESSION['Confiaccess'] != 'Y'){
 	$user_payCat_view = " AND empPayCat IN (1,3,9)";
 }else{
 	//$user_payCat_view = " AND empPayCat ='2'";
-	$user_payCat_view = " AND empPayCat <> 'a'";
+	$user_payCat_view = " AND empPayCat <> 'a' AND empPayCat ='2'";
 }
 //alejocode viewing of CONFI PAF for PAYROLL DEPT ONLY
 

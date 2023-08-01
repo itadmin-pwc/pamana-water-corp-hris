@@ -634,8 +634,8 @@ include("../../../includes/calendar.php");
 						<td class="headertxt">:</td>
 						<td class="gridDtlVal">
 							<div id="dvdailyrate">
-								<input class='inputs' type="text" value="<?=$maintEmpObj->Drate?>" style="<?=$visible?> width: 105px;" onBlur="return computeRates(this.value,<?=$maintEmpObj->compCode?>,'0',event);"  name="txtdailyrate" maxlength="9" id="txtdailyrate" readonly />
-								<button type="button" onClick="return computeRates(this.value,<?=$maintEmpObj->compCode?>,'1',event);">!</button>
+								<input class='inputs' type="text" value="<?=$maintEmpObj->Drate?>" style="<?=$visible?> " onBlur="return computeRates(this.value,<?=$maintEmpObj->compCode?>,'0',event);"  name="txtdailyrate" maxlength="9" id="txtdailyrate" readonly />
+								
 							</div>
 						<input class='inputs' type="hidden" value="<?=$maintEmpObj->Hrate?>"  name="txthourlyrate" style="<?=$visible?>" readonly maxlength="9" id="txthourlyrate" /></td>
 				      </tr>
