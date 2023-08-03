@@ -275,6 +275,7 @@ class TSProcessingObj extends dateDiff {
 						WHERE (tblTK_ShiftHdr.status = 'A') AND tblTK_ShiftHdr.compCode='{$_SESSION['company_code']}'";
 		$this->arrShiftCodes = $this->getArrResI($this->execQryI($sqlShiftCode));				
 	}
+
 	function getEmpShift($tsDate,$shiftCode) {
 		//echo "$tsDate=" . date('D',strtotime($tsDate))." \n";
 		switch(date('D',strtotime($tsDate))) {
@@ -308,6 +309,7 @@ class TSProcessingObj extends dateDiff {
 			}
 		}
 	}
+	
 	function PlotLogs() {
 		$sqlLogs = "Call sp_TK_SetEventLogs ({$this->Group},'{$this->pdFrom}','{$this->pdTo}',{$_SESSION['company_code']},'{$_SESSION['employee_number']}')\n";
 		$arrLogs = $this->getArrResI($this->execQryI($sqlLogs));

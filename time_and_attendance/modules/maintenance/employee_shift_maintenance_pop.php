@@ -193,17 +193,17 @@ switch($_GET["action"])
                     <td width='1%' class='gridDtlLbl' align='center'>:</td>
 					<?
 						if($btnName=="Save"){
-							if($arr_empInfo['empBrnCode']=="0001"){
+							if($arr_empInfo['empBrnCode']!=="0001"){
 									$cwwtag = "Y";
 									$chkStyle = "";
 							}
 							else{
-								$cwwtag = "";	
+								$cwwtag = "";
 								$chkStyle = 'disabled="disabled"';
 							}
 						}
 						else{
-							if($arr_empInfo['empBrnCode']=="0001"){
+							if($arr_empInfo['empBrnCode']!=="0001"){
 								$cwwCheck = $empShiftMaint->getShiftInfo('tblTK_EmpShift', " and empNo='".$arr_empInfo["empNo"]."'", '');
 								if($cwwCheck['CWWTag']=="Y"){					
 									$cwwtag = $cwwCheck['CWWTag'];

@@ -1389,8 +1389,6 @@ WHERE tk.compCode = '".$_SESSION["company_code"]."'
 		return sprintf("%01.2f", $taxPeriod);
 	}
 	
-	
-	
 	function getTimeSheetAdjusments($empEn)
 	{
 		if($empEn==1)
@@ -2073,7 +2071,14 @@ $qryUpdateEmpLoans = "UPDATE tblEmpLoansDtl SET dedTag = ''
 						//$monthLyGrossEarn = $grossEarnings+$prevEarn-$empSC;  //ito yun 
 						$monthLyGrossEarn = $taxableGrossEarn+$prevEarn-$empSC;  //alejo edot 
 
-						$arrGovDedAmnt = $this->getGovDedAmnt($monthLyGrossEarn);
+						//08-03-2023
+						//echo $empForDedVal['empNo'] . "==" . $monthLyGrossEarn . "<br>";
+						$arrEmpInfo = $this->getUserInfo($_SESSION["company_code"],$empForDedVal['empNo'],'');
+						$monthly_salary = (float)$arrEmpInfo['empMrate'];
+						//echo $empForDedVal['empNo'] . "==" . $monthly_salary . "<br>";
+						//08-03-2023
+
+						$arrGovDedAmnt = $this->getGovDedAmnt($monthly_salary);
 						$mrate=$empInfo['empMrate'];
 						$PhicEmplr = $PhicEmp =$this->getGovDedAmntPhic($empForDedVal["empMrate"]);
 						$mrate="";
