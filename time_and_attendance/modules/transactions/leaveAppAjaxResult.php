@@ -25,17 +25,26 @@ $tsAppTypeCd      = $getLeaveApp['tsApptypeCd'];
 //$dateReturnAMPM   = $getLeaveApp['lvReturnAMPM'];
 $lvStat 	      = $getLeaveApp['lvStat'];
 //$lvReliever       = $getLEaveApp['lvReliever'];
+$branch = $_SESSION['branchCode'];
 
+
+$empInfo = $leaveAppObj->getEmployee($_SESSION['company_code'],$_SESSION['employee_number'],'');
+
+$midName = (!empty($empInfo['empMidName'])) ? substr($empInfo['empMidName'],0,1)."." : '';
+$fullname = $empInfo['empLastName'] . ", " . htmlspecialchars(addslashes($empInfo['empFirstName'])) . " " . $midName;
 
 	//get users branch access
 	if ($_SESSION['user_level'] == 3) 
 	{
 		$userinfo = $leaveAppObj->getUserHeaderInfo($_SESSION['employee_number'],$_SESSION['employee_id']);
 		$and = ($_GET['isSearch'] == 1) ? 'AND' : 'Where';	
-		$brnCodelist = " AND emp.empNo<>'".$_SESSION['employee_number']."' 
-						and empbrnCode IN (Select brnCode from tblTK_UserBranch 
-											where empNo='{$_SESSION['employee_number']}' 
-											AND compCode='{$_SESSION['company_code']}')";
+		//08-08-2023
+		// $brnCodelist = " AND emp.empNo<>'".$_SESSION['employee_number']."' 
+		// 				and empbrnCode IN (Select brnCode from tblTK_UserBranch 
+		// 									where empNo='{$_SESSION['employee_number']}' 
+		// 									AND compCode='{$_SESSION['company_code']}')";
+		$brnCodelist = " AND emp.empNo='".$_SESSION['employee_number']."' 
+						and empbrnCode ='".$branch."'";
 	}
 	elseif ($_SESSION['user_level'] == 2) 
 	{
@@ -161,14 +170,33 @@ $lvStat 	      = $getLeaveApp['lvStat'];
 				</tr>
 				<tr>
 					<td class="hdrInputsLvl">
-						<a href="#" onclick="empLookup('../../../includes/employee_lookup_tna.php')">Employee No.</a>
+						<?php
+							if ($_SESSION['user_level'] == 3)  {
+						?>
+							Employee No.
+						<?php
+							}else{
+						?>
+							<a href="#" onclick="empLookup('../../../includes/employee_lookup_tna.php')">Employee No.</a>
+						<?php
+							}
+						?>
 					</td>
 					<td class="hdrInputsLvl">
 						:
 					</td>
 					<td class="gridDtlVal">
-						<INPUT tabindex="9" class="inputs" type="text" name="txtAddEmpNo" id="txtAddEmpNo" onkeydown="getEmployee(event,this.value)" value="<?=$_SESSION['employeenumber']?>">
-					
+						<?php
+							if ($_SESSION['user_level'] == 3)  {
+						?>
+							<INPUT tabindex="9" class="inputs" type="text" name="txtAddEmpNo" id="txtAddEmpNo" value="<?=$_SESSION['employeenumber']?>" readonly>
+						<?php
+							}else{
+						?>
+							<INPUT tabindex="9" class="inputs" type="text" name="txtAddEmpNo" id="txtAddEmpNo" onkeydown="getEmployee(event,this.value)" value="<?=$_SESSION['employeenumber']?>" readonly>
+						<?php
+							}
+						?>
 					</td>
 					<td class="hdrInputsLvl" width="124">
 						Employee Name
@@ -179,7 +207,7 @@ $lvStat 	      = $getLeaveApp['lvStat'];
 					
 					<td colspan="4" class="gridDtlVal">
 						
-						<INPUT class="inputs" type="text" name="txtAddEmpName" id="txtAddEmpName" size="40" >
+						<INPUT class="inputs" type="text" name="txtAddEmpName" id="txtAddEmpName" size="40" value="<?=$fullname?>">
 						<span class="grdiDtlVal">
 						<input tabindex="10" class="inputs" type="hidden" name="dateFiled" id="dateFiled" size="10"
 							 value="<? 	

@@ -22,7 +22,7 @@
 				$empInfo = $updateEmpShiftObj->getEmployee($_SESSION['company_code'],$_GET['empNo'],'');
 				
 				$midName = (!empty($empInfo['empMidName'])) ? substr($empInfo['empMidName'],0,1)."." : '';
-				$fld_txtEmpName = $empInfo[empLastName].", ".htmlspecialchars(addslashes($empInfo['empFirstName']))." ".$midName;
+				$fld_txtEmpName = $empInfo['empLastName'].", ".htmlspecialchars(addslashes($empInfo['empFirstName']))." ".$midName;
 				
 				$deptName = $updateEmpShiftObj->getDeptDescGen($_SESSION["company_code"],$empInfo["empDiv"], $empInfo["empDepCode"]);
 				$posName = $updateEmpShiftObj->getpositionwil("where compCode='".$_SESSION["company_code"]."' and posCode='".$empInfo["empPosId"]."'",'2');
@@ -30,10 +30,9 @@
 				$fld_txtDeptPost = htmlspecialchars(addslashes($deptName["deptDesc"]))." - ".$posName["posDesc"];
 				
 				$arr_EmpTsInfo =  $updateEmpShiftObj->getTblData("tblTK_Timesheet", " and empNo='".$_GET['empNo']."'", " order by tsDate", "");
-					
+
 		break;
 	}
-	
 	
 	$weekName_arr = array('','FIRST WEEK', 'SECOND WEEK', 'THIRD WEEK');
 	
@@ -156,6 +155,7 @@
 
 					<td class="gridDtlVal" colspan="4" align="center">
 						<input type="button" name="btnSave" id="btnSave" class="inputs" value="SAVE" onclick="saveUpdateEmpShiftDetail();" />
+						<input type="button" name="btnUpdate" id="btnUpdate" style="background-color: red; color:yellow;" class="inputs" value="UPDATE ALL EMPLOYEE WITH SAME SHIFT" onclick="saveBulkEmpShiftDetail();" />
 					</td>
 				</tr>
                 
@@ -182,40 +182,30 @@
 				<?php
 					$weekCnt = 1;
                 	$cntWeek_sel =1;
-					
-				?>
-                		
-                        
-                <?php		
-						if($arr_EmpTsInfo!="")
-						{
-							$ctrDays = 1;
-							foreach($arr_EmpTsInfo as $arr_EmpTsInfo_val)
+
+					if($arr_EmpTsInfo!="")
+					{
+						$ctrDays = 1;
+						foreach($arr_EmpTsInfo as $arr_EmpTsInfo_val)
+						{	
+							if($weekCnt>7)
 							{
-				?>
-                					
-                <?php					
-								if($weekCnt>7)
-								{
-									$weekCnt = 1;
-				?>
-                					
-                <?php					
-								}
-								else
-								{
-									$weekCnt = $weekCnt;
-								}
-								
-								if($weekCnt==1)
-								{
+								$weekCnt = 1;	
+							}
+							else
+							{
+								$weekCnt = $weekCnt;
+							}
+							
+							if($weekCnt==1)
+							{
                 ?>
-                					<tr>
-                                    	<td><font style="font-family : Arial, Helvetica, sans-serif; color:#FF0000; font-size:10px; font-weight:bold" ><?=$weekName_arr[$cntWeek_sel]?></font></td>
-                                    </tr>
+                				<tr>
+                                	<td><font style="font-family : Arial, Helvetica, sans-serif; color:#FF0000; font-size:10px; font-weight:bold" ><?=$weekName_arr[$cntWeek_sel]?></font></td>
+                                </tr>
                 <?php
-									$cntWeek_sel++;
-								}				
+								$cntWeek_sel++;
+							}				
 				?>
                 					
                                    

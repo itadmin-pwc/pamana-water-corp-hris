@@ -96,7 +96,9 @@ class TSPostingObj extends dateDiff {
 				if ($valTSList['lunchOut'] != $valTSList['lunchIn'] && $valTSList['lunchOut'] != '' && $valTSList['lunchIn'] != '' && !in_array($valTSList['tsAppTypeCd'],array(12,14))) {
 					$shfthrsLunch = round($this->calDiff("{$valTSList['tsDate']} {$valTSList['shftLunchOut']}","{$valTSList['tsDate']} {$valTSList['shftLunchIn']}",'m')/60,2);
 					$shfthrsLunch = ($shfthrsLunch<1 && $shfthrsLunch!=0.5) ? 1: $shfthrsLunch;
-					$hrsLunch = round($this->calDiff("{$valTSList['tsDate']} {$valTSList['lunchOut']}","{$valTSList['tsDate']} {$valTSList['lunchIn']}",'m')/60,2);
+					//original code [tardy lunch should start at 12:00 PM not lunch out] - 08/06/2023
+					//$hrsLunch = round($this->calDiff("{$valTSList['tsDate']} {$valTSList['lunchOut']}","{$valTSList['tsDate']} {$valTSList['lunchIn']}",'m')/60,2);
+					$hrsLunch = round($this->calDiff("{$valTSList['tsDate']} {$valTSList['shftLunchOut']}","{$valTSList['tsDate']} {$valTSList['lunchIn']}",'m')/60,2);
 					if ($hrsLunch>$shfthrsLunch) {
 						if ($shfthrsLunch == 0.5)
 							$hrsWrk = $hrsWrk-($hrsLunch-$shfthrsLunch);
@@ -110,8 +112,7 @@ class TSPostingObj extends dateDiff {
 							$hrsWrk = $hrsWrk-$shfthrsLunch;
 						}
 					}
-				} 
-
+				}
 				
 			$hrsWrk = ($hrsWrk <= $SchedHrsWork) ? $SchedHrsWork:$hrsWrk;//alejohrswork
 			$hrsND 	= 0;
@@ -331,7 +332,9 @@ class TSPostingObj extends dateDiff {
 
 			$hrsND 		= ($hrsND<$hrsregND)? $hrsND:$hrsND-$hrsregND;
 
-			$hrsLunch = round($this->calDiff("{$valTSList['tsDate']} {$valTSList['lunchOut']}","{$valTSList['tsDate']} {$valTSList['lunchIn']}",'m')/60,2);
+			//orig code 08/06/2023
+			//$hrsLunch = round($this->calDiff("{$valTSList['tsDate']} {$valTSList['lunchOut']}","{$valTSList['tsDate']} {$valTSList['lunchIn']}",'m')/60,2);
+			$hrsLunch = round($this->calDiff("{$valTSList['tsDate']} {$valTSList['shftLunchOut']}","{$valTSList['tsDate']} {$valTSList['lunchIn']}",'m')/60,2);
 			$shfthrsLunch = round($this->calDiff("{$valTSList['tsDate']} {$valTSList['shftLunchOut']}","{$valTSList['tsDate']} {$valTSList['shftLunchIn']}",'m')/60,2);
 			$shfthrsLunch = ($shfthrsLunch<1 && $shfthrsLunch!=0.5) ? 1: $shfthrsLunch;
 									
@@ -1119,8 +1122,11 @@ if ($cday!='Y'){$hrsWrk=$hrsWrk;}else {
 					
 					if(($arr['editReason']==FAIL_LCHOUT) || ($arr['editReason']==FAIL_LCHIN) || ($arr['editReason']==FAIL_LCHINOUT) || ($arr['editReason']==FAIL_SKIPLUNCH))
 						$hrsLunch = $shfthrsLunch;
-					else
-						$hrsLunch = round($this->calDiff("{$arr['tsDate']} {$arr['lunchOut']}","{$arr['tsDate']} {$arr['lunchIn']}",'m')/60,2);
+					else{
+						//orig code
+						//$hrsLunch = round($this->calDiff("{$arr['tsDate']} {$arr['lunchOut']}","{$arr['tsDate']} {$arr['lunchIn']}",'m')/60,2);
+						$hrsLunch = round($this->calDiff("{$arr['tsDate']} {$arr['shftLunchOut']}","{$arr['tsDate']} {$arr['lunchIn']}",'m')/60,2);
+					}
 					
 					if ($arr['empBrnCode']!=='0001' && $SchedHrsWork<1  && $valTSList['CWWTag']=='') {
 						$hrsLunch = 0;
@@ -1381,7 +1387,9 @@ if ($cday!='Y'){$hrsWrk=$hrsWrk;}else {
 				
 				if ($arr['lunchOut'] != $arr['lunchIn'] && $arr['lunchOut'] !='' && $arr['lunchIn'] !='') 
 				{
-					$hrsLunch = round($this->calDiff("{$arr['tsDate']} {$arr['lunchOut']}","{$arr['tsDate']} {$arr['lunchIn']}",'m')/60,2);
+					//orig code
+					//$hrsLunch = round($this->calDiff("{$arr['tsDate']} {$arr['lunchOut']}","{$arr['tsDate']} {$arr['lunchIn']}",'m')/60,2);
+					$hrsLunch = round($this->calDiff("{$arr['tsDate']} {$arr['shftLunchOut']}","{$arr['tsDate']} {$arr['lunchIn']}",'m')/60,2);
 					$shfthrsLunch = round($this->calDiff("{$arr['tsDate']} {$arr['shftLunchOut']}","{$arr['tsDate']} {$arr['shftLunchIn']}",'m')/60,2);
 					$shfthrsLunch = ($shfthrsLunch<1 && $shfthrsLunch!=0.5) ? 1: $shfthrsLunch;
 					$hrsWrk = $time['hrsWork'];
@@ -1472,8 +1480,9 @@ if ($cday!='Y'){$hrsWrk=$hrsWrk;}else {
 												
 					if ($arr['lunchOut'] != $arr['lunchIn']) 
 					{
-						
-						$hrsLunch = round($this->calDiff("{$arr['tsDate']} {$arr['lunchOut']}","{$arr['tsDate']} {$arr['lunchIn']}",'m')/60,2);
+						//orig code
+						//$hrsLunch = round($this->calDiff("{$arr['tsDate']} {$arr['lunchOut']}","{$arr['tsDate']} {$arr['lunchIn']}",'m')/60,2);
+						$hrsLunch = round($this->calDiff("{$arr['tsDate']} {$arr['shftLunchOut']}","{$arr['tsDate']} {$arr['lunchIn']}",'m')/60,2);
 						if ($hrsLunch>1) 
 						{
 							$time['hrsWork'] = $hrsWrk-($hrsLunch-1);

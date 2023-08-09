@@ -9,6 +9,7 @@ $leaveAppObj = new leaveAppObj();
 $leaveAppObj->ValidateSessions($_GET, $_SESSION);
 
 unset($_SESSION['employeenumber']);
+$_SESSION['employeenumber']=$_SESSION['employee_number'];
 if (isset($_GET['action'])) {
 	switch ($_GET['action']) {
 	

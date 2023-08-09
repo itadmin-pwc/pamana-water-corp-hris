@@ -11,18 +11,35 @@ $OtAppObj->validateSessions('','MODULES');
 
 $pager = new AjaxPager(15,'../../../images/');
 
-$getOtApp      = $OtAppObj->getOtAppDtl;
+$getOtApp = $OtAppObj->getOtAppDtl;
 
+$branch = $_SESSION['branchCode'];
+
+//08-09-2023 AUTO EMPLOYEE LOOKUP
+$empInfo = $OtAppObj->getEmployee($_SESSION['company_code'],$_SESSION['employeenumber'],'');
+
+$midName = (!empty($empInfo['empMidName'])) ? substr($empInfo['empMidName'],0,1)."." : '';
+$fullname = $empInfo['empLastName'] . ", " . htmlspecialchars(addslashes($empInfo['empFirstName'])) . " " . $midName;
+$otExempted = false;
+$level = $empInfo['empLevel'];
+if ($level > '70'){
+	$otExempted = true;
+}
+//08-09-2023
 
 	//get users branch access
 	if ($_SESSION['user_level'] == 3) 
 	{
+		$branch = $_SESSION['branchCode'];
 		$userinfo = $OtAppObj->getUserHeaderInfo($_SESSION['employee_number'],$_SESSION['employee_id']);
 		$and = ($_GET['isSearch'] == 1) ? 'AND' : 'Where';	
-		$brnCodelist = " AND emp.empNo<>'".$_SESSION['employee_number']."' 
-						 and emp.empbrnCode IN (Select brnCode from tblTK_UserBranch 
-											where empNo='{$_SESSION['employee_number']}' 
-												AND compCode='{$_SESSION['company_code']}')";
+		//08-08-2023
+		// $brnCodelist = " AND emp.empNo<>'".$_SESSION['employee_number']."' 
+		// 				 and emp.empbrnCode IN (Select brnCode from tblTK_UserBranch 
+		// 									where empNo='{$_SESSION['employee_number']}' 
+		// 										AND compCode='{$_SESSION['company_code']}')";
+		$brnCodelist = " AND emp.empNo='".$_SESSION['employee_number']."' 
+						and empbrnCode ='".$branch."'";
 	}
 	elseif ($_SESSION['user_level'] == 2) 
 	{
@@ -117,7 +134,7 @@ $getOtApp      = $OtAppObj->getOtAppDtl;
 	$arrGetOtAppDtl = $OtAppObj->getArrRes($resGetOtAppDtl);
 ?>
 
-<TABLE border ="0" width="100%" cellpadding="1" cellspacing="0" class="parentGrid">
+<TABLE border ="0" width="100%" cellpadding="1" cellspacing="0" class="parentGrid" style="<?=$otExempted ? 'display: none;' : ''?>">
 	<tr>
 		
     <td height="4" colspan="4" class="parentGridHdr"><img src="../../../images/grid.png">&nbsp;Overtime 
@@ -141,30 +158,52 @@ $getOtApp      = $OtAppObj->getOtAppDtl;
 				</tr>
 				<tr>
 					
-          		<td class="hdrInputsLvl" width="127"><a href="#" onclick="empLookup('../../../includes/employee_lookup_tna.php')">Employee No.</a> </td>
+          		<td class="hdrInputsLvl" width="127">
+				  	<?php
+						if ($_SESSION['user_level'] == 3)  {
+					?>
+						Employee No.
+					<?php
+						}else{
+					?>
+						<a href="#" onclick="empLookup('../../../includes/employee_lookup_tna.php')">Employee  No.</a>
+					<?php
+						}
+					?>
+				</td>
 					
           		<td class="hdrInputsLvl" width="47">:</td>
           		
          		<td width="203" class="gridDtlVal">
-            		<input tabindex="9" class="inputs" type="text" name="txtAddEmpNo" id="txtAddEmpNo" onKeyDown="getEmployee(event,this.value)" value="<?=$_SESSION['employeenumber'];?>">
+					<?php
+						if ($_SESSION['user_level'] == 3)  {
+					?>
+						<input tabindex="9" class="inputs" type="text" name="txtAddEmpNo" id="txtAddEmpNo" value="<?=$_SESSION['employeenumber'];?>" readonly>
+					<?php
+						}else{
+					?>
+						<input tabindex="9" class="inputs" type="text" name="txtAddEmpNo" id="txtAddEmpNo" onKeyDown="getEmployee(event,this.value)" value="<?=$_SESSION['employeenumber'];?>" readonly>
+					<?php
+						}
+					?>
            		</td>
 				<td class="hdrInputsLvl" width="105">
-						Employee Name
-					</td>
-					<td width="55" class="hdrInputsLvl">
-						:
-					</td>
-					
-					<td width="535" colspan="4" class="gridDtlVal">
-						<INPUT class="inputs" readonly="readonly" type="text" name="txtAddEmpName" id="txtAddEmpName" size="50" value="">
-						<span class="grdiDtlVal">
-						<input tabindex="10" class="inputs" type="hidden" name="dateFiled" id="dateFiled" size="10"
+					Employee Name
+				</td>
+				<td width="55" class="hdrInputsLvl">
+					:
+				</td>
+				<td width="535" colspan="4" class="gridDtlVal">
+					<INPUT class="inputs" readonly="readonly" type="text" name="txtAddEmpName" id="txtAddEmpName" size="50" value="<?=$fullname?>">
+					<span class="grdiDtlVal">
+					<input tabindex="10" class="inputs" type="hidden" name="dateFiled" id="dateFiled" size="10"
 							 value="<? 	
 							 			$format="Y-m-d";
 										$strf=date($format);
 										echo("$strf"); 
-									?>" />
-					</span></td>
+							?>" />
+					</span>
+				</td>
 				<tr>
 
 				<td class="hdrInputsLvl" width="127" >
@@ -220,8 +259,8 @@ $getOtApp      = $OtAppObj->getOtAppDtl;
 						
 					</td>
 				</tr>
-
-				
+		</td>
+	</tr>
 </TABLE>
 	
 	<BR />
@@ -347,6 +386,7 @@ $getOtApp      = $OtAppObj->getOtAppDtl;
 		</TABLE>
 	
 </TABLE>
+<font style="<?=$otExempted ? '' : 'display: none;'?>" color="red"><strong>OT Exempted</strong></font>
 
 <INPUT type="hidden" name="hdnTrnsType" id="hdnTrnsType" value="<?=$hdnTrnsType?>">
 <?$OtAppObj->disConnect();?>

@@ -70,6 +70,7 @@ if($_GET['btnLogIn'] == 'LOG IN'){
 			$_SESSION['user_release']     = $logInRes['releaseTag'];	
 			$_SESSION['user_telcoaccess'] =	$logInRes['telcoaccess'];
 			$_SESSION['Confiaccess']	= $logInRes['confiaccess'];		
+			$_SESSION['branchCode']      = $getUserInfo['empBrnCode'];
 			//if module is payroll make session for paygroup and pay 
 			if($_GET['cmbModuleName'] == 3){
 				$_SESSION['pay_group']    =1; //$_GET['cmbPayGroup'];

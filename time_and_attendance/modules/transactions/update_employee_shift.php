@@ -91,8 +91,6 @@ switch($_GET["action"])
 					echo "document.frmUpdateEmpShift.txtEtimeOut".substr(htmlspecialchars(urldecode($b[0])),13).".readOnly=true; ";
 					echo "document.frmUpdateEmpShift.chkCrossDay".substr(htmlspecialchars(urldecode($b[0])),13).".disabled=true; ";
 				}
-					
-				
 				$i++;
 			}
 		}
@@ -136,6 +134,14 @@ switch($_GET["action"])
 		
 		//Save Previous Timesheet Record to tblTk_ScheduleHist
 		$saveUpdateSched = $updateEmpShiftObj->tran_ChngeEmpShft($_SERVER['QUERY_STRING'],"Update", $_GET);
+		echo "alert('".$saveUpdateSched."')";
+		exit();
+	break;
+
+	case "saveBulkSched":
+		
+		//Save Previous Timesheet Record to tblTk_ScheduleHist //08/06/2023
+		$saveUpdateSched = $updateEmpShiftObj->tran_BulkChngeEmpShft($_SERVER['QUERY_STRING'],"Update", $_GET);
 		echo "alert('".$saveUpdateSched."')";
 		exit();
 	break;
@@ -305,6 +311,51 @@ switch($_GET["action"])
 				}
 				else{
 					params = 'update_employee_shift.php?action=saveUpdateSched&delAppTypeCd=No';
+				}
+				
+				new Ajax.Request(params,
+				{
+					method : 'get',
+					parameters : $('frmUpdateEmpShift').serialize(),
+					onComplete : function (req){
+						eval(req.responseText);
+						pager('update_employee_shiftAjaxResult.php','updateEmpShiftCont','load',0,0,'','','','../../../images/');  
+					}	
+				});
+				
+		}
+	}
+
+	function saveBulkEmpShiftDetail()
+	{
+		var chngeShiftFields = $('frmUpdateEmpShift').serialize(true);
+		
+		var arrayFields = new Array('txtEtimeIn','txtElunchOut','txtElunchIn','txtEbrkOut','txtEbrkIn','txtEtimeOut');
+		var arrayalerts = new Array('Time In','Lunch Out','Lunch In','Break Out','Break In','Time Out');
+		
+		for(fields=1; fields<=7; fields++)
+		{
+			for(dayCnt=1; dayCnt<=7; dayCnt++)
+			{
+					
+				if((chngeShiftFields[arrayFields[fields]+chngeShiftFields["rdnSelected"]+dayCnt]=="")||(chngeShiftFields[arrayFields[fields]+chngeShiftFields["rdnSelected"]+dayCnt]==":"))
+				{
+					alert(arrayalerts[fields]+" is Required.");
+					return false;
+				}
+				
+			}
+		}
+		
+		var changeUpdateSchedConfirm = confirm('Are you sure you want to update all the employee with the same shift?');
+		if(changeUpdateSchedConfirm == true){
+			var changeUpdateTsApp = confirm('Do you want to clear the generated TS Application Types in the Timesheet?');
+				
+				if(changeUpdateTsApp == true){
+					params = 'update_employee_shift.php?action=saveBulkSched&delAppTypeCd=Yes';
+				}
+				else{
+					params = 'update_employee_shift.php?action=saveBulkSched&delAppTypeCd=No';
 				}
 				
 				new Ajax.Request(params,

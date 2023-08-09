@@ -9,6 +9,7 @@ include("transaction_obj.php");
 $obObj = new transactionObj($_GET,$_SESSION);
 $obObj->validateSessions('','MODULES');
 
+$_SESSION['employeenumber']=$_SESSION['employee_number'];
 
 switch($_GET["action"])
 {
@@ -21,7 +22,6 @@ switch($_GET["action"])
 			unset($_SESSION['employeenumber']);
 		}
 	break;
-	
 	
 	case "NEWREFNO":
 		/*$arr_lastRefNo = $obObj->getLastRefNo("tblTK_OBApp");

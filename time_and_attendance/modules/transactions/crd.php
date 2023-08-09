@@ -9,7 +9,7 @@ include("transaction_obj.php");
 $crdObj = new transactionObj($_GET,$_SESSION);
 $crdObj->validateSessions('','MODULES');
 
-
+$_SESSION['employeenumber']=$_SESSION['employee_number'];
 switch($_GET["action"])
 {
 	case "NEWREFNO":

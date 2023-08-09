@@ -15,6 +15,25 @@
 	$crdObj->validateSessions('','MODULES');
 	
 	$pager = new AjaxPager(10,'../../../images/');
+
+	//08-09-2023 AUTO EMPLOYEE LOOKUP IF USER LEVEL = 3
+	$empInfo = $crdObj->getEmployee($_SESSION['company_code'],$_SESSION['employeenumber'],'');
+				
+				
+	$midName = (!empty($empInfo['empMidName'])) ? substr($empInfo['empMidName'],0,1)."." : '';
+	$fld_txtEmpName = $empInfo['empLastName'].", ".htmlspecialchars(addslashes($empInfo['empFirstName']))." ".$midName;
+				
+	$deptName = $crdObj->getDeptDescGen($_SESSION["company_code"],$empInfo["empDiv"], $empInfo["empDepCode"]);
+	$posName = $crdObj->getpositionwil("where compCode='".$_SESSION["company_code"]."' and posCode='".$empInfo["empPosId"]."'",'2');
+		
+	$fld_txtDeptPost = htmlspecialchars(addslashes($deptName["deptDesc"]))." - ".$posName["posDesc"];
+				
+	if($empInfo['empRestDay']!="")
+		$empCurrRestDay = explode(",", $empInfo['empRestDay']);
+
+	$branch = $_SESSION['branchCode'];
+
+	//08-09-2023 END LOOK UP
 	
 	switch($_GET["action"])
 	{
@@ -24,7 +43,7 @@
 				
 				
 				$midName = (!empty($empInfo['empMidName'])) ? substr($empInfo['empMidName'],0,1)."." : '';
-				$fld_txtEmpName = $empInfo[empLastName].", ".htmlspecialchars(addslashes($empInfo['empFirstName']))." ".$midName;
+				$fld_txtEmpName = $empInfo['empLastName'].", ".htmlspecialchars(addslashes($empInfo['empFirstName']))." ".$midName;
 				
 				$deptName = $crdObj->getDeptDescGen($_SESSION["company_code"],$empInfo["empDiv"], $empInfo["empDepCode"]);
 				$posName = $crdObj->getpositionwil("where compCode='".$_SESSION["company_code"]."' and posCode='".$empInfo["empPosId"]."'",'2');
@@ -42,10 +61,13 @@
 	{
 		$userinfo = $crdObj->getUserHeaderInfo($_SESSION['employee_number'],$_SESSION['employee_id']);
 		$and = ($_GET['isSearch'] == 1) ? 'AND' : 'Where';	
-		$brnCodelist = " AND empmast.empNo<>'".$_SESSION['employee_number']."' 
-						and empbrnCode IN (Select brnCode from tblTK_UserBranch 
-										   where empNo='{$_SESSION['employee_number']}' 
-										   AND compCode='{$_SESSION['company_code']}')";
+		//08-08-2023
+		// $brnCodelist = " AND empmast.empNo<>'".$_SESSION['employee_number']."' 
+		// 				and empbrnCode IN (Select brnCode from tblTK_UserBranch 
+		// 								   where empNo='{$_SESSION['employee_number']}' 
+		// 								   AND compCode='{$_SESSION['company_code']}')";
+		$brnCodelist = " AND empMast.empNo='".$_SESSION['employee_number']."' 
+		and empbrnCode ='".$branch."'";
 	}
 	elseif ($_SESSION['user_level'] == 2) 
 	{
@@ -229,7 +251,17 @@
                 
                 <tr>
 					<td class="hdrInputsLvl">
-						<a href="#" onclick="empLookup('../../../includes/employee_lookup_tna.php')">Employee  No.</a>
+						<?php
+							if ($_SESSION['user_level'] == 3)  {
+						?>
+							Employee No.
+						<?php
+							}else{
+						?>
+							<a href="#" onclick="empLookup('../../../includes/employee_lookup_tna.php')">Employee  No.</a>
+						<?php
+							}
+						?>
 					</td>
                     
 					<td class="hdrInputsLvl">
@@ -237,7 +269,17 @@
 					</td>
                     
 					<td class="gridDtlVal">
-						<INPUT tabindex="11" class="inputs" readonly="readonly" type="text" name="txtAddEmpNo" size="15" id="txtAddEmpNo" value="<?=$_GET["empNo"]?>" onkeydown="getEmployee(event,this.value)" >
+						<?php
+							if ($_SESSION['user_level'] == 3)  {
+						?>
+							<INPUT tabindex="11" class="inputs" readonly="readonly" type="text" name="txtAddEmpNo" size="15" id="txtAddEmpNo" value="<?=$_SESSION['employeenumber']?>">
+						<?php
+							}else{
+						?>
+							<INPUT tabindex="11" class="inputs" readonly="readonly" type="text" name="txtAddEmpNo" size="15" id="txtAddEmpNo" value="<?=$_SESSION['employeenumber']?>" onkeydown="getEmployee(event,this.value)" >
+						<?php
+							}
+						?>
 					</td>
                     
 					<td class="hdrInputsLvl" width="10%">
@@ -286,7 +328,8 @@
                            
                 
                 <?php
-					$resDay = $crdObj->getRestday($_GET["empNo"],$_SESSION['company_code']);
+					$empNo = $_GET['empNo'] == '' ? $_SESSION['employee_number'] : $_GET['empNo'];
+					$resDay = $crdObj->getRestday($empNo,$_SESSION['company_code']);
 					if($resDay!="")
 					{
 						$ctr = 1;

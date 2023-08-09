@@ -10,6 +10,8 @@ $csObj = new transactionObj($_GET,$_SESSION);
 $csObj->validateSessions('','MODULES');
 
 unset($_SESSION['employeenumber']);
+$_SESSION['employeenumber']=$_SESSION['employee_number'];
+
 switch($_GET["action"])
 {
 

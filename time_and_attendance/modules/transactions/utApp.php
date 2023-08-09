@@ -8,7 +8,7 @@ include("utApp.obj.php");
 $utAppObj = new utAppObj($_GET, $_SESSION);
 $utAppObj->validateSessions($_GET, $_SESSION);
 
-
+$_SESSION['employeenumber']=$_SESSION['employee_number'];
 if (isset($_GET['action'])) {
 	switch ($_GET['action']) {
 	

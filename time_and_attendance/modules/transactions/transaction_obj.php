@@ -775,7 +775,7 @@ class transactionObj extends commonObj {
 							else
 								$dayType = '01';
 						}
-							
+					
 					$qryUpd = "Update tblTK_Timesheet set dayType='".$dayType."', 
 									shftTimeIn='".$array["txtEtimeIn".substr(htmlspecialchars(urldecode($b[0])),13)]."',
 									shftLunchOut='".$array["txtElunchOut".substr(htmlspecialchars(urldecode($b[0])),13)]."',
@@ -810,6 +810,129 @@ class transactionObj extends commonObj {
 //			return "Change Employee Shift into Timesheet successfully updated.";
 //		else
 //			return "Change Employee Shift into Timesheet failed.";
+	}
+
+	/*Module Name : Update Employee Shift [Update all same shift] 08/06/2023 Sunday*/
+	function tran_BulkChngeEmpShft($qryString,$action, $array)
+	{
+		$Trns = $this->beginTran();
+		switch($action)
+		{
+			case "Update":
+			$a = explode('&', $qryString);
+			$i = 0;
+			while ($i < count($a)) {
+				$b = split('=', $a[$i]);
+				if(substr(htmlspecialchars(urldecode($b[0])),0,13)=='chkDayEnabled')
+				{
+					$arr_EmpTsInfo =  $this->getTblData("tblTK_Timesheet", " and empNo='".$array['txtAddEmpNo']."' and tsDate='".date("Y-m-d", strtotime($array["txttsDate".substr(htmlspecialchars(urldecode($b[0])),13)]))."'", "", "sqlAssoc");
+					
+					$qryIns = "Insert into tblTK_ScheduleHist(compCode,empNo,tsDate,dayType,shftTimeIn,shftLunchOut,
+									shftLunchIn,shftBreakOut,shftBreakIn,shftTimeOut, tsAppTypeCd, crossDay, dateEdited,editedBy)
+							   values('".$_SESSION["company_code"]."','".$array["txtAddEmpNo"]."', 
+							   		'".date("Y-m-d", strtotime($array["txttsDate".substr(htmlspecialchars(urldecode($b[0])),13)]))."',
+									'".$arr_EmpTsInfo["dayType"]."', '".$arr_EmpTsInfo["shftTimeIn"]."', 
+									'".$arr_EmpTsInfo["shftLunchOut"]."', '".$arr_EmpTsInfo["shftLunchIn"]."', 
+									'".$arr_EmpTsInfo["shftBreakOut"]."','".$arr_EmpTsInfo["shftBreakIn"]."',
+									'".$arr_EmpTsInfo["shftTimeOut"]."', ".($arr_EmpTsInfo["crossDay"]=='Y'?"'Y'":"NULL").",
+									".($arr_EmpTsInfo["tsAppTypeCd"]!=""?"'".$arr_EmpTsInfo["tsAppTypeCd"]."'":"NULL").", 
+									'".date("Y-m-d")."', '".$_SESSION["employee_number"]."');";
+					if($Trns){
+						$Trns = $this->execQry($qryIns);	
+					}				
+					//Get DayType
+					$arr_getDayType = $this->detDayType(date("Y-m-d", strtotime($array["txttsDate".substr(htmlspecialchars(urldecode($b[0])),13)])), " and brnCode in ('".$array["empBrnCode"]."','0')");
+					
+						if(($array["restDayTag".substr(htmlspecialchars(urldecode($b[0])),13)]=='Y') && (($array["txtEtimeIn".substr(htmlspecialchars(urldecode($b[0])),13)]=='00:00' || $array["txtEtimeIn".substr(htmlspecialchars(urldecode($b[0])),13)]=='0:00') && ($array["txtElunchOut".substr(htmlspecialchars(urldecode($b[0])),13)]=='00:00' || $array["txtElunchOut".substr(htmlspecialchars(urldecode($b[0])),13)]=='0:00') && ($array["txtElunchIn".substr(htmlspecialchars(urldecode($b[0])),13)]=='00:00' || $array["txtElunchIn".substr(htmlspecialchars(urldecode($b[0])),13)]=='0:00') && ($array["txtEbrkOut".substr(htmlspecialchars(urldecode($b[0])),13)]=='00:00' || $array["txtEbrkOut".substr(htmlspecialchars(urldecode($b[0])),13)]=='0:00') && ($array["txtEbrkIn".substr(htmlspecialchars(urldecode($b[0])),13)]=='00:00' || $array["txtEbrkIn".substr(htmlspecialchars(urldecode($b[0])),13)]=='0:00') && ($array["txtEtimeOut".substr(htmlspecialchars(urldecode($b[0])),13)]=='00:00' || $array["txtEtimeOut".substr(htmlspecialchars(urldecode($b[0])),13)]=='0:00')))
+						{
+							if($arr_getDayType["dayType"]=='03')
+								$dayType = '05';
+							elseif($arr_getDayType["dayType"]=='04')
+								$dayType = '06';
+							else
+								$dayType = '02';
+						}
+						elseif(($array["txtEtimeIn".substr(htmlspecialchars(urldecode($b[0])),13)]=='00:00' || $array["txtEtimeIn".substr(htmlspecialchars(urldecode($b[0])),13)]=='0:00') && ($array["txtElunchOut".substr(htmlspecialchars(urldecode($b[0])),13)]=='00:00' || $array["txtElunchOut".substr(htmlspecialchars(urldecode($b[0])),13)]=='0:00') && ($array["txtElunchIn".substr(htmlspecialchars(urldecode($b[0])),13)]=='00:00' || $array["txtElunchIn".substr(htmlspecialchars(urldecode($b[0])),13)]=='0:00') && ($array["txtEbrkOut".substr(htmlspecialchars(urldecode($b[0])),13)]=='00:00' || $array["txtEbrkOut".substr(htmlspecialchars(urldecode($b[0])),13)]=='0:00') && ($array["txtEbrkIn".substr(htmlspecialchars(urldecode($b[0])),13)]=='00:00' || $array["txtEbrkIn".substr(htmlspecialchars(urldecode($b[0])),13)]=='0:00') && ($array["txtEtimeOut".substr(htmlspecialchars(urldecode($b[0])),13)]=='00:00' || $array["txtEtimeOut".substr(htmlspecialchars(urldecode($b[0])),13)]=='0:00'))
+						{
+							if($arr_getDayType["dayType"]=='03')
+								$dayType = '05';
+							elseif($arr_getDayType["dayType"]=='04')
+								$dayType = '06';
+							elseif($arr_getDayType["dayType"]=='03')
+								$dayType = '03';
+							elseif($arr_getDayType["dayType"]=='04')
+								$dayType = '04';
+							else
+								$dayType = '02';
+						}
+						else
+						{
+							if($arr_getDayType["dayType"]=='03')
+								$dayType = '03';
+							elseif($arr_getDayType["dayType"]=='04')
+								$dayType = '04';
+							else
+								$dayType = '01';
+						}
+
+						//select all employee with same shift
+						$branchCode = $array["empBrnCode"];
+						$shiptList =  $this->getTblData("tbltk_empshift", " and empNo='".$array['txtAddEmpNo']."' and compCode='" . $_SESSION["company_code"] . "'", "", "sqlAssoc");
+						$shiftCode = $shiptList['shiftCode'];
+						$employees = $this->getAllEmployeeWithSameShift($shiftCode, $branchCode);
+
+						//echo $branchCode . " == " . $shiftCode . "<br><br>";
+
+						//echo var_dump($employees);
+
+						//foreach loop then do the update
+						foreach ($employees as $employee) {
+
+							//echo $employee["empNo"] . " == " . $employee["shiftCode"] . "<br><br>";
+
+							$qryUpd = "Update tblTK_Timesheet set dayType='".$dayType."', 
+									shftTimeIn='".$array["txtEtimeIn".substr(htmlspecialchars(urldecode($b[0])),13)]."',
+									shftLunchOut='".$array["txtElunchOut".substr(htmlspecialchars(urldecode($b[0])),13)]."',
+									shftLunchIn='".$array["txtElunchIn".substr(htmlspecialchars(urldecode($b[0])),13)]."',
+									shftBreakOut='".$array["txtEbrkOut".substr(htmlspecialchars(urldecode($b[0])),13)]."',
+									shftBreakIn='".$array["txtEbrkIn".substr(htmlspecialchars(urldecode($b[0])),13)]."',
+									shftTimeOut='".$array["txtEtimeOut".substr(htmlspecialchars(urldecode($b[0])),13)]."',
+									dateEdited='".date("Y-m-d")."', editedBy='".$_SESSION["employee_number"]."',
+									tsAppTypeCd=".($array["delAppTypeCd"]=='Yes'?"NULL":($arr_EmpTsInfo["tsAppTypeCd"]!=""?"'".$arr_EmpTsInfo["tsAppTypeCd"]."'":"NULL")).",
+									crossDay=".($array["chkCrossDay".substr(htmlspecialchars(urldecode($b[0])),13)]!=""?"'Y'":"NULL")."
+									where compCode='".$_SESSION["company_code"]."' and empNo='".$employee["empNo"]."'
+									and tsDate='".date("Y-m-d", strtotime($array["txttsDate".substr(htmlspecialchars(urldecode($b[0])),13)]))."';";
+							if($Trns){
+								$Trns = $this->execQry($qryUpd);
+							}
+						}
+						//end end foreach
+				}		
+				$i++;
+			}					
+			break;
+		}
+		
+		if(!$Trns){
+			$Trns = $this->rollbackTran();	
+			return "Change Employee Shift into Timesheet failed.";	
+		}
+		else{
+			$Trns = $this->commitTran();
+			return "Change Employee Shift into Timesheet successfully updated.";
+		}
+	}
+
+	/*Module Name : Update Employee Shift [Update all same shift] 08/06/2023 Sunday*/
+	function getAllEmployeeWithSameShift($shiftCode, $branchCode){
+		$qry = "SELECT tblemp.empBrnCode, tblemp.empLastName, tblemp.empFirstName, empShip.* FROM tbltk_empshift empShip
+				LEFT OUTER JOIN tblempmast_new tblemp
+				ON  tblemp.empNo = empShip.empNo
+								WHERE empShip.compCode = '{$_SESSION['company_code']}'
+								AND empShip.shiftCode = '{$shiftCode}'
+				AND tblemp.empBrnCode = '{$branchCode}'";
+		$res = $this->execQry($qry);
+		return $this->getArrRes($res);
 	}
 	
 	/*Module Name : Mass Update Shift Schedule 09/15/2010 Wednesday*/

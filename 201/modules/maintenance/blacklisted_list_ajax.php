@@ -10,12 +10,12 @@ if ($_SESSION['user_level'] == 3) {
 	$userinfo = $common->getUserHeaderInfo($_SESSION['employee_number'],$_SESSION['employee_id']);
 	$and = ($_GET['isSearch'] == 1) ? 'AND' : 'Where';	
 	
-	if(($userinfo['empLocCode']=='0001')&&($_SESSION['employee_number']=='120001521')){
+	if(($userinfo['empLocCode']=='999')&&($_SESSION['employee_number']=='120001521')){
 		$brnCode = " $and empLocCode='".$userinfo['empLocCode']."'";
 		$brnCodelist = " AND  empLocCode='".$userinfo['empLocCode']."'";
 	}
 	else{
-		if($userinfo['empLocCode']!='0001'){
+		if($userinfo['empLocCode']!='999'){
 			$brnCode = " $and empBrnCode = '{$userinfo['empBrnCode']}' and empLocCode='".$userinfo['empLocCode']."'";
 			$brnCodelist = " AND empBrnCode = '{$userinfo['empBrnCode']}' and empLocCode='".$userinfo['empLocCode']."'";
 			$brnCode_View = 1;
@@ -154,7 +154,7 @@ $arrEmpList = $common->getArrRes($resEmpList);
 					<tr  bgcolor="<?php echo $bgcolor; ?>" <?php echo $on_mouse; ?>>
 						<td class="gridDtlVal"><?=$i?></td>
 						<td class="gridDtlVal"><font class="gridDtlLblTxt"><?=$empListVal['Emp_ID']?></font></td>
-						<td class="gridDtlVal"><font class="gridDtlLblTxt"><?=str_replace("Ñ","&Ntilde;",$empListVal['Emp_last']. ", " . $empListVal['Emp_first'] ." ". $empListVal['Emp_middle'])?></font></td>
+						<td class="gridDtlVal"><font class="gridDtlLblTxt"><?=str_replace("ï¿½","&Ntilde;",$empListVal['Emp_last']. ", " . $empListVal['Emp_first'] ." ". $empListVal['Emp_middle'])?></font></td>
 						
                         
                         

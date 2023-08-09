@@ -10,21 +10,62 @@
 	include("../../../includes/pager.inc.php");
 	include("transaction_obj.php");
 
-
 	$obObj = new transactionObj($_GET,$_SESSION);
 	$obObj->validateSessions('','MODULES');
 	
 	$pager = new AjaxPager(10,'../../../images/');
 	
+	$branch = $_SESSION['branchCode'];
+
+	//08-09-2023 AUTO EMPLOYEE LOOKUP
+	$empInfo = $obObj->getEmployee($_SESSION['company_code'],$_SESSION['employeenumber'],'');
+	
+	$paygroup = $empInfo['empPayGrp'];
+	$paycat = $empInfo['empPayCat'];
+
+	$reason = '';
+	$obTimeIn = '';
+	$obTimeOut = '';
+	$timeINAM = 0;
+	$timeOutOM = 0;
+		
+	$midName = (!empty($empInfo['empMidName'])) ? substr($empInfo['empMidName'],0,1)."." : '';
+	$fullname = $empInfo['empLastName'] . ", " . htmlspecialchars(addslashes($empInfo['empFirstName'])) . " " . $midName;
+		
+	$deptName = $obObj->getDeptDescGen($_SESSION["company_code"],$empInfo["empDiv"], $empInfo["empDepCode"]);
+	$posName = $obObj->getpositionwil("where compCode='".$_SESSION["company_code"]."' and posCode='".$empInfo["empPosId"]."'",'2');
+	$position = htmlspecialchars(addslashes($deptName['deptDesc']))." - ".$posName['posDesc'];
+			
+	$shiftCodeDtl = $obObj->getTblData("tblTk_TimeSheet", " and empNo='".$_SESSION['employeenumber']."' and tsDate='".date("Y-m-d")."'", "", "sqlAssoc");
+
+	if($shiftCodeDtl["shftTimeIn"]=="") {
+		$allowSave = false;
+		$shiftSched = 'Set the Schedule first.';
+		$shftTimeIn = '';
+		$shftTimeOut = '';
+	}else{
+		$allowSave = true;
+		$shiftSched = $shiftCodeDtl['shftTimeIn'] . " - " . $shiftCodeDtl["shftTimeOut"];
+		$shftTimeIn = $shiftCodeDtl['shftTimeIn'];
+		$shftTimeOut = $shiftCodeDtl["shftTimeOut"];
+	}
+
+	$disabled = $allowSave ? '' : 'disabled';
+	//08-09-2023
+
 	//get users branch access
 	if ($_SESSION['user_level'] == 3) 
 	{
 		$userinfo = $obObj->getUserHeaderInfo($_SESSION['employee_number'],$_SESSION['employee_id']);
 		$and = ($_GET['isSearch'] == 1) ? 'AND' : 'Where';	
-		$brnCodelist = " AND empMast.empNo<>'".$_SESSION['employee_number']."' 
-						and empbrnCode IN (Select brnCode from tblTK_UserBranch 
-											where empNo='{$_SESSION['employee_number']}' 
-											AND compCode='{$_SESSION['company_code']}')";
+		//08-08-2023
+		// $brnCodelist = " AND empMast.empNo='".$_SESSION['employee_number']."' 
+		// 				and empbrnCode IN (Select brnCode from tblTK_UserBranch 
+		// 									where empNo='{$_SESSION['employee_number']}' 
+		// 									AND compCode='{$_SESSION['company_code']}')";
+		$brnCodelist = " AND empMast.empNo='".$_SESSION['employee_number']."'
+						and empbrnCode ='".$branch."'";
+											
 	}
 	elseif ($_SESSION['user_level'] == 2) 
 	{
@@ -50,8 +91,6 @@
 	$resBrn = $obObj->execQry($brnQry);
 	$arrBrn = $obObj->getArrRes($resBrn);
 	$brn = $obObj->makeArr($arrBrn,'brnCode','brnDesc','All');
-	
-	
 	
 	$qryIntMaxRec = "SELECT OBApp.refNo, OBApp.obDate,  OBApp.empNo, empMast.empLastName, empMast.empFirstName,obActualTimeOut, 
 						obActualTimeIn,userApproved,addedBy, crossDay
@@ -94,7 +133,6 @@
 							}
 							
 	$qryIntMaxRec.=	"ORDER BY OBApp.obStat DESC, OBApp.refNo, OBApp.obDate, empMast.empLastName, empMast.empFirstName";
-	
 	$resIntMaxRec = $obObj->execQry($qryIntMaxRec);
 	$intMaxRec = $pager->_getMaxRec($resIntMaxRec);
 	
@@ -148,8 +186,8 @@
 	$arrOBAppList = $obObj->getArrRes($resOBAppList);
 ?>
 
-<input type="hidden" name="empPayGrp" id="empPayGrp" value="" />
-<input type="hidden" name="empPayCat" id="empPayCat" value="" />
+<input type="hidden" name="empPayGrp" id="empPayGrp" value="<?=$paygroup?>" />
+<input type="hidden" name="empPayCat" id="empPayCat" value="<?=$paycat?>" />
 <TABLE border="0" width="100%" cellpadding="1" cellspacing="0" class="parentGrid">
 	<tr>
 		<td colspan="4" class="parentGridHdr">
@@ -220,7 +258,17 @@
                 
                 <tr>
 					<td class="hdrInputsLvl">
-						<a href="#" onclick="empLookup('../../../includes/employee_lookup_tna.php')">Employee  No.</a>
+						<?php
+							if ($_SESSION['user_level'] == 3)  {
+						?>
+							Employee No.
+						<?php
+							}else{
+						?>
+							<a href="#" onclick="empLookup('../../../includes/employee_lookup_tna.php')">Employee  No.</a>
+						<?php
+							}
+						?>
 					</td>
                     
 					<td class="hdrInputsLvl">
@@ -228,7 +276,17 @@
 					</td>
                     
 					<td width="132" class="gridDtlVal">
-						<INPUT tabindex="11" class="inputs" type="text" name="txtAddEmpNo" size="15" id="txtAddEmpNo" onkeydown="getEmployee(event,this.value)" value="<?=$_SESSION['employeenumber'];?>">
+						<?php
+							if ($_SESSION['user_level'] == 3)  {
+						?>
+							<INPUT tabindex="11" class="inputs" type="text" name="txtAddEmpNo" size="15" id="txtAddEmpNo" value="<?=$_SESSION['employeenumber'];?>" readonly>
+						<?php
+							}else{
+						?>
+							<INPUT tabindex="11" class="inputs" type="text" name="txtAddEmpNo" size="15" id="txtAddEmpNo" onkeydown="getEmployee(event,this.value)" value="<?=$_SESSION['employeenumber'];?>" readonly>
+						<?php
+							}
+						?>
 				  </td>
                     
 					<td class="hdrInputsLvl" width="102">
@@ -240,7 +298,7 @@
 					</td>
 
 					<td class="gridDtlVal" colspan="4">
-						<INPUT class="inputs" readonly="readonly" type="text" name="txtEmpName" id="txtEmpName" size="40" value="">
+						<INPUT class="inputs" readonly="readonly" type="text" name="txtEmpName" id="txtEmpName" size="40" value="<?=$fullname?>">
 			    </td>
                     
 					<td class="hdrInputsLvl" width="98">
@@ -252,7 +310,7 @@
 					</td>
 
 					<td width="338" colspan="4" class="gridDtlVal">
-						<INPUT class="inputs" readonly="readonly" type="text" name="txtDeptPost" id="txtDeptPost" size="50" value="">
+						<INPUT class="inputs" readonly="readonly" type="text" name="txtDeptPost" id="txtDeptPost" size="50" value="<?=$position?>">
 					</td>
 				</tr>
                 
@@ -287,18 +345,18 @@
                     </td>
                     
                    
-                    <td align="center"><input type="text" name="schedTimeIn" id="schedTimeIn" style="width:50px;" class='inputs' onKeyDown="javascript:return dFilter (event.keyCode, this, '##:##');" />
+                    <td align="center"><input type="text" name="schedTimeIn" id="schedTimeIn" style="width:50px;" class='inputs' onKeyDown="javascript:return dFilter (event.keyCode, this, '##:##');" value="<?=$shftTimeIn?>" />
 					<?
 						$obObj->DropDownMenu(array(''=>'','AM' => 'AM','PM' => 'PM'),'cmbTINAMPM','','class="inputs"');
 					?>
-					<input type="hidden" readonly="readonly" class="inputs" name="shiftSched"  id="shiftSched" style="width:100%;" value="" /></td>
-                    <td align="center"><input type="text" name="schedTimeOut"  id="schedTimeOut" style="width:50px;" class='inputs' onkeydown="javascript:return dFilter (event.keyCode, this, '##:##');"  value="" />
+					<input type="hidden" readonly="readonly" class="inputs" name="shiftSched"  id="shiftSched" style="width:100%;" value="<?=$shiftSched?>" /></td>
+                    <td align="center"><input type="text" name="schedTimeOut"  id="schedTimeOut" style="width:50px;" class='inputs' onkeydown="javascript:return dFilter (event.keyCode, this, '##:##');"  value="<?=$shftTimeOut?>" />
 					<?
 						$obObj->DropDownMenu(array(''=>'','AM' => 'AM','PM' => 'PM'),'cmbTOUTAMPM','','class="inputs"');
 					?>
 					</td>
 					<td align="center"><input name="crossDay" type="checkbox" id="crossDay" /></td>
-                    <td > <?=$obObj->DropDownMenu($arrBrnch,'obdestination',$_GET['obdestination'],'class="inputs" disabled style="width:100%;"');?></td>
+                    <td > <?=$obObj->DropDownMenu($arrBrnch,'obdestination',$_GET['obdestination'],'class="inputs" '.$disabled.' style="width:100%;"');?></td>
                     
                     <td align="center"><span class="gridDtlVal">
                       <?
@@ -307,15 +365,15 @@
 						$obObj->DropDownMenu($arrReasons,'cmbReasons',"","class='inputs'");
 					?>
                   </span></td>
-                    <td align="center"><input name='txtobTimeIn' type='text' disabled="disabled" class='inputs' id='txtobTimeIn'  onKeyDown="javascript:return dFilter (event.keyCode, this, '##:##');" value='' size="5">
+                    <td align="center"><input name='txtobTimeIn' type='text' <?=$disabled?> class='inputs' id='txtobTimeIn'  onKeyDown="javascript:return dFilter (event.keyCode, this, '##:##');" value='' size="5">
                       <span class="gridDtlVal">  
                     </span></td>
-                	<td align="center"><input name='txtobTimeOut' type='text'  disabled="disabled" class='inputs' id='txtobTimeOut' onKeyDown="javascript:return dFilter (event.keyCode, this, '##:##');" value='' size="5">
+                	<td align="center"><input name='txtobTimeOut' type='text' <?=$disabled?> class='inputs' id='txtobTimeOut' onKeyDown="javascript:return dFilter (event.keyCode, this, '##:##');" value='' size="5">
                 	  <span class="gridDtlVal">
                 	  
        	        </span></td>
- 					<td align="center"><input type="checkbox" name="rdnDeduct8" id="rdnDeduct8" disabled="disabled" /></td>
-                    <td align="center"><input type='button' class= 'inputs' name='btnSave' id="btnSave" value='SAVE' disabled="disabled" onClick="saveObDetail();" ></td>
+ 					<td align="center"><input type="checkbox" name="rdnDeduct8" id="rdnDeduct8" <?=$disabled?>/></td>
+                    <td align="center"><input type='button' class= 'inputs' name='btnSave' id="btnSave" value='SAVE' <?=$disabled?> onClick="saveObDetail();" ></td>
                 </tr>
                 
                 

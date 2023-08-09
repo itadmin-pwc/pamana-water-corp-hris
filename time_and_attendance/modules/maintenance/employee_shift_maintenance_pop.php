@@ -178,7 +178,7 @@ switch($_GET["action"])
                     	
                         
 							<? 	
-								if($arr_empInfo['empBrnCode']=="0001"){
+								if($arr_empInfo['empBrnCode']!=="0001"){
 									$shiftHeader = 	$empShiftMaint->getListShift();
 								}
 								else{
