@@ -58,6 +58,14 @@ if (isset($_GET['action'])) {
 			$empno = $_GET['empNo'];
 			$shiftCodeDtl = $leaveAppObj->getTblData("tblTk_LeaveApp", " and empNo='".$_GET['empNo']."' and lvDateFrom='".date("Y-m-d", strtotime($_GET["lvDateFrom"]))."' and lvFromAMPM = '".$_GET["lvFromAMPM"]."' and lvDateTo='".date("Y-m-d", strtotime($_GET["lvDateTo"]))."' and lvToAMPM = '".$_GET["lvToAMPM"]."'", "", "sqlAssoc");			
 			
+			$empSched = $leaveAppObj->countRecord("tblTk_TimeSheet", " and empNo='".$_GET['empNo']."' and tsDate IN ('" . date("Y-m-d", strtotime($_GET["lvDateFrom"])) . "', '" . date("Y-m-d", strtotime($_GET["lvDateTo"])) . "')");
+
+			if($empSched < 1) {
+				echo "'".$shiftCodeDtl["empNo"]."';";
+				echo "alert('Selected leave date is not part of the current cut off.');";
+				die();
+			}
+
 			if($shiftCodeDtl['empNo'] != ''){
 				echo "'".$shiftCodeDtl["empNo"]."';";
 				echo "alert('Duplicate Entry of Leave Application.');";
@@ -352,7 +360,6 @@ pager('leaveAppAjaxResult.php','leaveAppCont','load',0,0,'','','','../../../imag
 
 
 function maintLeaveApp(URL,ele,action,intOffSet,isSearch,txtSearch,cmbSearch,extra,id,empName){
-		
 		var numericExpWdec = /^([\d]+|[\d]+\.[\d]{1,2}|-[\d]+|-[\d]+\.[\d]{1,2})$/;
 		var empNo = '';
 		var cntrlNo = '';
@@ -535,7 +542,7 @@ function maintLeaveApp(URL,ele,action,intOffSet,isSearch,txtSearch,cmbSearch,ext
 				
 				onComplete : function (req){
 					eval(req.responseText);
-					var blnAdd = confirm("Add another Leave Application for this employee?");
+					var blnAdd = confirm("Would you like to add another leave application?");
 						if (blnAdd != true){
 							pager('leaveAppAjaxResult.php','leaveAppCont','load',0,0,'','','','../../../images/'); 
 						}

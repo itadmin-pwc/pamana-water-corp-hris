@@ -20,7 +20,7 @@ if (isset($_GET['action'])) {
 				echo "alert('Please select employee!');";
 				exit();	
 			}	
-				
+			
 			$tdate = date('Y-m-d',strtotime($_GET['tsdate']));
 //			$period = $timesheetsadjustmentsObj->getOpenPeriod(" and compCode='".$_SESSION['company_code']."' AND payGrp='".$_GET['hdnPayGrp']."' AND payCat='".$_GET['hdnPayCat']."'");
 //			$openperiod = $period['pdSeries'];
@@ -38,10 +38,7 @@ if (isset($_GET['action'])) {
 			$dtypedesc = $timesheetsadjustmentsObj->getDayTypeDescArt($dcode);
 			
 			$RR = $timesheetsadjustmentsObj->getOpenPeriod(" and payCat='3' and payGrp='".$_GET['hdnPayGrp']."' and '".$tdate."' between pdFrmDate and pdToDate");
-			
-			
-				
-			
+		
 			if($dcode!=''){
 				if($dcode=="01"){
 					if($RR['pdNumber']!=""){
@@ -82,7 +79,6 @@ if (isset($_GET['action'])) {
 						echo "$('txtHrsND').value='';";
 						echo "$('txtHrsNDG8').value='';";
 						echo "$('cmbStat').value='';";
-						
 					}
 					else{
 						if($_GET['id']=="txtTSDate"){			

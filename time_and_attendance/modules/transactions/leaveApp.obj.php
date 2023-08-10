@@ -111,6 +111,14 @@ class leaveAppObj extends commonObj{
 		else
 			return $this->getArrRes($resTblInfo);
 	}
+
+	function countRecord($tbl, $cond)
+	{
+		$qryTblInfo = "Select COUNT(*) as record from ".$tbl." where compCode='".$_SESSION["company_code"]."' ".$cond;
+		$resTblInfo = $this->execQry($qryTblInfo);
+		$num = $this->getSqlAssoc($resTblInfo);
+		return $num['record'];
+	}
 			
 	function updateLeaveDtl() {
 		

@@ -5,7 +5,6 @@ include("../../../includes/db.inc.php");
 include("../../../includes/common.php");
 include("transaction_obj.php");
 
-
 $csObj = new transactionObj($_GET,$_SESSION);
 $csObj->validateSessions('','MODULES');
 
@@ -14,7 +13,6 @@ $_SESSION['employeenumber']=$_SESSION['employee_number'];
 
 switch($_GET["action"])
 {
-
 	case 'addNewCSApp':
 		$empno=$_GET['empno'];
 		if($empno!=''){
@@ -25,10 +23,9 @@ switch($_GET["action"])
 		}
 	break;
 	
-	
 	case "NEWREFNO":
 		//$arr_lastRefNo = $csObj->getLastRefNo("tblTK_CSApp");
-	//	$lastRefNo = $arr_lastRefNo["lastRefNo"] + 1;
+		//$lastRefNo = $arr_lastRefNo["lastRefNo"] + 1;
 		
 		//echo "$('refNo').value=$lastRefNo;";
 		echo "$('csreason').value='';";
@@ -40,7 +37,6 @@ switch($_GET["action"])
 		
 		echo "$('txtobTimeIn').value='';";
 		echo "$('txtobTimeOut').value='';";
-		
 		
 		echo "document.frmCS.schedTimeIn.disabled=false; document.frmCS.chkCrossDay.disabled=false; document.frmCS.schedTimeOut.disabled=false; document.frmCS.shftTimeOut.disabled=false; document.frmCS.csTimeIn.disabled=false; document.frmCS.csTimeOut.disabled=false; document.frmCS.payPd.disabled=false;  document.frmCS.payPd.disabled=false;  document.frmCS.cmbReasons.disabled=false; document.frmCS.chkStat.disabled=false; document.frmCS.btnSave.disabled=false;";
 
@@ -60,7 +56,6 @@ switch($_GET["action"])
 			$cwwTag = $csObj->getTblData("tblTK_EmpShift", " and empNo='".$_GET['empNo']."'", "", "sqlAssoc");
 			echo "$('hdnCWW').value='".$cwwTag['CWWTag']."';";
 
-			
 			$deptName = $csObj->getDeptDescGen($_SESSION["company_code"],$empInfo["empDiv"], $empInfo["empDepCode"]);
 			$posName = $csObj->getpositionwil("where compCode='".$_SESSION["company_code"]."' and posCode='".$empInfo["empPosId"]."'",'2');
 			
@@ -84,11 +79,8 @@ switch($_GET["action"])
 			}	
 			else
 			{
-				
 				echo "$('schedTimeIn').value='".$shiftCodeDtl["shftTimeIn"]."'; $('schedTimeOut').value='".$shiftCodeDtl["shftTimeOut"]."'; $('shiftDayType').value='".$shiftCodeDtl["dayType"]."'; $('empPayGrp').value='".$empInfo['empPayGrp']."'; $('empPayCat').value='".$empInfo['empPayCat']."';  $('empbrnCode').value='".$empInfo['empBrnCode']."'; document.frmCS.csTimeIn.disabled=false; document.frmCS.csTimeOut.disabled=false; document.frmCS.chkCrossDay.disabled=false; document.frmCS.cmbReasons.disabled=false;  document.frmCS.btnSave.disabled=false;  document.frmCS.chkStat.disabled=false; ";
 			}
-			
-			
 		//}
 		exit();			
 	break;
