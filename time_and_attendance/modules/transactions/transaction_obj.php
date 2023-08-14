@@ -948,7 +948,7 @@ class transactionObj extends commonObj {
 	}
 	
 	function manualEntryTimeSheet($action, $array)
-	{	
+	{
 		$Trns = $this->beginTran();
 		$time[1] = $array["txtEtimeIn"];
 		$time[2] = $array["txtElunchOut"];

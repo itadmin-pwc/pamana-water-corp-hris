@@ -125,7 +125,7 @@
                             foreach($arrDisEmp as $arrDisEmp_val)
                             {
                                 echo "<tr style='height:20px;' class='gridToolbar'>";
-                                    echo "<td>".str_replace("Ñ","&Ntilde;", $arrDisEmp_val["empLastName"]).", ".$arrDisEmp_val["empFirstName"]."</td>";
+                                    echo "<td>".str_replace("ï¿½","&Ntilde;", $arrDisEmp_val["empLastName"]).", ".$arrDisEmp_val["empFirstName"]."</td>";
                                     echo "<td>".$arrDisEmp_val["shiftDesc"]."</td>";
                                 echo "<tr>";
                             }
