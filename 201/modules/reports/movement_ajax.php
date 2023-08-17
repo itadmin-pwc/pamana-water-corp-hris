@@ -110,7 +110,7 @@ switch ($inputId) {
 		}
 
 		$confaccess=$_SESSION['Confiaccess'];
-		if($confaccess == 'N'){
+		if($confaccess == 'N' || empty($confaccess)){
 			$confi = "and tblEmpMast.empPayCat ='3'";
 		}elseif ($confaccess == 'Y') {
 			$confi = "and tblEmpMast.empPayCat ='2'";
@@ -120,6 +120,7 @@ switch ($inputId) {
 					and empBrnCode IN (Select brnCode from tblUserBranch where compCode='{$_SESSION['company_code']}' and empNo='{$_SESSION['employee_number']}')
 				  $filter_from_to $empNo1 $status $empStatDatefilter $empName1 $empDiv1 $empDept1 $empSect1 $confi $groupType1 $catType1
 				   $orderBy1 ";
+				   echo $sqlEmp;
 		$resEmp = $inqTSObj->execQry($sqlEmp);		   
 		$numEmp = $inqTSObj->getRecCount($resEmp);
 		

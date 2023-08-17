@@ -157,6 +157,22 @@ class pafObj extends commonObj {
 			return true;	
 		}
 	}
+
+	function pass2Payroll() {
+		$Trns = $this->beginTran();
+		$qrydel = "Delete from tblPAF_PayrollRelated where refNo='{$this->get['refno']}' and compCode='{$this->get['compCode']}' and empNo='{$this->get['empNo']}'";
+		$this->execQry($qrydel);
+		$qrypayroll = "Insert into tblPAF_PayrollRelated (controlNo,compCode,empNo,stat,effectivitydate,userid,refNo,reasonCd,dateadded) values ('0','{$this->get['compCode']}','{$this->get['empNo']}','" . $this->get['cmbprstatus'] . "','" . $this->get['txtprDate'] . "','" . $this->session['user_id'] . "','" . $this->get['refno'] . "','" . $this->get['cmbreason'] . "','".date('Y-m-d')."')";
+		$this->execQry($qrypayroll);
+		if(!$Trns){
+			$Trns = $this->rollbackTran();
+			return false;
+		}
+		else{
+			$Trns = $this->commitTran();
+			return true;	
+		}	
+	}
 	
 	function others() {
 		$Trns = $this->beginTran();

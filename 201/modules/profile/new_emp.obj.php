@@ -244,6 +244,8 @@ class ProfileObj extends commonObj {
 	var $sunLine;
 	var $globeLine;
 	var $smartLine;
+
+	var $stat_;
 	
 	
 	function getBranchPayGroup($where){
@@ -612,7 +614,7 @@ class ProfileObj extends commonObj {
 	
 	function computesalary($compCode,$salary) {
 		$getCompInfo = $this->getCompany($compCode);
-		
+
 		$this->Drate = sprintf('%01.2f',(float)$salary/(float)$getCompInfo['compNoDays']);
 		$this->Hrate =  sprintf('%01.2f',$this->Drate/8);
 	}
@@ -709,6 +711,7 @@ class ProfileObj extends commonObj {
 			$this->globeLine=$profile['empGlobeLine'];
 			$this->smartLine=$profile['empSmartLine'];
 //			$this->Release=$profile[''];
+			$this->stat_=$profile['stat'];
 		}
 
 	}
@@ -825,8 +828,9 @@ class ProfileObj extends commonObj {
 		$resUpdateUserDefMst = $this->execQry($qryUpdateUserDefMst);
 		$resupdateemp = $this->execQry($qryupdateemp);
 		$arrBio = $this->getBio($this->empNo,$this->compCode);
-		if ($arrBio['bioNumber'] != ""){ 
-			$qrybio = "update tblBioEmp set locCode = {$this->location},bioNumber ='{$this->bio}'  where empNo={$this->empNo} and compCode = {$this->compCode}";
+		//die($arrBio['compCode']);
+		if ($arrBio['empNo'] != "" && $arrBio['compCode'] != ""){ 
+			$qrybio = "update tblBioEmp set locCode = {$this->location}, bioNumber ='{$this->bio}'  where empNo={$this->empNo} and compCode = {$this->compCode}";
 		}
 		else{
 			$qrybio = "Insert into tblBioEmp (compCode,locCode,bioNumber,empNo,bioStat) values ({$this->compCode},{$this->location},'{$this->bio}','{$this->empNo}','A')";
@@ -841,6 +845,22 @@ class ProfileObj extends commonObj {
 			return false;
 		}	
 	
+	}
+
+	function updateSalary() {
+		$this->computesalary($this->compCode,$this->Salary);
+		$wageTag= $this->CheckMinWageTag($this->compCode,$this->branch,$this->Drate);
+		$payfields="
+					empMrate='".str_replace("'","''",stripslashes(strtoupper($this->Salary)))."',
+					empDrate='{$this->Drate}',
+					empHrate='{$this->Hrate}',
+					empWageTag = '$wageTag',
+					empBankCd='{$this->bank}',
+					empAcctNo='".str_replace("'","''",stripslashes(strtoupper($this->bankAcctNo)))."'
+					";
+		$qryupdateemp="Update tblEmpMast_new set $payfields where empNo='$this->empNo'  and compCode='{$this->compCode}'";
+		$resupdateemp = $this->execQry($qryupdateemp);
+		return $resupdateemp;
 	}
 	
 	function checkPrevEmp($empNox){
@@ -949,7 +969,7 @@ class ProfileObj extends commonObj {
 	}	
 
 	function getBio($empNo,$compCode) {
-		$qryBio = "Select bioNumber from tblBioEmp where empNo='".trim($empNo)."' and compCode='".trim($compCode)."'";
+		$qryBio = "Select * from tblBioEmp where empNo='".trim($empNo)."' and compCode='".trim($compCode)."'";
 		$res=$this->execQry($qryBio);
 		return $this->getSqlAssoc($res);
 	}

@@ -15,20 +15,28 @@
 		var numericExp = /[0-9]+/;
 		
 		
-		if(trim(empInputs['txtbio']) == ""){
-			alert('Bio Series No. is Required.');
-			focusTab(1);
-			$('txtbio').focus();
-			return false;
-		} else {
-			if(!empInputs['txtbio'].match(numericExp)){
-				alert('Invalid Bio Series No.\nvalid : Numbers Only');
-				$('txtbio').focus();
-				$('txtbio').select();
-				focusTab(1);
-				return false;			
-			}
-		}
+		// if(trim(empInputs['txtbio']) == ""){
+		// 	alert('Bio Series No. is Required.');
+		// 	focusTab(1);
+		// 	$('txtbio').focus();
+		// 	return false;
+		// } else {
+		// 	if(!empInputs['txtbio'].match(numericExp)){
+		// 		alert('Invalid Bio Series No.\nvalid : Numbers Only');
+		// 		$('txtbio').focus();
+		// 		$('txtbio').select();
+		// 		focusTab(1);
+		// 		return false;			
+		// 	}
+		// }
+
+		// if(!empInputs['txtbio'].match(numericExp)){
+		// 	alert('Invalid Bio Series No.\nvalid : Numbers Only');
+		// 	$('txtbio').focus();
+		// 	$('txtbio').select();
+		// 	focusTab(1);
+		// 	return false;			
+		// }
 
 	 if(trim(empInputs['txtempNo']) == ""){
 			alert('Employee No. is Required.');
@@ -195,38 +203,38 @@
 			return false;	
 		}
 		
-		if(empInputs['cmbexemption']==0){
-			alert('Tax Exemption is Required.');
-			$('cmbexemption').focus();
-			focusTab(5);
-			return false;
-			}
-        if(trim(empInputs['txtsss']) == ""){
-			alert('SSS No. is Required.');
-			$('txtsss').focus();
-			focusTab(5);
-			return false;
-        }
-		if(!empInputs['txtsss'].match(sssExp)){
-			alert('Invalid SSS No.\nvalid : 12-1234567-1');
-			$('txtsss').focus();
-			$('txtsss').select();
-			focusTab(5);
-			return false;
-		}
-		if(trim(empInputs['chsss']) == "2"){
-			alert('SSS No. is blacklisted');
-			focusTab(5);
-			return false;
-		}
-		if(trim(empInputs['txtsss'])!=""){
-			if(trim(empInputs['txtphilhealth']) == ""){
-				alert('Phil Health No. is Required.');
-				$('txtphilhealth').focus();
-				focusTab(5);
-				return false;
-			}	
-		}
+		// if(empInputs['cmbexemption']==0){
+		// 	alert('Tax Exemption is Required.');
+		// 	$('cmbexemption').focus();
+		// 	focusTab(5);
+		// 	return false;
+		// 	}
+        // if(trim(empInputs['txtsss']) == ""){
+		// 	alert('SSS No. is Required.');
+		// 	$('txtsss').focus();
+		// 	focusTab(5);
+		// 	return false;
+        // }
+		// if(!empInputs['txtsss'].match(sssExp)){
+		// 	alert('Invalid SSS No.\nvalid : 12-1234567-1');
+		// 	$('txtsss').focus();
+		// 	$('txtsss').select();
+		// 	focusTab(5);
+		// 	return false;
+		// }
+		// if(trim(empInputs['chsss']) == "2"){
+		// 	alert('SSS No. is blacklisted');
+		// 	focusTab(5);
+		// 	return false;
+		// }
+		// if(trim(empInputs['txtphilhealth'])!=""){
+		// 	if(trim(empInputs['txtphilhealth']) == ""){
+		// 		alert('Phil Health No. is Required.');
+		// 		$('txtphilhealth').focus();
+		// 		focusTab(5);
+		// 		return false;
+		// 	}	
+		// }
 /*		if(!empInputs['txtphilhealth'].match(philExp)){
 				alert('Invalid Phil Health No.\nvalid : 12-123456789-1');
 				$('txtphilhealth').focus();
@@ -235,79 +243,79 @@
 				return false;			
 		}	
 */
-        if(trim(empInputs['txttax']) == ""){
-			alert('TIN No. is Required.');
-			$('txtsss').focus();
-			focusTab(5);
-			return false;
-        }
+        // if(trim(empInputs['txttax']) == ""){
+		// 	alert('TIN No. is Required.');
+		// 	$('txtsss').focus();
+		// 	focusTab(5);
+		// 	return false;
+        // }
 		
-		if(trim(empInputs['txttax'])!= ""){
-			if(!empInputs['txttax'].match(tinExp)){
-					alert('Invalid TIN No. \nvalid : 123-123-123');
-					$('txttax').focus();
-					$('txttax').select();
-					focusTab(5);
-					return false;
-			}
-		}
-        if(empInputs['cmbpstatus'] == 0){
-            alert('Payroll Status is Required.');
-            $('cmbpstatus').focus();
-			focusTab(5);
-            return false;
-        }
-        if(empInputs['txtsalary'] == "0.00" || empInputs['txtsalary'] == 0.00){
-            alert('Salary is Required. Please enter rate.');
-			focusTab(5);
-            return false;
-        }		
-        if(trim(empInputs['txtsalary']) == ""){
-            alert('Salary is Required.');
-            $('txtsalary').focus();
-			focusTab(5);
-            return false;
-        }
-		if(!empInputs['txtsalary'].match(numericExpWdec)){
-			alert('Invalid Salary\nvalid : Numbers Only with two(2) decimal or without decimal');
-			$('txtsalary').focus();
-			focusTab(5);
-			return false;
-		}		
+		// if(trim(empInputs['txttax'])!= ""){
+		// 	if(!empInputs['txttax'].match(tinExp)){
+		// 			alert('Invalid TIN No. \nvalid : 123-123-123');
+		// 			$('txttax').focus();
+		// 			$('txttax').select();
+		// 			focusTab(5);
+		// 			return false;
+		// 	}
+		// }
+        // if(empInputs['cmbpstatus'] == 0){
+        //     alert('Payroll Status is Required.');
+        //     $('cmbpstatus').focus();
+		// 	focusTab(5);
+        //     return false;
+        // }
+        // if(empInputs['txtsalary'] == "0.00" || empInputs['txtsalary'] == 0.00){
+        //     alert('Salary is Required. Please enter rate.');
+		// 	focusTab(5);
+        //     return false;
+        // }		
+        // if(trim(empInputs['txtsalary']) == ""){
+        //     alert('Salary is Required.');
+        //     $('txtsalary').focus();
+		// 	focusTab(5);
+        //     return false;
+        // }
+		// if(!empInputs['txtsalary'].match(numericExpWdec)){
+		// 	alert('Invalid Salary\nvalid : Numbers Only with two(2) decimal or without decimal');
+		// 	$('txtsalary').focus();
+		// 	focusTab(5);
+		// 	return false;
+		// }		
 		
-        if(empInputs['cmbgroup'] == 0){
-            alert('Group is Required.');
-            $('cmbgroup').focus();
-			focusTab(5);
-            return false;
-        }
-        if(empInputs['cmbCategory'] == 0){
-            alert('Category is Required.');
-            $('cmbCategory').focus();
-			focusTab(5);
-            return false;
-        }		
-        if(empInputs['cmbbank'] == 0){
-            alert('Bank Type is Required.');
-            $('cmbbank').focus();
-			focusTab(5);
-            return false;
-        }	
-        if(trim(empInputs['txtbankaccount']) == "" && empInputs['cmbbank'] != 3){
-            alert('Bank Account No. is Required.');
-            $('txtbankaccount').focus();
-			focusTab(5);
-            return false;
-        }	
-		if(trim(empInputs['txtbankaccount']) != ""){
-			if(!empInputs['txtbankaccount'].match(numericExp)){
-				alert('Invalid Bank Account No.\nvalid : Numbers Only');
-				$('txtbankaccount').focus();
-				$('txtbankaccount').select();
-				focusTab(5);
-				return false;			
-			}
-		}
+        // if(empInputs['cmbgroup'] == 0){
+        //     alert('Group is Required.');
+        //     $('cmbgroup').focus();
+		// 	focusTab(5);
+        //     return false;
+        // }
+        // if(empInputs['cmbCategory'] == 0){
+        //     alert('Category is Required.');
+        //     $('cmbCategory').focus();
+		// 	focusTab(5);
+        //     return false;
+        // }		
+        // if(empInputs['cmbbank'] == 0){
+        //     alert('Bank Type is Required.');
+        //     $('cmbbank').focus();
+		// 	focusTab(5);
+        //     return false;
+        // }	
+        // if(trim(empInputs['txtbankaccount']) == "" && empInputs['cmbbank'] != 3){
+        //     alert('Bank Account No. is Required.');
+        //     $('txtbankaccount').focus();
+		// 	focusTab(5);
+        //     return false;
+        // }	
+		// if(trim(empInputs['txtbankaccount']) != ""){
+		// 	if(!empInputs['txtbankaccount'].match(numericExp)){
+		// 		alert('Invalid Bank Account No.\nvalid : Numbers Only');
+		// 		$('txtbankaccount').focus();
+		// 		$('txtbankaccount').select();
+		// 		focusTab(5);
+		// 		return false;			
+		// 	}
+		// }
 				
 		
 	
@@ -533,6 +541,12 @@
 	}
 
 	function setRateMode(){
+		$('cmbpstatus').value='M';	
+			$('txtsalary').readOnly=false;
+			$('txtdailyrate').readOnly=true;
+			$('txtsalary').value='';
+			$('txtdailyrate').value='';
+			$('txtratemode').value='M';
 		var empInputs=$('frmViewEditEmp').serialize(true);
 		var ans=confirm("Would you like to set the Rate Mode to Monthly Rate or Per Month?");
 		if(ans===true){
@@ -640,14 +654,16 @@
 	
 	
 	function computeRates(Rate,compcode,cat,event){
-	  $('save').disabled = true;
-	  if (window.event)
-		key = window.event.keyCode;
-	  else if (event)
-		key = event.which;
-	  else
-	  	return true
-		
+		console.log(event);
+		$('save').disabled = true;
+		if (window.event)
+		  	key = window.event.keyCode;
+		else if (event)
+		  	key = event.which;
+		else
+			return true
+		  
+			console.log(event);
 		if(key == 13){	
 			params = 'profile.obj.php?code=cdsalary&Rate='+Rate+'&compcode='+compcode+'&cat='+cat;
 			new Ajax.Request(params,{
@@ -656,7 +672,7 @@
 					eval(req.responseText);
 				},
 				onSuccess: function (){
-					 $('save').disabled = false;
+					$('save').disabled = false;
 				}	
 			})
 		}

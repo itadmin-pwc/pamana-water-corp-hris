@@ -9,7 +9,21 @@ $mainUserDefObjObj = new  mainUserDefObj();
 $maintEmpObj = new ProfileObj();
 $mainContent6Obj = new  mainContent6();
 
-
+if($_GET["action"] == "updateSalary") {
+	$maintEmpObj->branch  	 = (isset($_POST['cmbbranch'])) ? $_POST['cmbbranch'] : 0;
+	$maintEmpObj->empNo = (isset($_POST['txtempNo'])) ? $_POST['txtempNo'] : "";
+	$maintEmpObj->compCode = 1; 
+	$maintEmpObj->Salary = (isset($_POST['txtsalary'])) ? $_POST['txtsalary'] : "";
+	$maintEmpObj->bank       = (isset($_POST['cmbbank'])) ? $_POST['cmbbank'] : 0;
+	$maintEmpObj->bankAcctNo = (isset($_POST['txtbankaccount'])) ? $_POST['txtbankaccount'] : "";
+	$stmt = $maintEmpObj->updateSalary();
+	if($stmt==true) {
+		echo "alert('Record sucessfully updated.');";
+	}
+	else	
+		echo "alert('Error while updating the record.');";
+	exit();
+}
 
 if ($_POST['save']!="") {
 	//General Tab	
@@ -98,7 +112,7 @@ if ($_POST['save']!="") {
 		}
 		else{
 			$maintEmpObj->updateemployee($_GET['empNo'],$_GET['compCode']);	
-			}
+		}
 	}
 	unset($_SESSION['strprofile'],$_SESSION['oldcompCode'],$_SESSION['profile_act'],$_SESSION['empRestDay']);
 	header("Location: new_emp_list.php");
@@ -156,6 +170,15 @@ unset($_SESSION['strprofile']);
 if ($_SESSION['strprofile']=="") {
 	$_SESSION['strprofile']=$maintEmpObj->createstrwil();
 }
+$visible = "";
+$readisabled = "";
+$viewonly = "";
+if ($_SESSION['Confiaccess'] !== "Y") {
+	$visible = "visibility:hidden;";
+}else{
+	$readisabled = "disabled";
+	$viewonly = "readonly";
+}
 
 if ($_GET['act']=="Edit" || $_GET['act']=="View") {
 	$payGrp = $maintEmpObj->getProcGrp();
@@ -168,10 +191,13 @@ if ($_GET['act']=="Edit" || $_GET['act']=="View") {
 	if ($maintEmpObj->maritalStat=="SG") {
 		$disablematstatus="disabled";
 	}
-	if (!in_array(1,explode(',',$_SESSION['user_payCat'])))  {
-		if ($maintEmpObj->paycat == 1) 
-			$visible = "visibility:hidden;";
-	}	
+	// echo $_SESSION['user_payCat'];
+	// echo "<br>";
+	// echo $maintEmpObj->paycat;
+	// if (!in_array(1,explode(',',$_SESSION['user_payCat'])))  {
+	// 	if ($maintEmpObj->paycat == 1) 
+	// 		$visible = "visibility:hidden;";
+	// }
 } else {
 	unset($_SESSION['oldcompCode']);
 }
@@ -324,29 +350,29 @@ include("../../../includes/calendar.php");
 					  <tr> 
 						<td width="19%" class="headertxt">Bio Series No.</td>
 						<td width="1%" class="headertxt">:</td>
-						<td width="80%" class="gridDtlVal"><input class='inputs' size="50" type="text" name="txtbio" value="<?=$maintEmpObj->bio?>" onBlur="checkno('bio',this.value,'<?=$notype?>',document.getElementById('cmblocation').value,'dvbio')" id="txtbio" maxlength="50">&nbsp;<span id="dvbio" style="color:#FF0000; font-size:10px"></span><input type="hidden" name="chbio" value="" id="chbio"></td>
+						<td width="80%" class="gridDtlVal"><input <?=$readisabled?> class='inputs' size="50" type="text" name="txtbio" value="<?=$maintEmpObj->bio?>" onBlur="checkno('bio',this.value,'<?=$notype?>',document.getElementById('cmblocation').value,'dvbio')" id="txtbio" maxlength="50">&nbsp;<span id="dvbio" style="color:#FF0000; font-size:10px"></span><input type="hidden" name="chbio" value="" id="chbio"></td>
 					  </tr>   
 					  <tr> 
 						<td width="19%" class="headertxt">Employee No.</td>
 						<td width="1%" class="headertxt">:</td>
-						<td width="80%" class="gridDtlVal"><input  class='inputs' size="50" type="text" name="txtempNo" value="<?=$maintEmpObj->empNo?>" onBlur="checkno('empNo',this.value,'<?=$notype?>','Emp No.','dvempNo')" id="txtempNo" maxlength="50">&nbsp;<span id="dvempNo" style="color:#FF0000; font-size:10px"></span><input type="hidden" name="chempNo" value="" id="chempNo"></td>
+						<td width="80%" class="gridDtlVal"><input <?=$viewonly?> class='inputs' size="50" type="text" name="txtempNo" value="<?=$maintEmpObj->empNo?>" onBlur="checkno('empNo',this.value,'<?=$notype?>','Emp No.','dvempNo')" id="txtempNo" maxlength="50">&nbsp;<span id="dvempNo" style="color:#FF0000; font-size:10px"></span><input type="hidden" name="chempNo" value="" id="chempNo"></td>
 					  </tr>
                       <? //}?>
 
 					  <tr> 
 						<td width="19%" class="headertxt">Last Name</td>
 						<td width="1%" class="headertxt">:</td>
-						<td width="80%" class="gridDtlVal"><input class='inputs' size="50" type="text" name="txtlname" value="<?=$maintEmpObj->lName?>" id="txtlname" maxlength="50" ></td>
+						<td width="80%" class="gridDtlVal"><input class='inputs' size="50" type="text" name="txtlname" value="<?=$maintEmpObj->lName?>" id="txtlname" maxlength="50" <?=$readisabled?>></td>
 					  </tr>
 					  <tr> 
 						<td class="headertxt">First Name</td>
 						<td class="headertxt">:</td>
-						<td class="gridDtlVal"><input value="<?=$maintEmpObj->fName?>" size="50" class='inputs' type="text" name="txtfname" id="txtfname" maxlength="50"></td>
+						<td class="gridDtlVal"><input value="<?=$maintEmpObj->fName?>" size="50" class='inputs' type="text" name="txtfname" id="txtfname" maxlength="50" <?=$readisabled?>></td>
 					  </tr>
 					  <tr> 
 						<td class="headertxt">Middle Name</td>
 						<td class="headertxt">:</td>
-						<td class="gridDtlVal"><input value="<?=$maintEmpObj->mName?>" size="50" class='inputs' type="text" name="txtmname"  id="txtmname" maxlength="50"></td>
+						<td class="gridDtlVal"><input value="<?=$maintEmpObj->mName?>" size="50" class='inputs' type="text" name="txtmname"  id="txtmname" maxlength="50" <?=$readisabled?>></td>
 					  </tr>
 					  <tr> 
 						<td class="headertxt">Company</td>
@@ -355,14 +381,14 @@ include("../../../includes/calendar.php");
 						$salaryamount=$maintEmpObj->Salary;
 						//$maintEmpObj->DropDownMenu($maintEmpObj->makeArr($maintEmpObj->getCompany(''),'compCode','compName',''),'cmbcompny',$maintEmpObj->compCode,'class="inputs" style="width:222px;" onchange="getresult(this.value,\'profile.obj.php\',\'cdpaycat\',\'divpaycat\');getresult(this.value,\'profile.obj.php\',\'cdbranch\',\'divbranch\'); getresult(this.value,\'profile.obj.php\',\'cdshift\',\'dvshift\'); getresult(this.value,\'profile.obj.php\',\'cdposition\',\'dvposition\'); getsalary(this.value,\'profile.obj.php\',\'cdsalarycmb\',\'dvsalary\',\''.$maintEmpObj->Salary.'\'); getsalary(this.value,\'profile.obj.php\',\'cddratecmb\',\'dvdailyrate\',\''.$maintEmpObj->Drate.'\'); getcompany(this.value);"'); 
 						
-						$maintEmpObj->DropDownMenu($maintEmpObj->makeArr($maintEmpObj->getCompany(''),'compCode','compName',''),'cmbcompny',$maintEmpObj->compCode,'class="inputs" style="width:222px;" onchange="getresult(this.value,\'profile.obj.php\',\'cdpaycat\',\'divpaycat\');getresult(this.value,\'profile.obj.php\',\'divbranch\'); getresult(this.value,\'profile.obj.php\',\'cdshift\',\'dvshift\'); getresult(this.value,\'profile.obj.php\',\'cdposition\',\'dvposition\'); getsalary(this.value,\'profile.obj.php\',\'cdsalarycmb\',\'dvsalary\',\''.$maintEmpObj->Salary.'\'); getsalary(this.value,\'profile.obj.php\',\'cddratecmb\',\'dvdailyrate\',\''.$maintEmpObj->Drate.'\'); getcompany(this.value);"'); ?><input type="hidden" value="<?=$maintEmpObj->compCode?>" name="company_code" id="company_code"></td>
+						$maintEmpObj->DropDownMenu($maintEmpObj->makeArr($maintEmpObj->getCompany(''),'compCode','compName',''),'cmbcompny',$maintEmpObj->compCode,'class="inputs" style="width:222px;" onchange="getresult(this.value,\'profile.obj.php\',\'cdpaycat\',\'divpaycat\');getresult(this.value,\'profile.obj.php\',\'divbranch\'); getresult(this.value,\'profile.obj.php\',\'cdshift\',\'dvshift\'); getresult(this.value,\'profile.obj.php\',\'cdposition\',\'dvposition\'); getsalary(this.value,\'profile.obj.php\',\'cdsalarycmb\',\'dvsalary\',\''.$maintEmpObj->Salary.'\'); getsalary(this.value,\'profile.obj.php\',\'cddratecmb\',\'dvdailyrate\',\''.$maintEmpObj->Drate.'\'); getcompany(this.value);"' . $readisabled); ?><input type="hidden" value="<?=$maintEmpObj->compCode?>" name="company_code" id="company_code"></td>
 					  </tr>
 					  <tr> 
 						<td class="headertxt" >Branch</td>
 						<td class="headertxt">:</td>
 						<td class="gridDtlVal">
 							<div id="divbranch">
-						<? $maintEmpObj->DropDownMenu($maintEmpObj->makeArr($maintEmpObj->getBranch($maintEmpObj->compCode),'brnCode','brnDesc',''),'cmbbranch',$maintEmpObj->branch,'class="inputs" style="width:222px;" onchange="loadPayGroup(this.value);"'); ?></div>						</td>
+						<? $maintEmpObj->DropDownMenu($maintEmpObj->makeArr($maintEmpObj->getBranch($maintEmpObj->compCode),'brnCode','brnDesc',''),'cmbbranch',$maintEmpObj->branch,'class="inputs" style="width:222px;" onchange="loadPayGroup(this.value);"' . $readisabled); ?></div>						</td>
 					  </tr>
   
                                             <tr>
@@ -401,36 +427,36 @@ include("../../../includes/calendar.php");
 					  <tr> 
 						<td width="35%" class="headertxt">Home No, Bldg., Street</td>
 						<td width="1%" class="headertxt">:</td>
-						<td class="gridDtlVal" valign="top"><input value="<?=$maintEmpObj->Addr1?>" size="70" name="txtadd1" type="text" class="inputs" maxlength="150" id="txtadd1" /></td>
+						<td class="gridDtlVal" valign="top"><input <?=$readisabled?> value="<?=$maintEmpObj->Addr1?>" size="70" name="txtadd1" type="text" class="inputs" maxlength="150" id="txtadd1" /></td>
 						</tr>
 					  <tr> 
 						<td class="headertxt">Barangay</td>
 						<td class="headertxt">:</td>
-						<td class="gridDtlVal" valign="top"><input value="<?=$maintEmpObj->Addr2?>" size="70" name="txtadd2" type="text" class="inputs" maxlength="150" id="txtadd2" /></td>
+						<td class="gridDtlVal" valign="top"><input <?=$readisabled?> value="<?=$maintEmpObj->Addr2?>" size="70" name="txtadd2" type="text" class="inputs" maxlength="150" id="txtadd2" /></td>
 						</tr>
 					  <tr>
 					    <td class="headertxt">Province</td> 
 						<td class="headertxt">:</td>
 						<td class="gridDtlVal" valign="top"><? 
 						$arrResProv=$maintEmpObj->makeArr($maintEmpObj->getProvince(),'provinceCd','provinceDesc','');
-						$maintEmpObj->DropDownMenu($arrResProv,'cmbProvince',$maintEmpObj->provinceCd,'onChange="popProvince(this.value);" class="inputs" style="width:222px;"');?>
+						$maintEmpObj->DropDownMenu($arrResProv,'cmbProvince',$maintEmpObj->provinceCd,'onChange="popProvince(this.value);" class="inputs" style="width:222px;"' . $readisabled);?>
                       </tr>  
                       <tr>
                       	<td class="headertxt">Municipality/City</td>
                         <td class="headertxt">:</td>
                         <td class="gridDtlVal" valign="top"><div id="divMunicipality"><?  
 						$arrresmun=$maintEmpObj->makeArr($maintEmpObj->getMunicipality(),'municipalityCd','municipalityDesc','');
-						$maintEmpObj->DropDownMenu($arrresmun,'cmbMunicipality',$maintEmpObj->Municipality,'class="inputs" style="width:222px"');?></div></td>
+						$maintEmpObj->DropDownMenu($arrresmun,'cmbMunicipality',$maintEmpObj->Municipality,'class="inputs" style="width:222px"' . $readisabled);?></div></td>
                       </tr>
                       <tr>
                       	<td class="headertxt">In Case of Emergency Contact</td>
                         <td class="headertxt">:</td>
-                        <td class="gridDtlVal" valign="top"><input value="<?=$maintEmpObj->ECPerson;?>" size="50" name="txtECPerson" type="text" class="inputs" maxlength="150"  id="txtECPerson"/></td>
+                        <td class="gridDtlVal" valign="top"><input <?=$readisabled?> value="<?=$maintEmpObj->ECPerson;?>" size="50" name="txtECPerson" type="text" class="inputs" maxlength="150"  id="txtECPerson"/></td>
                       </tr>
                       <tr>
                       	<td class="headertxt">Contact Number</td>
                         <td class="headertxt">:</td>
-                        <td class="gridDtlVal" valign="top"><input value="<?=$maintEmpObj->ECNumber?>" size="15" name="txtECNumber" type="text" class="inputs" maxlength="15" id="txtECNumber"/></td>
+                        <td class="gridDtlVal" valign="top"><input <?=$readisabled?> value="<?=$maintEmpObj->ECNumber?>" size="15" name="txtECNumber" type="text" class="inputs" maxlength="15" id="txtECNumber"/></td>
                       </tr>
 					  <tr>
 					    <td colspan="3" height="10" ></td> 
@@ -460,7 +486,7 @@ include("../../../includes/calendar.php");
                                     <?	
                                                         $poswhere=" and tblPosition.compCode='" . $maintEmpObj->compCode . "'";
                                                         
-                                                        $maintEmpObj->DropDownMenu($maintEmpObj->makeArr($maintEmpObj->getpositionmer($poswhere,1),'posCode','pp1',''),'cmbposition',$maintEmpObj->position,'class="inputs" style="width:222px;" onchange="getPosInfo(this.value); getPayCats(this.value);"');
+                                                        $maintEmpObj->DropDownMenu($maintEmpObj->makeArr($maintEmpObj->getpositionmer($poswhere,1),'posCode','pp1',''),'cmbposition',$maintEmpObj->position,'class="inputs" style="width:222px;" onchange="getPosInfo(this.value); getPayCats(this.value);"' . $readisabled);
 							$pos = $maintEmpObj->getpositionwil(" and posCode='{$maintEmpObj->position}'",2);
 							$Div = $maintEmpObj->getDivDescArt($maintEmpObj->compCode,$maintEmpObj->divCode);
 							$Dept = $maintEmpObj->getDeptDescArt($maintEmpObj->compCode, $maintEmpObj->divCode,$maintEmpObj->DepCode);
@@ -514,36 +540,36 @@ include("../../../includes/calendar.php");
                               <tr>
                                 <td class="headertxt">Employment Status</td>
                                 <td class="headertxt">:</td>
-                                <td class="gridDtlVal"><? $maintEmpObj->DropDownMenu(array("0"=>"",'RG'=>'Regular','PR'=>'Probationary','CN'=>'Contractual'),'cmbstatus',$maintEmpObj->Status,'class="inputs" style="width:222px;"'); ?></td>
+                                <td class="gridDtlVal"><? $maintEmpObj->DropDownMenu(array("0"=>"",'RG'=>'Regular','PR'=>'Probationary','CN'=>'Contractual'),'cmbstatus',$maintEmpObj->Status,'class="inputs" style="width:222px;"' . $readisabled); ?></td>
                               </tr>
                               <tr>
                                 <td class="headertxt">Date Hired</td>
                                 <td class="headertxt">:</td>
-                                <td class="gridDtlVal"><input   name="txtEffDate" type="text" class='inputs' id="txtEffDate" value="<?=($maintEmpObj->Effectivity !="") ? date('Y-m-d',strtotime($maintEmpObj->Effectivity)) : "";?>" size="15" maxlength="10" readonly/></td>
+                                <td class="gridDtlVal"><input <?=$readisabled?> name="txtEffDate" type="text" class='inputs' id="txtEffDate" value="<?=($maintEmpObj->Effectivity !="") ? date('Y-m-d',strtotime($maintEmpObj->Effectivity)) : "";?>" size="15" maxlength="10" readonly/></td>
                               </tr>
                               <tr>
                                 <td class="headertxt">Regularization</td>
                                 <td class="headertxt">:</td>
-                                <td class="gridDtlVal"><input   name="txtRegDate" value="<?=($maintEmpObj->Regularization !="") ? date('Y-m-d',strtotime($maintEmpObj->Regularization)) : "";?>" type="text" class='inputs' id="txtRegDate"   size="15" maxlength="10" readonly /></td>
+                                <td class="gridDtlVal"><input  <?=$readisabled?>  name="txtRegDate" value="<?=($maintEmpObj->Regularization !="") ? date('Y-m-d',strtotime($maintEmpObj->Regularization)) : "";?>" type="text" class='inputs' id="txtRegDate"   size="15" maxlength="10" readonly /></td>
                               </tr>
                             <tr>
                             	<td class="headertxt">End Date</td>
                                 <td class="headertxt">:</td>
-                                <td class="gridDtlVal"><input   name="txtEndDate" value="<?=($maintEmpObj->EndDate !="") ? date('Y-m-d',strtotime($maintEmpObj->EndDate)) : "";?>" type="text" class='inputs' id="txtEndDate"  size="15" maxlength="10" readonly /></td>
+                                <td class="gridDtlVal"><input  <?=$readisabled?> name="txtEndDate" value="<?=($maintEmpObj->EndDate !="") ? date('Y-m-d',strtotime($maintEmpObj->EndDate)) : "";?>" type="text" class='inputs' id="txtEndDate"  size="15" maxlength="10" readonly /></td>
                             </tr>
                             <tr>
                             	<td class="headertxt">Resigned Date</td>
                                 <td class="headertxt">:</td>
-                                <td class="gridDtlVal"><input value="<?=($maintEmpObj->RSDate !="") ? date('Y-m-d',strtotime($maintEmpObj->RSDate)) : "";?>" name="txtRSDate" type="text" class='inputs' id="txtRSDate"  size="15" maxlength="10" readonly /></td>
+                                <td class="gridDtlVal"><input <?=$readisabled?> value="<?=($maintEmpObj->RSDate !="") ? date('Y-m-d',strtotime($maintEmpObj->RSDate)) : "";?>" name="txtRSDate" type="text" class='inputs' id="txtRSDate"  size="15" maxlength="10" readonly /></td>
                             </tr>
                             <tr>
                             	<td class="headertxt">With Previous Employer</td>
                                 <td class="headertxt">:</td>
                                 <td class="gridDtlVal"><label>
-                                  <input type="radio" name="chprev" value="Y"   <? if ($maintEmpObj->prevtag=="Y") echo "checked"?> <?=$disabled?> id="chprev" />
+                                  <input type="radio" name="chprev" value="Y"   <? if ($maintEmpObj->prevtag=="Y") echo "checked"?> <?=$disabled?> <?=$readisabled?> id="chprev" />
                                   Yes</label>
                                     <label>
-                                    <input type="radio" name="chprev" <? if ($maintEmpObj->prevtag=="N") echo "checked"?>  value="N" <?=$disabled?> id="chprev" />
+                                    <input type="radio" name="chprev" <? if ($maintEmpObj->prevtag=="N") echo "checked"?>  value="N" <?=$disabled?> <?=$readisabled?> id="chprev" />
                                       No</label></td>
                             </table></td>
                             <td width="24%" valign="top"></td>
@@ -572,105 +598,133 @@ include("../../../includes/calendar.php");
                 </div>
               <div id="content5" class="content5">
  					<TABLE align="center" cellpadding="0" cellspacing="2" border="0" class="childGrid" width="100%">
+					 
                       <tr> 
                         <td align="left" class="parentGridDtl" height="470" valign="top"><table width="100%" border="0" cellspacing="1" cellpadding="2">
+						<tr>
+					<? 
+						  if($maintEmpObj->Salary !== "" && $maintEmpObj->Salary > 0) {
+						  ?>
+							  <td colspan="6" style="color:#008000; border:1px solid; text-align:center;"><strong>With Basic Rate</strong></td>
+						  <?
+						  } else {
+						  ?>
+							  <td colspan="6" style="color:#FF0000; border:1px solid; text-align:center;"><strong>Basic Rate Not Yet Encoded</strong></td>
+						  <?
+						  }
+					   ?>
+					</tr>
 					  <tr> 
 						<td colspan="6" height="25"></td>
 					  </tr>
 					  <tr> 
 						<td width="19%" class="headertxt">Gender</td>
 						<td width="1%" class="headertxt">:</td>
-						<td width="40%" class="gridDtlVal"><? $maintEmpObj->DropDownMenu(array('','M'=>'Male','F'=>'Female'),'cmbgender',$maintEmpObj->sex,'class="inputs" style="width:222px;"'); ?></td>
+						<td width="40%" class="gridDtlVal"><? $maintEmpObj->DropDownMenu(array('','M'=>'Male','F'=>'Female'),'cmbgender',$maintEmpObj->sex,'class="inputs" style="width:222px;"' . $readisabled); ?></td>
 						<td class="headertxt">SSS</td>
                         <td class="headertxt">:</td>
-                        <td class="gridDtlVal"><input class='inputs' maxlength="12" type="text" value="<?=$maintEmpObj->SSS?>" onKeyDown="javascript:return dFilter (event.keyCode, this, '##-#######-#');" onBlur="checkno('empSssNo',this.value,'<?=$notype?>','SSS No.','dvsss')"  name="txtsss" id="txtsss" /><span id="dvsss" style="color:#FF0000;font-size:10px"></span><input type="hidden" name="chsss" value="" id="chsss"></td>
+                        <td class="gridDtlVal"><input <?=$readisabled?> class='inputs' maxlength="12" type="text" value="<?=$maintEmpObj->SSS?>" onKeyDown="javascript:return dFilter (event.keyCode, this, '##-#######-#');" onBlur="checkno('empSssNo',this.value,'<?=$notype?>','SSS No.','dvsss')"  name="txtsss" id="txtsss" /><span id="dvsss" style="color:#FF0000;font-size:10px"></span><input type="hidden" name="chsss" value="" id="chsss"></td>
 					  </tr>
 					  <tr> 
 						<td class="headertxt">Nick Name</td>
 						<td class="headertxt">:</td>
-						<td class="gridDtlVal"><input class='inputs' maxlength="20" size="33" type="text" value="<?=$maintEmpObj->NickName?>"  name="txtnickname" id="txtnickname" /></td>
+						<td class="gridDtlVal"><input <?=$readisabled?> class='inputs' maxlength="20" size="33" type="text" value="<?=$maintEmpObj->NickName?>"  name="txtnickname" id="txtnickname" /></td>
 						<td class="headertxt">Philhealth</td>
                         <td class="headertxt">:</td>
-                        <td class="gridDtlVal"><input class='inputs' maxlength="25" type="text" value="<?=$maintEmpObj->PhilHealth?>"  onBlur="checkno('empPhicNo',this.value,'<?=$notype?>','Philhealth No.','dvphilhealth')" name="txtphilhealth" id="txtphilhealth" /><span id="dvphilhealth" style="color:#FF0000;font-size:10px"></span><input type="hidden" name="chphilhealth" value="" id="chphilhealth"></td>
+                        <td class="gridDtlVal"><input <?=$readisabled?> class='inputs' maxlength="25" type="text" value="<?=$maintEmpObj->PhilHealth?>"  onBlur="checkno('empPhicNo',this.value,'<?=$notype?>','Philhealth No.','dvphilhealth')" name="txtphilhealth" id="txtphilhealth" /><span id="dvphilhealth" style="color:#FF0000;font-size:10px"></span><input type="hidden" name="chphilhealth" value="" id="chphilhealth"></td>
 					  </tr>
 					  <tr> 
 						<td class="headertxt">Birth Place</td>
 						<td class="headertxt">:</td>
-						<td class="gridDtlVal"><input class='inputs' maxlength="50" size="33" type="text" value="<?=$maintEmpObj->Bplace?>"  name="txtbplace" id="txtbplace" /></td>
+						<td class="gridDtlVal"><input <?=$readisabled?> class='inputs' maxlength="50" size="33" type="text" value="<?=$maintEmpObj->Bplace?>"  name="txtbplace" id="txtbplace" /></td>
 						<td class="headertxt">Tax ID</td>
                         <td class="headertxt">:</td>
-                        <td class="gridDtlVal"><input class='inputs' maxlength="11" type="text" value="<?=$maintEmpObj->TIN?>" onKeyDown="javascript:return dFilter (event.keyCode, this, '###-###-###');" onBlur="checkno('empTin',this.value,'<?=$notype?>','Tax ID No.','dvtaxid')"  name="txttax" id="txttax" /><span id="dvtaxid" style="color:#FF0000; font-size:10px"></span><input type="hidden" name="chtaxid" value="" id="chtaxid"><? //$maintEmpObj->DropDownMenu(array('','Light'=>'Light','Medium'=>'Medium','Heavy'=>'Heavy'),'cmbbuild',$maintEmpObj->Build,'class="inputs" style="width:222px;"'); ?></td>
+                        <td class="gridDtlVal"><input <?=$readisabled?> class='inputs' maxlength="11" type="text" value="<?=$maintEmpObj->TIN?>" onKeyDown="javascript:return dFilter (event.keyCode, this, '###-###-###');" onBlur="checkno('empTin',this.value,'<?=$notype?>','Tax ID No.','dvtaxid')"  name="txttax" id="txttax" /><span id="dvtaxid" style="color:#FF0000; font-size:10px"></span><input type="hidden" name="chtaxid" value="" id="chtaxid"><? //$maintEmpObj->DropDownMenu(array('','Light'=>'Light','Medium'=>'Medium','Heavy'=>'Heavy'),'cmbbuild',$maintEmpObj->Build,'class="inputs" style="width:222px;"'); ?></td>
 					  </tr>
 					  <tr> 
 						<td class="headertxt">Birthday</td>
 						<td class="headertxt">:</td>
-						<td class="gridDtlVal"><input name="txtBDay" type="text" value="<?=($maintEmpObj->dateOfBirth !="") ? date('Y-m-d',strtotime($maintEmpObj->dateOfBirth)) : "";?>"  class='inputs' id="txtBDay" size="12" readonly></td>
+						<td class="gridDtlVal"><input <?=$readisabled?> name="txtBDay" type="text" value="<?=($maintEmpObj->dateOfBirth !="") ? date('Y-m-d',strtotime($maintEmpObj->dateOfBirth)) : "";?>"  class='inputs' id="txtBDay" size="12" readonly></td>
 						<td class="headertxt">HDMF</td>
                         <td class="headertxt">:</td>
-                        <td class="gridDtlVal"><input class='inputs' maxlength="25" type="text" value="<?=$maintEmpObj->HDMF?>" onBlur="checkno('empPagibig',this.value,'<?=$notype?>','HDMF No.','dvhdmf')"  name="txthdmf" id="txthdmf" /><span id="dvhdmf" style="color:#FF0000;font-size:10px"></span><input type="hidden" name="chhdmf" value="" id="chhdmf"><? //$maintEmpObj->DropDownMenu(array('','Light'=>'Light','Fair'=>'Fair','Dark'=>'Dark'),'cmbcomplexion',$maintEmpObj->Complexion,'class="inputs" style="width:222px;"'); ?></td>
+                        <td class="gridDtlVal"><input <?=$readisabled?> class='inputs' maxlength="25" type="text" value="<?=$maintEmpObj->HDMF?>" onBlur="checkno('empPagibig',this.value,'<?=$notype?>','HDMF No.','dvhdmf')"  name="txthdmf" id="txthdmf" /><span id="dvhdmf" style="color:#FF0000;font-size:10px"></span><input type="hidden" name="chhdmf" value="" id="chhdmf"><? //$maintEmpObj->DropDownMenu(array('','Light'=>'Light','Fair'=>'Fair','Dark'=>'Dark'),'cmbcomplexion',$maintEmpObj->Complexion,'class="inputs" style="width:222px;"'); ?></td>
 					  </tr>
 					  <tr> 
 						<td class="headertxt">Marital Status</td>
 						<td class="headertxt">:</td>
-						<td class="gridDtlVal"><? $maintEmpObj->DropDownMenu(array('','SG'=>'Single','ME'=>'Married','SP'=>'Separated','WI'=>'Widow(er)'),'cmbmaritalstatus',$maintEmpObj->maritalStat,'class="inputs" style="width:222px;"  onchange="checkmarital();"'); ?></td>
-						<td width="23%" class="headertxt">Rate Mode</td>
-						<td width="1%" class="headertxt">:</td>
-						<td width="16%" class="gridDtlVal"><div id="basicrate"><? $maintEmpObj->DropDownMenu(array('','D'=>'Per Day','M'=>'Per Month'),'cmbpstatus',$maintEmpObj->PStatus,' class="inputs" onChange="checkrate();" style="width:145px;" disabled="disabled"'); ?></div><input type="hidden" name="txtratemode" id="txtratemode" value="<?=$maintEmpObj->PStatus;?>"/>
+						<td class="gridDtlVal"><? $maintEmpObj->DropDownMenu(array('','SG'=>'Single','ME'=>'Married','SP'=>'Separated','WI'=>'Widow(er)'),'cmbmaritalstatus',$maintEmpObj->maritalStat,'class="inputs" style="width:222px;"  onchange="checkmarital();"' . $readisabled); ?></td>
+						
+						<td width="23%" style="<?=$visible?>" class="headertxt">Rate Mode</td>
+						<td width="1%" style="<?=$visible?>" class="headertxt">:</td>
+						<td width="16%" style="<?=$visible?>" class="gridDtlVal"><div id="basicrate"><? $maintEmpObj->DropDownMenu(array('','D'=>'Per Day','M'=>'Per Month'),'cmbpstatus',$maintEmpObj->PStatus,' class="inputs" onChange="checkrate();" style="width:145px;" disabled="disabled"'); ?></div><input type="hidden" name="txtratemode" id="txtratemode" value="<?=$maintEmpObj->PStatus;?>"/>
 						</td>
 					  </tr>
 					  <tr> 
 						<td class="headertxt">Height</td>
 						<td class="headertxt">:</td>
-						<td class="gridDtlVal"><input class='inputs' maxlength="6" type="text" value="<?=$maintEmpObj->Height?>"  name="txtheight" id="txtheight"  size="10" onKeyDown="javascript:return dFilter (event.keyCode, this, '#\'##\'\'');" />&nbsp;ft.</td>
-						<td class="headertxt">Basic Rate</td>
-						<td class="headertxt">:</td>
-						<td class="gridDtlVal"><div id="dvsalary"><input class='inputs' type="text" value="<?=$maintEmpObj->Salary?>" style="<?=$visible?>"  name="txtsalary" onBlur="return computeRates(this.value,<?=$maintEmpObj->compCode?>,'1',event);" maxlength="9" id="txtsalary" readonly /></div></td>
+						<td class="gridDtlVal"><input <?=$readisabled?> class='inputs' maxlength="6" type="text" value="<?=$maintEmpObj->Height?>"  name="txtheight" id="txtheight"  size="10" onKeyDown="javascript:return dFilter (event.keyCode, this, '#\'##\'\'');" />&nbsp;ft.</td>
+						
+						<td class="headertxt" style="<?=$visible?>">Basic Rate</td>
+						<td class="headertxt" style="<?=$visible?>">:</td>
+						<td class="gridDtlVal" style="<?=$visible?>"><div id="dvsalary"><input class='inputs' type="text" value="<?=$maintEmpObj->Salary?>" style="<?=$visible?>" name="txtsalary" onkeypress="return computeRates(this.value,<?=$maintEmpObj->compCode?>,'1',event);" maxlength="9" id="txtsalary"/></div></td>
+					    
 					  </tr>
 					  <tr>
 					    <td class="headertxt">Weight</td>
 					    <td class="headertxt">:</td>
-					    <td class="gridDtlVal"><input class='inputs' maxlength="3" type="text" value="<?=$maintEmpObj->Weight?>"  name="txtweight" id="txtweight" size="10" onKeyDown="javascript:return dFilter (event.keyCode, this, '###');"/>&nbsp;kg.</td>
-					    <td class="headertxt">Daily Rate</td>
-						<td class="headertxt">:</td>
-						<td class="gridDtlVal">
+					    <td class="gridDtlVal"><input <?=$readisabled?> class='inputs' maxlength="3" type="text" value="<?=$maintEmpObj->Weight?>"  name="txtweight" id="txtweight" size="10" onKeyDown="javascript:return dFilter (event.keyCode, this, '###');"/>&nbsp;kg.</td>
+					    
+						<td class="headertxt" style="<?=$visible?>">Daily Rate</td>
+						<td class="headertxt" style="<?=$visible?>">:</td>
+						<td class="gridDtlVal" style="<?=$visible?>">
 							<div id="dvdailyrate">
-								<input class='inputs' type="text" value="<?=$maintEmpObj->Drate?>" style="<?=$visible?> " onBlur="return computeRates(this.value,<?=$maintEmpObj->compCode?>,'0',event);"  name="txtdailyrate" maxlength="9" id="txtdailyrate" readonly />
+								<input class='inputs' type="text" value="<?=$maintEmpObj->Drate?>" style="<?=$visible?> " onkeypress="return computeRates(this.value,<?=$maintEmpObj->compCode?>,'0',event);"  name="txtdailyrate" maxlength="9" id="txtdailyrate" />
 								
 							</div>
 						<input class='inputs' type="hidden" value="<?=$maintEmpObj->Hrate?>"  name="txthourlyrate" style="<?=$visible?>" readonly maxlength="9" id="txthourlyrate" /></td>
-				      </tr>
+						
+					  </tr>
 					  <tr>
 					    <td class="headertxt">Citizenship</td>
 					    <td class="headertxt">:</td>
-					    <td class="gridDtlVal"><? $maintEmpObj->DropDownMenu($maintEmpObj->makeArr($maintEmpObj->getcitizenshipwil(''),'citizenCd','citizenDesc',''),'cmbcitizenship',$maintEmpObj->CitizenCd,'class="inputs" style="width:222px;"'); ?></td>
-					   <td class="headertxt">Pay Group</td>
-						<td class="headertxt">:</td>
-						<td class="gridDtlVal"><div id="payGroupId"><? $maintEmpObj->DropDownMenu(array('','Group 1'),'cmbgroup',$maintEmpObj->Group,'class="inputs" style="width:145px;"'); ?></div></td>
-				      </tr>
+					    <td class="gridDtlVal"><? $maintEmpObj->DropDownMenu($maintEmpObj->makeArr($maintEmpObj->getcitizenshipwil(''),'citizenCd','citizenDesc',''),'cmbcitizenship',$maintEmpObj->CitizenCd,'class="inputs" style="width:222px;"' . $readisabled); ?></td>
+					   
+						<td class="headertxt" style="<?=$visible?>">Pay Group</td>
+						<td class="headertxt" style="<?=$visible?>">:</td>
+						<td class="gridDtlVal" style="<?=$visible?>"><div id="payGroupId"><? $maintEmpObj->DropDownMenu(array('','Group 1'),'cmbgroup',$maintEmpObj->Group,'class="inputs" style="width:145px;"'); ?></div></td>
+				        
+					  </tr>
 					  <tr>
 					    <td class="headertxt">Religion</td>
 					    <td class="headertxt">:</td>
-					    <td class="gridDtlVal"><? $maintEmpObj->DropDownMenu($maintEmpObj->makeArr($maintEmpObj->getreligionwil(),'relCd','relDesc',''),'cmbreligion',$maintEmpObj->Religion,'class="inputs" style="width:222px;"'); ?></td>
-					    <td class="headertxt">Pay Category</td>
-						<td class="headertxt">:</td>
-						<td class="gridDtlVal"><div id="divpaycat"><? $maintEmpObj->DropDownMenu($maintEmpObj->makeArr($maintEmpObj->getPayCat($maintEmpObj->compCode,''),'payCat','payCatDesc',''),'cmbCategory',$maintEmpObj->paycat,'class="inputs" style="width:145px; '.$visible.'" disabled="disabled"'); ?><input type="hidden" name="txtcat" id="txtcat" value="<?=$maintEmpObj->paycat;?>"/></div></td>
-				      </tr>
+					    <td class="gridDtlVal"><? $maintEmpObj->DropDownMenu($maintEmpObj->makeArr($maintEmpObj->getreligionwil(),'relCd','relDesc',''),'cmbreligion',$maintEmpObj->Religion,'class="inputs" style="width:222px;"' . $readisabled); ?></td>
+					    
+						<td class="headertxt" style="<?=$visible?>">Pay Category</td>
+						<td class="headertxt" style="<?=$visible?>">:</td>
+						<td class="gridDtlVal" style="<?=$visible?>"><div id="divpaycat"><? $maintEmpObj->DropDownMenu($maintEmpObj->makeArr($maintEmpObj->getPayCat($maintEmpObj->compCode,''),'payCat','payCatDesc',''),'cmbCategory',$maintEmpObj->paycat,'class="inputs" style="width:145px; '.$visible.'" disabled="disabled"'); ?><input type="hidden" name="txtcat" id="txtcat" value="<?=$maintEmpObj->paycat;?>"/></div></td>
+					    
+					  </tr>
 					  <tr>
 					    <td class="headertxt">Blood Type</td>
 					    <td class="headertxt">:</td>
-					    <td class="gridDtlVal"><? $maintEmpObj->DropDownMenu(array('','A'=>'A','B'=>'B','AB'=>'A B','O'=>'O','A-'=>'A-','A+'=>'A+','B-'=>'B-','B+'=>'B+','O-'=>'O-','O+'=>'O+'),'cmbbloodtype',$maintEmpObj->BloodType,'class="inputs" style="width:222px;"'); ?></td>
-					   <td class="headertxt">Bank Account Type</td>
-						<td class="headertxt">:</td>
-						<td class="gridDtlVal"><? $maintEmpObj->DropDownMenu($maintEmpObj->makeArr($maintEmpObj->getbankwil(),'bankCd','bankDesc',''),'cmbbank',$maintEmpObj->bank,'class="inputs" style="width:145px;" onChange="checkno(\'empAcctNo\',\'\',\'' .$notype. '\',\'Account No.\',\'dvAcctNo\')" onBlur="checkno(\'empAcctNo\',\'\',\'' .$notype. '\',\'Account No.\',\'dvAcctNo\')"'); ?></td>
-				      </tr>
+					    <td class="gridDtlVal"><? $maintEmpObj->DropDownMenu(array('','A'=>'A','B'=>'B','AB'=>'A B','O'=>'O','A-'=>'A-','A+'=>'A+','B-'=>'B-','B+'=>'B+','O-'=>'O-','O+'=>'O+'),'cmbbloodtype',$maintEmpObj->BloodType,'class="inputs" style="width:222px;"' . $readisabled); ?></td>
+						
+						<td class="headertxt" style="<?=$visible?>">Bank Account Type</td>
+						<td class="headertxt" style="<?=$visible?>">:</td>
+						<td class="gridDtlVal" style="<?=$visible?>"><? $maintEmpObj->DropDownMenu($maintEmpObj->makeArr($maintEmpObj->getbankwil(),'bankCd','bankDesc',''),'cmbbank',$maintEmpObj->bank,'class="inputs" style="width:145px;" onChange="checkno(\'empAcctNo\',\'\',\'' .$notype. '\',\'Account No.\',\'dvAcctNo\')" onBlur="checkno(\'empAcctNo\',\'\',\'' .$notype. '\',\'Account No.\',\'dvAcctNo\')"'); ?></td>
+						
+					 </tr>
 					<tr>
                     	<td class="headertxt">Tax Exemption</td>
                         <td class="headertxt">:</td>
                         <td class="gridDtlVal"><? $maintEmpObj->DropDownMenu($maintEmpObj->makeArr($maintEmpObj->getTEU(),'teuCode','teuDesc',''),'cmbexemption',$maintEmpObj->Exemption,'class="inputs" style="width:222px;"'); ?></td>
-                       <td class="headertxt">Bank Account</td>
-					    <td class="headertxt">:</td>
-					    <td class="gridDtlVal"><input class='inputs'  maxlength="25" type="text" value="<?=$maintEmpObj->bankAcctNo?>" onKeyDown="return AcctFormat(event);"  name="txtbankaccount" id="txtbankaccount" onBlur="checkno('empAcctNo',this.value,'<?=$notype?>','Account No.','dvAcctNo')" /><span id="dvAcctNo" style="color:#FF0000;font-size:10px"></span><input type="hidden" name="chAcctNo" value="" id="chAcctNo"></td>
-                    </tr>
+                        
+						<td class="headertxt" style="<?=$visible?>">Bank Account</td>
+					    <td class="headertxt" style="<?=$visible?>">:</td>
+					    <td class="gridDtlVal" style="<?=$visible?>"><input class='inputs'  maxlength="25" type="text" value="<?=$maintEmpObj->bankAcctNo?>" onKeyDown="return AcctFormat(event);"  name="txtbankaccount" id="txtbankaccount" onBlur="checkno('empAcctNo',this.value,'<?=$notype?>','Account No.','dvAcctNo')" /><span id="dvAcctNo" style="color:#FF0000;font-size:10px"></span><input type="hidden" name="chAcctNo" value="" id="chAcctNo"></td>
+						
+					</tr>
+					
                     <?
                     if($_SESSION['user_telcoaccess']=="Y"){
 					?>
@@ -682,13 +736,26 @@ include("../../../includes/calendar.php");
                     <?php 
 					}
 					?>
+					<?
+					if($_SESSION['Confiaccess']==="Y" && $maintEmpObj->stat_ !== "R") {
+					?>
 					<tr>
+						<td colspan="6" style="text-align:right;">
+							<button type="button" class="inputs" name="saveSalary" onClick="return submitSalary()">Save</button>
+						</td>
+					</tr>
+					<? } ?>
+					<tr>
+					
+					<? if ($_SESSION['Confiaccess']=="Y") {  ?>
                     	<td colspan="6"><div id="Allowance"></div>
                         <div id="indicator2" align="center"></div>
                         </td>
+					<? } ?>
                     </tr>
 					</table></td>
                       </tr>
+					  
                     </TABLE>				
                     </div>
                 
@@ -719,18 +786,19 @@ include("../../../includes/calendar.php");
 			
                <? 
 				//if ($payGrp != $maintEmpObj->Group && $_SESSION['user_release']=="Y") {  
-				if ($payGrp != $maintEmpObj->Group) {  
+				if ($payGrp != $maintEmpObj->Group && $_SESSION['Confiaccess']!=="Y") {  
 			   ?>
                 <label>
                 &nbsp;&nbsp;&nbsp;<input type="checkbox" name="chRelease" id="chRelease">
                 <span class="headertxt">Post</span>&nbsp;&nbsp;</label>
-                <?}?>
-              
-                 <? if ($_GET['act']!="View") {?>
-                <input name="save"   type="submit" onClick="return submitProfile()" class="inputs" id="save" value="Save">
+                <?} if($_SESSION['Confiaccess']==="Y") {
+					$hidden = 'visibility:hidden;';
+				}?>
+                 <? if ($_GET['act']!="View") { ?>
+                <input name="save"   type="submit" style="<?=$hidden?>" onClick="return submitProfile()" class="inputs" id="save" value="Save">
                 <? } else {?>
                 <input name="save" style="visibility:hidden;" type="submit" onClick="return submitProfile()" disabled class="inputs" id="save" value="Save">
-                <? }?>
+                <? } ?>
                   <INPUT class="inputs" type="button" name="btnBack" id="btnBack" value="BACK" onClick="location.href='new_emp_list.php'">
                   
                    </td></tr>
@@ -759,7 +827,7 @@ include("../../../includes/calendar.php");
 //	)
 
 	pager("contact_list_ajax.php","TSCont",'load',0,0,'','','','../../../images/');
-	pager("employee_profile_allowance_list_ajax_result.php","Allowance",'load',0,0,'','','','../../../images/');  
+	pager("employee_profile_allowance_list_ajax_result.php","Allowance",'load',0,0,'','','','../../../images/'); 
 	pager("employee_profile_performance_list_ajax_result.php","Performance",'load',0,0,'','','','../../../images/');  
 	pager("employee_profile_trainings_list_ajax_result.php","Trainings",'load',0,0,'','','','../../../images/');  
 </SCRIPT>
@@ -1197,4 +1265,21 @@ include("../../../includes/calendar.php");
 			});			
 		}	
 	}		
+	
+	function submitSalary() {
+		var q = confirm('Sure to update employee salary?');
+		
+		if(q == true){
+			
+			var param = '?action=updateSalary';
+			
+			new Ajax.Request('new_emp_profile.php'+param,{
+				method : 'POST',
+				parameters : $('frmViewEditEmp').serialize(),
+				onComplete : function (req){
+					eval(req.responseText);
+				},
+			});			
+		}	
+	}
 </script>

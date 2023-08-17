@@ -91,14 +91,17 @@ switch($_GET['code']) {
                       <td width="256" height="26"><font class="byOrder">
                         <?
                          	$userbranch = $maintEmpObj->getEmployee($_SESSION['company_code'],$_SESSION['employee_number'],"");
-			   				if ((($_SESSION['user_level'] == 1)||($_SESSION['user_level'] == 2)&&($userbranch['empBrnCode']=="999"))) 
+			   				// if ((($_SESSION['user_level'] == 1)||($_SESSION['user_level'] == 2)&&($userbranch['empBrnCode']=="999"))) 
+							if ($_SESSION['Confiaccess'] == "Y" && $_SESSION['user_level'] !== "1")
 			   				{
-						        $maintEmpObj->DropDownMenu(array('','1'=>'EMPLOYMENT STATUS','2'=>'BRANCH','3'=>'POSITION','4'=>'PAYROLL RELATED','5'=>'OTHERS','6'=>'ALLOWANCE'),'type',$orderBy,'class="inputs" onChange="GetRefNo(this.value,\''.$empNo.'\',\''.$compCode.'\')" '); 
+						        //$maintEmpObj->DropDownMenu(array('','1'=>'EMPLOYMENT STATUS','2'=>'BRANCH','3'=>'POSITION','4'=>'PAYROLL RELATED','5'=>'OTHERS','6'=>'ALLOWANCE'),'type',$orderBy,'class="inputs" onChange="GetRefNo(this.value,\''.$empNo.'\',\''.$compCode.'\')" '); 
+						        $maintEmpObj->DropDownMenu(array('','4'=>'PAYROLL RELATED','6'=>'ALLOWANCE'),'type',$orderBy,'class="inputs" onChange="GetRefNo(this.value,\''.$empNo.'\',\''.$compCode.'\')" '); 
                          	}
-							else
+							elseif($_SESSION['Confiaccess'] != "Y" && $_SESSION['user_level'] !== "1")
 							{
-								$maintEmpObj->DropDownMenu(array('','1'=>'EMPLOYMENT STATUS','3'=>'POSITION','5'=>'BASIC INFORMATION'),'type',$orderBy,'class="inputs" onChange="GetRefNo(this.value,\''.$empNo.'\',\''.$compCode.'\')" '); 
-								
+								$maintEmpObj->DropDownMenu(array('','1'=>'EMPLOYMENT STATUS','2'=>'BRANCH','3'=>'POSITION','5'=>'BASIC INFORMATION'),'type',$orderBy,'class="inputs" onChange="GetRefNo(this.value,\''.$empNo.'\',\''.$compCode.'\')" '); 
+							}else{
+								$maintEmpObj->DropDownMenu(array('','1'=>'EMPLOYMENT STATUS','2'=>'BRANCH','3'=>'POSITION','4'=>'PAYROLL RELATED','5'=>'OTHERS','6'=>'ALLOWANCE'),'type',$orderBy,'class="inputs" onChange="GetRefNo(this.value,\''.$empNo.'\',\''.$compCode.'\')" '); 
 							}
 						 ?>
                       </font></td>
@@ -164,14 +167,14 @@ switch($_GET['code']) {
 				location.href = "profile_transaction.php?act="+url+"&empNo="+empNo+"&compCode="+compCode+"&trantype=A";
 			break;
 			case 'Edit':
-				if (refNo==0) {
+				if (refNo=="") {
 					alert('Please select Ref. No.');
 					return false;
 				}
 				location.href = 'profile_transaction.php?act='+url+'&empNo='+empNo+'&compCode='+compCode+'&frmRefNo='+refNo+"&trantype=E";
 			break;
 			case 'Delete':
-				if (refNo==0) {
+				if (refNo=="") {
 					alert('Please select Ref. No.');
 					return false;
 				}
