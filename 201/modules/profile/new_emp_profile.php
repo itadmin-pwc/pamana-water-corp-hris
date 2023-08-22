@@ -16,9 +16,16 @@ if($_GET["action"] == "updateSalary") {
 	$maintEmpObj->Salary = (isset($_POST['txtsalary'])) ? $_POST['txtsalary'] : "";
 	$maintEmpObj->bank       = (isset($_POST['cmbbank'])) ? $_POST['cmbbank'] : 0;
 	$maintEmpObj->bankAcctNo = (isset($_POST['txtbankaccount'])) ? $_POST['txtbankaccount'] : "";
+
+	if(empty($maintEmpObj->empNo) || $maintEmpObj->empNo == "") {
+		echo "alert('No record to be saved.');";
+		exit();
+	}
+
 	$stmt = $maintEmpObj->updateSalary();
 	if($stmt==true) {
 		echo "alert('Record sucessfully updated.');";
+		echo "window.location.href = 'new_emp_list.php'";
 	}
 	else	
 		echo "alert('Error while updating the record.');";
@@ -178,6 +185,12 @@ if ($_SESSION['Confiaccess'] !== "Y") {
 }else{
 	$readisabled = "disabled";
 	$viewonly = "readonly";
+}
+
+if($_SESSION['user_level'] == 1) {
+	$visible = "";
+	$readisabled = "";
+	$viewonly = "";
 }
 
 if ($_GET['act']=="Edit" || $_GET['act']=="View") {
@@ -737,7 +750,7 @@ include("../../../includes/calendar.php");
 					}
 					?>
 					<?
-					if($_SESSION['Confiaccess']==="Y" && $maintEmpObj->stat_ !== "R") {
+					if($_SESSION['Confiaccess']==="Y" && $maintEmpObj->stat_ !== "R" && $_SESSION['user_level'] != 1) {
 					?>
 					<tr>
 						<td colspan="6" style="text-align:right;">
@@ -791,7 +804,7 @@ include("../../../includes/calendar.php");
                 <label>
                 &nbsp;&nbsp;&nbsp;<input type="checkbox" name="chRelease" id="chRelease">
                 <span class="headertxt">Post</span>&nbsp;&nbsp;</label>
-                <?} if($_SESSION['Confiaccess']==="Y") {
+                <?} if($_SESSION['Confiaccess']==="Y" && $_SESSION['user_level'] != 1) {
 					$hidden = 'visibility:hidden;';
 				}?>
                  <? if ($_GET['act']!="View") { ?>

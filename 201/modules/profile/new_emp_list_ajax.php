@@ -15,9 +15,6 @@ elseif ($_SESSION['user_level'] == 2) {
 	$brnCodelist = " AND empbrnCode IN (Select brnCode from tblUserBranch where empNo='{$_SESSION['employee_number']}' AND compCode='{$_SESSION['company_code']}')";
 }
 
-
-
-
 $pager = new AjaxPager(20,'../../../images/');
 
 $sessionVars = $common->getSeesionVars();
@@ -94,7 +91,6 @@ $qryEmpList .=	"ORDER BY empLastName limit $intOffset,$intLimit";
 
 $resEmpList = $common->execQry($qryEmpList);
 $arrEmpList = $common->getArrRes($resEmpList);
-
 ?>
 <div class="niftyCorner">
 	<TABLE border="0" width="100%" cellpadding="1" cellspacing="0" class="parentGrid">
@@ -141,6 +137,7 @@ $arrEmpList = $common->getArrRes($resEmpList);
 						<td width="21%" class="gridDtlLbl" align="center">EMPLOYEE NO.</td>
 						<td width="37%" class="gridDtlLbl" align="center">NAME</td>
 						<td width="34%" class="gridDtlLbl" align="center">BRANCH</td>
+						<td width="34%" class="gridDtlLbl" align="center">W/ Salary</td>
 						<td width="6%" align="center" class="gridDtlLbl">ACTION</td>
 					</tr>
 					<?
@@ -161,7 +158,15 @@ $arrEmpList = $common->getArrRes($resEmpList);
 						<td class="gridDtlVal"><font class="gridDtlLblTxt">
 						  <?= $brnch['brnDesc'] = $common->getInfoBranch($empListVal['empBrnCode'],$empListVal['compCode']);?>
 						</font></td>
-						
+						<td class="gridDtlVal"><center>
+							<?php
+								if($empListVal['empMrate'] > 0 || $empListVal['empDrate'] > 0) {
+									echo '<font color="green">OK</font>';
+								}else{
+									echo '<font color="red">X</font>';
+								}
+							?></center>
+						</td>
                         
                         
                         <td class="gridDtlVal" >
