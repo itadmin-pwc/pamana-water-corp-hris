@@ -250,21 +250,22 @@ switch ($_GET['code']) {
 				}
 				$refno = $_GET['refno'];
 				//08-16-2023
-				// echo "var chebranch = confirm('PAF Employee Position update $strproc, Do you want to change the Rate Mode, Salary and Pay Category?');";
-				// echo "if (chebranch==true) {";
-				// echo 	"location.href = 'profile_transaction.php?act=payroll&empNo=$empNo&compCode=$compCode&frmRefNo=$refno';";
-				// echo "} else {";
-				// echo "	location.href = 'profile_actionlist.php?empNo=$empNo&compCode=$compCode';";
-				// echo "}";
 				echo "var chebranch = confirm('PAF Employee Position update $strproc, Do you want to change the Rate Mode, Salary and Pay Category?');";
 				echo "if (chebranch==true) {";
-					if($maintEmpObj->pass2Payroll()) {
-						echo 	"alert('PAF Payroll related has been forwarded to Accounting Section.');";}
-					else {
-						echo 	"alert('There was an error creating PAF Payroll.');";}
+				echo 	"location.href = 'profile_transaction.php?act=payroll&empNo=$empNo&compCode=$compCode&frmRefNo=$refno';";
 				echo "} else {";
 				echo "	location.href = 'profile_actionlist.php?empNo=$empNo&compCode=$compCode';";
 				echo "}";
+				//IF WANT TO CHANGE PAYROLL & ALLOWANCE FOR ACCOUNTING VIEW ONLY
+				// echo "var chebranch = confirm('PAF Employee Position update $strproc, Do you want to change the Rate Mode, Salary and Pay Category?');";
+				// echo "if (chebranch==true) {";
+				// 	if($maintEmpObj->pass2Payroll()) {
+				// 		echo 	"alert('PAF Payroll related has been forwarded to Accounting Section.');";}
+				// 	else {
+				// 		echo 	"alert('There was an error creating PAF Payroll.');";}
+				// echo "} else {";
+				// echo "	location.href = 'profile_actionlist.php?empNo=$empNo&compCode=$compCode';";
+				// echo "}";
 			} else {
 				echo "alert('PAF Employee Position update failed');";
 			}	

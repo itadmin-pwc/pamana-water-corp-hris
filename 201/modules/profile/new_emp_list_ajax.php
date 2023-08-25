@@ -168,7 +168,6 @@ $arrEmpList = $common->getArrRes($resEmpList);
 							?></center>
 						</td>
                         
-                        
                         <td class="gridDtlVal" >
 							<table border="0" width="70%" align="center">
                             	<tr align="center" >

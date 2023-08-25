@@ -11,7 +11,6 @@ if ($_SESSION['user_level'] == 3) {
 	$and = ($_GET['isSearch'] == 1) ? 'AND' : 'Where';	
 		   $brnCodelist = " AND empNo<>'".$_SESSION['employee_number']."' and empbrnCode IN (Select brnCode from tblUserBranch where empNo='{$_SESSION['employee_number']}' AND compCode='{$_SESSION['company_code']}')";
 }
-
 elseif ($_SESSION['user_level'] == 2) {
 	$brnCodelist = " AND empbrnCode IN (Select brnCode from tblUserBranch where empNo='{$_SESSION['employee_number']}' AND compCode='{$_SESSION['company_code']}')";
 }
@@ -31,14 +30,19 @@ else
 //alejocode viewing of CONFI PAF for PAYROLL DEPT ONLY
 //create user for confi access
 //change $_SESSION['employee_number']!='**********' to the users id number 
-if($_SESSION['employee_number']!='999999999' || $_SESSION['Confiaccess'] != 'Y'){
-	$user_payCat_view = " AND empPayCat IN (1,2,3,9)";
+if($_SESSION['employee_number']!='999999999' && $_SESSION['Confiaccess'] != "Y"){
+	//$user_payCat_view = " AND empPayCat IN (1,2,3,9)";
+	$user_payCat_view = " AND empPayCat IN (1,3,9)";
 }else{
-	//$user_payCat_view = " AND empPayCat ='2'";
-	$user_payCat_view = " AND empPayCat <> 'A' AND empPayCat IN (1,2,3,9)";
+	$user_payCat_view = " AND empPayCat ='2'";
+	//$user_payCat_view = " AND empPayCat <> 'A' AND empPayCat IN (1,2,3,9)";
 }
 //alejocode viewing of CONFI PAF for PAYROLL DEPT ONLY
 
+//access all for admin
+if($_SESSION['user_level'] == 1) {
+	$user_payCat_view = " AND empPayCat IN (1,2,3,9)";
+}
 
 $pager = new AjaxPager(20,'../../../images/');
 
