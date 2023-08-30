@@ -20,8 +20,7 @@ $level_desc = "Level " . $empProf['empLevel'];
 
 $userbranch = $maintEmpObj->getEmployee($_SESSION['company_code'],$_SESSION['employee_number'],"");
 // if ((($_SESSION['user_level'] == 1)||($_SESSION['user_level'] == 2)&&($userbranch['empBrnCode']=="999"))) 
-// if ($_SESSION['Confiaccess'] == "Y" && ($userbranch['empBrnCode']=="999" || $userbranch['empBrnCode']=="0001"))
-if ((($_SESSION['user_level'] == 1)||($_SESSION['user_level'] == 2)&&($userbranch['empBrnCode']=="999"))) 
+if ($_SESSION['Confiaccess'] == "Y" && ($userbranch['empBrnCode']=="999" || $userbranch['empBrnCode']=="0001"))
 {
 	$vis = "";
 }
@@ -477,40 +476,40 @@ if($_GET['action']=="loadMunicipality")
               </tr>
               
                 <tr>
-				<td class="parentGridDtl" valign="top">
+                  <td class="parentGridDtl" valign="top">
                                <?
                                $act = $_GET['act'];
-                               if ($act == "empstat") {
+                               if ($act == "empstat" && ($vis!=="" || $_SESSION['user_level'] === "1")) {
 							   ?>
                                <div class="tab1">EMPLOYMENT STATUS</div>
                                <?
 							   }
-							   else{
+							   elseif($vis!=="" || $_SESSION['user_level'] === "1"){
 							   ?>
                                 <a href="profile_transaction.php?act=empstat&frmRefNo=<?=$refno['refno']?>&empNo=<?=$empNo?>&compCode=<?=$compCode?>" ><div class="tab1">EMPLOYMENT STATUS</div></a>
                                <?
 							   }
-                               if ($act == "branch" and $vis!="") {
+                               if ($act == "branch" && ($vis!=="" || $_SESSION['user_level'] === "1")) {
 							   ?>
                                <div class="tab2">BRANCH</div>
                                <?
 							   }
-							   elseif ($act == "branch" and $vis=="") {
+							   elseif ($act == "branch" && ($vis!=="" || $_SESSION['user_level'] === "1")) {
 							   ?>
                                <div class="tab2">BRANCH</div>
                                <?	 
 							   }
-							   elseif ($act != "branch" and $vis==""){
+							   elseif ($act != "branch" && ($vis!=="" || $_SESSION['user_level'] === "1")){
 							   ?>
                                <a href="profile_transaction.php?act=branch&frmRefNo=<?=$refno['refno']?>&empNo=<?=$empNo?>&compCode=<?=$compCode?>"><div class="tab2">BRANCH</div></a>
                                <?
 							   }
-                               if ($act == "position") {
+                               if ($act == "position" && ($vis!=="" || $_SESSION['user_level'] === "1")) {
 							   ?>
-                               <div class="tab3">POSITION</div>
+                               <div class="tab3">POSITION </div>
                                <?
 							   }
-							   else{
+							   elseif($vis!=="" || $_SESSION['user_level'] === "1"){
 							   ?>
                                <a href="profile_transaction.php?act=position&frmRefNo=<?=$refno['refno']?>&empNo=<?=$empNo?>&compCode=<?=$compCode?>"><div class="tab3">POSITION</div></a>
                                <?
@@ -530,12 +529,12 @@ if($_GET['action']=="loadMunicipality")
                                <a href="profile_transaction.php?act=payroll&frmRefNo=<?=$refno['refno']?>&empNo=<?=$empNo?>&compCode=<?=$compCode?>"><div class="tab4">PAYROLL RELATED</div></a>
 							   <?
 							   }
-                               if ($act == "others") {
+                               if ($act == "others" && ($vis!=="" || $_SESSION['user_level'] === "1")) {
 							   ?>
                                <div class="tab5">OTHERS</div>
                                <?
 							   }
-							   else{
+							   elseif($vis!=="" || $_SESSION['user_level'] === "1"){
 							   ?>
                                <a href="profile_transaction.php?act=others&frmRefNo=<?=$refno['refno']?>&empNo=<?=$empNo?>&compCode=<?=$compCode?>"><div class="tab5">OTHERS</div></a>
                                <?
@@ -702,20 +701,7 @@ if($_GET['action']=="loadMunicipality")
                           <td height="30" colspan="2"><input name="txtempstatremarks" value="<?=$empStatview['remarks']?>" style="width:180px;" type="text" class="inputs" id="txtempstatremarks" size="30"></td>
                         </tr>
                         <tr>
-                          <td height="20" colspan="3" class=" style1">
-                          <div align="center">
-                          <span style="cursor:pointer"  onClick="location.href='profile_transaction.php?act=position&frmRefNo=<?=$refno['refno']?>&empNo=<?=$empNo?>&compCode=<?=$compCode?>'" class="style5" align="right"> Position </span> | 
-                          <span style="cursor:pointer" onClick="location.href='profile_transaction.php?act=others&frmRefNo=<?=$refno['refno']?>&empNo=<?=$empNo?>&compCode=<?=$compCode?>'" class="style5" align="right"> Others </span> |
-                          <?
-                          if($vis!="hide"){
-						  ?>
-                          <span style="cursor:pointer" onClick="location.href='profile_transaction.php?act=branch&frmRefNo=<?=$refno['refno']?>&empNo=<?=$empNo?>&compCode=<?=$compCode?>'" class="style5" align="right"> Branch </span> | 
-                          <span style="cursor:pointer" onClick="location.href='profile_transaction.php?act=payroll&frmRefNo=<?=$refno['refno']?>&empNo=<?=$empNo?>&compCode=<?=$compCode?>'" class="style5" align="right"> Payroll Related </span> | 
-                          <span style="cursor:pointer" onClick="viewDetails('employee_allowance.php?empNo=<?=$_GET['empNo']?>&refNo='+document.getElementById('refno').value+'&controlNo='+document.getElementById('ctrlno').value+'&effectivitydate='+document.getElementById('txtempstatDate').value,'Add','','contact_list_ajax.php','TSCont',0,0,'txtSrch','cmbSrch')" class="style5" align="right"> Allowance</span>
-                          <?
-						  }
-						  ?>
-                          </div></td>
+                          
                         </tr>
                         
                         
@@ -868,16 +854,6 @@ if($_GET['action']=="loadMunicipality")
                           <td height="30" align="right">&nbsp;</td>
                         </tr>
                         
-                        <tr>
-                          <td height="20" colspan="4" class=" style1">
-                          	<div align="center">
-                            <span style="cursor:pointer;"  onClick="location.href='profile_transaction.php?act=empstat&frmRefNo=<?=$refno['refno']?>&empNo=<?=$empNo?>&compCode=<?=$compCode?>'" class="style5" align="right"> Employment Status </span> | 
-                          	<span style="cursor:pointer" onClick="location.href='profile_transaction.php?act=position&frmRefNo=<?=$refno['refno']?>&empNo=<?=$empNo?>&compCode=<?=$compCode?>'" class="style5" align="right"> Position </span> | 
-                          	<span style="cursor:pointer<?=$vis?>" onClick="location.href='profile_transaction.php?act=payroll&frmRefNo=<?=$refno['refno']?>&empNo=<?=$empNo?>&compCode=<?=$compCode?>'" class="style5" align="right"> Payroll Related </span> | 
-                   	        <span style="cursor:pointer" onClick="location.href='profile_transaction.php?act=others&frmRefNo=<?=$refno['refno']?>&empNo=<?=$empNo?>&compCode=<?=$compCode?>'" class="style5" align="right"> Others </span> | 
-                            <span style="cursor:pointer<?=$vis?>" onClick="viewDetails('employee_allowance.php?empNo=<?=$_GET['empNo']?>&refNo='+document.getElementById('refno').value+'&controlNo='+document.getElementById('ctrlno').value+'&effectivitydate='+document.getElementById('txtbrDate').value,'Add','','contact_list_ajax.php','TSCont',0,0,'txtSrch','cmbSrch')" class="style5" align="right"> Allowance</span>
-                            </div></td>
-                        </tr>
                       </table></td>
                     </tr>
                     <? } elseif ($act == "position") {
@@ -1023,21 +999,7 @@ if($_GET['action']=="loadMunicipality")
                           <td height="30">&nbsp;</td>
                         </tr>
                         
-                        <tr>
-                          <td height="20" colspan="4" class=" style1"><div align="center">
-                          <span style="cursor:pointer;"  onClick="location.href='profile_transaction.php?act=empstat&frmRefNo=<?=$refno['refno']?>&empNo=<?=$empNo?>&compCode=<?=$compCode?>'" class="style5" align="right"> Employment Status </span> | 
-                          <span style="cursor:pointer" onClick="location.href='profile_transaction.php?act=others&frmRefNo=<?=$refno['refno']?>&empNo=<?=$empNo?>&compCode=<?=$compCode?>'" class="style5" align="right"> Others </span> |   
-                          <?
-                          if($vis!="hide"){
-						  ?>
-                          <span style="cursor:pointer<?=$vis?>" onClick="location.href='profile_transaction.php?act=branch&frmRefNo=<?=$refno['refno']?>&empNo=<?=$empNo?>&compCode=<?=$compCode?>'" class="style5" align="right"> Branch </span> | 
-                          <span style="cursor:pointer<?=$vis?>" onClick="location.href='profile_transaction.php?act=payroll&frmRefNo=<?=$refno['refno']?>&empNo=<?=$empNo?>&compCode=<?=$compCode?>'" class="style5" align="right"> Payroll Related </span> | 
-                          <span style="cursor:pointer<?=$vis?>" onClick="viewDetails('employee_allowance.php?empNo=<?=$_GET['empNo']?>&refNo='+document.getElementById('refno').value+'&controlNo='+document.getElementById('ctrlno').value+'&effectivitydate='+document.getElementById('txtposDate').value,'Add','','contact_list_ajax.php','TSCont',0,0,'txtSrch','cmbSrch')" class="style5" align="right"> Allowance</span>
-                          <?
-						  }
-						  ?>
-                          </div></td>
-                        </tr>
+                       
                       </table></td>
                     </tr>
                     <? } elseif ($act == "payroll") {
@@ -1242,17 +1204,6 @@ if($_GET['action']=="loadMunicipality")
                           <td colspan="2"><input name="txtprremarks" type="text" class="inputs" id="txtprremarks" style="width:180px;" value="<?=$payroll_view['remarks']?>" size="30"></td>
                         </tr>
                         
-                        <tr>
-                          <td height="30" colspan="4" class=" style1">
-                          <div align="center">
-                          <span style="cursor:pointer;" onClick="location.href='profile_transaction.php?act=empstat&frmRefNo=<?=$refno['refno']?>&empNo=<?=$empNo?>&compCode=<?=$compCode?>'" class="style5" align="right"> Employment Status </span> | 
-                          <span style="cursor:pointer<?=$vis?>" onClick="location.href='profile_transaction.php?act=branch&frmRefNo=<?=$refno['refno']?>&empNo=<?=$empNo?>&compCode=<?=$compCode?>'" class="style5" align="right"> Branch </span> | 
-                          <span style="cursor:pointer" onClick="location.href='profile_transaction.php?act=position&frmRefNo=<?=$refno['refno']?>&empNo=<?=$empNo?>&compCode=<?=$compCode?>'" class="style5" align="right"> Position </span> | 
-                          <span style="cursor:pointer" onClick="location.href='profile_transaction.php?act=others&frmRefNo=<?=$refno['refno']?>&empNo=<?=$empNo?>&compCode=<?=$compCode?>'" class="style5" align="right"> Others </span> |
-                          <span style="cursor:pointer<?=$vis?>" onClick="viewDetails('employee_allowance.php?empNo=<?=$_GET['empNo']?>&refNo='+document.getElementById('refno').value+'&controlNo='+document.getElementById('ctrlno').value+'&effectivitydate='+document.getElementById('txtprDate').value,'Add','','contact_list_ajax.php','TSCont',0,0,'txtSrch','cmbSrch')" class="style5" align="right"> Allowance</span>
-                          </div>
-                          </td>
-                        </tr>
                       </table></td>
                     </tr>
                     <? } elseif ($act == "company") {?>
@@ -1657,22 +1608,6 @@ if($_GET['action']=="loadMunicipality")
                           <td class="style4 style1"><div align="right"><strong>Remarks </strong><span class="style2">:</span>&nbsp;&nbsp;&nbsp;</div></td>
                           <td>&nbsp;</td>
                           <td colspan="2"><input name="txtothremarks" type="text" class="inputs" id="txtothremarks" style="width:180px;" value="<?=$others_view['remarks']?>" size="30"></td>
-                        </tr>
-                        <tr>
-                          <td height="20" colspan="4" class="style4 style1"><div align="center">
-                          <span style="cursor:pointer;"  onClick="location.href='profile_transaction.php?act=empstat&frmRefNo=<?=$refno['refno']?>&empNo=<?=$empNo?>&compCode=<?=$compCode?>'" class="style5" align="right"> Employment Status </span> | 
-                          <span style="cursor:pointer" onClick="location.href='profile_transaction.php?act=position&frmRefNo=<?=$refno['refno']?>&empNo=<?=$empNo?>&compCode=<?=$compCode?>'" class="style5" align="right"> Position </span> | 
-						  <?
-                          if($vis!="hide"){
-						  ?>	
-                          <span style="cursor:pointer<?=$vis?>" onClick="location.href='profile_transaction.php?act=branch&frmRefNo=<?=$refno['refno']?>&empNo=<?=$empNo?>&compCode=<?=$compCode?>'" class="style5" align="right"> Branch </span> | 
-                          <span style="cursor:pointer<?=$vis?>" onClick="location.href='profile_transaction.php?act=payroll&frmRefNo=<?=$refno['refno']?>&empNo=<?=$empNo?>&compCode=<?=$compCode?>'" class="style5" align="right"> Payroll Related </span> 
-                          <span style="cursor:pointer" onClick="location.href='profile_transaction.php?act=empstat&frmRefNo=<?=$refno['refno']?>&empNo=<?=$empNo?>&compCode=<?=$compCode?>'" class="style5" align="right"></span> | 
-                          <span style="cursor:pointer<?=$vis?>" onClick="viewDetails('employee_allowance.php?empNo=<?=$_GET['empNo']?>&refNo='+document.getElementById('refno').value+'&controlNo='+document.getElementById('ctrlno').value+'&effectivitydate='+document.getElementById('txtothDate').value,'Add','','contact_list_ajax.php','TSCont',0,0,'txtSrch','cmbSrch')" class="style5" align="right"> Allowance</span>
-                          <?
-						  }
-						  ?>
-                          </div></td>
                         </tr>
                         
                       </table></td>

@@ -105,6 +105,7 @@ switch($_GET['code']) {
 							// }else{
 							// 	$maintEmpObj->DropDownMenu(array('','1'=>'EMPLOYMENT STATUS','2'=>'BRANCH','3'=>'POSITION','4'=>'PAYROLL RELATED','5'=>'OTHERS','6'=>'ALLOWANCE'),'type',$orderBy,'class="inputs" onChange="GetRefNo(this.value,\''.$empNo.'\',\''.$compCode.'\')" '); 
 							// }
+							//show all
 							$maintEmpObj->DropDownMenu(array('','1'=>'EMPLOYMENT STATUS','2'=>'BRANCH','3'=>'POSITION','4'=>'PAYROLL RELATED','5'=>'OTHERS','6'=>'ALLOWANCE'),'type',$orderBy,'class="inputs" onChange="GetRefNo(this.value,\''.$empNo.'\',\''.$compCode.'\')" '); 
 						 ?>
                       </font></td>
