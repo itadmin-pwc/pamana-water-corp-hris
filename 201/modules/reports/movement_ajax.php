@@ -48,7 +48,6 @@ if ($thisValue=="new_emp" || $thisValue=="new_emp_excel") {
 	if ($group!='' && $group!='0') {
 		$filter_from_to .= " AND empPayGrp = '{$_GET['group']}' ";
 	}	
-	
 }
 if ($thisValue == 'EmpStatus') {
 	if ($from != "" && $to!= "") {
@@ -120,7 +119,7 @@ switch ($inputId) {
 					and empBrnCode IN (Select brnCode from tblUserBranch where compCode='{$_SESSION['company_code']}' and empNo='{$_SESSION['employee_number']}')
 				  $filter_from_to $empNo1 $status $empStatDatefilter $empName1 $empDiv1 $empDept1 $empSect1 $confi $groupType1 $catType1
 				   $orderBy1 ";
-				   echo $sqlEmp;
+		//echo $sqlEmp;
 		$resEmp = $inqTSObj->execQry($sqlEmp);		   
 		$numEmp = $inqTSObj->getRecCount($resEmp);
 		

@@ -799,7 +799,7 @@ include("../../../includes/calendar.php");
 			
                <? 
 				//if ($payGrp != $maintEmpObj->Group && $_SESSION['user_release']=="Y") {  
-				if ($payGrp != $maintEmpObj->Group && $_SESSION['Confiaccess']!=="Y" || $_SESSION['user_level'] == 1) {   
+				if ($payGrp != $maintEmpObj->Group && $_SESSION['Confiaccess']!=="Y" || $payGrp != $maintEmpObj->Group && $_SESSION['user_level'] == 1) {   
 			   ?>
                 <label>
                 &nbsp;&nbsp;&nbsp;<input type="checkbox" name="chRelease" id="chRelease">
