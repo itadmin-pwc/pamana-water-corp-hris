@@ -50,7 +50,7 @@ $resCompList = $maintEmpObj->getArrRes($resCompList);
 			<TABLE border="0" width="100%" cellpadding="1" cellspacing="0" class="parentGrid">
 				<tr>
 					
-			  <td colspan="4" class="parentGridHdr"> &nbsp;<img src="../../../images/grid.png"> COMPANY</td>
+			  <td colspan="4" class="parentGridHdr"> &nbsp; COMPANY</td>
 				</tr>
 				<tr>
 					<td class="parentGridDtl">
@@ -76,10 +76,10 @@ $resCompList = $maintEmpObj->getArrRes($resCompList);
 					
 						?>
 						Search
-						<INPUT type="text" name="txtSrch" id="txtSrch" value="<? if(isset($_GET['txtSrch'])){echo $_GET['txtSrch'];} ?>" class="inputs">
+						<input style="margin-bottom: 3px;" type="text" name="txtSrch" id="txtSrch" value="<? if(isset($_GET['txtSrch'])){echo $_GET['txtSrch'];} ?>" class="inputs">
 						In
 						<?=$maintEmpObj->DropDownMenu($arrSrch,'cmbSrch',$_GET['srchType'],'class="inputs"');?>
-						<INPUT class="inputs" type="button" name="btnSrch" id="btnSrch" value="SEARCH" onClick="pager('company_list_ajax.php','TSCont','Search',0,1,'txtSrch','cmbSrch','','../../../images/')">                              
+						<input style="margin-bottom: 3px;" class="inputs" type="button" name="btnSrch" id="btnSrch" value="SEARCH" onClick="pager('company_list_ajax.php','TSCont','Search',0,1,'txtSrch','cmbSrch','','../../../images/')">                              
                                 </div></td>
 					  	  </tr>
 						  	<tr>

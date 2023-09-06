@@ -18,8 +18,6 @@ include("../../../includes/pager.inc.php");
 		<script type="text/javascript" src="../../../js/extjs/adapter/prototype/window.js"></script>
 		<script type="text/javascript" src="../../../js/extjs/adapter/prototype/window_effects.js"></script>
 		
-		
-
 		<STYLE>@import url('../../../js/themes/default.css');</STYLE>
 		<STYLE>@import url("../../../js/themes/mac_os_x.css");</STYLE>		
 	</HEAD>
@@ -32,7 +30,6 @@ include("../../../includes/pager.inc.php");
 </HTML>
 <SCRIPT>
 	pager("new_emp_list_ajax.php",'empMastCont','load',0,0,'','','','../../../images/');  
-	
 	
 	function viewPrevEmp(id){
 

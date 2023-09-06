@@ -6,6 +6,7 @@
 .parentGridHdr {
 	background-color: #c3daf9;
 	color : #000066;
+	height: 30px;
 	font : normal bold 11px Verdana, Arial, Helvetica, sans-serif;
 	border-bottom: 1px solid #6495ED;
 }

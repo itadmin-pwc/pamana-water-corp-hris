@@ -46,7 +46,7 @@ if($_GET['btnLogIn'] == 'LOG IN'){
 	
 	if($logInRes == 0 || $logInRes == "" || empty($logInRes) || $payCatChck == 1){
 		//failed log in
-		echo "$('errMsg').innerHTML='<blink>Access Denied!</blink>';";
+		echo "$('errMsg').innerHTML='USER IS INVALID!';";
 		echo "$('txtEmpId').focus();";
 	}
 	else{
@@ -54,7 +54,7 @@ if($_GET['btnLogIn'] == 'LOG IN'){
 		
 		if($getUserInfo == 0 || $getUserInfo == "" || empty($getUserInfo)){
 			//echo "alert('User Doesnt Exist in Employee Master Table');";
-			echo "$('errMsg').innerHTML='<blink>User Doesn\'t Exist in Employee Master Table</blink>';";
+			echo "$('errMsg').innerHTML='USER IS INVALID!';";
 
 			echo "$('txtEmpId').focus();";			
 		}
@@ -102,84 +102,67 @@ if($_GET['btnLogIn'] == 'LOG IN'){
 			<div class="logInCont" id="logInCont"></div>
 			<TABLE border="0" class="InnerTblLogInCont" align="center" id="InnerTblLogInCont">
 				<tr>
-					<td align="center" colspan="3">
-						<img src="images/pglogo.jpg" width="280" height="70">
+					<td align="center" colspan="3" style="vertical-align: middle;">
+						<img src="images/pamana-logo.png" width="30" height="30"> <span style="font-size: 30px; color: #000066;"><strong>PAMANA HRIS</strong></span>
 					</td>
 				</tr>
 				<tr>
 					<td colspan="3" align="center">					
-						<FONT style="color: #000066" size="5"><b>LOG IN</b></font>
+						<span style="color:white">...</span>
 					</td>
 				</tr>
 				<tr>
-					<td class="logInLabel">					
-						Module
+					<td colspan="3" align="center">					
+						<FONT style="color: #000066" size="5"><b>LOG IN YOUR ACCOUNT</b></font>
 					</td>
-					<td class="logInLabel" width="1">					
-						:
+				</tr>
+				<tr>
+					<td colspan="3" align="center">					
+						<span style="color:white">...</span>
 					</td>
-					<td>					
+				</tr>
+				<tr>
+					<td colspan="3" class="logInLabel">					
+						MODULE<br>		
 						<?$indexObj->DropDownMenu($arrModuleName,'cmbModuleName','','class="logInInputs" onchange="viewPayrollInputs(this.value);populatePayCat(1);"'); ?>
-
 					</td>
 				</tr>
 				<tr>
-					<td class="logInLabel">					
-						Company
-					</td>
-					<td class="logInLabel" width="1">					
-						:
-					</td>
-					<td>	
-					
-					<INPUT style="width:200px;" type="text" name="cmbCompny"  id="cmbCompny" on onKeyPress="" class="logInInputs" value="PAMANA WATER CORP." readonly  >
+					<td colspan="3" class="logInLabel">		
+						<br>			
+						COMPANY <br>
+						<INPUT style="width:100%;" type="text" name="cmbCompny"  id="cmbCompny" on onKeyPress="" class="logInInputs" value="PAMANA WATER CORP." readonly  >
 
 						<?//=$indexObj->DropDownMenu($common->makeArr($common->getCompany(''),'compCode','compName',''),'cmbCompny','','class="logInInputs" onchange="populatePayCat(this.value)"');?>
 					</td>
 				</tr>
 				<tr>
-					<td class="logInLabel">					
-						Employee Id
-					</td>
-					<td class="logInLabel">					
-						:
-					</td>
-					<td >					
-						<INPUT type="text" name="txtEmpId" id="txtEmpId" class="logInInputs">
+					<td class="logInLabel" colspan="3">	
+						<br>				
+						EMPLOYEE ID <br>				
+						<INPUT type="text" style="width:100%;" name="txtEmpId" id="txtEmpId" class="logInInputs">
 					</td>
 				</tr>
 				<tr>
-					<td class="logInLabel">					
-						Password
-					</td>
-					<td class="logInLabel">					
-						:
-					</td>
-					<td >					
-						<INPUT type="password" name="txtUserPass" id="txtUserPass" onKeyPress="return Enter(this, event);" class="logInInputs">
+					<td class="logInLabel" colspan="3">			
+						<br>		
+						PASSWORD <br>			
+						<INPUT type="password" name="txtUserPass" style="width:100%;" id="txtUserPass" onKeyPress="return Enter(this, event);" class="logInInputs">
 					</td>
 				</tr>
 				<tr style="display:none;" id="payGrpRow">
-					<td class="logInLabel">					
-						Pay Group
-					</td>
-					<td class="logInLabel">					
-						:
-					</td>
-					<td >	
-					<INPUT style="width:100px;" type="text" name="cmbPayGroup"  id="cmbPayGroup" on onKeyPress="" class="logInInputs" value="Group 1" readonly  >
+					<td class="logInLabel">	
+					<br>				
+						Pay Group <br>
+					<INPUT style="width:100%;" type="text" name="cmbPayGroup"  id="cmbPayGroup" on onKeyPress="" class="logInInputs" value="Group 1" readonly  >
 				
 						<?//$indexObj->DropDownMenu($arrPayGrp,'cmbPayGroup','','class="logInInputs"'); ?>
 					</td>
 				</tr>
 				<tr style="display:none;" id="payCatRow">
-					<td class="logInLabel">					
-						Pay Category
-					</td>
-					<td class="logInLabel">					
-						:
-					</td>
-					<td >					
+					<td class="logInLabel">		
+					<br>			
+						Pay Category <br>			
 						<div id="payCatDiv"><?$indexObj->DropDownMenu($arrPayCat,'cmbPayCategory','','class="logInInputs"  onclick="checkComp()" style="width:200px;"'); ?></div>
 					</td>
 				</tr>
@@ -187,7 +170,7 @@ if($_GET['btnLogIn'] == 'LOG IN'){
 					<td colspan="3" align="center">
 						<br>
 						<INPUT type="button" name="btnLogIn" id="btnLogIn" value="LOG IN" class="logInInputs" onClick="return validateLogIn();">
-						<INPUT type="button" name="btnReset" id="btnReset" value="CLEAR" class="logInInputs" onClick="resetInputs()">
+						<!-- <INPUT type="button" name="btnReset" id="btnReset" value="CLEAR" class="logInInputs" onClick="resetInputs()"> -->
 					</td>
 				</tr>
 				<tr>
@@ -215,8 +198,8 @@ if($_GET['btnLogIn'] == 'LOG IN'){
 		minimizable : false,
 		maximizable : false,
 		closable 	: false,
-		width: 600,
-		height : 350
+		width: 500,
+		height : 580
 	});
 		win.setContent('InnerTblLogInCont', false, false)		
 		win.showCenter();
@@ -238,7 +221,7 @@ if($_GET['btnLogIn'] == 'LOG IN'){
 	function checkComp(){
 		var Compny = $F('cmbCompny');
 		if(Compny == 0 || Compny == ""){
-			$('errMsg').innerHTML='<blink>Select Company First</blink>';
+			$('errMsg').innerHTML='COMPANY IS REQUIRED!';
 			$('cmbCompny').focus();
 			return false;			
 		}
@@ -255,9 +238,6 @@ if($_GET['btnLogIn'] == 'LOG IN'){
 		$('payCatRow').style.display='none';
 	}	
 
-
-
-	
 	function populatePayCat(compCode){
 		var params = '?action=populatPayCat&compCode='+compCode;
 		var url = '<?=$_SERVER['PHP_SELF']?>'+params;
@@ -296,32 +276,32 @@ if($_GET['btnLogIn'] == 'LOG IN'){
 		var NumerixExp = /^[\d]+$/;
 		
 		if(moduleName == '' || moduleName == 0){
-			$('errMsg').innerHTML='<blink>Select Module</blink>';
+			$('errMsg').innerHTML='PLEASE SELECT MODULE!';
 			$('cmbModuleName').focus();
 			return false;
 		}
 		
 		if(Compny == '' || Compny == 0){
-			$('errMsg').innerHTML='<blink>Select Company</blink>';
+			$('errMsg').innerHTML='PLEASE SELECT COMPANY!';
 			$('cmbCompny').focus();
 			return false;
 		}
 		
 		if(EmpId == ''){
-			$('errMsg').innerHTML='<blink>Input Employee Id</blink>';
+			$('errMsg').innerHTML='EMPLOYEE ID IS REQUIRED!';
 			$('txtEmpId').focus();
 			return false;			
 		}
 		else{
 			if(!EmpId.match(NumerixExp)){
-				$('errMsg').innerHTML='<blink>Invalid Employee Id Numbers Only</blink>';
+				$('errMsg').innerHTML='INVALID EMPLOYEE ID!';
 				$('txtEmpId').focus();
 				return false;				
 			}	
 		}
 		
 		if(UserPass == ''){
-			$('errMsg').innerHTML='<blink>Input User Password</blink>';
+			$('errMsg').innerHTML='PASSWORD IS REQUIRED!';
 			$('txtUserPass').focus();
 			return false;				
 		}
@@ -331,12 +311,12 @@ if($_GET['btnLogIn'] == 'LOG IN'){
 			var PayCategory = $F('cmbPayCategory');
 			
 			if(PayGroup == "" || PayGroup == 0){
-				$('errMsg').innerHTML='<blink>Select Pay Group</blink>';
+				$('errMsg').innerHTML='PAYGROUP IS REQUIRED!';
 				$('cmbPayGroup').focus();
 				return false;				
 			}
 			if(PayCategory == "" || PayCategory == 0){
-				$('errMsg').innerHTML='<blink>Select Pay Category</blink>';
+				$('errMsg').innerHTML='PAY CATEGORY IS REQUIRED!';
 				$('cmbPayCategory').focus();
 				return false;				
 			}

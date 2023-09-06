@@ -58,7 +58,7 @@ if($_GET['action'] == 'unlockSys'){
 	<STYLE>@import url('../js/themes/default.css');</STYLE>
 	<STYLE>@import url('../js/themes/alphacube.css');</STYLE>	
 	<STYLE>@import url("../js/themes/mac_os_x.css");</STYLE>
-	<STYLE>@import url('style/index_payroll.css');</STYLE>
+	<link rel="stylesheet" type="text/css" href="style/index_payroll.css" />
     
     <style>
 		.x-panel-body {
@@ -247,7 +247,7 @@ if($_GET['action'] == 'unlockSys'){
 <SCRIPT>
 	function DologOut(){
 		
-		Dialog.confirm("<br><center><img src='../images/icon-question.gif'>&nbsp;&nbsp;<font class='cnfrmLbl'>Do You Want To Log Out</font></center>", {
+		Dialog.confirm("<br><center><img src='../images/icon-question.gif'>&nbsp;&nbsp;<font class='cnfrmLbl'>Sure to Logout?</font></center>", {
 				width:300, 
 				height : 125,
 				okLabel: "YES", 

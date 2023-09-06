@@ -161,9 +161,9 @@ $arrEmpList = $common->getArrRes($resEmpList);
 						<td class="gridDtlVal"><center>
 							<?php
 								if($empListVal['empMrate'] > 0 || $empListVal['empDrate'] > 0) {
-									echo '<font color="green">OK</font>';
+									echo '<strong><font color="green">OK</font></strong>';
 								}else{
-									echo '<font color="red">X</font>';
+									echo '<strong><font color="red">X</font></strong>';
 								}
 							?></center>
 						</td>

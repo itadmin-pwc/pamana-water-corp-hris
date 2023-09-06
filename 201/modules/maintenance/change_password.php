@@ -7,7 +7,7 @@ include("maintenance_employee.Obj.php");
 
 $changePassObj = new changePassObj($_GET,$_SESSION);
 $changePassObj->validateSessions('','MODULES');
-if(isset($_GET['btnChngPass']) == 'SUBMIT'){
+if(isset($_GET['btnChngPass']) == "UPDATE"){
 	if($changePassObj->checkOldPass() == 0){
 		echo 1;//invalid password for current user
 	}
@@ -27,15 +27,15 @@ if(isset($_GET['btnChngPass']) == 'SUBMIT'){
 		<TITLE><?=SYS_TITLE?></TITLE>
 		<SCRIPT type="text/javascript" src="../../../js/extjs/adapter/prototype/prototype.js"></SCRIPT>
 		<SCRIPT type="text/javascript" src="../../../includes/jSLib.js"></SCRIPT>
-		<STYLE>@import url('../../style/payroll.css');</STYLE>
+		<link rel="stylesheet" type="text/css" href="../../style/payroll.css">
 	</HEAD>
 	<BODY>
 		<FORM name='frmChangePass' id="frmChangePass" action="<?=$_SERVER['PHP_SELF']?>" method="post" >
 			<TABLE border="0" cellpadding="1" cellspacing="0" class="parentGrid">
 				<tr>
-					<td class="parentGridHdr" height="20">
-						&nbsp;<img src="../../../images/grid.png">&nbsp;
-						Change User Password
+					<td class="parentGridHdr">
+						&nbsp;
+						CHANGE USER PASSWORD
 					</td>
 				</tr>
 				<tr>
@@ -44,12 +44,11 @@ if(isset($_GET['btnChngPass']) == 'SUBMIT'){
 						<TABLE align="center" cellpadding="0" cellspacing="2" border="0" class="childGrid" width="100%">
 							<tr>
 								<td class="gridDtlLbl2" align="left" width="200">
-									<font class="gridDtlLblTxt">Old Password</font>
+									<font class="gridDtlLblTxt">Current Password</font>
 								</td>
-								<td width="2%" class="gridDtlLbl2" align="center">:</td>
 								<td class="gridDtlVal" width="250">
 									<font class="gridDtlLblTxt">
-										<INPUT type="password" class="inputs" name="txtOldPass" id="txtOldPass" tabindex="1">
+										<INPUT type="password" class="inputs w-95" name="txtOldPass" id="txtOldPass" tabindex="1">
 									</font>
 								</td>
 							</tr>
@@ -57,10 +56,9 @@ if(isset($_GET['btnChngPass']) == 'SUBMIT'){
 								<td class="gridDtlLbl2" align="left">
 									<font class="gridDtlLblTxt">New Password</font>
 								</td>
-								<td class="gridDtlLbl2" align="center">:</td>
 								<td class="gridDtlVal">
 									<font class="gridDtlLblTxt" >
-										<INPUT type="password" class="inputs" name="txtNewPass" id="txtNewPass" maxlength="12" tabindex="2">
+										<INPUT type="password" class="inputs w-95" name="txtNewPass" id="txtNewPass" maxlength="12" tabindex="2">
 									</font>
 								</td>
 							</tr>
@@ -68,17 +66,16 @@ if(isset($_GET['btnChngPass']) == 'SUBMIT'){
 								<td class="gridDtlLbl2" align="left">
 									<font class="gridDtlLblTxt">Confirm New Password</font>
 								</td>
-								<td class="gridDtlLbl2" align="center">:</td>
 								<td class="gridDtlVal">
 									<font class="gridDtlLblTxt">
-										<INPUT type="password" class="inputs" name="txtCnfrmNewPass" id="txtCnfrmNewPass" maxlength="12" tabindex="3">
+										<INPUT type="password" class="inputs w-95" name="txtCnfrmNewPass" id="txtCnfrmNewPass" maxlength="12" tabindex="3">
 									</font>
 								</td>
 							</tr>	
 							<tr>
-								<td align="center" colspan="3" class="childGridFooter">
-									<INPUT class="inputs" type="button" name="btnChngPass" id="btnChngPass" value="SUBMIT" onClick="changePass()" tabindex="4">
-									<INPUT class="inputs" type="button" id="btnCancel" value="CANCEL" onClick="parent.document.getElementById('contentFrame').src='';" tabindex="5">
+								<td align="right" colspan="3" class="childGridFooter">
+									<INPUT class="inputs" style="margin-right: 8px; width: 75px;" type="button" name="btnChngPass" id="btnChngPass" value="UPDATE" onClick="changePass()" tabindex="4" style="margin-right: 3px;">
+									<!-- <INPUT class="inputs" type="button" id="btnCancel" value="CANCEL" onClick="parent.document.getElementById('contentFrame').src='';" tabindex="5"> -->
 								</td>
 							</tr>
 						</TABLE>
@@ -97,7 +94,7 @@ function changePass(){
 	var frm = $('frmChangePass').serialize(true);
 	
 	if(trim(frm['txtOldPass']) == ''){
-		alert('Old Password is Required');
+		alert('Current Password is Required');
 		$('txtOldPass').focus();
 		return false;
 	}
@@ -112,18 +109,18 @@ function changePass(){
 		return false;
 	}
 	if(trim(frm['txtNewPass']) != trim(frm['txtCnfrmNewPass'])){
-		alert('New Password does not match to confirm new Password');
+		alert('New Password and Confirm New Password does not match!');
 		$('txtNewPass').focus();
 		return false;		
 	}
 	
 	new Ajax.Request('<?=$_SERVER['PHP_SELF']?>',{
-		method :'get',
+		method :'GET',
 		parameters : $('frmChangePass').serialize(),
 		onComplete : function (req){
 			var resTxt = parseInt(req.responseText);
 			if(resTxt == 1){
-				alert('Invalid Password for this user');
+				alert('Current Password is incorrect');
 				$('txtOldPass').focus();
 			}
 			if(resTxt == 2){
@@ -138,13 +135,11 @@ function changePass(){
 			}
 		},
 		onCreate : function (){
-			$('btnChngPass').value='Loading...';
-			$('btnChngPass').value='';
+			$('btnChngPass').value='...';
 			$('btnChngPass').disabled=true;
-			$('btnCancel').disabled=true;
 		},
 		onSuccess : function (){
-			$('btnChngPass').value='SUBMIT';
+			$('btnChngPass').value='UPDATE';
 			$('btnChngPass').disabled=false;
 			$('btnCancel').disabled=false;			
 		}

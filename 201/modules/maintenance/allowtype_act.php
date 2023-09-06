@@ -16,7 +16,6 @@ switch($_GET['code']) {
 			exit();
 		}
 		
-		
 		if ($maintEmpObj->AllowType("Add",$_GET))
 			echo "alert('Allowance Type Successfully Added.');";
 		else
