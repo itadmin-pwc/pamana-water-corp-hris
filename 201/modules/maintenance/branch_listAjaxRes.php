@@ -51,7 +51,7 @@ $arrBrnList = $brnchObj->getArrRes($resBrnList);
 	<TABLE border="0" width="100%" cellpadding="1" cellspacing="0" class="parentGrid">
 		<tr>
 			<td colspan="5" class="parentGridHdr">
-				&nbsp;<img src="../../../images/grid.png">&nbsp;BRANCH</td>
+				&nbsp;&nbsp;BRANCH</td>
 		</tr>
 		<tr>
 			<td class="parentGridDtl" valign="top">
@@ -73,8 +73,8 @@ $arrBrnList = $brnchObj->getArrRes($resBrnList);
 							}
 						}
 						?>
-						Search<INPUT type="text" name="txtSrch" id="txtSrch" value="<?if(isset($_GET['txtSrch'])){echo $_GET['txtSrch'];} ?>" class="inputs">In<?=$brnchObj->DropDownMenu(array("","Code","Description"),'cmbSrch',$srchType,'class="inputs"');?>
-						<INPUT class="inputs" type="button" name="btnSrch" id="btnSrch" value="SEARCH" onclick="pager('branch_listAjaxRes.php','branchMasterCont','Search',0,1,'txtSrch','cmbSrch','','../../../images/')">
+						Search<INPUT style="margin-bottom: 3px;" type="text" name="txtSrch" id="txtSrch" value="<?if(isset($_GET['txtSrch'])){echo $_GET['txtSrch'];} ?>" class="inputs">In<?=$brnchObj->DropDownMenu(array("","Code","Description"),'cmbSrch',$srchType,'class="inputs"');?>
+						<INPUT style="margin-bottom: 3px;"" class="inputs" type="button" name="btnSrch" id="btnSrch" value="SEARCH" onclick="pager('branch_listAjaxRes.php','branchMasterCont','Search',0,1,'txtSrch','cmbSrch','','../../../images/')">
 					</td>
 					<tr>
 						<td width="3%" class="gridDtlLbl" align="center">#</td>

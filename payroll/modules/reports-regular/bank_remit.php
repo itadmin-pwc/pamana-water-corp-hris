@@ -331,7 +331,7 @@ $bnkRmitObj->validateSessions('','MODULES');
 		            <td class="gridDtlLbl">Credit Date</td>
 		            <td class="gridDtlLbl">&nbsp;</td>
 		            <td class="gridDtlVal"><INPUT type="text" name="txtcDate" id="txtcDate" class="inputs" readonly >
-	                <a href="#"><img src="../../../images/cal_new.gif" alt="" name="imgcDate" id="imgcDate" style="cursor: pointer;position:relative;top:3px;border:none;" title="Date Granted" type="image" /></a></td>
+	                <a href="#"><img src="../../../images/cal_new.png" alt="" name="imgcDate" id="imgcDate" style="cursor: pointer;position:relative;top:3px;border:none;" title="Date Granted" type="image" /></a></td>
               </tr>
 		          <tr> 
 		            <td width="18%" class="gridDtlLbl">Emp. #</td>

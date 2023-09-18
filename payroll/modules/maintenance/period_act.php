@@ -155,19 +155,19 @@ switch($_GET['code']) {
           <td class="gridDtlLbl style2 style3" >PD Payable</td>
           <td class="gridDtlLbl style2 style3">:</td>
           <td class="gridDtlVal"><input type="text" id="txtPDPayable" name="txtPDPayable" value="<?=$_GET['pdPayable']?>">
-          <a href="#"><img name="imgPD" id="imgPD" type="image" src="../../../images/cal_new.gif" title="Holiday Date" style="cursor: pointer;position:relative;top:3px;border:none;" /></a></td>
+          <a href="#"><img name="imgPD" id="imgPD" type="image" src="../../../images/cal_new.png" title="Holiday Date" style="cursor: pointer;position:relative;top:3px;border:none;" /></a></td>
         </tr>
         <tr>
           <td class="gridDtlLbl style2 style3" >From Date</td>
           <td class="gridDtlLbl style2 style3">:</td>
           <td class="gridDtlVal"><input type="text" id="txtFrDate" name="txtFrDate" value="<?=$_GET['pdFrom']?>">
-          <a href="#"><img name="imgFrom" id="imgFrom" type="image" src="../../../images/cal_new.gif" title="Holiday Date" style="cursor: pointer;position:relative;top:3px;border:none;" /></a></td>
+          <a href="#"><img name="imgFrom" id="imgFrom" type="image" src="../../../images/cal_new.png" title="Holiday Date" style="cursor: pointer;position:relative;top:3px;border:none;" /></a></td>
         </tr>
         <tr>
           <td class="gridDtlLbl style2 style3" >To Date</td>
           <td width="1%" class="gridDtlLbl style2 style3">:</td>
           <td class="gridDtlVal"><input type="text" id="txtToDate" name="txtToDate" value="<?=$_GET['pdTo']?>">
-            <a href="#"><img name="imgTo" id="imgTo" type="image" src="../../../images/cal_new.gif" title="Holiday Date" style="cursor: pointer;position:relative;top:3px;border:none;" /></a>
+            <a href="#"><img name="imgTo" id="imgTo" type="image" src="../../../images/cal_new.png" title="Holiday Date" style="cursor: pointer;position:relative;top:3px;border:none;" /></a>
           <input type="hidden" value="<?=$_GET['pdSeries']?>" name="pdSeries" id="pdSeries"></td>
         </tr>
         <tr>

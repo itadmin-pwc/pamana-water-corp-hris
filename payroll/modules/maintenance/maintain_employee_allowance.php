@@ -201,7 +201,7 @@ if($_GET['transType'] == 'Edit'){
 						<td class="gridDtlVal">
 							<input value="<?=$allwStart?>" type='text' class='inputs' name='txtAllwStart' id='txtAllwStart' maxLength='10' readonly size="10"/> 
 						    <a href="#" id="allwStrtDt">
-						    	<img class="btnClendar" name="imgAllwStart" id="imgAllwStart" type="image" src="../../../images/cal_new.gif" title="Start Date"
+						    	<img class="btnClendar" name="imgAllwStart" id="imgAllwStart" type="image" src="../../../images/cal_new.png" title="Start Date"
 									<?
 										if($_GET['transType'] == 'Edit' && $AllwPayTag == 'T'){
 											echo "style='display:'';'";
@@ -219,7 +219,7 @@ if($_GET['transType'] == 'Edit'){
 						<td class="gridDtlVal">
 							<input value="<?=$allwEnd?>" type='text' class='inputs' name='txtAllwEnd' id='txtAllwEnd' maxLength='10' readonly size="10"/> 
 						    <a href="#" id="allwEndDt">
-						    	<img  class="btnClendar" name="imgAllwEnd" id="imgAllwEnd" type="image" src="../../../images/cal_new.gif" title="End Date" 
+						    	<img  class="btnClendar" name="imgAllwEnd" id="imgAllwEnd" type="image" src="../../../images/cal_new.png" title="End Date" 
 									<?
 										if($_GET['transType'] == 'Add'){
 											echo "style='display:none;'";

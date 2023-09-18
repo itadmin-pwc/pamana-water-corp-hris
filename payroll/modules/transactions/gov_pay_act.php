@@ -225,7 +225,7 @@
         <tr>
           <td class="gridDtlLbl" align="left" >Date Paid</td>
           <td class="gridDtlLbl" align="center">&nbsp;</td>
-          <td class="gridDtlVal"><INPUT value="<?=$arr_datePaid?>" type='text' class='inputs' name='datePaid' id='datePaid' maxLength='10' readonly size="10"><a href="#"><img name="imgdatePaid" id="imgdatePaid" src="../../../images/cal_new.gif" title="From Date" style="cursor: pointer;position:relative;top:3px;border:none;"></a></td>
+          <td class="gridDtlVal"><INPUT value="<?=$arr_datePaid?>" type='text' class='inputs' name='datePaid' id='datePaid' maxLength='10' readonly size="10"><a href="#"><img name="imgdatePaid" id="imgdatePaid" src="../../../images/cal_new.png" title="From Date" style="cursor: pointer;position:relative;top:3px;border:none;"></a></td>
         </tr>
         <tr>
             <td class="gridDtlLbl" align="left" >

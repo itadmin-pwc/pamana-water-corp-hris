@@ -130,7 +130,7 @@ switch ($_GET['action']){
 				$('indicator2').src="../../../images/wait.gif";
 			},
 			onSuccess : function (){
-				$('indicator2').src='../../../images/refresh.gif';
+				$('indicator2').src='../../../images/refresh.png';
 			}
 		})
 	}

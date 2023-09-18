@@ -308,7 +308,7 @@ if($_GET['transType']=='Edit'){
 						<td width="1%" class="gridDtlLbl" align="center">:</td>
 						<td class="gridDtlVal"><input value="<?=$allwStart?>" type='text' class='inputs' name='txtAllwStart' id='txtAllwStart' maxLength='10' readonly size="10"/>
 						  <a href="#" id="allwStrtDt">
-						    	<img class="btnClendar" name="imgAllwStart" id="imgAllwStart" type="image" src="../../../images/cal_new.gif" title="Start Date"
+						    	<img class="btnClendar" name="imgAllwStart" id="imgAllwStart" type="image" src="../../../images/cal_new.png" title="Start Date"
 									<?
 										if($_GET['transType'] == 'edit' && $AllwPayTag == 'T'){
 											echo "style='display:'';'";

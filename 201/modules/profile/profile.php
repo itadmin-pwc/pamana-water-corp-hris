@@ -282,7 +282,7 @@ include("../../../includes/calendar.php");
               <div id="tab5" class="tab5" onClick="focusTab(5)">Employee Profile</div>
               <div id="tab6" class="tab6" onClick="focusTab(6);">Training</div>
               <div id="tab7" class="tab7" onClick="focusTab(7); viewTabEight();">Other Info</div>
-          		<div id="content1" class="content1">
+          		<div id="content1" class="content1" style="height: 520px;">
                     <TABLE align="center" cellpadding="0" cellspacing="2" border="0" class="childGrid" width="100%">
                       <tr> 
                         <td align="left" class="parentGridDtl" height="200" valign="top">
@@ -343,7 +343,7 @@ include("../../../includes/calendar.php");
                       </tr>
                     </TABLE>
                 </div>
-               <div id="content2" class="content2">
+               <div id="content2" class="content2" style="height: 520px;">
                    <TABLE align="center" cellpadding="0" cellspacing="2" border="0" class="childGrid" width="100%">
                       <tr> 
                         <td align="left" class="parentGridDtl" height="420" valign="top">
@@ -397,7 +397,7 @@ include("../../../includes/calendar.php");
                       </tr>
                     </TABLE>
                 </div>
-              <div id="content3" class="content3">
+              <div id="content3" class="content3" style="height: 520px;">
 <TABLE align="center" cellpadding="0" cellspacing="2" border="0" class="childGrid" width="100%">
                       <tr> 
                         <td align="left" class="parentGridDtl" height="470" valign="top"><table width="100%" border="0" cellspacing="0" cellpadding="0">
@@ -516,7 +516,7 @@ include("../../../includes/calendar.php");
                 </TABLE>                     
                 </div>
                 
-                <div id="content4" class="content4">
+                <div id="content4" class="content4" style="height: 520px;">
                     <TABLE align="center" cellpadding="0" cellspacing="2" border="0" class="childGrid" width="100%">
                       <tr> 
                         <td align="left" class="parentGridDtl" height="470" valign="top">
@@ -534,7 +534,7 @@ include("../../../includes/calendar.php");
                       </tr>
                     </TABLE>                                                
                 </div>
-              <div id="content5" class="content5">
+              <div id="content5" class="content5" style="height: 520px;">
                     <TABLE align="center" cellpadding="0" cellspacing="2" border="0" class="childGrid" width="100%">
                       <tr> 
                         <td align="left" class="parentGridDtl" height="470" valign="top">
@@ -654,7 +654,7 @@ include("../../../includes/calendar.php");
                     </TABLE>
 				</div>
                 
-              	<div id="content6" class="content6">
+              	<div id="content6" class="content6" style="height: 520px;">
                     <TABLE align="center" cellpadding="0" cellspacing="2" border="0" class="childGrid" width="100%">
                       <tr> 
                         <td align="left" class="parentGridDtl" height="470" valign="top">
@@ -672,7 +672,7 @@ include("../../../includes/calendar.php");
                       </tr>
                     </TABLE>                                                
                 </div>
-                <div id="content7" class="content7">
+                <div id="content7" class="content7" style="height: 520px;">
                         <div id='divCont7'></div>
                  </div>
 </td>
@@ -762,7 +762,7 @@ include("../../../includes/calendar.php");
 
 		}
 		else{
-			$('imgUsrInfo'+id).src='../../../images/delete.gif';
+			$('imgUsrInfo'+id).src='../../../images/delete.png';
 			Effect.SlideUp('usrInfo'+id,{duration:1.0});
 			Effect.SlideUp('divUsrInfo'+id,{duration:1.0});
 

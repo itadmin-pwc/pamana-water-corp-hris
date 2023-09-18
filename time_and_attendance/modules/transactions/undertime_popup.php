@@ -138,7 +138,7 @@ $empName = $empInfo["empLastName"].", ".htmlspecialchars(addslashes($empInfo["em
                                 <tr>
                                     <td  align="center">
                                         <input tabindex="10" class="inputs" type="text" name="dateUt" id="dateUt" size="10" onKeyDown="checkShift(event,this.event)", readonly value="<?=date("m/d/Y", strtotime($arr_App["utDate"]))?>">
-                                        <img src="../../../images/cal_new.gif" onClick="displayDatePicker('dateUt', this);" style="cursor:pointer;" width="20" height="14">
+                                        <img src="../../../images/cal_new.png" onClick="displayDatePicker('dateUt', this);" style="cursor:pointer;" width="20" height="14">
                                      </td>
                                     
                                  

@@ -1300,7 +1300,7 @@ function empMasttextFile()
                             <td class="gridDtlLbl">:</td>
                             <td class="gridDtlVal"> 
                                <input value="06/15/2010" type='text' onChange="valDateStartEnd(this.value,this.id,document.frmTS.monthfr.value);" class='inputs' name='monthfr' id='monthfr' maxLength='10' readonly size="10"/>
-                                  <a href="#"><img name="imgfrDate" id="imgfrDate" src="../../../images/cal_new.gif" title="From Date" style="cursor: pointer;position:relative;top:3px;border:none;"></a>
+                                  <a href="#"><img name="imgfrDate" id="imgfrDate" src="../../../images/cal_new.png" title="From Date" style="cursor: pointer;position:relative;top:3px;border:none;"></a>
                             </td>
                         </tr>
                         

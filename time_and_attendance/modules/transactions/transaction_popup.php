@@ -211,7 +211,7 @@ $deptPos = htmlspecialchars(addslashes($deptName["deptDesc"]))." - ".$posName["p
                                         <input tabindex="10" class="inputs" type="text" name="csDateTo" readonly="readonly" id="csDateTo" size="10"
                                              value="<?=date("Y-m-d", strtotime($arr_App["csDateTo"]))?>" >
                                                     
-                                                        <img src="../../../images/cal_new.gif" onClick="displayDatePicker('csDateTo', this);" style="cursor:pointer;" width="20" height="14">
+                                                        <img src="../../../images/cal_new.png" onClick="displayDatePicker('csDateTo', this);" style="cursor:pointer;" width="20" height="14">
                                     
                                     </td>
                                     
@@ -263,7 +263,7 @@ $deptPos = htmlspecialchars(addslashes($deptName["deptDesc"]))." - ".$posName["p
                                         <input tabindex="10" class="inputs" type="text" name="rdDateTo" readonly="readonly" id="rdDateTo" 
                                              value="<?=date("Y-m-d", strtotime($arr_App["cRDDateTo"]))?>" >
                                                     
-                                                        <img src="../../../images/cal_new.gif" onClick="displayDatePicker('rdDateTo', this);" style="cursor:pointer;" width="20" height="14">
+                                                        <img src="../../../images/cal_new.png" onClick="displayDatePicker('rdDateTo', this);" style="cursor:pointer;" width="20" height="14">
                                     </td>
                                     <td align="center"><span class="gridDtlVal">
                                     <?

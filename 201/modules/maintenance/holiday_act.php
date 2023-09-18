@@ -127,7 +127,7 @@ if ($holinfo['holidayDate'] != "") {
           <td class="gridDtlLbl style2 style3" >Holiday Date</td>
           <td class="gridDtlLbl style2 style3">:</td>
           <td class="gridDtlVal"><input class="inputs" name="txtdate" id="txtdate" value="<? echo date("m/d/Y",strtotime($hdate)) ?>" readonly type="text" size="15" maxlength="50" />
-          <a href="#"><img name="imgdate" id="imgdate" type="image" src="../../../images/cal_new.gif" title="Holiday Date" style="cursor: pointer;position:relative;top:3px;border:none;" /></a> </td>
+          <a href="#"><img name="imgdate" id="imgdate" type="image" src="../../../images/cal_new.png" title="Holiday Date" style="cursor: pointer;position:relative;top:3px;border:none;" /></a> </td>
         </tr>
         <tr>
           <td class="gridDtlLbl"><span class="headertxt">Holiday Description</span></td>

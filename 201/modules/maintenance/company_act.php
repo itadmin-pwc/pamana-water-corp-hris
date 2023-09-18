@@ -73,7 +73,6 @@ switch($_GET['code']) {
       <table width="419" border="0" class="childGrid" cellpadding="2" cellspacing="1">
         <tr>
           <td class="gridDtlLbl style2 style3" >Name</td>
-          <td width="1%" class="gridDtlLbl style2 style3">:</td>
           <td class="gridDtlVal">
           <input value="<?=$compInfo['compName']?>" type="text" name="txtname" id="txtname" class="inputs" size="30">
           <input type="hidden" value="<?=$_GET['act'];?>" name="code" id="code">
@@ -81,78 +80,65 @@ switch($_GET['code']) {
         </tr>
         <tr>
           <td class="gridDtlLbl style2 style3" >Short Name</td>
-          <td class="gridDtlLbl style2 style3">:</td>
           <td class="gridDtlVal">
           <input value="<?=$compInfo['compShort']?>" type="text" name="txtshortname" id="txtshortname" class="inputs" size="30"></td>
         </tr>
         <tr>
           <td class="gridDtlLbl"><span class="headertxt">Address 1</span></td>
-          <td class="gridDtlLbl"><span class="headertxt">:</span></td>
           <td class="gridDtlVal">
           <input value="<?=$compInfo['compAddr1']?>" type="text" name="txtadd1" id="txtadd1" class="inputs" size="30"></td>
         </tr>
         <tr>
           <td class="gridDtlLbl"><span class="headertxt">Address 2</span></td>
-          <td class="gridDtlLbl">&nbsp;</td>
           <td class="gridDtlVal"><input value="<?=$compInfo['compAddr2']?>" type="text" name="txtadd2" id="txtadd2" class="inputs" size="30"></td>
         </tr>
         <tr>
           <td class="gridDtlLbl"><span class="headertxt">Tax ID No.</span></td>
-          <td class="gridDtlLbl"><span class="headertxt">:</span></td>
           <td class="gridDtlVal">
           <input value="<?=$compInfo['compTin']?>" type="text" onKeyPress="return isNumberInputEmpNoOnly(this, event);" name="txttin" id="txttin" class="inputs" size="30"></td>
         </tr>
         <tr>
           <td class="gridDtlLbl"><span class="headertxt">SSS No.</span></td>
-          <td class="gridDtlLbl style2 style3">:</td>
           <td class="gridDtlVal">
           <input value="<?=$compInfo['compSssNo']?>" type="text" onKeyPress="return isNumberInputEmpNoOnly(this, event);" name="txtsss" id="txtsss" class="inputs" size="30"></td>
         </tr>
         <tr>
           <td class="gridDtlLbl style2 style3" >HDMF</td>
-          <td class="gridDtlLbl style2 style3">:</td>
           <td class="gridDtlVal">
           <input value="<?=$compInfo['compPagibig']?>" type="text" onKeyPress="return isNumberInputEmpNoOnly(this, event);" name="txthdmf" id="txthdmf" class="inputs" size="30"></td>
         </tr>
         <tr>
           <td class="gridDtlLbl style2 style3" >Phil Health</td>
-          <td class="gridDtlLbl style2 style3">:</td>
           <td class="gridDtlVal">
           <input value="<?=$compInfo['compPHealth']?>" type="text" onKeyPress="return isNumberInputEmpNoOnly(this, event);" name="txtphil" id="txtphil" class="inputs" size="30"></td>
         </tr>
         <tr>
           <td class="gridDtlLbl"><span class="headertxt">No. of Days</span></td>
-          <td class="gridDtlLbl"><span class="headertxt">:</span></td>
           <td class="gridDtlVal">
           <input value="<?=$compInfo['compNoDays']?>" type="text" onKeyPress="return isNumberInputEmpNoOnly(this, event);" name="txtdays" id="txtdays" class="inputs" size="30"></td>
         </tr>
         <tr>
           <td class="gridDtlLbl style2 style3" >% Earnings Retention</td>
-          <td class="gridDtlLbl style2 style3">:</td>
           <td class="gridDtlVal">
           <input value="<?=$compInfo['compEarnRetain']?>" type="text" onKeyPress="return isNumberInputEmpNoOnly(this, event);" name="txtretention" id="txtretention" class="inputs" size="30"></td>
         </tr>
         <tr>
           <td class="gridDtlLbl style2 style3" >Non tax Bonus</td>
-          <td class="gridDtlLbl style2 style3">:</td>
           <td class="gridDtlVal">
           <input value="<?=$compInfo['nonTaxBonus']?>" onKeyPress="return isNumberInputEmpNoOnly(this, event);" type="text" name="txtbonus" id="txtbonus" class="inputs" size="30"></td>
         </tr>
         <tr>
           <td class="gridDtlLbl"><span class="headertxt">Pay Sign</span></td>
-          <td class="gridDtlLbl"><span class="headertxt">:</span></td>
           <td class="gridDtlVal">
           <input value="<?=$compInfo['compPaySign']?>" type="text" name="txtpaysign" id="txtpaysign" class="inputs" size="30"></td>
         </tr>
         <tr>
           <td class="gridDtlLbl"><span class="headertxt">GL Code</span></td>
-          <td class="gridDtlLbl"><span class="headertxt">:</span></td>
           <td class="gridDtlVal">
           <input value="<?=$compInfo['gLCode']?>" type="text" name="txtglcode" id="txtglcode" class="inputs" size="30"></td>
         </tr>
         <tr>
           <td class="gridDtlLbl"><span class="headertxt">Status</span></td>
-          <td class="gridDtlLbl"><span class="headertxt">:</span></td>
           <td class="gridDtlVal">
           <?$maintEmpObj->DropDownMenu(array('','A'=>'Active','H'=>'Held'),'cmbStat',$compInfo['compStat'],'class="inputs"'); ?></td>
         </tr>
@@ -160,7 +146,7 @@ switch($_GET['code']) {
         <tr>
           <td class="childGridFooter">&nbsp;</td>
           <td class="childGridFooter">&nbsp;</td>
-          <td class="childGridFooter"><input name="Reset" type="reset" class="inputs" id="button" value="Reset">
+          <td class="childGridFooter"><input name="Reset" type="reset" style="display:none;" class="inputs" id="button" value="Reset">
           <input type="button" class="inputs" onClick="savecompany();" name="save" id="save" value="Submit"></td>
         </tr>
       </table>

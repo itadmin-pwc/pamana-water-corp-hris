@@ -154,9 +154,9 @@
                                         echo "<td width='1%' class='gridDtlLbl' align='center'>:</td>";
                                         	echo "
 												<td  width='30%' class='gridDtlVal' colspan='4'>
-												<input type='text' class='inputs' name='txtlname' id='txtlname' style='width:30%;' ".$readonly." value='".str_replace("Ñ","&Ntilde;",$emplName)."' > ,
-												<input type='text' class='inputs' name='txtfname' id='txtfname' style='width:30%;' ".$readonly." value='".str_replace("Ñ","&Ntilde;",$empfName)."'>
-												<input type='text' class='inputs' name='txtmname' id='txtmname' style='width:20%;' ".$readonly." value='".str_replace("Ñ","&Ntilde;",$empmName)."'>
+												<input type='text' class='inputs' name='txtlname' id='txtlname' style='width:30%;' ".$readonly." value='".str_replace("ï¿½","&Ntilde;",$emplName)."' > ,
+												<input type='text' class='inputs' name='txtfname' id='txtfname' style='width:30%;' ".$readonly." value='".str_replace("ï¿½","&Ntilde;",$empfName)."'>
+												<input type='text' class='inputs' name='txtmname' id='txtmname' style='width:20%;' ".$readonly." value='".str_replace("ï¿½","&Ntilde;",$empmName)."'>
 											";
                                         echo "</td>\n";
                                         echo "<td width='1%'></td>";
@@ -194,14 +194,14 @@
 													echo "<td width='1%' class='gridDtlLbl' align='center'>:</td>";
 													echo '<td  width="20%" class="gridDtlVal">
 															<input value="" type="text" onChange="valDateStartEnd(this.value,this.id,document.frmTS.txtempbdate.value);" class="inputs" name="txtempbdate" id="txtempbdate" maxLength="10" readonly size="10"/>
-                                  							<a href="#"><img name="imgbDate" id="imgbDate" src="../../../images/cal_new.gif" title="Birth Date" style="cursor: pointer;position:relative;top:3px;border:none;"></a>
+                                  							<a href="#"><img name="imgbDate" id="imgbDate" src="../../../images/cal_new.png" title="Birth Date" style="cursor: pointer;position:relative;top:3px;border:none;"></a>
 													</td>';
 													 
 													echo "<td width='10%' class='gridDtlLbl' align='left'>Date Hired </td>\n";
                                                     echo "<td width='1%' class='gridDtlLbl' align='center'>:</td>";
 												   	echo '<td  width="20%" class="gridDtlVal">
 															<input value="" type="text" onChange="valDateStartEnd(this.value,this.id,document.frmTS.txtempdhired.value);" class="inputs" name="txtempdhired" id="txtempdhired" maxLength="10" readonly size="10"/>
-															<a href="#"><img name="imgdhired" id="imgdhired" src="../../../images/cal_new.gif" title="Date Hired" style="cursor: pointer;position:relative;top:3px;border:none;"></a>
+															<a href="#"><img name="imgdhired" id="imgdhired" src="../../../images/cal_new.png" title="Date Hired" style="cursor: pointer;position:relative;top:3px;border:none;"></a>
 													</td>';
 														
 												    echo "<td width='20%' class='gridDtlLbl' align='left'>Date Resigned </td>\n";
@@ -209,7 +209,7 @@
 													
 													echo '<td  width="20%" class="gridDtlVal">
 														<input value="" type="text" onChange="valDateStartEnd(this.value,this.id,document.frmTS.txtempdres.value);" class="inputs" name="txtempdres" id="txtempdres" maxLength="10" readonly size="10"/>
-														<a href="#"><img name="imgdres" id="imgdres" src="../../../images/cal_new.gif" title="Date Resign" style="cursor: pointer;position:relative;top:3px;border:none;"></a>
+														<a href="#"><img name="imgdres" id="imgdres" src="../../../images/cal_new.png" title="Date Resign" style="cursor: pointer;position:relative;top:3px;border:none;"></a>
 													</td>';
 														
                                                 echo "</tr>";

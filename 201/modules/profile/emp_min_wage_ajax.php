@@ -44,7 +44,7 @@ else
 <HTML>
 <head>
 	<script type='text/javascript' src='movement.js'></script>
-   
+	<link rel="stylesheet" type="text/css" href="../../style/payroll.css"></link>
     <style type="text/css">
 <!--
 .style1 {

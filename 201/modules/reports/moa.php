@@ -181,7 +181,7 @@ switch ($_GET['action']){
                 <td width="18%" class="gridDtlLbl">Effectivity Date</td>
                 <td width="1%" class="gridDtlLbl">:</td>
                 <td width="158" colspan="3" class="gridDtlVal"><input name="txtEffectivity" type="text" id="txtEffectivity" size="10" class="inputs" readonly>
-                <a href="#"><img name="imgEffectivityDate" id="imgEffectivityDate" src="../../../images/cal_new.gif" title="Effectivity Date" style="cursor: pointer;position:relative;top:3px;border:none;"></a></td>
+                <a href="#"><img name="imgEffectivityDate" id="imgEffectivityDate" src="../../../images/cal_new.png" title="Effectivity Date" style="cursor: pointer;position:relative;top:3px;border:none;"></a></td>
               </tr>            
               </TABLE>
               

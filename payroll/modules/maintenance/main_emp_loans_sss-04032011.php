@@ -111,19 +111,19 @@ include("main_emp_loans.trans.php");
                       <td class="gridDtlLbl">Date Granted</td>
                       <td class="gridDtlLbl">:</td>
                       <td class="gridDtlVal"><input class="inputs" name="dtGranted" id="dtGranted" value="<? echo $dtGranted; ?>" readonly type="text" size="25" maxlength="50" />
-                        <a href="#"><img name="imgdtGranted" id="imgdtGranted" type="image" src="../../../images/cal_new.gif" title="Date Granted" style="cursor: pointer;position:relative;top:3px;border:none;" /></a></td>
+                        <a href="#"><img name="imgdtGranted" id="imgdtGranted" type="image" src="../../../images/cal_new.png" title="Date Granted" style="cursor: pointer;position:relative;top:3px;border:none;" /></a></td>
                     </tr>
                     <tr class="childGrid">
                       <td class="gridDtlLbl">Start Date of Deduction</td>
                       <td class="gridDtlLbl">:</td>
                       <td class="gridDtlVal"><input class="inputs" name="loanStart" id="loanStart" value="<? echo $loanStart; ?>" readonly type="text" size="25" maxlength="50" />
-                        <a href="#"><img name="imgloanStart" id="imgloanStart" type="image" src="../../../images/cal_new.gif" title="Start Date" style="cursor: pointer;position:relative;top:3px;border:none;" /></a> </td>
+                        <a href="#"><img name="imgloanStart" id="imgloanStart" type="image" src="../../../images/cal_new.png" title="Start Date" style="cursor: pointer;position:relative;top:3px;border:none;" /></a> </td>
                     </tr>
                     <tr class="childGrid">
                       <td class="gridDtlLbl">End Date of Deduction</td>
                       <td class="gridDtlLbl">:</td>
                       <td class="gridDtlVal"><input class="inputs" name="loanEnd" id="loanEnd" value="<? echo $loanEnd; ?>" readonly type="text" size="25" maxlength="50" />
-                        <a href="#"><img name="imgloanEnd" id="imgloanEnd" type="image" src="../../../images/cal_new.gif" title="End Date" style="cursor: pointer;position:relative;top:3px;border:none;" /></a> </td>
+                        <a href="#"><img name="imgloanEnd" id="imgloanEnd" type="image" src="../../../images/cal_new.png" title="End Date" style="cursor: pointer;position:relative;top:3px;border:none;" /></a> </td>
                     </tr>
                     <tr class="childGrid">
                       <td class="gridDtlLbl">Period of Deduction</td>

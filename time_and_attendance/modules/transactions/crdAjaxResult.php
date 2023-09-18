@@ -193,7 +193,7 @@
 			<a href="#" id="newEarn" tabindex="1"><IMG class="toolbarImg" src="../../../images/application_form_add.png"  onclick="newRef('NEWREFNO'); validateMod('NEWREFNO');" title="New OB Record"></a>
 			
 			<FONT class="ToolBarseparator">|</font>-->
-			<a href="#" tabindex="4"><img class="toolbarImg" src='../../../images/refresh.gif'  onclick="pager('crdAjaxResult.php','rdCont','refresh',0,0,'','','','../../../images/'); validateMod('REFRESH');" title="Refresh"></a>		
+			<a href="#" tabindex="4"><img class="toolbarImg" src='../../../images/refresh.png'  onclick="pager('crdAjaxResult.php','rdCont','refresh',0,0,'','','','../../../images/'); validateMod('REFRESH');" title="Refresh"></a>		
 		</td>
 	</tr>
     
@@ -366,7 +366,7 @@
                                     <input tabindex="10" class="inputs" type="text" name="rdDateTo<?=$ctr?>" readonly="readonly" id="rdDateTo<?=$ctr?>" 
                                          value="" >
                                                 
-                                                    <img src="../../../images/cal_new.gif" onClick="displayDatePicker('rdDateTo<?=$ctr?>', this);" style="cursor:pointer;" width="20" height="14">
+                                                    <img src="../../../images/cal_new.png" onClick="displayDatePicker('rdDateTo<?=$ctr?>', this);" style="cursor:pointer;" width="20" height="14">
                                 
                                 </td>
                                 

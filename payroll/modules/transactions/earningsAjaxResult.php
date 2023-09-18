@@ -104,7 +104,7 @@ if(($_GET['action'] == 'addHdrDtlMid') || ($_GET['action'] == 'updtHdr' ) || ($_
 				<a href="#" id="deleEarn" tabindex="3"><img class="toolbarImg" src="../../../images/application_form_delete.png" onclick="maintEarnings('earnings.php','earningsCont','deleEarn','<?=$intOffset?>','<?=$_GET['isSearch']?>','txtSrch','cmbSrch','','')"></a>
 			<?}?>
 			<FONT class="ToolBarseparator">|</font>
-			<a href="#" tabindex="4"><img class="toolbarImg" src='../../../images/refresh.gif'  onclick="pager('earningsAjaxResult.php','earningsCont','refresh',0,0,'','','','../../../images/'); validateMod('REFRESH');" title="Refresh"></a>		
+			<a href="#" tabindex="4"><img class="toolbarImg" src='../../../images/refresh.png'  onclick="pager('earningsAjaxResult.php','earningsCont','refresh',0,0,'','','','../../../images/'); validateMod('REFRESH');" title="Refresh"></a>		
 		</td>
 	</tr>
 	<tr>

@@ -54,16 +54,16 @@
   <file name="images\grid\loading.gif" path="images\grid" />
   <file name="images\grid\mso-hd.gif" path="images\grid" />
   <file name="images\grid\nowait.gif" path="images\grid" />
-  <file name="images\grid\page-first-disabled.gif" path="images\grid" />
-  <file name="images\grid\page-first.gif" path="images\grid" />
-  <file name="images\grid\page-last-disabled.gif" path="images\grid" />
-  <file name="images\grid\page-last.gif" path="images\grid" />
-  <file name="images\grid\page-next-disabled.gif" path="images\grid" />
-  <file name="images\grid\page-next.gif" path="images\grid" />
-  <file name="images\grid\page-prev-disabled.gif" path="images\grid" />
-  <file name="images\grid\page-prev.gif" path="images\grid" />
+  <file name="images\grid\page-first-disabled.png" path="images\grid" />
+  <file name="images\grid\page-first.png" path="images\grid" />
+  <file name="images\grid\page-last-disabled.png" path="images\grid" />
+  <file name="images\grid\page-last.png" path="images\grid" />
+  <file name="images\grid\page-next-disabled.png" path="images\grid" />
+  <file name="images\grid\page-next.png" path="images\grid" />
+  <file name="images\grid\page-prev-disabled.png" path="images\grid" />
+  <file name="images\grid\page-prev.png" path="images\grid" />
   <file name="images\grid\pick-button.gif" path="images\grid" />
-  <file name="images\grid\refresh.gif" path="images\grid" />
+  <file name="images\grid\refresh.png" path="images\grid" />
   <file name="images\grid\sort_asc.gif" path="images\grid" />
   <file name="images\grid\sort_desc.gif" path="images\grid" />
   <file name="images\grid\wait.gif" path="images\grid" />
@@ -148,9 +148,9 @@
   <file name="images\tree\elbow-plus-nl.gif" path="images\tree" />
   <file name="images\tree\elbow-plus.gif" path="images\tree" />
   <file name="images\tree\elbow.gif" path="images\tree" />
-  <file name="images\tree\folder-open.gif" path="images\tree" />
-  <file name="images\tree\folder.gif" path="images\tree" />
-  <file name="images\tree\leaf.gif" path="images\tree" />
+  <file name="images\tree\folder-open.png" path="images\tree" />
+  <file name="images\tree\folder.png" path="images\tree" />
+  <file name="images\tree\leaf.png" path="images\tree" />
   <file name="images\tree\s.gif" path="images\tree" />
   <file name="images\qtip\gray\bg.gif" path="images\qtip\gray" />
   <file name="css\aero.css" path="css" />
@@ -252,16 +252,16 @@
   <file name="images\default\grid\loading.gif" path="images\default\grid" />
   <file name="images\default\grid\mso-hd.gif" path="images\default\grid" />
   <file name="images\default\grid\nowait.gif" path="images\default\grid" />
-  <file name="images\default\grid\page-first-disabled.gif" path="images\default\grid" />
-  <file name="images\default\grid\page-first.gif" path="images\default\grid" />
-  <file name="images\default\grid\page-last-disabled.gif" path="images\default\grid" />
-  <file name="images\default\grid\page-last.gif" path="images\default\grid" />
-  <file name="images\default\grid\page-next-disabled.gif" path="images\default\grid" />
-  <file name="images\default\grid\page-next.gif" path="images\default\grid" />
-  <file name="images\default\grid\page-prev-disabled.gif" path="images\default\grid" />
-  <file name="images\default\grid\page-prev.gif" path="images\default\grid" />
+  <file name="images\default\grid\page-first-disabled.png" path="images\default\grid" />
+  <file name="images\default\grid\page-first.png" path="images\default\grid" />
+  <file name="images\default\grid\page-last-disabled.png" path="images\default\grid" />
+  <file name="images\default\grid\page-last.png" path="images\default\grid" />
+  <file name="images\default\grid\page-next-disabled.png" path="images\default\grid" />
+  <file name="images\default\grid\page-next.png" path="images\default\grid" />
+  <file name="images\default\grid\page-prev-disabled.png" path="images\default\grid" />
+  <file name="images\default\grid\page-prev.png" path="images\default\grid" />
   <file name="images\default\grid\pick-button.gif" path="images\default\grid" />
-  <file name="images\default\grid\refresh.gif" path="images\default\grid" />
+  <file name="images\default\grid\refresh.png" path="images\default\grid" />
   <file name="images\default\grid\sort_asc.gif" path="images\default\grid" />
   <file name="images\default\grid\sort_desc.gif" path="images\default\grid" />
   <file name="images\default\grid\wait.gif" path="images\default\grid" />
@@ -313,9 +313,9 @@
   <file name="images\default\tree\elbow-plus-nl.gif" path="images\default\tree" />
   <file name="images\default\tree\elbow-plus.gif" path="images\default\tree" />
   <file name="images\default\tree\elbow.gif" path="images\default\tree" />
-  <file name="images\default\tree\folder-open.gif" path="images\default\tree" />
-  <file name="images\default\tree\folder.gif" path="images\default\tree" />
-  <file name="images\default\tree\leaf.gif" path="images\default\tree" />
+  <file name="images\default\tree\folder-open.png" path="images\default\tree" />
+  <file name="images\default\tree\folder.png" path="images\default\tree" />
+  <file name="images\default\tree\leaf.png" path="images\default\tree" />
   <file name="images\default\tree\loading.gif" path="images\default\tree" />
   <file name="images\default\tree\s.gif" path="images\default\tree" />
   <file name="images\default\gradient-bg.gif" path="images\default" />
@@ -568,10 +568,10 @@
   <file name="images\default\grid\group-by.gif" path="images\default\grid" />
   <file name="images\default\grid\columns.gif" path="images\default\grid" />
   <file name="css\dialog.css" path="css" />
-  <file name="images\default\basic-dialog\icon-error.gif" path="images\default\basic-dialog" />
-  <file name="images\default\basic-dialog\icon-info.gif" path="images\default\basic-dialog" />
-  <file name="images\default\basic-dialog\icon-question.gif" path="images\default\basic-dialog" />
-  <file name="images\default\basic-dialog\icon-warning.gif" path="images\default\basic-dialog" />
+  <file name="images\default\basic-dialog\icon-error.png" path="images\default\basic-dialog" />
+  <file name="images\default\basic-dialog\icon-info.png" path="images\default\basic-dialog" />
+  <file name="images\default\basic-dialog\icon-question.png" path="images\default\basic-dialog" />
+  <file name="images\default\basic-dialog\icon-warning.png" path="images\default\basic-dialog" />
   <file name="css\progress.css" path="css" />
   <file name="images\default\widgets\progress-bg.gif" path="images\default\widgets" />
   <file name="images\default\progress\progress-bg.gif" path="images\default\progress" />
@@ -590,10 +590,10 @@
   <file name="images\default\button\btn-arrow.gif" path="images\default\button" />
   <file name="images\default\button\btn-sprite.gif" path="images\default\button" />
   <file name="images\default\shared\hd-sprite.gif" path="images\default\shared" />
-  <file name="images\default\window\icon-error.gif" path="images\default\window" />
-  <file name="images\default\window\icon-info.gif" path="images\default\window" />
-  <file name="images\default\window\icon-question.gif" path="images\default\window" />
-  <file name="images\default\window\icon-warning.gif" path="images\default\window" />
+  <file name="images\default\window\icon-error.png" path="images\default\window" />
+  <file name="images\default\window\icon-info.png" path="images\default\window" />
+  <file name="images\default\window\icon-question.png" path="images\default\window" />
+  <file name="images\default\window\icon-warning.png" path="images\default\window" />
   <file name="images\gray\panel\corners-sprite.gif" path="images\gray\panel" />
   <file name="images\gray\panel\left-right.gif" path="images\gray\panel" />
   <file name="images\gray\panel\light-hd.gif" path="images\gray\panel" />
@@ -616,10 +616,10 @@
   <file name="images\gray\tabs\tab-strip-bg.gif" path="images\gray\tabs" />
   <file name="images\gray\tabs\tab-strip-bg.png" path="images\gray\tabs" />
   <file name="images\gray\tabs\tab-strip-btm-bg.gif" path="images\gray\tabs" />
-  <file name="images\gray\window\icon-error.gif" path="images\gray\window" />
-  <file name="images\gray\window\icon-info.gif" path="images\gray\window" />
-  <file name="images\gray\window\icon-question.gif" path="images\gray\window" />
-  <file name="images\gray\window\icon-warning.gif" path="images\gray\window" />
+  <file name="images\gray\window\icon-error.png" path="images\gray\window" />
+  <file name="images\gray\window\icon-info.png" path="images\gray\window" />
+  <file name="images\gray\window\icon-question.png" path="images\gray\window" />
+  <file name="images\gray\window\icon-warning.png" path="images\gray\window" />
   <file name="images\gray\window\left-corners.png" path="images\gray\window" />
   <file name="images\gray\window\left-corners.psd" path="images\gray\window" />
   <file name="images\gray\window\left-right.png" path="images\gray\window" />
@@ -669,10 +669,10 @@
   <file name="images\dark\toolbar\gray-bg.gif" path="images\dark\toolbar" />
   <file name="images\dark\toolbar\tb-bg.gif" path="images\dark\toolbar" />
   <file name="images\dark\toolbar\tb-btn-sprite.gif" path="images\dark\toolbar" />
-  <file name="images\dark\window\icon-error.gif" path="images\dark\window" />
-  <file name="images\dark\window\icon-info.gif" path="images\dark\window" />
-  <file name="images\dark\window\icon-question.gif" path="images\dark\window" />
-  <file name="images\dark\window\icon-warning.gif" path="images\dark\window" />
+  <file name="images\dark\window\icon-error.png" path="images\dark\window" />
+  <file name="images\dark\window\icon-info.png" path="images\dark\window" />
+  <file name="images\dark\window\icon-question.png" path="images\dark\window" />
+  <file name="images\dark\window\icon-warning.png" path="images\dark\window" />
   <file name="images\dark\window\left-corners.png" path="images\dark\window" />
   <file name="images\dark\window\left-corners.pspimage" path="images\dark\window" />
   <file name="images\dark\window\left-right.png" path="images\dark\window" />

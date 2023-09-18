@@ -1,24 +1,106 @@
 .parentGrid {
-	border : 1px solid #6495ED;
+	border : 1px solid #c0c0c0;
+	border-radius: 5px;
 	-moz-border-radius: 3px 3px 3px 3px;
+	-webkit-box-shadow: 1px 1px 5px 0px rgba(0,0,0,0.25);
+	-moz-box-shadow: 1px 1px 5px 0px rgba(0,0,0,0.25);
+	box-shadow: 1px 1px 5px 0px rgba(0,0,0,0.25);
+}
+
+input.inputs[type="text"] {
+    /* Styles for text input */
+    /* width: 100%; */
+	padding-left: 5px;
+	padding-right: 5px;
+    height: 30px;
+	font-size: 12px;
+    border-radius: 3px;
+    border: 1px solid #c9c9c9;
+	vertical-align: top;
+}
+
+input.inputs[type="password"] {
+    /* Styles for password input */
+    /* width: 100%; */
+	padding-left: 5px;
+	padding-right: 5px;
+    height: 30px;
+	font-size: 12px;
+    border-radius: 3px;
+    border: 1px solid #c9c9c9;
+}
+
+select {
+    height: 30px;
+    border-radius: 3px;
+    border: 1px solid #c9c9c9;
+	vertical-align: top;
 }
 
 .parentGridHdr {
 	height : 30px;
-	background-color: #c3daf9;
-	color : #000066;
-	font : normal bold 11px Verdana, Arial, Helvetica, sans-serif;
-	border-bottom: 1px solid #6495ED;
-}
-
-.parentGridDtl {
-	background-color: #F0F8FF;
-	padding : 5px 5px 5px 5px;
+	border-radius: 5px;
+	background-color: #ffffff;
+	color : #181818;
+	font : normal bold 13px Arial, Helvetica, sans-serif;
+	border-bottom: 1px solid #c0c0c0;
 	
 }
 
+.parentGridDtl {
+	background-color: #ffffff;
+	padding : 5px 5px 5px 5px;
+	border-radius: 5px;
+}
+
+.w-100 {
+	width: 100%;
+}
+
+.w-95 {
+	width: 95%;
+}
+
+.logInCont {
+	padding-top: 15%;
+	width : 100%;
+	height : 500px;	
+}
+
+input.inputs[type="button"],input.inputs[type="submit"],input.inputs[type="reset"] {
+	background-color:#0D6BF7; 
+	color:white; 
+	height:30px; 
+	border-radius:3px; 
+	border:0px #0D6BF7;
+}
+
+input.inputs[type="button"],input.inputs[type="submit"],input.inputs[type="reset"]:hover{
+	background-color:#3d89fc; 
+}
+
+input.inputs[type="button"],input.inputs[type="submit"],input.inputs[type="reset"]:active{
+	background-color:#035de4;
+}
+
+button.inputs {
+	background-color:#0D6BF7; 
+	color:white; 
+	height:30px; 
+	border-radius:3px; 
+	border:0px #0D6BF7;
+}
+
+button.inputs:hover{
+	background-color:#3d89fc; 
+}
+
+button.inputs:active{
+	background-color:#035de4;
+}
+
 .childGrid {
-	border : 2px groove #6699FF;
+	border : 2px #ffffff;
 	-moz-border-radius: 10px 10px 10px 10px;
 }
 
@@ -98,9 +180,8 @@
 
 .childGridFooter {
 	font : normal normal 12px Verdana, Arial, Helvetica, sans-serif;
-	border-top: 1px solid #6495ED;
 	height : 25px;
-	background-color: #F0F8FF;
+	background-color: #ffffff;
 }
 
 .gridDtlLblTxt {

@@ -232,7 +232,7 @@ if($_GET['action'] == 'unlockSys'){
 <SCRIPT>
 	function DologOut(){
 		
-		Dialog.confirm("<br><center><img src='../images/icon-question.gif'>&nbsp;&nbsp;<font class='cnfrmLbl'>Do You Want To Log Out</font></center>", {
+		Dialog.confirm("<br><center><img src='../images/icon-question.png'>&nbsp;&nbsp;<font class='cnfrmLbl'>Do You Want To Log Out</font></center>", {
 				width:300, 
 				height : 125,
 				okLabel: "YES", 

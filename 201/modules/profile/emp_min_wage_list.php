@@ -31,6 +31,7 @@ switch($_GET['action']) {
 		<TITLE><?=SYS_TITLE?></TITLE>
 		<SCRIPT type="text/javascript" src="../../../js/extjs/adapter/prototype/prototype.js"></SCRIPT>
 		<SCRIPT type="text/javascript" src="../../../includes/jSLib.js"></SCRIPT>
+		<link rel="stylesheet" type="text/css" href="../../style/payroll.css"></link>
 		<script type='text/javascript' src='movement.js'></script>
 		<STYLE>@import url('../../style/reports.css');</STYLE>
 	</HEAD>

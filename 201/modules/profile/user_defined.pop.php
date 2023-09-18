@@ -317,13 +317,13 @@ if($_GET['transtype']=="violations"){
 					  <td class="gridDtlLbl" align="left">Date Started</td>
 					  <td class="gridDtlLbl" align="center">:</td>
 					  <td class="gridDtlVal"><input type="text" name="txtstartdate" id="txtstartdate" class="inputs" value="<?=$datestart;?>" readonly>
-                      <a href="#"><img src="../../../images/cal_new.gif" width="20" height="14" name="imgtxtstartdate" id="imgtxtstartdate" style="cursor: pointer;position:relative;top:3px;border:none;"></a></td>
+                      <a href="#"><img src="../../../images/cal_new.png" width="20" height="14" name="imgtxtstartdate" id="imgtxtstartdate" style="cursor: pointer;position:relative;top:3px;border:none;"></a></td>
 				  </tr>
 					<tr>
 					  <td class="gridDtlLbl" align="left">Date Finished</td>
 					  <td class="gridDtlLbl" align="center">:</td>
 					  <td class="gridDtlVal"><input type="text" name="txtfinisdate" id="txtfinisdate" class="inputs" value="<?=$datefinish;?>" readonly>
-				    <a href="#"><img src="../../../images/cal_new.gif" width="20" height="14" name="imgtxtfinisdate" id="imgtxtfinisdate" style="cursor: pointer;position:relative;top:3px;border:none;"></a></td>
+				    <a href="#"><img src="../../../images/cal_new.png" width="20" height="14" name="imgtxtfinisdate" id="imgtxtfinisdate" style="cursor: pointer;position:relative;top:3px;border:none;"></a></td>
 				  </tr>
 					<tr>
 					  <td class="gridDtlLbl" align="left">License Number</td>
@@ -339,13 +339,13 @@ if($_GET['transtype']=="violations"){
 					  <td class="gridDtlLbl" align="left">Date Obtained</td>
 					  <td class="gridDtlLbl" align="center">:</td>
 					  <td class="gridDtlVal"><input type="text" name="txtobtaindate" id="txtobtaindate" class="inputs" readonly value="<?=$dateIssued;?>">
-                      <a href="#"><img src="../../../images/cal_new.gif" width="20" height="14" name="imgtxtobtaindate" id="imgtxtobtaindate" style="cursor: pointer;position:relative;top:3px;border:none;"></a></td>
+                      <a href="#"><img src="../../../images/cal_new.png" width="20" height="14" name="imgtxtobtaindate" id="imgtxtobtaindate" style="cursor: pointer;position:relative;top:3px;border:none;"></a></td>
 				  </tr>
 					<tr>
 					  <td class="gridDtlLbl" align="left">Expiry Date</td>
 					  <td class="gridDtlLbl" align="center">:</td>
 					  <td class="gridDtlVal"><input type="text" name="txtexpirydate" id="txtexpirydate" class="inputs" readonly value="<?=$dateExpired;?>">
-				    <a href="#"><img src="../../../images/cal_new.gif" width="20" height="14" name="imgtxtexpirydate" id="imgtxtexpirydate" style="cursor: pointer;position:relative;top:3px;border:none;"></a></td>
+				    <a href="#"><img src="../../../images/cal_new.png" width="20" height="14" name="imgtxtexpirydate" id="imgtxtexpirydate" style="cursor: pointer;position:relative;top:3px;border:none;"></a></td>
 				  </tr>
                   <?
 					}
@@ -355,13 +355,13 @@ if($_GET['transtype']=="violations"){
 					  <td class="gridDtlLbl" align="left">Date Committed</td>
 					  <td class="gridDtlLbl" align="center">:</td>
 					  <td class="gridDtlVal"><input name="txtdatecommit" type="text" class="inputs" id="txtdatecommit" value="<?=$datecommitted;?>" size="15" readonly>
-                      <a href="#"><img src="../../../images/cal_new.gif" width="20" height="14" name="imgdatecommit" id="imgdatecommit" style="cursor: pointer;position:relative;top:3px;border:none;"></a></td>
+                      <a href="#"><img src="../../../images/cal_new.png" width="20" height="14" name="imgdatecommit" id="imgdatecommit" style="cursor: pointer;position:relative;top:3px;border:none;"></a></td>
 				  </tr>
 					<tr>
 					  <td class="gridDtlLbl" align="left">Date Served</td>
 					  <td class="gridDtlLbl" align="center">:</td>
 					  <td class="gridDtlVal"><input name="txtdateserve" type="text" class="inputs" id="txtdateserve" value="<?=$dateserve?>" size="15" readonly>
-                      <a href="#"><img src="../../../images/cal_new.gif" width="20" height="14" name="imgdateserve" id="imgdateserve" style="cursor: pointer;position:relative;top:3px;border:none;"></a></td>
+                      <a href="#"><img src="../../../images/cal_new.png" width="20" height="14" name="imgdateserve" id="imgdateserve" style="cursor: pointer;position:relative;top:3px;border:none;"></a></td>
 				  </tr>
 					<tr>
 					  <td class="gridDtlLbl" align="left">Article</td>
@@ -408,13 +408,13 @@ if($_GET['transtype']=="violations"){
 					  <td class="gridDtlLbl" align="left">Suspension From</td>
 					  <td class="gridDtlLbl" align="center">:</td>
 					  <td class="gridDtlVal"><input name="txtdatefrom" type="text" class="inputs" id="txtdatefrom" value="<?=$suspensionfrom;?>" size="15" readonly>
-				      <a href="#"><img src="../../../images/cal_new.gif" width="20" height="14" name="imgdatefrom" id="imgdatefrom" style="cursor: pointer;position:relative;top:3px;border:none;"></a></td>
+				      <a href="#"><img src="../../../images/cal_new.png" width="20" height="14" name="imgdatefrom" id="imgdatefrom" style="cursor: pointer;position:relative;top:3px;border:none;"></a></td>
 				  </tr>
 					<tr>
 					  <td class="gridDtlLbl" align="left">Suspension To</td>
 					  <td class="gridDtlLbl" align="center">:</td>
 					  <td class="gridDtlVal"><input name="txtdateto" type="text" class="inputs" id="txtdateto" value="<?=$suspensionto?>" size="15" readonly>
-				      <a href="#"><img src="../../../images/cal_new.gif" width="20" height="14" name="imgdateto" id="imgdateto" style="cursor: pointer;position:relative;top:3px;border:none;"></a></td>
+				      <a href="#"><img src="../../../images/cal_new.png" width="20" height="14" name="imgdateto" id="imgdateto" style="cursor: pointer;position:relative;top:3px;border:none;"></a></td>
 				  </tr>
                   <?
 					}
@@ -434,13 +434,13 @@ if($_GET['transtype']=="violations"){
 					  <td class="gridDtlLbl" align="left">Date Started</td>
 					  <td class="gridDtlLbl" align="center">:</td>
 					  <td class="gridDtlVal"><input type="text" name="txtcompdatestart" id="txtcompdatestart" class="inputs" readonly value="<?=$compdatestart;?>">
-                      <a href="#"><img src="../../../images/cal_new.gif" width="20" height="14" name="imgtxtcompdatestart" id="imgtxtcompdatestart" style="cursor: pointer;position:relative;top:3px;border:none;"></a></td>
+                      <a href="#"><img src="../../../images/cal_new.png" width="20" height="14" name="imgtxtcompdatestart" id="imgtxtcompdatestart" style="cursor: pointer;position:relative;top:3px;border:none;"></a></td>
 				  </tr>
 					<tr>
 					  <td class="gridDtlLbl" align="left">Date Finished</td>
 					  <td class="gridDtlLbl" align="center">:</td>
 					  <td class="gridDtlVal"><input type="text" name="txtcompdateend" id="txtcompdateend" class="inputs" readonly value="<?=$compdateend;?>">
-				    <a href="#"><img src="../../../images/cal_new.gif" width="20" height="14" name="imgtxtcompdateend" id="imgtxtcompdateend" style="cursor: pointer;position:relative;top:3px;border:none;"></a></td>
+				    <a href="#"><img src="../../../images/cal_new.png" width="20" height="14" name="imgtxtcompdateend" id="imgtxtcompdateend" style="cursor: pointer;position:relative;top:3px;border:none;"></a></td>
 				  </tr>
                   <?
 					}

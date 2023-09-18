@@ -235,7 +235,7 @@
 			{
 				$input_type="<input type='text' style='width:40%;' class='inputs' name='".str_replace(" ","",$inputName)."' id='".str_replace(" ","",$inputName)."' maxLength='10' readonly size='10' value='".($action=='Edit'?$this->getTblUserDefMast($_GET["recNo"],$rowFields):date("Y-m-d"))."'/>"; 
 				$input_type.="<a href='#'>";
-	    		$input_type.="<img class='btnClendar' name='img".str_replace(" ","",$inputName)."' id='img".str_replace(" ","",$inputName)."' type='image' src='../../../images/cal_new.gif'>";  
+	    		$input_type.="<img class='btnClendar' name='img".str_replace(" ","",$inputName)."' id='img".str_replace(" ","",$inputName)."' type='image' src='../../../images/cal_new.png'>";  
 			}
 			
 			if($inputCd=='4')

@@ -117,14 +117,14 @@ if($_GET['act']=="valrate"){
 						<td width="1%" class="gridDtlLbl" align="center">:</td>
 						<td width="71%" class="gridDtlVal"><input value="<?=$trainingFrom?>" type='text' onChange="valDateStartEnd(this.value,this.id,document.frmEmpTrainings.txtTrainingEnd.value); valdatabond(this.value);computeYears();" class='inputs' name='txtTrainingStart' id='txtTrainingStart' maxLength='10' readonly size="10"/>
 						  <a href="#" id="allwStrtDt">
-						    	<img class="btnClendar" name="imgTrainingStart" id="imgTrainingStart" type="image" src="../../../images/cal_new.gif" title="Start Date"></a>	</td>
+						    	<img class="btnClendar" name="imgTrainingStart" id="imgTrainingStart" type="image" src="../../../images/cal_new.png" title="Start Date"></a>	</td>
 				  </tr>
 					<tr>
 						<td class="gridDtlLbl" align="left" >
 							Training To						</td>
 						<td width="1%" class="gridDtlLbl" align="center">:</td>
 						<td class="gridDtlVal"><input value="<?=$trainingTo?>" type='text' class='inputs' name='txtTrainingEnd' onChange="valDateStartEnd(document.frmEmpTrainings.txtTrainingStart.value,document.frmEmpTrainings.txtTrainingStart.id,this.value);" id='txtTrainingEnd' maxLength='10' readonly size="10"/>
-                        <a href="#" id="allwEndDt"><img  class="btnClendar" name="imgTrainingEnd" id="imgTrainingEnd" type="image" src="../../../images/cal_new.gif" title="End Date"></a></td>
+                        <a href="#" id="allwEndDt"><img  class="btnClendar" name="imgTrainingEnd" id="imgTrainingEnd" type="image" src="../../../images/cal_new.png" title="End Date"></a></td>
 					</tr>
 					<tr>
 					  <td align="left" class="gridDtlLbl" >Title</td>

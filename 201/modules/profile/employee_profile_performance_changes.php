@@ -126,14 +126,14 @@ if($_GET['act']=="valrate"){
 						<td width="1%" class="gridDtlLbl" align="center">:</td>
 						<td width="71%" class="gridDtlVal"><input value="<?=$performanceFrom?>" type='text' onChange="valDateStartEnd(this.value,this.id,document.frmEmpPerformance.txtPerformanceEnd.value);" class='inputs' name='txtPerformanceStart' id='txtPerformanceStart' maxLength='10' readonly size="10"/>
 						  <a href="#" id="allwStrtDt">
-						    	<img class="btnClendar" name="imgPerformanceStart" id="imgPerformanceStart" type="image" src="../../../images/cal_new.gif" title="Start Date"></a>	</td>
+						    	<img class="btnClendar" name="imgPerformanceStart" id="imgPerformanceStart" type="image" src="../../../images/cal_new.png" title="Start Date"></a>	</td>
 				  </tr>
 					<tr>
 						<td class="gridDtlLbl" align="left" >
 							To						</td>
 						<td width="1%" class="gridDtlLbl" align="center">:</td>
 						<td class="gridDtlVal"><input value="<?=$performanceTo?>" type='text' class='inputs' name='txtPerformanceEnd' onChange="valDateStartEnd(document.frmEmpPerformance.txtPerformanceStart.value,document.frmEmpPerformance.txtPerformanceStart.id,this.value);" id='txtPerformanceEnd' maxLength='10' readonly size="10"/>
-                        <a href="#" id="allwEndDt"><img  class="btnClendar" name="imgPerformanceEnd" id="imgPerformanceEnd" type="image" src="../../../images/cal_new.gif" title="End Date"></a></td>
+                        <a href="#" id="allwEndDt"><img  class="btnClendar" name="imgPerformanceEnd" id="imgPerformanceEnd" type="image" src="../../../images/cal_new.png" title="End Date"></a></td>
 					</tr>
 					<tr>
 					  <td align="left" class="gridDtlLbl" >Numeric Rating</td>

@@ -34,6 +34,7 @@
 	<title><?=SYS_TITLE?></title>
 	<style>@import url('../../style/main_emp_loans.css');</style>
 	<script type='text/javascript' src='../../../includes/jSLib.js'></script>
+	<link rel="stylesheet" type="text/css" href="../../style/payroll.css"></link>
 	<script type='text/javascript' src='../../../includes/prototype.js'></script>
 	<!--calendar lib-->
 	<script type="text/javascript" src="../../../includes/calendar/calendar.js"></script>

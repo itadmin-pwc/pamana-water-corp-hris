@@ -29,7 +29,7 @@ switch ($_GET['action']){
 		<TITLE><?=SYS_TITLE?></TITLE>
 		<SCRIPT type="text/javascript" src="../../../js/extjs/adapter/prototype/prototype.js"></SCRIPT>
 		<SCRIPT type="text/javascript" src="../../../includes/jSLib.js"></SCRIPT>
-		<STYLE>@import url('../../style/payroll.css');</STYLE>
+		<link rel="stylesheet" type="text/css" href="../../style/payroll.css"></link>
 		
 		<script type="text/javascript" src="../../../js/extjs/adapter/prototype/effects.js"></script>
 		<script type="text/javascript" src="../../../js/extjs/adapter/prototype/window.js"></script>

@@ -10,6 +10,8 @@
 input.inputs[type="text"] {
     /* Styles for text input */
     /* width: 100%; */
+	padding-left: 5px;
+	padding-right: 5px;
     height: 30px;
 	font-size: 12px;
     border-radius: 3px;
@@ -20,6 +22,8 @@ input.inputs[type="text"] {
 input.inputs[type="password"] {
     /* Styles for password input */
     /* width: 100%; */
+	padding-left: 5px;
+	padding-right: 5px;
     height: 30px;
 	font-size: 12px;
     border-radius: 3px;
@@ -63,7 +67,7 @@ select {
 	height : 500px;	
 }
 
-input.inputs[type="button"] {
+input.inputs[type="button"],input.inputs[type="submit"],input.inputs[type="reset"] {
 	background-color:#0D6BF7; 
 	color:white; 
 	height:30px; 
@@ -71,11 +75,27 @@ input.inputs[type="button"] {
 	border:0px #0D6BF7;
 }
 
-input.inputs[type="button"]:hover{
+input.inputs[type="button"]:hover,input.inputs[type="submit"]:hover,input.inputs[type="reset"]:hover{
 	background-color:#3d89fc; 
 }
 
-input.inputs[type="button"]:active{
+input.inputs[type="button"]:active,input.inputs[type="submit"]:active,input.inputs[type="reset"]:active{
+	background-color:#035de4;
+}
+
+button.inputs {
+	background-color:#0D6BF7; 
+	color:white; 
+	height:30px; 
+	border-radius:3px; 
+	border:0px #0D6BF7;
+}
+
+button.inputs:hover{
+	background-color:#3d89fc; 
+}
+
+button.inputs:active{
 	background-color:#035de4;
 }
 
@@ -118,8 +138,8 @@ input.inputs[type="button"]:active{
 }
 
 .gridDtlLbl {
-	background-color:#E8E8E8;
-	font : normal bold 9px Verdana, Arial, Helvetica, sans-serif;
+	background-color:#8ed5ff;
+	font : normal bold 11px sans-serif;
 }
 
 .gridDtlLbl2 {

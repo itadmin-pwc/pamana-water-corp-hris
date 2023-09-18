@@ -58,7 +58,7 @@ if($_GET['action'] != 'refresh'){
 	<TABLE border="0" width="100%" cellpadding="1" cellspacing="0" class="parentGrid">
 		<tr>
 			<td colspan="4" class="parentGridHdr">
-				&nbsp;<img src="../../../images/grid.png">&nbsp;DEPARTMENT</td>
+				&nbsp;&nbsp;DEPARTMENT</td>
 		</tr>
 		<tr>
 			<td class="parentGridDtl" valign="top">
@@ -77,7 +77,6 @@ if($_GET['action'] != 'refresh'){
                         						   ),'cmbDiv',$cmbDiv,'class="inputs" onChange="filterDept(this.value)"'
                         	);
                         ?>
-                        <FONT class="ToolBarseparator">|</font>
 						<!--
                         <a href="#" onclick="location.href='view_edit_employee.php?transType=add'" class="anchor" ><img class="anchor" src="../../../images/add.gif">Add Employee<a> <FONT class="ToolBarseparator">|</font>
 						-->
@@ -89,8 +88,8 @@ if($_GET['action'] != 'refresh'){
 						}
 						?>
 						Search
-						<INPUT type="text" name="txtSrch" id="txtSrch" value="<?if(isset($_GET['txtSrch'])){echo $_GET['txtSrch'];} ?>" class="inputs">In<?=$deptObj->DropDownMenu(array("","Code","Description"),'cmbSrch',$srchType,'class="inputs"');?>
-						<INPUT class="inputs" type="button" name="btnSrch" id="btnSrch" value="SEARCH" onclick="pager('department_dept_listAjaxRes.php','deptMasterCont','Search',0,1,'txtSrch','cmbSrch','&divCode='+'<?=$_GET['divCode']?>'+'&srchType2=1','../../../images/')">
+						<INPUT style="margin-bottom: 3px;" type="text" name="txtSrch" id="txtSrch" value="<?if(isset($_GET['txtSrch'])){echo $_GET['txtSrch'];} ?>" class="inputs">In<?=$deptObj->DropDownMenu(array("","Code","Description"),'cmbSrch',$srchType,'class="inputs"');?>
+						<INPUT style="margin-bottom: 3px;" class="inputs" type="button" name="btnSrch" id="btnSrch" value="SEARCH" onclick="pager('department_dept_listAjaxRes.php','deptMasterCont','Search',0,1,'txtSrch','cmbSrch','&divCode='+'<?=$_GET['divCode']?>'+'&srchType2=1','../../../images/')">
 					</td>
 					<tr>
 						<td width="1%" class="gridDtlLbl" align="center">#</td>

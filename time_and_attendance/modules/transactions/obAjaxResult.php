@@ -201,7 +201,7 @@
 			<!--<a href="#" id="newEarn" tabindex="1"><IMG class="toolbarImg" src="../../../images/application_form_add.png"  onclick="newRef('NEWREFNO'); validateMod('NEWREFNO');" title="New OB Record"></a>
 			
 			<FONT class="ToolBarseparator">|</font>-->
-			<a href="#" tabindex="4"><img class="toolbarImg" src='../../../images/refresh.gif'  onclick="pager('obAjaxResult.php','obCont','refresh',0,0,'','','','../../../images/'); validateMod('REFRESH');" title="Refresh"></a>		
+			<a href="#" tabindex="4"><img class="toolbarImg" src='../../../images/refresh.png'  onclick="pager('obAjaxResult.php','obCont','refresh',0,0,'','','','../../../images/'); validateMod('REFRESH');" title="Refresh"></a>		
 			
         </td>
 	</tr>
@@ -340,7 +340,7 @@
 										echo("$strf"); 
 									?>" >
 									
-										<img src="../../../images/cal_new.gif" onClick="displayDatePicker('obDate', this);" style="cursor:pointer;" width="20" height="14">
+										<img src="../../../images/cal_new.png" onClick="displayDatePicker('obDate', this);" style="cursor:pointer;" width="20" height="14">
 					
                     </td>
                     

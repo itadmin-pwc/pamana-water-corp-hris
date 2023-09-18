@@ -275,7 +275,7 @@ if($AllwStat=="")
 						<td width="1%" class="gridDtlLbl" align="center">:</td>
 						<td class="gridDtlVal"><input value="<?=$allwStart?>" type='text' onChange="valDateStartEnd(this.value,this.id,document.frmMaintEmpAllow.txtAllwEnd.value);" class='inputs' name='txtAllwStart' id='txtAllwStart' maxLength='10' readonly size="10"/>
 						  <a href="#" id="allwStrtDt">
-						    	<img class="btnClendar" name="imgAllwStart" id="imgAllwStart" type="image" src="../../../images/cal_new.gif" title="Start Date"
+						    	<img class="btnClendar" name="imgAllwStart" id="imgAllwStart" type="image" src="../../../images/cal_new.png" title="Start Date"
 									<?
 										if($_GET['transType'] == 'edit' && $AllwPayTag == 'T'){
 											echo "style='display:'';'";
@@ -289,7 +289,7 @@ if($AllwStat=="")
 						<td width="1%" class="gridDtlLbl" align="center">:</td>
 						<td class="gridDtlVal"><input value="<?=$allwEnd?>" type='text' class='inputs' name='txtAllwEnd' onChange="valDateStartEnd(document.frmMaintEmpAllow.txtAllwStart.value,document.frmMaintEmpAllow.txtAllwStart.id,this.value);" id='txtAllwEnd' maxLength='10' readonly size="10"/>
 						  <a href="#" id="allwEndDt">
-						    	<img  class="btnClendar" name="imgAllwEnd" id="imgAllwEnd" type="image" src="../../../images/cal_new.gif" title="End Date" 
+						    	<img  class="btnClendar" name="imgAllwEnd" id="imgAllwEnd" type="image" src="../../../images/cal_new.png" title="End Date" 
 									<?
 										
 											echo "style='display:none;'";
@@ -301,7 +301,7 @@ if($AllwStat=="")
 					  <td class="gridDtlLbl" align="left" >Effectivity Date</td>
 					  <td class="gridDtlLbl" align="center">&nbsp;</td>
 					  <td class="gridDtlVal"><input value="<?=$effDate;?>" type='text' class='inputs' name='effetivitydate' id='effetivitydate' maxLength='10' readonly size="10"/>
-				      <a href="#" id="allwEndDt2"><img  class="btnClendar" name="imgeffdate" id="imgeffdate" type="image" src="../../../images/cal_new.gif" title="Effectivity Date"						    	>
+				      <a href="#" id="allwEndDt2"><img  class="btnClendar" name="imgeffdate" id="imgeffdate" type="image" src="../../../images/cal_new.png" title="Effectivity Date"						    	>
 				      <input type="hidden" value="0" name="prtag" id="prtag">
 				      </a></td>
 				  </tr>

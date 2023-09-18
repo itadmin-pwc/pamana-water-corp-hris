@@ -83,7 +83,7 @@ switch($_GET['code']) {
                 <td width="13%" class="headertxt" >Date</td>
                 <td width="3%" class="headertxt">:</td>
                 <td width="84%" class="gridDtlVal"><input class="inputs" name="date" id="date" value="<? echo $rdDate; ?>" disabled="true" type="text" size="25" maxlength="50" >
-                  <a href="#"><img name="imgrdDate" id="imgrdDate" type="image" src="../../../images/cal_new.gif" title="Start Date" style="cursor: pointer;position:relative;top:3px;border:none;"></a> </td>
+                  <a href="#"><img name="imgrdDate" id="imgrdDate" type="image" src="../../../images/cal_new.png" title="Start Date" style="cursor: pointer;position:relative;top:3px;border:none;"></a> </td>
               </tr>
               <tr>
                 <td><div id="dvtest">&nbsp;</div></td>

@@ -358,7 +358,7 @@ $DateOfBirth = $cureDate;
 											<td width="1%" class="gridDtlLbl" align="center">:</td>
 											<td class="gridDtlVal">
 													<input value="<?=$dateHired?>" type='text' class='inputs' name='txtDateHired' id='txtDateHired' maxLength='10' readonly size="10"/> 
-								          			<a href="#"><img name="imgDateHired" id="imgDateHired" src="../../../images/cal_new.gif" title="Date Hired" style="cursor: pointer;position:relative;top:3px;border:none;"></a>								          		
+								          			<a href="#"><img name="imgDateHired" id="imgDateHired" src="../../../images/cal_new.png" title="Date Hired" style="cursor: pointer;position:relative;top:3px;border:none;"></a>								          		
 								          	</td>
 										</tr>
 										<tr>
@@ -376,7 +376,7 @@ $DateOfBirth = $cureDate;
 											<td class="gridDtlVal">
 												
 													<input value="<?=$DateRegular?>" type='text' class='inputs' name='txtDateReg' id='txtDateReg' maxLength='10' readonly size="10"/> 
-								          			<a href="#"><img name="imgDateReg" id="imgDateReg"  src="../../../images/cal_new.gif" title="Date Hired" style="cursor: pointer;position:relative;top:3px; border:none;"></a>
+								          			<a href="#"><img name="imgDateReg" id="imgDateReg"  src="../../../images/cal_new.png" title="Date Hired" style="cursor: pointer;position:relative;top:3px; border:none;"></a>
 												
 											</td>
 										</tr>
@@ -547,7 +547,7 @@ $DateOfBirth = $cureDate;
 											<td width="1%" class="gridDtlLbl" align="center">:</td>
 											<td class="gridDtlVal">
 													<input value="<?=$DateOfBirth?>" type='text' class='inputs' name='txtDateOfBirth' id='txtDateOfBirth' maxLength='10' readonly size="10"/> 
-								          			<a href="#"><img name="imgDateOfBirth" id="imgDateOfBirth" type="image" src="../../../images/cal_new.gif" title="Date Hired" style="cursor: pointer;position:relative;top:3px; border:none;"></a>											
+								          			<a href="#"><img name="imgDateOfBirth" id="imgDateOfBirth" type="image" src="../../../images/cal_new.png" title="Date Hired" style="cursor: pointer;position:relative;top:3px; border:none;"></a>											
 											</td>
 										</tr>
 										<tr>

@@ -223,7 +223,7 @@ switch ($_GET['action']){
                 	    <td width="1%" class="gridDtlLbl">:</td>
                 	    <td width="13%"><span class="gridDtlVal">
                 	      <input name="txtFrom" type="text" class="inputs" id="txtFrom" onChange="valDateStartEnd(this.value,this.id,document.frmtransfer.txtTo.value); computeDate();" size="10" readonly="readonly">
-                	    </span><a href="#"><img name="imgfrmDate" id="imgfrmDate" src="../../../images/cal_new.gif" title="From Date" style="cursor: pointer;position:relative;top:3px;border:none;"></a></td>
+                	    </span><a href="#"><img name="imgfrmDate" id="imgfrmDate" src="../../../images/cal_new.png" title="From Date" style="cursor: pointer;position:relative;top:3px;border:none;"></a></td>
                 	    <td width="5%" rowspan="2" class="gridDtlLbl" align="center">Loan Period</td>
                 	    <td width="5%" rowspan="2"><div id="loanperiod" class="gridDtlVal" align="center"></div>
                 	      <input type="hidden" name="hdnLPeriod" id="hdnLPeriod">
@@ -241,7 +241,7 @@ switch ($_GET['action']){
                 	    <td class="gridDtlLbl">:</td>
                 	    <td><span class="gridDtlVal">
                 	      <input name="txtTo" type="text" class="inputs" id="txtTo" onChange="valDateStartEnd(document.frmtransfer.txtFrom.value,document.frmtransfer.txtFrom.id,this.value); computeDate();" size="10" readonly="readonly">
-                	    </span><a href="#"><img name="imgtoDate" id="imgtoDate" src="../../../images/cal_new.gif" title="To Date" style="cursor: pointer;position:relative;top:3px;border:none;"></a></td>
+                	    </span><a href="#"><img name="imgtoDate" id="imgtoDate" src="../../../images/cal_new.png" title="To Date" style="cursor: pointer;position:relative;top:3px;border:none;"></a></td>
                	      </tr>
               	  </table></td>
                 </tr>
@@ -285,7 +285,7 @@ switch ($_GET['action']){
                           <td width="1%" class="gridDtlLbl">:</td>
                           <td width="66%"><span class="gridDtlVal">
                             <input name="txtEffectivity" type="text" class="inputs" id="txtEffectivity" size="15" readonly="readonly">
-                          </span><a href="#"><img name="imgEffectivityDate" id="imgEffectivityDate" src="../../../images/cal_new.gif" title="Effectivity Date" style="cursor: pointer;position:relative;top:3px;border:none;"></a></td>
+                          </span><a href="#"><img name="imgEffectivityDate" id="imgEffectivityDate" src="../../../images/cal_new.png" title="Effectivity Date" style="cursor: pointer;position:relative;top:3px;border:none;"></a></td>
                         </tr>
                       </table></td>
                     </tr>

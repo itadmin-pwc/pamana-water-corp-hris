@@ -40,7 +40,7 @@ $arrExpRem = explode("+", $arrgetOtherListofReminders);
 			<div class="niftyCorner">
 			<TABLE border="0" width="100%" cellpadding="1" cellspacing="0" class="parentGrid">
                 <tr>
-                	<td colspan="4" class="parentGridHdr"> &nbsp;<img src="../images/icon-small-warning.gif"> LIST OF REMINDERS</td>
+                	<td colspan="4" class="parentGridHdr"> &nbsp;<img src="../images/icon-small-warning.png"> LIST OF REMINDERS</td>
                 </tr>
                 
                 <tr>

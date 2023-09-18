@@ -37,13 +37,13 @@
 }
 /* some default icons for leaf/folder */
 .x-tree-node-expanded .x-tree-node-icon{
-	background-image:url(../images/default/tree/folder-open.gif);
+	background-image:url(../images/default/tree/folder-open.png);
 }
 .x-tree-node-leaf .x-tree-node-icon{
-	background-image:url(../images/default/tree/leaf.gif);
+	background-image:url(../images/default/tree/leaf.png);
 }
 .x-tree-node-collapsed .x-tree-node-icon{
-	background-image:url(../images/default/tree/folder.gif);
+	background-image:url(../images/default/tree/folder.png);
 }
 /* checkboxes */
 .ext-ie input.x-tree-node-cb {

@@ -357,7 +357,7 @@ switch ($_GET['act']) {
                         
                         <tr>
                           <td class="style4 style1"><div align="right"><strong>Effectivity Date </strong><span class="style2">:</span>&nbsp;&nbsp;&nbsp;</div></td>
-                          <td><input value="<?=($empStatview['effectivitydate'] !=""? date('m/d/Y',strtotime($empStatview['effectivitydate'])) : "")?>" type='text' onChange="valDate('<?=date("m/d/Y")?>',this.id,this.value);" class='inputs' name='txtempstatDate' id='txtempstatDate' maxLength='10' readonly size="10"/><a href="#"><img name="imgempstatDate" id="imgempstatDate" src="../../../images/cal_new.gif" title="Effectivity Date" style="cursor: pointer;position:relative;top:3px;border:none;"></a></td>
+                          <td><input value="<?=($empStatview['effectivitydate'] !=""? date('m/d/Y',strtotime($empStatview['effectivitydate'])) : "")?>" type='text' onChange="valDate('<?=date("m/d/Y")?>',this.id,this.value);" class='inputs' name='txtempstatDate' id='txtempstatDate' maxLength='10' readonly size="10"/><a href="#"><img name="imgempstatDate" id="imgempstatDate" src="../../../images/cal_new.png" title="Effectivity Date" style="cursor: pointer;position:relative;top:3px;border:none;"></a></td>
                           <td>&nbsp;</td>
                         </tr>
                         
@@ -509,7 +509,7 @@ switch ($_GET['act']) {
                           <td class="style4 style1"><div align="right"><strong>Effectivity Date </strong><span class="style2">:</span>&nbsp;&nbsp;&nbsp;</div></td>
                           <td>&nbsp;</td>
                           <td><input value="<?=($Branchview['effectivitydate'] !=""? date('m/d/Y',strtotime($Branchview['effectivitydate'])) : "")?>" type='text' onChange="valDate('<?=date("m/d/Y")?>',this.id,this.value);" class='inputs' name='txtbrDate' id='txtbrDate' maxLength='10' readonly size="10"/>
-                            <a href="#"><img name="imgbrDate" id="imgbrDate" src="../../../images/cal_new.gif" title="Effectivity Date" style="cursor: pointer;position:relative;top:3px;border:none;"></a></td>
+                            <a href="#"><img name="imgbrDate" id="imgbrDate" src="../../../images/cal_new.png" title="Effectivity Date" style="cursor: pointer;position:relative;top:3px;border:none;"></a></td>
                           <td>&nbsp;</td>
                         </tr>
                         <tr>
@@ -661,7 +661,7 @@ switch ($_GET['act']) {
                           <td class="style4 style1"><div align="right"><strong>Effectivity Date </strong><span class="style2">:</span>&nbsp;&nbsp;&nbsp;</div></td>
                           <td>&nbsp;</td>
                           <td><input value="<?=($effectivitydate !=""? date('m/d/Y',strtotime($effectivitydate)) : "")?>" type='text' onChange="valDate('<?=date("m/d/Y")?>',this.id,this.value);" class='inputs' name='txtposDate' id='txtposDate' maxLength='10' readonly size="10"/>
-                            <a href="#"><img name="imgposDate" id="imgposDate" src="../../../images/cal_new.gif" title="Effectivity Date" style="cursor: pointer;position:relative;top:3px;border:none;"></a></td>
+                            <a href="#"><img name="imgposDate" id="imgposDate" src="../../../images/cal_new.png" title="Effectivity Date" style="cursor: pointer;position:relative;top:3px;border:none;"></a></td>
                           <td>&nbsp;</td>
                         </tr>
                         <tr>
@@ -883,7 +883,7 @@ switch ($_GET['act']) {
                           <td class="style4 style1"><div align="right"><strong>Effectivity Date </strong><span class="style2">:</span>&nbsp;&nbsp;&nbsp;</div></td>
                           <td>&nbsp;</td>
                           <td><input value="<?=($payroll_view['effectivitydate'] !=""? date('m/d/Y',strtotime($payroll_view['effectivitydate'])) : "")?>" type='text' onChange="valDate('<?=date("m/d/Y")?>',this.id,this.value);" class='inputs' name='txtprDate' id='txtprDate' maxLength='10' readonly size="10"/>
-                            <a href="#"><img name="imgprDate" id="imgprDate" src="../../../images/cal_new.gif" title="Effectivity Date" style="cursor: pointer;position:relative;top:3px;border:none;"></a></td>
+                            <a href="#"><img name="imgprDate" id="imgprDate" src="../../../images/cal_new.png" title="Effectivity Date" style="cursor: pointer;position:relative;top:3px;border:none;"></a></td>
                           <td>&nbsp;</td>
                         </tr>
                         <tr>
@@ -1103,7 +1103,7 @@ switch ($_GET['act']) {
                           <td class="style4 style1"><div align="right"><strong>Effectivity Date </strong><span class="style2">:</span>&nbsp;&nbsp;&nbsp;</div></td>
                           <td>&nbsp;</td>
                           <td><input value="<?=($others_view['effectivitydate'] !=""? date('m/d/Y',strtotime($others_view['effectivitydate'])) : "")?>" type='text' onChange="valDate('<?=date("m/d/Y")?>',this.id,this.value);" class='inputs' name='txtothDate' id='txtothDate' maxLength='10' readonly size="10"/>
-                            <a href="#"><img name="imgothDate" id="imgothDate" src="../../../images/cal_new.gif" title="Effectivity Date" style="cursor: pointer;position:relative;top:3px;border:none;"></a></td>
+                            <a href="#"><img name="imgothDate" id="imgothDate" src="../../../images/cal_new.png" title="Effectivity Date" style="cursor: pointer;position:relative;top:3px;border:none;"></a></td>
                           <td>&nbsp;</td>
                         </tr>
                         <tr>

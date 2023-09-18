@@ -155,7 +155,7 @@ $fullname = $empInfo['empLastName'] . ", " . htmlspecialchars(addslashes($empInf
 		<td colspan="6" class="gridToolbar">
 			&nbsp;
 			
-			<a href="#" tabindex="4"><img class="toolbarImg" src='../../../images/refresh.gif'  onclick="pager('leaveAppAjaxResult.php','leaveAppCont','refresh',0,0,'','','','../../../images/'); validateMod('REFRESH');" title="Refresh"></a>		
+			<a href="#" tabindex="4"><img class="toolbarImg" src='../../../images/refresh.png'  onclick="pager('leaveAppAjaxResult.php','leaveAppCont','refresh',0,0,'','','','../../../images/'); validateMod('REFRESH');" title="Refresh"></a>		
 		</td>
 	
 	</tr>
@@ -250,7 +250,7 @@ $fullname = $empInfo['empLastName'] . ", " . htmlspecialchars(addslashes($empInf
 				<tr>
 					<td class="gridDtlVal" align="center">
 						<INPUT name="dateLvFrom" type="text" class="inputs" id="dateLvFrom" tabindex="11" size="15" readonly,>
-						<img src="../../../images/cal_new.gif" onClick="displayDatePicker('dateLvFrom', this);" style="cursor:pointer;" width="20" height="14">&nbsp;
+						<img src="../../../images/cal_new.png" onClick="displayDatePicker('dateLvFrom', this);" style="cursor:pointer;" width="20" height="14">&nbsp;
 						<?
 							$leaveAppObj->DropDownMenu(array('WD'=>'WD','AM' => 'HF AM','PM' => 'HF PM'),'cmbFromAMPM',$lvAMPMFrom,'class="inputs" tabindex="16"');
 						?>
@@ -259,7 +259,7 @@ $fullname = $empInfo['empLastName'] . ", " . htmlspecialchars(addslashes($empInf
 					<td class="gridDtlVal" align="center">
 
 						<INPUT name="dateLvTo" type="text" class="inputs" id="dateLvTo" tabindex="11" size="15" readonly,>
-            			<img src="../../../images/cal_new.gif" onClick="displayDatePicker('dateLvTo', this);" style="cursor:pointer;" width="20" height="14">&nbsp; 
+            			<img src="../../../images/cal_new.png" onClick="displayDatePicker('dateLvTo', this);" style="cursor:pointer;" width="20" height="14">&nbsp; 
            				<?
 							$leaveAppObj->DropDownMenu(array('WD'=>'WD','AM' => 'HF AM','PM' => 'HF PM'),'cmbToAMPM',$lvAMPMTo,'class="inputs" tabindex="16"');
 						?>

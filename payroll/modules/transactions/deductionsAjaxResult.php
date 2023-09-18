@@ -103,7 +103,7 @@ if(($_GET['action'] == 'addHdrDtlMid') || ($_GET['action'] == 'updtHdr') || ($_G
 				<a tabindex="3" href="#" id="deleDeduc"><img class="toolbarImg" src="../../../images/application_form_delete.png" onclick="maintDeductions('deductions.php','deductionsCont','deleDeduc','<?=$intOffset?>','<?=$_GET['isSearch']?>','txtSrch','cmbSrch','','')"></a>
 			<?}?>
 			<FONT class="ToolBarseparator">|</font>
-			<a href="#" tabindex="4"><img class="toolbarImg" src='../../../images/refresh.gif' name="newDeduc" id="newDeduc" onclick="pager('deductionsAjaxResult.php','deductionsCont','refresh',0,0,'','','','../../../images/'); validateMod('REFRESH');" title="Refresh"></a>
+			<a href="#" tabindex="4"><img class="toolbarImg" src='../../../images/refresh.png' name="newDeduc" id="newDeduc" onclick="pager('deductionsAjaxResult.php','deductionsCont','refresh',0,0,'','','','../../../images/'); validateMod('REFRESH');" title="Refresh"></a>
 		</td>
 	</tr>
 	<tr>

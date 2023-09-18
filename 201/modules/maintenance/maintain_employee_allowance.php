@@ -151,7 +151,7 @@ if($_GET['transType'] == 'edit'){
 						<td class="gridDtlVal">
 							<input value="<?=$allwStart?>" type='text' onChange="valDateStartEnd(this.value,this.id,document.frmMaintEmpAllow.txtAllwEnd.value);" class='inputs' name='txtAllwStart' id='txtAllwStart' maxLength='10' readonly size="10"/> 
 						    <a href="#" id="allwStrtDt">
-						    	<img class="btnClendar" name="imgAllwStart" id="imgAllwStart" type="image" src="../../../images/cal_new.gif" title="Date Hired"
+						    	<img class="btnClendar" name="imgAllwStart" id="imgAllwStart" type="image" src="../../../images/cal_new.png" title="Date Hired"
 									<?
 										if($_GET['transType'] == 'add'){
 											echo "style='display:none;'";
@@ -175,7 +175,7 @@ if($_GET['transType'] == 'edit'){
 						<td class="gridDtlVal">
 							<input value="<?=$allwEnd?>" type='text' class='inputs' name='txtAllwEnd' onChange="valDateStartEnd(document.frmMaintEmpAllow.txtAllwStart.value,document.frmMaintEmpAllow.txtAllwStart.id,this.value);" id='txtAllwEnd' maxLength='10' readonly size="10"/> 
 						    <a href="#" id="allwEndDt">
-						    	<img  class="btnClendar" name="imgAllwEnd" id="imgAllwEnd" type="image" src="../../../images/cal_new.gif" title="Date Hired" 
+						    	<img  class="btnClendar" name="imgAllwEnd" id="imgAllwEnd" type="image" src="../../../images/cal_new.png" title="Date Hired" 
 									<?
 										if($_GET['transType'] == 'add'){
 											echo "style='display:none;'";

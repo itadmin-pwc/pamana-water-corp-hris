@@ -55,7 +55,7 @@ if ($_GET['code']=="") {
             <td class="gridDtlLbl">From</td>
             <td class="gridDtlLbl">:</td>
             <td width="19%" class="gridDtlVal"><input value="" type='text' onChange="valDateStartEnd(this.value,this.id,document.frmTS.txttoDate.value);" class='inputs' name='txtfrDate' id='txtfrDate' maxLength='10' readonly size="10"/>
-              <a href="#"><img name="imgfrDate" id="imgfrDate" src="../../../images/cal_new.gif" title="From Date" style="cursor: pointer;position:relative;top:3px;border:none;"></a></td>
+              <a href="#"><img name="imgfrDate" id="imgfrDate" src="../../../images/cal_new.png" title="From Date" style="cursor: pointer;position:relative;top:3px;border:none;"></a></td>
             <td width="62%" class="gridDtlVal"><? //echo $option_menu; ?>
             <input class="inputs" name="empNo" id="empNo" value="<? echo $empNo; ?>" <? echo $empNo_dis; ?> type="hidden" size="12" maxlength="11">
             <input class="inputs" name="empName" id="empName" value="<? echo htmlspecialchars($empName); ?>" <? echo $empName_dis; ?> type="hidden" size="25" maxlength="50" onKeyPress="getEmpSearch(event);"></td>
@@ -64,7 +64,7 @@ if ($_GET['code']=="") {
             <td class="gridDtlLbl">To</td>
             <td class="gridDtlLbl">:</td>
             <td class="gridDtlVal"><input value="" type='text' onChange="valDateStartEnd(document.frmTS.txtfrDate.value,document.frmTS.txtfrDate.id,this.value);" class='inputs' name='txttoDate' id='txttoDate' maxLength='10' readonly size="10"/>
-              <a href="#"><img name="imgtoDate" id="imgtoDate" src="../../../images/cal_new.gif" title="To Date" style="cursor: pointer;position:relative;top:3px;border:none;"></a></td>
+              <a href="#"><img name="imgtoDate" id="imgtoDate" src="../../../images/cal_new.png" title="To Date" style="cursor: pointer;position:relative;top:3px;border:none;"></a></td>
             <td class="gridDtlVal">&nbsp;</td>
             </tr>
           <tr>

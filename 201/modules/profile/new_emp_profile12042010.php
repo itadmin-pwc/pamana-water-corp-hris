@@ -397,7 +397,7 @@ include("../../../includes/calendar.php");
 						<td class="headertxt">Birthday</td>
 						<td class="headertxt">:</td>
 						<td class="gridDtlVal"><input name="txtBDay" type="text" value="<?=($maintEmpObj->dateOfBirth !="") ? date('m/d/Y',strtotime($maintEmpObj->dateOfBirth)) : "";?>"  class='inputs' id="txtBDay" size="12" >
-                                <img src="../../../images/cal_new.gif" onClick="displayDatePicker('txtBDay', this);" style="cursor:pointer;" width="20" height="14"></td>
+                                <img src="../../../images/cal_new.png" onClick="displayDatePicker('txtBDay', this);" style="cursor:pointer;" width="20" height="14"></td>
 						<td class="headertxt">Complexion</td>
 						<td class="headertxt">:</td>
 						<td class="gridDtlVal"><?$maintEmpObj->DropDownMenu(array('','Light'=>'Light','Fair'=>'Fair','Dark'=>'Dark'),'cmbcomplexion',$maintEmpObj->Complexion,'class="inputs" style="width:222px;"'); ?></td>
@@ -570,25 +570,25 @@ include("../../../includes/calendar.php");
                                 <td class="headertxt">Effectivity Date</td>
                                 <td class="headertxt">:</td>
                                 <td class="gridDtlVal"><input   name="txtEffDate" type="text" class='inputs' id="txtEffDate" value="<?=($maintEmpObj->Effectivity !="") ? date('m/d/Y',strtotime($maintEmpObj->Effectivity)) : "";?>" size="15" maxlength="10" readonly />
-                                <img src="../../../images/cal_new.gif" width="20" style="cursor:pointer;" onClick="displayDatePicker('txtEffDate', this);" height="14"></td>
+                                <img src="../../../images/cal_new.png" width="20" style="cursor:pointer;" onClick="displayDatePicker('txtEffDate', this);" height="14"></td>
                               </tr>
                               <tr>
                                 <td class="headertxt">Regularization</td>
                                 <td class="headertxt">:</td>
                                 <td class="gridDtlVal"><input   name="txtRegDate" value="<?=($maintEmpObj->Regularization !="") ? date('m/d/Y',strtotime($maintEmpObj->Regularization)) : "";?>" type="text" class='inputs' id="txtRegDate"   size="15" maxlength="10" readonly />
-                                <img src="../../../images/cal_new.gif" width="20" style="cursor:pointer;" onClick="displayDatePicker('txtRegDate', this);" height="14"></td>
+                                <img src="../../../images/cal_new.png" width="20" style="cursor:pointer;" onClick="displayDatePicker('txtRegDate', this);" height="14"></td>
                               </tr>
                               <tr>
                                 <td class="headertxt">End Date</td>
                                 <td class="headertxt">:</td>
                                 <td class="gridDtlVal"><input   name="txtEndDate" value="<?=($maintEmpObj->EndDate !="") ? date('m/d/Y',strtotime($maintEmpObj->EndDate)) : "";?>" type="text" class='inputs' id="txtEndDate"  size="15" maxlength="10" readonly />
-                                <img src="../../../images/cal_new.gif" width="20" style="cursor:pointer;" onClick="displayDatePicker('txtEndDate', this);" height="14"></td>
+                                <img src="../../../images/cal_new.png" width="20" style="cursor:pointer;" onClick="displayDatePicker('txtEndDate', this);" height="14"></td>
                               </tr>
                               <tr>
                                 <td class="headertxt">Resigned Date</td>
                                 <td class="headertxt">:</td>
                                 <td class="gridDtlVal"><input value="<?=($maintEmpObj->RSDate !="") ? date('m/d/Y',strtotime($maintEmpObj->RSDate)) : "";?>" name="txtRSDate" type="text" class='inputs' id="txtRSDate"  size="15" maxlength="10" readonly />
-                                <img src="../../../images/cal_new.gif" width="20" style="cursor:pointer;" onClick="displayDatePicker('txtRSDate', this);" height="14"></td>
+                                <img src="../../../images/cal_new.png" width="20" style="cursor:pointer;" onClick="displayDatePicker('txtRSDate', this);" height="14"></td>
                               </tr>
                               
                             </table></td>
@@ -744,13 +744,13 @@ include("../../../includes/calendar.php");
 	function viewUsrInfo(id){
 		var swtch = $('usrInfo'+id).style.display;
 		if(swtch == 'none'){
-			$('imgUsrInfo'+id).src='../../../images/folder-open.gif';
+			$('imgUsrInfo'+id).src='../../../images/folder-open.png';
 			$('usrInfo'+id).style.display='';
 			Effect.SlideDown('divUsrInfo'+id,{duration:1.0}); 
 
 		}
 		else{
-			$('imgUsrInfo'+id).src='../../../images/folder.gif';
+			$('imgUsrInfo'+id).src='../../../images/folder.png';
 			Effect.SlideUp('usrInfo'+id,{duration:1.0});
 			Effect.SlideUp('divUsrInfo'+id,{duration:1.0});
 

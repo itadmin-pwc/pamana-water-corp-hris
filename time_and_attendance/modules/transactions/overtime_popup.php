@@ -129,7 +129,7 @@ $empName = $empInfo["empLastName"].", ".htmlspecialchars(addslashes($empInfo["em
                                     <td  align="center">
                                         <input tabindex="10" class="inputs" type="text" name="otDate" id="otDate" size="10" onFocus="getEmpShift(<?=$empInfo["empNo"]?>);"
                                              value="<?=date("Y-m-d", strtotime($arr_App["otDate"]))?>">
-                                        <img src="../../../images/cal_new.gif" onClick="displayDatePicker('otDate', this);" style="cursor:pointer;" width="20" height="14">
+                                        <img src="../../../images/cal_new.png" onClick="displayDatePicker('otDate', this);" style="cursor:pointer;" width="20" height="14">
                                      </td>
                                     
                                  

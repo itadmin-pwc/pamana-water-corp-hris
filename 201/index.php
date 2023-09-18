@@ -75,7 +75,7 @@ if($_GET['action'] == 'unlockSys'){
 
 		var menuTreePanel = new Ext.tree.TreePanel({
 	    	id: 'tree-panel',
-	    	title: '<center>MENU</center>',
+	    	title: '<center style="color: #ffffff;">MENU</center>',
 	        region:'west',
 	        split: true,
 	        height: 260,
@@ -140,7 +140,7 @@ if($_GET['action'] == 'unlockSys'){
 	<body onLoad="startTime()">
 		<div id="header">
         	
-			<table  border="0" cellpadding="0" cellspacing="1"  align="left" width="100%">
+			<table  border="0" cellpadding="0" cellspacing="1"  align="left" width="100%" style="background-color: white;">
 				<tr>
 					<td width="175" rowspan="4">
 						<?
@@ -180,7 +180,7 @@ if($_GET['action'] == 'unlockSys'){
                     
                     <td width="250" align="center">
                     	<? if($_SESSION["user_level"]!='3'){  ?>
-							<font class="headerLabelVal"><BLINK><img class="headerLabelVal" src="../images/icon-small-warning.gif">&nbsp;<a id="LogOut" href="#" class="headerLabelVal" onClick="listofReminders()">REMINDERS</BLINK></a><a href="#" class="headerLabelVal"></font>					
+							<font class="headerLabelVal"><BLINK><img class="headerLabelVal" src="../images/icon-small-warning.png">&nbsp;<a id="LogOut" href="#" class="headerLabelVal" onClick="listofReminders()">REMINDERS</BLINK></a><a href="#" class="headerLabelVal"></font>					
                     	<? } ?>
                     </td>				
 				</tr>
@@ -247,7 +247,7 @@ if($_GET['action'] == 'unlockSys'){
 <SCRIPT>
 	function DologOut(){
 		
-		Dialog.confirm("<br><center><img src='../images/icon-question.gif'>&nbsp;&nbsp;<font class='cnfrmLbl'>Sure to Logout?</font></center>", {
+		Dialog.confirm("<br><center><img src='../images/icon-question.png'>&nbsp;&nbsp;<font class='cnfrmLbl'>Sure to Logout?</font></center>", {
 				width:300, 
 				height : 125,
 				okLabel: "YES", 

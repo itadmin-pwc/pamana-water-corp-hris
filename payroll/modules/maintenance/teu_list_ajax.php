@@ -32,6 +32,7 @@
 <head>
 	<title><?=SYS_TITLE?></title>
 	<style>@import url('../../style/main_emp_loans.css');</style>
+	<link rel="stylesheet" type="text/css" href="../../style/payroll.css"></link>
 	<script type='text/javascript' src='../../../includes/jSLib.js'></script>
 	<script type='text/javascript' src='../../../includes/prototype.js'></script>
 	<!--calendar lib-->

@@ -76,7 +76,7 @@ if($_GET['action'] == 'unlockSys'){
 
 		var menuTreePanel = new Ext.tree.TreePanel({
 	    	id: 'tree-panel',
-	    	title: '<center>MENU</center>',
+	    	title: '<center style="color: #ffffff;">MENU</center>',
 	        region:'west',
 	        split: true,
 	        height: 260,
@@ -140,7 +140,7 @@ if($_GET['action'] == 'unlockSys'){
 	</head>
 	<body onLoad="startTime()">
 		<div id="header">
-			<table border="0" cellpadding="0" cellspacing="1"  align="left" width="100%">
+			<table border="0" cellpadding="0" cellspacing="1"  align="left" width="100%" style="background-color: white;">
 				<tr>
 					<td width="175" rowspan="4">
 						<?
@@ -241,7 +241,7 @@ if($_GET['action'] == 'unlockSys'){
 <SCRIPT>
 	function DologOut(){
 		
-		Dialog.confirm("<br><center><img src='../images/icon-question.gif'>&nbsp;&nbsp;<font class='cnfrmLbl'>Do You Want To Log Out</font></center>", {
+		Dialog.confirm("<br><center><img src='../images/icon-question.png'>&nbsp;&nbsp;<font class='cnfrmLbl'>Do You Want To Log Out</font></center>", {
 				width:300, 
 				height : 125,
 				okLabel: "YES", 

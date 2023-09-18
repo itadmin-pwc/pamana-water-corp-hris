@@ -105,7 +105,7 @@ $qrygetMADtl = "SELECT ma.compCode, ma.brnCode, ma.empNo, emp.empLastName, emp.e
 		<td colspan="6" class="gridToolbar">
 			&nbsp;
 			
-			<a href="#" tabindex="4"><img class="toolbarImg" src='../../../images/refresh.gif'  onclick="pager('timesheets_adjustments_AjaxResult.php','timesheetAdjustmentCont','refresh',0,0,'','','','../../../images/'); validateMod('REFRESH');" title="Refresh"></a>		
+			<a href="#" tabindex="4"><img class="toolbarImg" src='../../../images/refresh.png'  onclick="pager('timesheets_adjustments_AjaxResult.php','timesheetAdjustmentCont','refresh',0,0,'','','','../../../images/'); validateMod('REFRESH');" title="Refresh"></a>		
 		</td>
 	
 	</tr>

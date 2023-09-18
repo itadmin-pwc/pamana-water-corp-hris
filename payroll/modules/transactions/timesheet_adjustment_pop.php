@@ -111,7 +111,7 @@
 							
 						if($_GET["tsDate"]=="")
 						{
-							echo '<a href="#"><img name="imgtsdate" id="imgtsdate" src="../../../images/cal_new.gif" title="TimeSheet Date" style="cursor: pointer;position:relative;top:3px;border:none;"></a>';
+							echo '<a href="#"><img name="imgtsdate" id="imgtsdate" src="../../../images/cal_new.png" title="TimeSheet Date" style="cursor: pointer;position:relative;top:3px;border:none;"></a>';
 						}
 					echo "</tr>";
 					

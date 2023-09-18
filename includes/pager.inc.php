@@ -35,15 +35,15 @@ class AjaxPager extends dbHandler  {//pager class extends connection
 		$this->get = $_GET;
 		$this->_imgPath = (!empty($imgPath) || $imgPath != '' || $imgPath != 0) ? $imgPath : '';
 		$this->_limit = $limit;
-		$this->imgFirstDis           = $this->_imgPath."page-first-disabled.gif";
-		$this->imgFirstEn            = $this->_imgPath."page-first.gif";
-		$this->imgPrevDis            = $this->_imgPath."page-prev-disabled.gif";
-		$this->imgPrevEn             = $this->_imgPath."page-prev.gif";
-		$this->imgNextDis            = $this->_imgPath."page-next-disabled.gif";
-		$this->imgNextEn             = $this->_imgPath."page-next.gif";
-		$this->imgLastDis            = $this->_imgPath."page-last-disabled.gif";
-		$this->imgLastEn             = $this->_imgPath."page-last.gif";
-		$this->imgIndicator          = $this->_imgPath."refresh.gif";
+		$this->imgFirstDis           = $this->_imgPath."page-first-disabled.png";
+		$this->imgFirstEn            = $this->_imgPath."page-first.png";
+		$this->imgPrevDis            = $this->_imgPath."page-prev-disabled.png";
+		$this->imgPrevEn             = $this->_imgPath."page-prev.png";
+		$this->imgNextDis            = $this->_imgPath."page-next-disabled.png";
+		$this->imgNextEn             = $this->_imgPath."page-next.png";
+		$this->imgLastDis            = $this->_imgPath."page-last-disabled.png";
+		$this->imgLastEn             = $this->_imgPath."page-last.png";
+		$this->imgIndicator          = $this->_imgPath."refresh.png";
 		$this->imgIndicatorDis       = $this->_imgPath."refresh_disabled.png";
 	}
 		

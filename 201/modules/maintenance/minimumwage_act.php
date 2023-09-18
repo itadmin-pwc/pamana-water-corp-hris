@@ -239,7 +239,7 @@ exit();
           <td class="gridDtlLbl"><span class="headertxt">:</span></td>
           <td><span class="gridDtlVal">
             <input name="txtEffectiveDate" type="text" class="inputs" id="txtEffectiveDate" value="<?=$effectivedate;?>" size="12">
-            <a href="#"><img src="../../../images/cal_new.gif" width="20" height="14" name="imgEffectiveDate" id="imgEffectiveDate" style="cursor: pointer;position:relative;top:3px;border:none;"></a>
+            <a href="#"><img src="../../../images/cal_new.png" width="20" height="14" name="imgEffectiveDate" id="imgEffectiveDate" style="cursor: pointer;position:relative;top:3px;border:none;"></a>
           </span></td>
         </tr>
         <tr>

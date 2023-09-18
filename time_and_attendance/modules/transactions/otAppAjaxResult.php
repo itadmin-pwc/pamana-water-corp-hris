@@ -143,7 +143,7 @@ if ($level > '70'){
 	<tr>
 		
 		<td colspan="6" class="gridToolbar">
-				<a href="#" tabindex="4"><img class="toolbarImg" src='../../../images/refresh.gif'  onclick="pager('otAppAjaxResult.php','otAppCont','refresh',0,0,'','','','../../../images/'); validateMod('REFRESH');" title="Refresh"></a>		
+				<a href="#" tabindex="4"><img class="toolbarImg" src='../../../images/refresh.png'  onclick="pager('otAppAjaxResult.php','otAppCont','refresh',0,0,'','','','../../../images/'); validateMod('REFRESH');" title="Refresh"></a>		
 		</td>
 	
 	</tr>
@@ -235,7 +235,7 @@ if ($level > '70'){
 				<tr>
 					<td class="gridDtlVal" align="center">
 						<INPUT tabindex="11" class="inputs" type="text" name="dateOt" id="dateOt" onkeydown= "checkShift(event,this.event)",readonly>
-						<img src="../../../images/cal_new.gif" onClick="displayDatePicker('dateOt', this);" style="cursor:pointer;" width="20" height="14">
+						<img src="../../../images/cal_new.png" onClick="displayDatePicker('dateOt', this);" style="cursor:pointer;" width="20" height="14">
 					</td>
 					
 					<td class="gridDtlVal" align="center">

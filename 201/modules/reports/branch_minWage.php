@@ -83,13 +83,13 @@ function printPdf () {
           	<td width="18%" class="gridDtlLbl">From</td>
             <td width="1%" class="gridDtlLbl">:</td>
             <td width="158%" colspan="3" class="gridDtlVal"><input name="txtfrDate" type="text" class="inputs" id="txtfrDate" size="10" readonly>
-                      <a href="#"><img src="../../../images/cal_new.gif" width="20" height="14" name="imgtxtfrDate" id="imgtxtfrDate" style="cursor: pointer;position:relative;top:3px;border:none;"></a></td>
+                      <a href="#"><img src="../../../images/cal_new.png" width="20" height="14" name="imgtxtfrDate" id="imgtxtfrDate" style="cursor: pointer;position:relative;top:3px;border:none;"></a></td>
           </tr>
           <tr>
           	<td width="18%" class="gridDtlLbl">To</td>
             <td width="1%" class="gridDtlLbl">:</td>
             <td width="158%" class="gridDtlVal"><input name="txttoDate" type="text" class="inputs" id="txttoDate" size="10" readonly>
-                      <a href="#"><img src="../../../images/cal_new.gif" width="20" height="14" name="imgtxttoDate" id="imgtxttoDate" style="cursor: pointer;position:relative;top:3px;border:none;"></a></td>
+                      <a href="#"><img src="../../../images/cal_new.png" width="20" height="14" name="imgtxttoDate" id="imgtxttoDate" style="cursor: pointer;position:relative;top:3px;border:none;"></a></td>
           </tr>
         </table>
 <br>

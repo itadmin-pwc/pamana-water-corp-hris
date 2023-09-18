@@ -131,7 +131,7 @@ $empName = $empInfo["empLastName"].", ".htmlspecialchars(addslashes($empInfo["em
                                     <td  align="center">
                                         <input tabindex="10" class="inputs" type="text" name="lvDateFrom" id="lvDateFrom" size="10" onFocus="getEmpShift(<?=$empInfo["empNo"]?>);"
                                              value="<?=date("Y-m-d", strtotime($arr_App["lvDateFrom"]))?>">
-           						 			<img src="../../../images/cal_new.gif" onClick="displayDatePicker('lvDateFrom', this);" style="cursor:pointer;" width="20" height="14">		
+           						 			<img src="../../../images/cal_new.png" onClick="displayDatePicker('lvDateFrom', this);" style="cursor:pointer;" width="20" height="14">		
 										
 										<?
 											$lvEditObj->DropDownMenu(array('WD'=>'WD','AM' => 'HF AM','PM' => 'HF PM'),'cmbFromAMPM',$lvAMPMFrom,'class="inputs" tabindex="12"');
@@ -139,7 +139,7 @@ $empName = $empInfo["empLastName"].", ".htmlspecialchars(addslashes($empInfo["em
 									</td>
    
                                     <td align="center"><input type="text" class="inputs" name="lvDateTo"  id="lvDateTo" size="10" value="<?=date("Y-m-d", strtotime($arr_App["lvDateTo"]))?>" /> 
-											<img src="../../../images/cal_new.gif" onClick="displayDatePicker('lvDateTo', this);" style="cursor:pointer;" width="20" height="14">
+											<img src="../../../images/cal_new.png" onClick="displayDatePicker('lvDateTo', this);" style="cursor:pointer;" width="20" height="14">
 										<?
 											$lvEditObj->DropDownMenu(array('WD'=>'WD','AM' => 'HF AM','PM' => 'HF PM'),'cmbToAMPM',$lvAMPMTo,'class="inputs" tabindex="16"');
 										?>

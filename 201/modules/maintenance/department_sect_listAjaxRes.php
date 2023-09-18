@@ -67,7 +67,7 @@ if($_GET['action'] != 'refresh'){
 	<TABLE border="0" width="100%" cellpadding="1" cellspacing="0" class="parentGrid">
 		<tr>
 			<td colspan="4" class="parentGridHdr">
-				&nbsp;<img src="../../../images/grid.png">&nbsp;SECTIONS</td>
+				&nbsp;&nbsp;SECTIONS</td>
 		</tr>
 		<tr>
 			<td class="parentGridDtl" valign="top">

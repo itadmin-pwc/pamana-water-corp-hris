@@ -228,7 +228,7 @@ include("../../../includes/calendar.php");
 		<TITLE><?=SYS_TITLE?></TITLE>
 		<SCRIPT type="text/javascript" src="../../../js/extjs/adapter/prototype/prototype.js"></SCRIPT>
 		<SCRIPT type="text/javascript" src="../../../includes/jSLib.js"></SCRIPT>
-		<STYLE>@import url('../../style/payroll.css');</STYLE>
+		<link rel="stylesheet" type="text/css" href="../../style/payroll.css"></link>
 		<STYLE>@import url('../../style/tabs.css');</STYLE>
 		<STYLE>@import url('../../../js/themes/alphacube.css');</STYLE>	
         
@@ -306,7 +306,7 @@ include("../../../includes/calendar.php");
         
 			  </tr>
 				<tr>
-					<td class="parentGridDtl" >
+					<td class="parentGridDtl" style="height: 700px;">
                     <br>
                     <br>
                     <br>
@@ -344,7 +344,7 @@ include("../../../includes/calendar.php");
               <div id="tab6" class="tab6" onClick="focusTab(6);getname();">Training</div>
               <div id="tab7" class="tab7" onClick="changeTab(); viewTabEight(); getname();">Other Info</div>
 				
-          <div id="content1" class="content1">
+          <div id="content1" class="content1" style="height: 620px;">
                     <TABLE align="center" cellpadding="0" cellspacing="2" border="0" class="childGrid" width="100%">
                       <tr> 
                         <td align="left" class="parentGridDtl" height="200" valign="top">
@@ -429,7 +429,7 @@ include("../../../includes/calendar.php");
                       </tr>
                     </TABLE>
                 </div>
-               <div id="content2" class="content2">
+               <div id="content2" class="content2" style="height: 620px;">
                    <TABLE align="center" cellpadding="0" cellspacing="2" border="0" class="childGrid" width="100%">
                       <tr> 
                         <td align="left" class="parentGridDtl" height="420" valign="top">
@@ -483,7 +483,7 @@ include("../../../includes/calendar.php");
                       </tr>
                     </TABLE>
                 </div>
-              <div id="content3" class="content3">
+              <div id="content3" class="content3" style="height: 620px;">
 <TABLE align="center" cellpadding="0" cellspacing="2" border="0" class="childGrid" width="100%">
                       <tr> 
                         <td align="left" class="parentGridDtl" height="300" valign="top"><table width="100%" border="0" cellspacing="0" cellpadding="0">
@@ -591,7 +591,7 @@ include("../../../includes/calendar.php");
                       </tr>
                 </TABLE>                     
                 </div>
-                <div id="content4" class="content4">
+                <div id="content4" class="content4" style="height: 620px;">
                     <TABLE align="center" cellpadding="0" cellspacing="2" border="0" class="childGrid" width="100%">
                       <tr> 
                         <td align="left" class="parentGridDtl" height="470" valign="top">
@@ -609,7 +609,7 @@ include("../../../includes/calendar.php");
                       </tr>
                     </TABLE>                
                 </div>
-              <div id="content5" class="content5">
+              <div id="content5" class="content5" style="height: 620px;">
  					<TABLE align="center" cellpadding="0" cellspacing="2" border="0" class="childGrid" width="100%">
 					 
                       <tr> 
@@ -772,7 +772,7 @@ include("../../../includes/calendar.php");
                     </TABLE>				
                     </div>
                 
-              	<div id="content6" class="content6">
+              	<div id="content6" class="content6" style="height: 620px;">
                     <TABLE align="center" cellpadding="0" cellspacing="2" border="0" class="childGrid" width="100%">
                       <tr> 
                         <td align="left" class="parentGridDtl" height="470" valign="top">
@@ -790,7 +790,7 @@ include("../../../includes/calendar.php");
                       </tr>
                     </TABLE>                                
                 </div>
-                <div id="content7" class="content7">
+                <div id="content7" class="content7" style="height: 620px;">
                         <div id='divCont7'></div>
                  </div>
 </td>
@@ -890,13 +890,13 @@ include("../../../includes/calendar.php");
 	function viewUsrInfo(id){
 		var swtch = $('usrInfo'+id).style.display;
 		if(swtch == 'none'){
-			$('imgUsrInfo'+id).src='../../../images/folder-open.gif';
+			$('imgUsrInfo'+id).src='../../../images/folder-open.png';
 			$('usrInfo'+id).style.display='';
 			Effect.SlideDown('divUsrInfo'+id,{duration:1.0}); 
 
 		}
 		else{
-			$('imgUsrInfo'+id).src='../../../images/folder.gif';
+			$('imgUsrInfo'+id).src='../../../images/folder.png';
 			Effect.SlideUp('usrInfo'+id,{duration:1.0});
 			Effect.SlideUp('divUsrInfo'+id,{duration:1.0});
 

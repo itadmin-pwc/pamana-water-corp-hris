@@ -139,7 +139,7 @@
 			<!--<a href="#" id="newEarn" tabindex="1"><IMG class="toolbarImg" src="../../../images/application_form_add.png"  onclick="newRef('NEWREFNO'); validateMod('NEWREFNO');" title="New OB Record"></a>
 			
 			<FONT class="ToolBarseparator">|</font>-->
-			<a href="#" tabindex="4"><img class="toolbarImg" src='../../../images/refresh.gif'  onclick="pager('csAjaxResult.php','csCont','refresh',0,0,'','','','../../../images/'); validateMod('REFRESH');" title="Refresh"></a>		
+			<a href="#" tabindex="4"><img class="toolbarImg" src='../../../images/refresh.png'  onclick="pager('csAjaxResult.php','csCont','refresh',0,0,'','','','../../../images/'); validateMod('REFRESH');" title="Refresh"></a>		
 		</td>
 	</tr>
     
@@ -184,7 +184,7 @@
 									?>"
 										>
 									
-										<img src="../../../images/cal_new.gif" onClick="displayDatePicker('dateFiled', this);" style="cursor:pointer;" width="20" height="14">
+										<img src="../../../images/cal_new.png" onClick="displayDatePicker('dateFiled', this);" style="cursor:pointer;" width="20" height="14">
 					</td>
                     
                     <td class="hdrInputsLvl" width="10%">
@@ -272,7 +272,7 @@
 										echo("$strf"); 
 									?>" >
 									
-										<img src="../../../images/cal_new.gif" onClick="displayDatePicker('csDateFrom', this);" style="cursor:pointer;" width="20" height="14">
+										<img src="../../../images/cal_new.png" onClick="displayDatePicker('csDateFrom', this);" style="cursor:pointer;" width="20" height="14">
 					
                     </td>
                     <td><input type="text" readonly="readonly" class="inputs" name="schedTimeIn"  id="schedTimeIn" style="width:100%;" value="" /></td>
@@ -286,7 +286,7 @@
 										echo("$strf"); 
 									?>" >
 									
-										<img src="../../../images/cal_new.gif" onClick="displayDatePicker('csDateTo', this);" style="cursor:pointer;" width="20" height="14">
+										<img src="../../../images/cal_new.png" onClick="displayDatePicker('csDateTo', this);" style="cursor:pointer;" width="20" height="14">
 					
                     </td>
                     

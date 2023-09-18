@@ -54,8 +54,8 @@
 	font : normal normal 11px Verdana, Arial, Helvetica, sans-serif;
 }
 .gridToolbarOnTopOnly {
-	background-color:#c3daf9;
-	border-top : 1px solid #6495ED;
+	background-color:#ffffff;
+	border-top : 1px solid gray;
 	font : normal normal 11px Verdana, Arial, Helvetica, sans-serif;
 }
 .gridToolbarWithColor {

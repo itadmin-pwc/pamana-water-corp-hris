@@ -150,7 +150,7 @@ $qrygetTimesheetAdjustmentsDtl .= "ORDER BY emp.empLastName)";
 		<td colspan="6" class="gridToolbar">
 			&nbsp;
 			
-			<a href="#" tabindex="4"><img class="toolbarImg" src='../../../images/refresh.gif'  onclick="pager('timesheets_adjustments_AjaxResult.php','timesheetAdjustmentCont','refresh',0,0,'','','','../../../images/'); validateMod('REFRESH');" title="Refresh"></a>		
+			<a href="#" tabindex="4"><img class="toolbarImg" src='../../../images/refresh.png'  onclick="pager('timesheets_adjustments_AjaxResult.php','timesheetAdjustmentCont','refresh',0,0,'','','','../../../images/'); validateMod('REFRESH');" title="Refresh"></a>		
 		</td>
 	
 	</tr>
@@ -253,7 +253,7 @@ $qrygetTimesheetAdjustmentsDtl .= "ORDER BY emp.empLastName)";
                       <td width="11%" class="gridDtlLbl" align="center" height="20">Status</td>
                     </tr>
                     <tr align="center">
-                      <td><input name="txtTSDate" type="text" disabled class="inputs" id="txtTSDate" onFocus=" validateDayType(this.id);" size="10">&nbsp;<img src="../../../images/cal_new.gif" onClick="displayDatePicker('txtTSDate', this);" style="cursor:pointer; visibility:hidden;" width="20" height="14" id="imgCalendar"></td>
+                      <td><input name="txtTSDate" type="text" disabled class="inputs" id="txtTSDate" onFocus=" validateDayType(this.id);" size="10">&nbsp;<img src="../../../images/cal_new.png" onClick="displayDatePicker('txtTSDate', this);" style="cursor:pointer; visibility:hidden;" width="20" height="14" id="imgCalendar"></td>
                       <td><?=$timesheetsadjustmentsObj->DropDownMenu($timesheetsadjustmentsObj->makeArr($timesheetsadjustmentsObj->getDayType(),'dayType','dayTypeDesc','Select Day Type'),'cmbDayType',$_GET['srchType'],'class="inputs" tabindex="16" onChange="changeDayType(this.value);" disabled');?><input name="hdnDayType" type="hidden" id="hdnDayType" size="5" readonly="readonly"></td>
                       <td><input name="txtHrsReg" type="text" disabled class="inputs" id="txtHrsReg" size="15" onKeyDown="javascript:return dFilter (event.keyCode, this, '##.##');"></td>
                       <td><input name="txtHrsOTNG8" type="text" disabled class="inputs" id="txtHrsOTNG8" size="15" onKeyDown="javascript:return dFilter (event.keyCode, this, '##.##');"></td>
@@ -292,7 +292,7 @@ $qrygetTimesheetAdjustmentsDtl .= "ORDER BY emp.empLastName)";
                       <td width="11%" class="gridDtlLbl" align="center" height="20">Status</td>
                     </tr>
                     <tr align="center">
-                      <td><input name="txtTSAmntDate" type="text" disabled class="inputs" id="txtTSAmntDate" onFocus=" validateDayType(this.id);" size="10">&nbsp;<img src="../../../images/cal_new.gif" name="imgCalendarAmnt" width="20" height="14" id="imgCalendarAmnt" style="cursor:pointer; visibility:hidden;" onClick="displayDatePicker('txtTSAmntDate', this);"></td>
+                      <td><input name="txtTSAmntDate" type="text" disabled class="inputs" id="txtTSAmntDate" onFocus=" validateDayType(this.id);" size="10">&nbsp;<img src="../../../images/cal_new.png" name="imgCalendarAmnt" width="20" height="14" id="imgCalendarAmnt" style="cursor:pointer; visibility:hidden;" onClick="displayDatePicker('txtTSAmntDate', this);"></td>
                       <td><input name="txtBasicAmnt" type="text" disabled class="inputs" id="txtBasicAmnt" size="10"></td>
                       <td><input name="txtOTAmnt" type="text" disabled class="inputs" id="txtOTAmnt" size="10"></td>
                       <td><input name="txtNDAmnt" type="text" disabled class="inputs" id="txtNDAmnt" size="10"></td>

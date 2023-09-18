@@ -706,13 +706,13 @@ include("../../../includes/calendar.php");
 	function viewUsrInfo(id){
 		var swtch = $('usrInfo'+id).style.display;
 		if(swtch == 'none'){
-			$('imgUsrInfo'+id).src='../../../images/folder-open.gif';
+			$('imgUsrInfo'+id).src='../../../images/folder-open.png';
 			$('usrInfo'+id).style.display='';
 			Effect.SlideDown('divUsrInfo'+id,{duration:1.0}); 
 
 		}
 		else{
-			$('imgUsrInfo'+id).src='../../../images/folder.gif';
+			$('imgUsrInfo'+id).src='../../../images/folder.png';
 			Effect.SlideUp('usrInfo'+id,{duration:1.0});
 			Effect.SlideUp('divUsrInfo'+id,{duration:1.0});
 

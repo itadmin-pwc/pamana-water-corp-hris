@@ -642,7 +642,7 @@ if($_GET['action']=="loadMunicipality")
                           <td>
                             <div align="left">
                               <input type='text'  class='inputs' name='txtenddate' id='txtenddate' maxLength='10' readonly size="10" value="<?=$maintEmpObj->valDateArt($empEnd_new);?>"/>
-                            <a href="#"><img name="imgenddate" id="imgenddate" src="../../../images/cal_new.gif" title="End Date" style="cursor: pointer;position:relative;top:3px;border:none;"></a>
+                            <a href="#"><img name="imgenddate" id="imgenddate" src="../../../images/cal_new.png" title="End Date" style="cursor: pointer;position:relative;top:3px;border:none;"></a>
                               <input type="hidden" value="<?=$maintEmpObj->valDateArt($empother_info['empEndDate'])?>" name="oldenddate" id="oldenddate">
                             </div></td>
                         </tr>
@@ -680,7 +680,7 @@ if($_GET['action']=="loadMunicipality")
                         
                         <tr>
                           <td class="style4 style1"><div align="right"><strong>Effectivity Date </strong><span class="style2">:</span>&nbsp;&nbsp;&nbsp;</div></td>
-                          <td><input value="<?=($empStatview['effectivitydate'] !=""? date('Y-m-d',strtotime($empStatview['effectivitydate'])) : "")?>" type='text'  class='inputs' name='txtempstatDate' id='txtempstatDate' maxLength='10' readonly size="10"/><a href="#"><img name="imgempstatDate" id="imgempstatDate" src="../../../images/cal_new.gif" title="Effectivity Date" style="cursor: pointer;position:relative;top:3px;border:none;"></a></td>
+                          <td><input value="<?=($empStatview['effectivitydate'] !=""? date('Y-m-d',strtotime($empStatview['effectivitydate'])) : "")?>" type='text'  class='inputs' name='txtempstatDate' id='txtempstatDate' maxLength='10' readonly size="10"/><a href="#"><img name="imgempstatDate" id="imgempstatDate" src="../../../images/cal_new.png" title="Effectivity Date" style="cursor: pointer;position:relative;top:3px;border:none;"></a></td>
                           <td>&nbsp;</td>
                         </tr>
                         
@@ -845,7 +845,7 @@ if($_GET['action']=="loadMunicipality")
                           <td class="style4 style1"><div align="right"><strong>Effectivity Date </strong><span class="style2">:</span>&nbsp;&nbsp;&nbsp;</div></td>
                           <td>&nbsp;</td>
                           <td><input value="<?=($Branchview['effectivitydate'] !=""? date('Y-m-d',strtotime($Branchview['effectivitydate'])) : "")?>" type='text'  class='inputs' name='txtbrDate' id='txtbrDate' maxLength='10' readonly size="10"/>
-                            <a href="#"><img name="imgbrDate" id="imgbrDate" src="../../../images/cal_new.gif" title="Effectivity Date" style="cursor: pointer;position:relative;top:3px;border:none;"></a></td>
+                            <a href="#"><img name="imgbrDate" id="imgbrDate" src="../../../images/cal_new.png" title="Effectivity Date" style="cursor: pointer;position:relative;top:3px;border:none;"></a></td>
                           <td>&nbsp;</td>
                         </tr>
                         <tr>
@@ -1000,7 +1000,7 @@ if($_GET['action']=="loadMunicipality")
                           <td class="style4 style1"><div align="right"><strong>Effectivity Date </strong><span class="style2">:</span>&nbsp;&nbsp;&nbsp;</div></td>
                           <td>&nbsp;</td>
                           <td><input value="<?=($effectivitydate !=""? date('Y-m-d',strtotime($effectivitydate)) : "")?>" type='text'  class='inputs' name='txtposDate' id='txtposDate' maxLength='10' readonly size="10"/>
-                            <a href="#"><img name="imgposDate" id="imgposDate" src="../../../images/cal_new.gif" title="Effectivity Date" style="cursor: pointer;position:relative;top:3px;border:none;"></a></td>
+                            <a href="#"><img name="imgposDate" id="imgposDate" src="../../../images/cal_new.png" title="Effectivity Date" style="cursor: pointer;position:relative;top:3px;border:none;"></a></td>
                           <td>&nbsp;</td>
                         </tr>
                         <tr>
@@ -1220,7 +1220,7 @@ if($_GET['action']=="loadMunicipality")
                           <td class="style4 style1"><div align="right"><strong>Effectivity Date </strong><span class="style2">:</span>&nbsp;&nbsp;&nbsp;</div></td>
                           <td>&nbsp;</td>
                           <td><input value="<?=($payroll_view['effectivitydate'] !=""? date('Y-m-d',strtotime($payroll_view['effectivitydate'])) : "")?>" type='text'  class='inputs' name='txtprDate' id='txtprDate' maxLength='10' readonly size="10"/>
-                            <a href="#"><img name="imgprDate" id="imgprDate" src="../../../images/cal_new.gif" title="Effectivity Date" style="cursor: pointer;position:relative;top:3px;border:none;"></a></td>
+                            <a href="#"><img name="imgprDate" id="imgprDate" src="../../../images/cal_new.png" title="Effectivity Date" style="cursor: pointer;position:relative;top:3px;border:none;"></a></td>
                           <td>&nbsp;</td>
                         </tr>
                         <tr>
@@ -1617,7 +1617,7 @@ if($_GET['action']=="loadMunicipality")
                           <td class="style4 style1"><div align="right"><strong>Effectivity Date </strong><span class="style2">:</span>&nbsp;&nbsp;&nbsp;</div></td>
                           <td>&nbsp;</td>
                           <td><input value="<?=($others_view['effectivitydate'] !=""? date('Y-m-d',strtotime($others_view['effectivitydate'])) : "")?>" type='text'  class='inputs' name='txtothDate' id='txtothDate' maxLength='10' readonly size="10"/>
-                            <a href="#"><img name="imgothDate" id="imgothDate" src="../../../images/cal_new.gif" title="Effectivity Date" style="cursor: pointer;position:relative;top:3px;border:none;"></a></td>
+                            <a href="#"><img name="imgothDate" id="imgothDate" src="../../../images/cal_new.png" title="Effectivity Date" style="cursor: pointer;position:relative;top:3px;border:none;"></a></td>
                           <td>&nbsp;</td>
                         </tr>
                         <tr>

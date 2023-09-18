@@ -55,14 +55,14 @@ include("movement.trans.php");
             <td class="gridDtlLbl">From</td>
             <td class="gridDtlLbl">:</td>
             <td width="16%" class="gridDtlVal"><input value="" type='text' onChange="valDateStartEnd(this.value,this.id,document.frmTS.txttoDate.value);" class='inputs' name='txtfrDate' id='txtfrDate' maxLength='10' readonly size="10"/>
-              <a href="#"><img name="imgfrDate" id="imgfrDate" src="../../../images/cal_new.gif" title="From Date" style="cursor: pointer;position:relative;top:3px;border:none;"></a></td>
+              <a href="#"><img name="imgfrDate" id="imgfrDate" src="../../../images/cal_new.png" title="From Date" style="cursor: pointer;position:relative;top:3px;border:none;"></a></td>
             <td width="65%" class="gridDtlVal">&nbsp;</td>
           </tr>
           <tr>
             <td class="gridDtlLbl">To</td>
             <td class="gridDtlLbl">:</td>
             <td class="gridDtlVal"><input value="" type='text' onChange="valDateStartEnd(document.frmTS.txtfrDate.value,document.frmTS.txtfrDate.id,this.value);" class='inputs' name='txttoDate' id='txttoDate' maxLength='10' readonly size="10"/>
-              <a href="#"><img name="imgtoDate" id="imgtoDate" src="../../../images/cal_new.gif" title="To Date" style="cursor: pointer;position:relative;top:3px;border:none;"></a></td>
+              <a href="#"><img name="imgtoDate" id="imgtoDate" src="../../../images/cal_new.png" title="To Date" style="cursor: pointer;position:relative;top:3px;border:none;"></a></td>
             <td class="gridDtlVal">&nbsp;</td>
             </tr>
           <tr>

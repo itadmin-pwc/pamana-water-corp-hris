@@ -57,7 +57,7 @@
                         $sizeof_td = (sizeof($col_label)+1)-2;
                         
                         echo "<tr class='hdrInputsLvl' style='height:25px;'>";
-                                //echo "<td align='center' width='5%'><img id='imgUsrInfo$rowUserDef_val[catCode]' src='../../../images/folder.gif' style='cursor:pointer;' onclick=\"viewUsrInfo('$rowUserDef_val[catCode]')\"></td>\n";
+                                //echo "<td align='center' width='5%'><img id='imgUsrInfo$rowUserDef_val[catCode]' src='../../../images/folder.png' style='cursor:pointer;' onclick=\"viewUsrInfo('$rowUserDef_val[catCode]')\"></td>\n";
                                 echo "<td  width='78%'><b>".strtoupper($rowUserDef_val["catDesc"])."</b></td>\n";
                                 echo "<td align='center' width='10%'>";
                                 if ($_SESSION['profile_act']!="View") {

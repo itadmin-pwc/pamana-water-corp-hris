@@ -80,14 +80,14 @@ if ($_GET['code']=="8"){
               <td>:</td>
               <td><span class="gridDtlVal">
                 <input class="inputs" name="fdate" id="fdate" value="<? echo $rdDate; ?>" disabled="true" type="text" size="25" maxlength="50" >
-                <a href="#"><img name="imgfDate" id="imgfDate" type="image" src="../../../images/cal_new.gif" title="Start Date" style="cursor: pointer;position:relative;top:3px;border:none;"></a></span></td>
+                <a href="#"><img name="imgfDate" id="imgfDate" type="image" src="../../../images/cal_new.png" title="Start Date" style="cursor: pointer;position:relative;top:3px;border:none;"></a></span></td>
             </tr>
             <tr>
               <td class="headertxt">To</td>
               <td>:</td>
               <td><span class="gridDtlVal">
                 <input class="inputs" name="tdate" id="tdate" value="<? echo $rdDate; ?>" disabled="true" type="text" size="25" maxlength="50" >
-                <a href="#"><img name="imgtDate" id="imgtDate" type="image" src="../../../images/cal_new.gif" title="Start Date" style="cursor: pointer;position:relative;top:3px;border:none;"></a></span></td>
+                <a href="#"><img name="imgtDate" id="imgtDate" type="image" src="../../../images/cal_new.png" title="Start Date" style="cursor: pointer;position:relative;top:3px;border:none;"></a></span></td>
             </tr>
             <tr>
               <td><div id="dvtest">&nbsp;</div></td>

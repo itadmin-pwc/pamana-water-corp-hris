@@ -18,6 +18,7 @@ include("main_emp_loans.trans.php");
 <?=SYS_TITLE?>
 </TITLE>
 <style>@import url('../../style/main_emp_loans.css');</style>
+<link rel="stylesheet" type="text/css" href="../../style/payroll.css"></link>
 <script type='text/javascript' src='../../../includes/jSLib.js'></script>
 <script type='text/javascript' src='../../../includes/prototype.js'></script>
 <!--calendar lib-->
@@ -111,19 +112,19 @@ include("main_emp_loans.trans.php");
                       <td class="gridDtlLbl">Date Granted</td>
                       <td class="gridDtlLbl">:</td>
                       <td class="gridDtlVal"><input class="inputs" name="dtGranted" id="dtGranted" value="<? echo $dtGranted; ?>" readonly type="text" size="25" maxlength="50" />
-                        <a href="#"><img name="imgdtGranted" id="imgdtGranted" type="image" src="../../../images/cal_new.gif" title="Date Granted" style="cursor: pointer;position:relative;top:3px;border:none;" /></a></td>
+                        <a href="#"><img name="imgdtGranted" id="imgdtGranted" type="image" src="../../../images/cal_new.png" title="Date Granted" style="cursor: pointer;position:relative;top:3px;border:none;" /></a></td>
                     </tr>
                     <tr class="childGrid">
                       <td class="gridDtlLbl">Start Date of Deduction</td>
                       <td class="gridDtlLbl">:</td>
                       <td class="gridDtlVal"><input class="inputs" name="loanStart" id="loanStart" value="<? echo $loanStart; ?>" readonly type="text" size="25" maxlength="50" />
-                        <a href="#"><img name="imgloanStart" id="imgloanStart" type="image" src="../../../images/cal_new.gif" title="Start Date" style="cursor: pointer;position:relative;top:3px;border:none;" /></a> </td>
+                        <a href="#"><img name="imgloanStart" id="imgloanStart" type="image" src="../../../images/cal_new.png" title="Start Date" style="cursor: pointer;position:relative;top:3px;border:none;" /></a> </td>
                     </tr>
                     <tr class="childGrid">
                       <td class="gridDtlLbl">End Date of Deduction</td>
                       <td class="gridDtlLbl">:</td>
                       <td class="gridDtlVal"><input class="inputs" name="loanEnd" id="loanEnd" value="<? echo $loanEnd; ?>" readonly type="text" size="25" maxlength="50" />
-                        <a href="#"><img name="imgloanEnd" id="imgloanEnd" type="image" src="../../../images/cal_new.gif" title="End Date" style="cursor: pointer;position:relative;top:3px;border:none;" /></a> </td>
+                        <a href="#"><img name="imgloanEnd" id="imgloanEnd" type="image" src="../../../images/cal_new.png" title="End Date" style="cursor: pointer;position:relative;top:3px;border:none;" /></a> </td>
                     </tr>
                     <tr class="childGrid">
                       <td class="gridDtlLbl">Period of Deduction</td>
@@ -195,9 +196,9 @@ include("main_emp_loans.trans.php");
 				  <tr>
 					<td>
 						<CENTER>
-							<input type="button" name="updateLoan" id="updateLoan" value="Save" <? echo $updateLoan_dis; ?> onClick="valUpdateLoan();">
+							<input type="button" name="updateLoan" id="updateLoan" class="inputs" value="Save" <? echo $updateLoan_dis; ?> onClick="valUpdateLoan();">
                             <?php if (!empty($Pre_Terminate_Loan)) {?>
-						    <input type="button" name="button" <?=$Pre_Terminate_Loan?> id="button" value="Pre-Terminate">
+						    <input type="button" name="button" <?=$Pre_Terminate_Loan?> id="button" class="inputs" value="Pre-Terminate">
                             <?}?>                            
 					  </CENTER>					</td>
 				  </tr>
@@ -207,7 +208,7 @@ include("main_emp_loans.trans.php");
 		<td class="gridToolbarOnTopOnly" colspan="6">
 			<CENTER>
           <BLINK> 
-	          <input name="msg" id="msg" type="text" size="100" style="color:RED; background-color:#c3daf9; height:18px; text-align: center;  border:0px solid;" value="<? echo $msg; ?>">
+	          <input name="msg" id="msg" type="text" size="100" style="color:RED; background-color:#ffffffff; height:18px; text-align: center;  border:0px solid;" value="<? echo $msg; ?>">
           </BLINK> 
         </CENTER>		</td>
 	</tr>
