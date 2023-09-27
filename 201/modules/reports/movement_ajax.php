@@ -110,9 +110,13 @@ switch ($inputId) {
 
 		$confaccess=$_SESSION['Confiaccess'];
 		if($confaccess == 'N' || empty($confaccess)){
-			$confi = "and tblEmpMast.empPayCat ='3'";
+			$confi = "and tblEmpMast.empPayCat IN ('1', '3', '9'";
 		}elseif ($confaccess == 'Y') {
-			$confi = "and tblEmpMast.empPayCat ='2'";
+			$confi = "and tblEmpMast.empPayCat IN ('2'";
+		}
+
+		if($_SESSION['user_level'] == 1) {
+			$confi = "and tblEmpMast.empPayCat IN ('1','2','3','9'";
 		}
 
 		$sqlEmp = "SELECT * FROM tblEmpMast$tbl_new  WHERE (compCode = '{$compCode}') 
