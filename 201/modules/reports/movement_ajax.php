@@ -116,7 +116,7 @@ switch ($inputId) {
 		}
 
 		if($_SESSION['user_level'] == 1) {
-			$confi = "and tblEmpMast.empPayCat IN ('1','2','3','9'";
+			$confi = "and tblEmpMast.empPayCat IN ('1','2','3','9')";
 		}
 
 		$sqlEmp = "SELECT * FROM tblEmpMast$tbl_new  WHERE (compCode = '{$compCode}') 

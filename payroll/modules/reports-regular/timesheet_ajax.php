@@ -382,7 +382,7 @@ switch ($inputId) {
 			if ($numEmp>0) {
 			
 				$arrTS = $inqTSObj->PaySlip($compCode,$_GET['empNo'],$arrPayPd['pdYear'],$arrPayPd['pdNumber'],$payPd,$_GET['empBrnCode'],$_GET['locType']);
-			echo count($arrTS)."\n\n\n";
+				echo count($arrTS)."\n\n\n";
 
 				if (count($arrTS) > 0) {
 				$tbl=$_GET['tbl'];
