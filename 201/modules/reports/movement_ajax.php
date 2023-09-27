@@ -110,9 +110,9 @@ switch ($inputId) {
 
 		$confaccess=$_SESSION['Confiaccess'];
 		if($confaccess == 'N' || empty($confaccess)){
-			$confi = "and tblEmpMast.empPayCat IN ('1', '3', '9'";
+			$confi = "and tblEmpMast.empPayCat IN ('1', '3', '9')";
 		}elseif ($confaccess == 'Y') {
-			$confi = "and tblEmpMast.empPayCat IN ('2'";
+			$confi = "and tblEmpMast.empPayCat IN ('2')";
 		}
 
 		if($_SESSION['user_level'] == 1) {
