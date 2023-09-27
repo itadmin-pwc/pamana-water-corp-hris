@@ -632,11 +632,15 @@ class inqTSObj extends commonObj {
 	function getEmpCOEInfo($empNo) {
 		$confaccess=$_SESSION['Confiaccess'];
 		if($confaccess == 'N'){
-			$confi = "and tblEmpMast.empPayCat ='3'";
+			$confi = "and tblEmpMast.empPayCat IN ('1', '3', '9')";
 		}elseif ($confaccess == 'Y') {
-			$confi = "and tblEmpMast.empPayCat ='2'";
+			$confi = "and tblEmpMast.empPayCat IN ('2')";
 		}
 		else $confi = '';
+
+		if($_SESSION['user_level'] == 1) {
+			$confi = "and tblEmpMast.empPayCat IN ('1', '2', '3', '9')";
+		}
 
 
 		$qryEmpInfo = "Select empFirstName,empMidName,empLastName,dateHired,dateResigned,endDate,empBrnCode,empSex from tblEmpMast where empNo='$empNo' $confi and compCode='{$_SESSION['company_code']}'";

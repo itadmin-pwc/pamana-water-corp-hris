@@ -232,6 +232,7 @@ switch ($inputId) {
 		
 			if ($numEmp>0) {
 				$coeType = $_GET['type'];
+				//echo "coe_pdf.php?inputId=$optionId&empNo=$empNo&empName=$empName&type=$coeType&salary=$salary&course=$course&school=$school&signatory=$signatory&position=$position";
 				echo "window.open('coe_pdf.php?inputId=$optionId&empNo=$empNo&empName=$empName&type=$coeType&salary=$salary&course=$course&school=$school&signatory=$signatory&position=$position');";
 				//echo "document.frmTS.submit();";
 			} else { //////open employee list

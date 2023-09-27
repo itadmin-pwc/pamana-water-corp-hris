@@ -586,6 +586,7 @@ class inqTSObj extends commonObj {
 
 			$sqlpayslip="Select * from tblPayrollSummary$hist where pdYear='$pdyear' and pdNumber='$pdnumber' and compCode='$compCode' and payGrp='" . $_SESSION['pay_group'] . "' and payCat='" . $_SESSION['pay_category'] . "' $filter";
 		}
+		
 		$res = $this->execQry($sqlpayslip);
 		return $this->getArrRes($res);		
 	}	
