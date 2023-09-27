@@ -15,7 +15,7 @@ body {
 	font-size: 10px;
 	text-align: center;
 	color: #000000;
-	background-color: #D5EAFF;
+	background-color: #fff;
 	border: 1px solid #AAAAAA;
 	}
 
@@ -48,14 +48,15 @@ body {
 
 /* a table cell that holds a highlighted day (usually either today's date or the current date field value) */
 .dpDayHighlightTD {
-	background-color: #CCCCCC;
+	background-color: #E8E8E8;
+	color: #0D6BF7;
 	border: 1px solid #AAAAAA;
 	}
 
 
 /* the date number table cell that the mouse pointer is currently over (you can use contrasting colors to make it apparent which cell is being hovered over) */
 .dpTDHover {
-	background-color: #9BCDFF;
+	background-color: #c7e3ff;
 	border: 1px solid #888888;
 	cursor: pointer;
 	}
@@ -79,7 +80,7 @@ body {
 
 /* a table cell that holds the names of days of the week (Mo, Tu, We, etc.) */
 .dpDayTD {
-	background-color: #0066CC;
+	background-color: #0D6BF7;
 	border: 1px solid #AAAAAA;
 	color: white;
 	font: Verdana; font-size: 11px;
@@ -107,7 +108,7 @@ body {
 	font-family: Verdana;
 	font-size: 10px;
 	color: gray;
-	background: #d8e8ff;
+	background: #fff;
 	font-weight: bold;
 	padding: 0px;
 	}
@@ -118,7 +119,7 @@ body {
 	font-family: Verdana;
 	font-size: 10px;
 	color: gray;
-	background: #d8e8ff;
+	background: #fff;
 	font-weight: bold;
 	}
 /* CSS Document */

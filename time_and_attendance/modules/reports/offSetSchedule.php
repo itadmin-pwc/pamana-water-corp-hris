@@ -91,7 +91,7 @@ if ($_GET['code']=="") {
 				  <tr>
 					<td>
 						<CENTER>
-                <input type="button" name="legalpay" id="legalpay" <? echo $searchTS4_dis; ?> value="Off Set Hour Report" onClick="offSetHour();">
+                <input type="button" name="legalpay" id="legalpay" class="inputs" <? echo $searchTS4_dis; ?> value="Off Set Hour Report" onClick="offSetHour();">
 					  </CENTER>
 					</td>
 				  </tr>
@@ -102,7 +102,7 @@ if ($_GET['code']=="") {
 		<td class="gridToolbarOnTopOnly" colspan="6">
 			<CENTER>
           <BLINK> 
-	          <input name="msg" id="msg" type="text" size="100" style="color:RED; background-color:#c3daf9; height:18px; text-align: center;  border:0px solid;" value="<? echo $msg; ?>">
+	          <input name="msg" id="msg" type="text" size="100" style="color:RED; background-color:#fff; height:18px; text-align: center;  border:0px solid;" value="<? echo $msg; ?>">
           </BLINK> 
         </CENTER>	
 		</td>

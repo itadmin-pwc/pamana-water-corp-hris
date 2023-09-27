@@ -55,7 +55,7 @@ if($_GET['action']=='refresh'){
 			id: "editPos",
 			className : 'mac_os_x',
 			width:460, 
-			height:230, 
+			height:330, 
 			zIndex: 100, 
 			resizable: false, 
 			minimizable : true,

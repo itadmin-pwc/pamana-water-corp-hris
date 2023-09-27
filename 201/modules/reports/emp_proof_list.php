@@ -31,6 +31,7 @@ if ($_GET['code']=="") {
 <script type="text/javascript" src="../../../includes/calendar/calendar.js"></script>
 <script type="text/javascript" src="../../../includes/calendar/calendar-en.js"></script>
 <script type="text/javascript" src="../../../includes/calendar/calendar-setup.js"></script>		
+<link rel="stylesheet" type="text/css" href="../../style/payroll.css"></link>
 <STYLE TYPE="text/css" MEDIA="screen">@import url("../../../includes/calendar/calendar-blue.css");</STYLE>
 <!--end calendar lib-->
 <script type='text/javascript' src='movement.js'></script>
@@ -123,8 +124,8 @@ if ($_GET['code']=="") {
 				  <tr>
 					<td>
 						<CENTER>
-                <input type="button" name="new_emp" id="new_emp" <? echo $searchTS4_dis; ?> value="Print New Employee Proof List to PDF" onClick="valSearchTS(this.id);">
-                <input type="button" name="new_emp_excel" id="new_emp_excel" <? echo $searchTS4_dis; ?> value="Export New Employee Proof List to Excel" onClick="valSearchTS(this.id);">
+                <input type="button" name="new_emp" id="new_emp" class="inputs" <? echo $searchTS4_dis; ?> value="Print New Employee Proof List to PDF" onClick="valSearchTS(this.id);">
+                <input type="button" name="new_emp_excel" class="inputs" id="new_emp_excel" <? echo $searchTS4_dis; ?> value="Export New Employee Proof List to Excel" onClick="valSearchTS(this.id);">
 					  </CENTER>
 					</td>
 				  </tr>
@@ -135,7 +136,7 @@ if ($_GET['code']=="") {
 		<td class="gridToolbarOnTopOnly" colspan="6">
 			<CENTER>
           <BLINK> 
-	          <input name="msg" id="msg" type="text" size="100" style="color:RED; background-color:#c3daf9; height:18px; text-align: center;  border:0px solid;" value="<? echo $msg; ?>">
+	          <input name="msg" id="msg" type="text" size="100" style="color:RED; background-color:white; height:18px; text-align: center;  border:0px solid;" value="<? echo $msg; ?>">
           </BLINK> 
         </CENTER>	
 		</td>

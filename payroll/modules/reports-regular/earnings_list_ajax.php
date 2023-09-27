@@ -99,6 +99,7 @@
 <HTML>
     <head>
         <script type='text/javascript' src='timesheet_js.js'></script>
+		<link rel="stylesheet" type="text/css" href="../../style/payroll.css"></link>
     </head>
 	<BODY>
         <div class="niftyCorner">

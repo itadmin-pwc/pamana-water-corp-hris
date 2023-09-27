@@ -76,7 +76,7 @@ if(isset($_GET['btnGetPass']) == 'SUBMIT'){
 								<td width="1%" class="gridDtlLbl2" align="center">:</td>
 								<td class="gridDtlVal">
 									<font class="gridDtlLblTxt">
-										<INPUT type="text" class="inputsRO" name="txtPass" id="txtPass" readonly >
+										<INPUT type="text" class="inputsRO inputs" name="txtPass" id="txtPass" readonly >
 									</font>
 								</td>
 							</tr>	

@@ -67,7 +67,8 @@ switch ($_GET['action']){
 <script type="text/javascript" src="../../../includes/calendar/calendar.js"></script>
 <script type="text/javascript" src="../../../includes/calendar/calendar-en.js"></script>
 <script type="text/javascript" src="../../../includes/calendar/calendar-setup.js"></script>		
-<STYLE TYPE="text/css" MEDIA="screen">@import url("../../../includes/calendar/calendar-blue.css");</STYLE>
+<STYLE TYPE="text/css" MEDIA="screen">@import url("../../../includes/calendar/calendar-blue.css");</STYLE>   
+		<link rel="stylesheet" type="text/css" href="../../style/payroll.css"></link>
 <!--end calendar lib-->
 <script type='text/javascript' src='movement.js'></script>
 </HEAD>
@@ -90,7 +91,7 @@ switch ($_GET['action']){
           <tr>
             <td width="18%" class="gridDtlLbl">Employee Number</td>
             <td width="1%" class="gridDtlLbl">:</td>
-            <td width="158" colspan="3" class="gridDtlVal"><input name="txtEmpNo" type="text" id="txtEmpNo" onKeyDown="getEmployee(event,this.value)" maxlength="9" <?=$searchTS_dis;?>><FONT color="#FF0000" class="gridDtlLbl" id="hlprMsg">
+            <td width="158" colspan="3" class="gridDtlVal"><input name="txtEmpNo" type="text" class="inputs" id="txtEmpNo" onKeyDown="getEmployee(event,this.value)" maxlength="9" <?=$searchTS_dis;?>><FONT color="#FF0000" class="gridDtlLbl" id="hlprMsg">
               
             </font><input type="hidden" name="txtVerify" id="txtVerify">
             <input type="hidden" name="txtStat" id="txtStat"></td>
@@ -98,27 +99,27 @@ switch ($_GET['action']){
           <tr>
             <td width="18%" class="gridDtlLbl">Lastname</td>
             <td width="1%" class="gridDtlLbl">:</td>
-            <td width="158" colspan="3" class="gridDtlVal"><input name="txtLName" type="text" id="txtLName" size="30" disabled></td>
+            <td width="158" colspan="3" class="gridDtlVal"><input name="txtLName" type="text" class="inputs" id="txtLName" size="30" disabled></td>
             </tr>            
           <tr>
             <td width="18%" class="gridDtlLbl">Firstname</td>
             <td width="1%" class="gridDtlLbl">:</td>
-            <td width="158" colspan="3" class="gridDtlVal"><input name="txtFName" type="text" id="txtFName" size="30" disabled></td>
+            <td width="158" colspan="3" class="gridDtlVal"><input name="txtFName" type="text" class="inputs" id="txtFName" size="30" disabled></td>
             </tr>            
           <tr>
             <td width="18%" class="gridDtlLbl">Middlename</td>
             <td width="1%" class="gridDtlLbl">:</td>
-            <td width="158" colspan="3" class="gridDtlVal"><input name="txtMName" type="text" id="txtMName" size="30" disabled></td>
+            <td width="158" colspan="3" class="gridDtlVal"><input name="txtMName" type="text" class="inputs" id="txtMName" size="30" disabled></td>
             </tr>            
           <tr>
             <td width="18%" class="gridDtlLbl">Position</td>
             <td width="1%" class="gridDtlLbl">:</td>
-            <td width="158" colspan="3" class="gridDtlVal"><input name="txtPosition" type="text" id="txtPosition" size="50" disabled></td>
+            <td width="158" colspan="3" class="gridDtlVal"><input name="txtPosition" type="text" class="inputs" id="txtPosition" size="50" disabled></td>
             </tr>            
           <tr>
             <td width="18%" class="gridDtlLbl">Department</td>
             <td width="1%" class="gridDtlLbl">:</td>
-            <td width="158" colspan="3" class="gridDtlVal"><input name="txtDepartment" type="text" id="txtDepartment" size="50" disabled></td>
+            <td width="158" colspan="3" class="gridDtlVal"><input name="txtDepartment" type="text" class="inputs" id="txtDepartment" size="50" disabled></td>
             </tr>            
         </table>
 <br>
@@ -127,7 +128,7 @@ switch ($_GET['action']){
 					<td>
 
 						<CENTER>
-                <input type="button" name="cidisReports" id="cidisReports" <? echo $searchTS4_dis; ?> value="Print CIDIS" onClick="processCIDIS();">
+                <input type="button" name="cidisReports" class="inputs" id="cidisReports" <? echo $searchTS4_dis; ?> value="Print CIDIS" onClick="processCIDIS();">
 				    </CENTER></td>
 				  </tr>
 			  </table> 
@@ -137,7 +138,7 @@ switch ($_GET['action']){
 		<td class="gridToolbarOnTopOnly" colspan="6">
 			<CENTER>
           <BLINK> 
-	          <input name="msg" id="msg" type="text" size="100" style="color:RED; background-color:#c3daf9; height:18px; text-align: center;  border:0px solid;" value="<? echo $msg; ?>">
+	          <input name="msg" id="msg" type="text" size="100" style="color:RED; background-color:#fff; height:18px; text-align: center;  border:0px solid;" value="<? echo $msg; ?>">
           </BLINK> 
         </CENTER>	
 		</td>

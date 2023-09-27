@@ -2,7 +2,7 @@ div.tab1, div.tab2, div.tab3, div.tab4, div.tab5, div.tab6, div.tab7, div.tab8,
 div.tab1-focus, div.tab2-focus, div.tab3-focus, div.tab4-focus, div.tab5-focus, div.tab6-focus, div.tab7-focus, div.tab8-focus {
   text-align: center;
   border-width: 1px;
-  border-color: #6495ED;
+  border-color: #023A37;
   border-style: solid solid none solid;
   padding: 3px 0px 0px 0px;
   width: 84px;
@@ -15,7 +15,8 @@ div.tab1-focus, div.tab2-focus, div.tab3-focus, div.tab4-focus, div.tab5-focus, 
 }
 
 div.tab1, div.tab2, div.tab3, div.tab4, div.tab5, div.tab6, div.tab7, div.tab8 {
-  background-color: #c3daf9;
+  background-color: #53c2e0;
+  color: #023A37;
 }
 
 div.tab1-focus, div.tab2-focus, div.tab3-focus, div.tab4-focus, div.tab5-focus, div.tab6-focus, div.tab7-focus, div.tab8-focus {
@@ -54,7 +55,7 @@ div.content1-focus, div.content2-focus, div.content3-focus, div.content4-focus, 
   width: 694px;
   height: 310px;
   padding: 10px;
-  border: 1px solid #6495ED;
+  border: 1px solid #023A37;
   position: absolute;
   top: 71px;
   left: 30px;

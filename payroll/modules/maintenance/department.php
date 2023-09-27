@@ -57,7 +57,7 @@ $deptObj->validateSessions('','MODULES');
 		id: "editDiv",
 		className : 'mac_os_x',
 		width:450, 
-		height:165, 
+		height:225, 
 		zIndex: 100, 
 		resizable: false, 
 		minimizable : true,

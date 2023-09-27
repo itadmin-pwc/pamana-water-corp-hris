@@ -88,20 +88,15 @@ class PDF extends FPDF
 			$this->SetFont('Arial',''); 
 			$this->Cell(40,6,$Department['deptShortDesc'],'TR');
 			$this->SetFont('Arial','B'); 
-			$this->Cell(14,6,'BRANCH.:','LT',0);
+			$this->Cell(12,6,'EMP No.:','LT',0);
 			$this->SetFont('Arial',''); 
-			$this->Cell(26,6,$ArrEmpList['brnShortDesc'],'TR',0);
+			$this->Cell(28,6,$ArrEmpList['empNo'] . " - P" .$ArrEmpList['empBrnCode'],'TR',0);
 			$this->Ln();
 			$this->SetFont('Arial','B'); 
 			$this->Cell(50,6,'','LR');
-			$this->SetFont('Arial','B'); 
-			$this->Cell(12,6,'EMP NO.:','LT',0);
-			$this->SetFont('Arial',''); 
-			$this->Cell(19,6,$ArrEmpList['empNo'],'TR',0);
-			$this->SetFont('Arial','B'); 
 			$this->Cell(15,6,'EMPLOYEE:','LT');
 			$this->SetFont('Arial',''); 
-			$this->Cell(54,6,$ArrEmpList['empLastName'] . ", " . $ArrEmpList['empFirstName'] . " " . $ArrEmpList['empMidName'] ,'T');
+			$this->Cell(85,6,$ArrEmpList['empLastName'] . ", " . $ArrEmpList['empFirstName'] . " " . $ArrEmpList['empMidName'] ,'T');
 			$this->SetFont('Arial','B'); 
 			$this->Cell(17,6,'BASIC RATE:','LT',0);
 			$this->SetFont('Arial',''); 
@@ -509,11 +504,10 @@ if ($branch != 0 && $empNo=="") {
 	$branch = "";
 }
 $qryIntMaxRec = "SELECT * FROM (
-							SELECT tblEmpMast.*, tblbranch.brnShortDesc
-							FROM tblEmpMast 
-							JOIN tblbranch ON tblbranch.brnCode = tblEmpMast.EmpBrnCode
-							WHERE tblEmpMast.compCode = '{$sessionVars['compCode']}'
-							AND tblEmpMast.empNo IN (
+							SELECT *
+							FROM tblEmpMast
+							WHERE compCode = '{$sessionVars['compCode']}'
+							AND empNo IN (
 								SELECT empNo
 								FROM tblPayrollSummary{$pdf->hist}
 								WHERE pdYear='{$arrPayPd['pdYear']}'
@@ -532,11 +526,10 @@ $qryIntMaxRec = "SELECT * FROM (
 								$payallow
 							)
 							UNION ALL
-							SELECT tblEmpMast.*, tblbranch.brnShortDesc
-							FROM tblEmpMast 
-							JOIN tblbranch ON tblbranch.brnCode = tblEmpMast.EmpBrnCode
-							WHERE tblEmpMast.compCode = '{$sessionVars['compCode']}'
-							AND tblEmpMast.empNo IN (
+							SELECT *
+							FROM tblEmpMast
+							WHERE compCode = '{$sessionVars['compCode']}'
+							AND empNo IN (
 								SELECT empNo
 								FROM tblPayrollSummary{$pdf->hist}
 								WHERE pdYear='{$arrPayPd['pdYear']}'
@@ -556,7 +549,6 @@ $qryIntMaxRec = "SELECT * FROM (
 							)
 						) AS doubled_data
 						ORDER BY empBrnCode, empLastName;";
-						
 $resEmpList = $psObj->execQry($qryIntMaxRec);
 $arrEmpList = $psObj->getArrRes($resEmpList);
 

@@ -82,7 +82,7 @@ if ($_GET['code']=="") {
 				  <tr>
 					<td>
 						<CENTER>
-                <input type="button" name="tssum" id="tssum" <? echo $searchTS4_dis; ?> value="TIMESHEET SUMMARY" onClick="TSSummary();">
+                <input type="button" name="tssum" id="tssum" class="inputs" <? echo $searchTS4_dis; ?> value="TIMESHEET SUMMARY" onClick="TSSummary();">
 					  </CENTER>
 					  	<div id="caption" align="center">        </div>	
 					</td>
@@ -95,7 +95,7 @@ if ($_GET['code']=="") {
 		<!-- <td class="gridToolbarOnTopOnly" colspan="6">
 			<CENTER>
           <BLINK> 
-	          <input name="msg" id="msg" type="text" size="100" style="color:RED; background-color:#c3daf9; height:18px; text-align: center;  border:0px solid;" value="<? //echo $msg; ?>">
+	          <input name="msg" id="msg" type="text" size="100" style="color:RED; background-color:#fff; height:18px; text-align: center;  border:0px solid;" value="<? //echo $msg; ?>">
           </BLINK> 
         </CENTER>	
 		</td> -->

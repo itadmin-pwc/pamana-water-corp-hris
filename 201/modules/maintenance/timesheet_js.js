@@ -294,10 +294,10 @@
 			}
 		if (option=="ADD BANK" || option=="EDIT BANK") {
 			var wd = 448;
-			var ht = 198;
+			var ht = 280;
 		} else if (option=="ADD HOLIDAY" || option=="EDIT HOLIDAY") {
 			var wd = 448;
-			var ht = 195;
+			var ht = 280;
 		} else if (option=="ADD LEGAL HOLIDAY") {
 			var wd = 300;
 			var ht = 100;
@@ -312,7 +312,7 @@
 			var ht = 123;
 		} else if (option=="ADD DAY TYPE" || option=="EDIT DAY TYPE") {
 			var wd = 440;
-			var ht = 103;
+			var ht = 140;
 		} else if (option=="ADD LOAN TYPE" || option=="EDIT LOAN TYPE") {
 			var wd = 440;
 			var ht = 180;

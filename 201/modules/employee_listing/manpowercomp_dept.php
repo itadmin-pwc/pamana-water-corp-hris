@@ -33,6 +33,8 @@
         <STYLE TYPE="text/css" MEDIA="screen">@import url("../../../includes/calendar/calendar-blue.css");</STYLE>
         <!--end calendar lib-->
         <script type='text/javascript' src='../../../201/modules/employee_listing/common_js.js'></script>
+		
+		<link rel="stylesheet" type="text/css" href="../../style/payroll.css"></link>
     </HEAD>
 	<BODY>
         <form name="frmTS" method="post" action="<? echo $_SERVER['../../../payroll/modules/special-reports/PHP_SELF']; ?>">
@@ -149,8 +151,8 @@
             				<tr>
             					<td>
                                     <CENTER>
-                                    	<input type="button" name="btnManCompDept" id="btnManCompDept" <? echo $btnManCompDept_dis; ?> value="Generate Report (PDF)" onClick="valSearch_Manpower(this.id);">
-                                   		<input type="button" name="btnManCompDeptExcel" id="btnManCompDeptExcel" <? echo $btnManCompDeptExcel_dis; ?> value="Generate Report (Excel)" onClick="valSearch_Manpower(this.id);">
+                                    	<input type="button" name="btnManCompDept" class="inputs" id="btnManCompDept" <? echo $btnManCompDept_dis; ?> value="Generate Report (PDF)" onClick="valSearch_Manpower(this.id);">
+                                   		<input type="button" name="btnManCompDeptExcel" class="inputs" id="btnManCompDeptExcel" <? echo $btnManCompDeptExcel_dis; ?> value="Generate Report (Excel)" onClick="valSearch_Manpower(this.id);">
                                   
                                     </CENTER>
             					</td>

@@ -19,6 +19,7 @@ include("movement.trans.php");
 <style>@import url('../../style/reports.css');</style>
 <script type='text/javascript' src='../../../includes/jSLib.js'></script>
 <script type='text/javascript' src='../../../includes/prototype.js'></script>
+<link rel="stylesheet" type="text/css" href="../../style/payroll.css"></link>
 <!--calendar lib-->
 <script type="text/javascript" src="../../../includes/calendar/calendar.js"></script>
 <script type="text/javascript" src="../../../includes/calendar/calendar-en.js"></script>
@@ -136,7 +137,7 @@ include("movement.trans.php");
 		<td class="gridToolbarOnTopOnly" colspan="6">
 			<CENTER>
           <BLINK> 
-	          <input name="msg" id="msg" type="text" size="100" style="color:RED; background-color:#c3daf9; height:18px; text-align: center;  border:0px solid;" value="<? echo $msg; ?>">
+	          <input name="msg" id="msg" type="text" size="100" style="color:RED; background-color:white; height:18px; text-align: center;  border:0px solid;" value="<? echo $msg; ?>">
           </BLINK> 
         </CENTER>	
 		</td>

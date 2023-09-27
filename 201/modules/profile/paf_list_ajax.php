@@ -112,12 +112,12 @@ switch($_GET['stat']) {
           <?php if (($_SESSION['user_level'] == 1)||(($_SESSION['user_level'] == 2)&&($_SESSION['user_release']=="Y"))) 
 				{   	
 		   ?>
-              <input type="button" class="style1" name="btnHeld" id="btnHeld" <?=$dis_hold?>  onClick="Release('H')" value="Hold">
-             <input type="button" class="style1" name="btnRel" id="btnRel" <?=$dis_release?> onClick="Release('R')" disabled value="Release">
-            <input class="style1" type="button" name="btnUp" id="btnUp" <?=$dis_post?> onClick="Release('U')" disabled  value="Post">
-            <input type="button" class="style1" name="btnRelUp" id="btnRelUp" <?=$dis_releasepost?>  onClick="Release('UP')" value="Release &amp; Post">
+              <input type="button" class="style1 inputs" name="btnHeld" id="btnHeld" <?=$dis_hold?>  onClick="Release('H')" value="Hold">
+             <input type="button" class="style1 inputs" name="btnRel" id="btnRel" <?=$dis_release?> onClick="Release('R')" disabled value="Release">
+            <input class="style1 inputs" type="button" name="btnUp" id="btnUp" <?=$dis_post?> onClick="Release('U')" disabled  value="Post">
+            <input type="button" class="style1 inputs" name="btnRelUp" id="btnRelUp" <?=$dis_releasepost?>  onClick="Release('UP')" value="Release &amp; Post">
            <?php } ?> 
-            <input class="style1" type="button" name="btnUp2" onClick="printPAF()" id="btnUp2"  value="Print">
+            <input class="style1 inputs" type="button" name="btnUp2" onClick="printPAF()" id="btnUp2"  value="Print">
             <input type="hidden" name="checker" id="checker" value="0">
             <input type="hidden" name="pafStat" id="pafStat" value="<?=$_GET['stat']?>">
                 </span></div></td>

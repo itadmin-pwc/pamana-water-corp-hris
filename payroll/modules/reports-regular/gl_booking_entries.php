@@ -89,9 +89,9 @@
                 			<tr>
                 				<td>
                                     <CENTER>
-                                      <input type="button" name="GL" id="GL" <? echo $searchTS4_dis; ?> value="GL Booking Entries" onClick="GLBooking('GL');">
+                                      <input type="button" name="GL" id="GL" class="inputs" <? echo $searchTS4_dis; ?> value="GL Booking Entries" onClick="GLBooking('GL');">
                                       
-                                     	 <input type="button" name="GLExcel" id="GLExcel" <? echo $searchTS4_dis; ?> value="GL Booking Entries (Excel)" onClick="GLBooking('GLExcel');">
+                                     	 <input type="button" name="GLExcel" id="GLExcel" class="inputs" <? echo $searchTS4_dis; ?> value="GL Booking Entries (Excel)" onClick="GLBooking('GLExcel');">
                                   
 					</CENTER>
                 				</td>
@@ -104,7 +104,7 @@
                 	<td class="gridToolbarOnTopOnly" colspan="6">
                         <CENTER>
                             <BLINK> 
-                            	<input name="msfg" id="mfsg" type="text" size="100" style="color:RED; background-color:#c3daf9; height:18px; text-align: center;  border:0px solid;" value="<? echo $msg; ?>">
+                            	<input name="msfg" id="mfsg" type="text" size="100" style="color:RED; background-color:#fff; height:18px; text-align: center;  border:0px solid;" value="<? echo $msg; ?>">
                             </BLINK> 
                         </CENTER>	
                     </td>

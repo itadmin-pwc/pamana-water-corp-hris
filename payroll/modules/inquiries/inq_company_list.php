@@ -25,6 +25,7 @@ $inqCompObj->validateSessions('','MODULES');
 			}
 		</script>
 		<STYLE>@import url('../../style/maintenance_employee.css');</STYLE>
+		<link rel="stylesheet" type="text/css" href="../../style/payroll.css"></link>
 	</HEAD>
 	<BODY>
 		<form name="frmCompList" method="post" action="">

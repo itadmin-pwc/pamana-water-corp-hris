@@ -4,17 +4,18 @@
 }
 
 .parentGridHdr {
-	background-color: #c3daf9;
-	color : #000066;
 	height : 30px;
 	border-radius: 5px;
-	font : normal bold 11px Verdana, Arial, Helvetica, sans-serif;
-	border-bottom: 1px solid #6495ED;
+	background-color: #ffffff;
+	color : #181818;
+	font : normal bold 13px Arial, Helvetica, sans-serif;
+	border-bottom: 1px solid #c0c0c0;
 }
 
 .parentGridDtl {
-	background-color: #F0F8FF;
+	background-color: #ffffff;
 	padding : 5px 5px 5px 5px;
+	border-radius: 5px;
 	
 }
 

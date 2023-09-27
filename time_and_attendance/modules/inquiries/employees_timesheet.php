@@ -27,6 +27,7 @@
         <STYLE TYPE="text/css" MEDIA="screen">@import url("../../../includes/calendar/calendar-blue.css");</STYLE>
         <!--end calendar lib-->
         <script type='text/javascript' src='../../../time_and_attendance/modules/inquiries/common_js.js'></script>
+		<link rel="stylesheet" type="text/css" href="../../style/payroll.css"></link>
     </HEAD>
 	<BODY>
         <form name="frmTS" method="post" action="<? echo $_SERVER['PHP_SELF']; ?>">
@@ -120,7 +121,7 @@
                             </tr>
                             
                             <tr > 
-                                <td  class="gridToolbarWithColor" colspan="6">
+                                <td  class="gridToolbarWithColor" colspan="6" style="background-color: #8ED5FF; border-color: #335554;">
                                     <center></center>                                
                                 </td>
                             </tr>
@@ -130,7 +131,7 @@
             				<tr>
             					<td>
                                     <CENTER>
-                                    	<input type="button" name="empTimesheet" id="empTimesheet" <? echo $btnpayrolltype_dis; ?> value="Generate Timesheet Report" onClick="valSearchTS(this.id);">
+                                    	<input type="button" name="empTimesheet" class="inputs" id="empTimesheet" <? echo $btnpayrolltype_dis; ?> value="Generate Timesheet Report" onClick="valSearchTS(this.id);">
                                     </CENTER>
             					</td>
             				</tr>

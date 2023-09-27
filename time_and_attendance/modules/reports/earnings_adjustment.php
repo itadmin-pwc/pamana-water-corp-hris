@@ -87,7 +87,7 @@ function ref(){
 				  <tr>
 					<td>
 						<CENTER>
-                <input type="button" name="btnPrintEarningsProoflist" id="btnPrintEarningsProoflist" value="Print Earnings Adjustment Prooflist" onClick="Earnings_Adjustment();" disabled>
+                <input type="button" name="btnPrintEarningsProoflist" class="inputs" id="btnPrintEarningsProoflist" value="Print Earnings Adjustment Prooflist" onClick="Earnings_Adjustment();" disabled>
 					  </CENTER>
 					</td>
 				  </tr>
@@ -98,7 +98,7 @@ function ref(){
 		<td class="gridToolbarOnTopOnly" colspan="6">
 			<CENTER>
           <BLINK> 
-	          <input name="msg" id="msg" type="text" size="100" style="color:RED; background-color:#c3daf9; height:18px; text-align: center;  border:0px solid;" value="<? echo $msg; ?>">
+	          <input name="msg" id="msg" type="text" size="100" style="color:RED; background-color:#fff; height:18px; text-align: center;  border:0px solid;" value="<? echo $msg; ?>">
           </BLINK> 
         </CENTER>	
 		</td>

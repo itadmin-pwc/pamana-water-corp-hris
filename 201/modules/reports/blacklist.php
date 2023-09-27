@@ -26,6 +26,7 @@
 		<style>@import url('../../../payroll/style/main_emp_loans.css');</style>
         <script type='text/javascript' src='../../../includes/jSLib.js'></script>
         <script type='text/javascript' src='../../../includes/prototype.js'></script>
+		<link rel="stylesheet" type="text/css" href="../../style/payroll.css"></link>
        <!--calendar lib-->
 		<script type="text/javascript" src="../../../includes/calendar/calendar.js"></script>
         <script type="text/javascript" src="../../../includes/calendar/calendar-en.js"></script>
@@ -55,7 +56,7 @@
             		<td class="parentGridDtl" >
             			<TABLE border="0" width="100%" cellpadding="1" cellspacing="1" class="childGrid" >
             				<tr > 
-            					<td class="gridToolbar" colspan="6"> 
+            					<td class="gridToolbar" colspan="6" style=" border-color: #335554;"> 
                                 	<input name="hide_option" type="hidden" id="hide_option" value="<? echo $option_menu; ?>"> 
             						<? echo $new_; ?>&nbsp;&nbsp;<? echo $refresh_; ?> <input name='updateFlag' type='hidden' id='updateFlag'> 
             						<input name='fileName' type='hidden' id='fileName' value="blacklist.php">            
@@ -122,7 +123,7 @@
                             </tr>
             				
                             <tr > 
-                                <td  class="gridToolbarWithColor" colspan="6">
+                                <td  class="gridToolbarWithColor" colspan="6" style="background-color: #8ED5FF; border-color: #335554;">
                                     <center></center>
                                 </td>
                             </tr>
@@ -148,7 +149,7 @@
             				<tr>
             					<td>
                                     <CENTER>
-                                    	<input type="button" name="btnempCert" id="btnempCert" <? echo $btnempCert_dis; ?> value="Generate Report" onClick="return blacklist_validate();">
+                                    	<input type="button" name="btnempCert" class="inputs" id="btnempCert" <? echo $btnempCert_dis; ?> value="Generate Report" onClick="return blacklist_validate();">
                                     </CENTER>
             					</td>
             				</tr>

@@ -27,6 +27,7 @@
         <STYLE TYPE="text/css" MEDIA="screen">@import url("../../../includes/calendar/calendar-blue.css");</STYLE>
         <!--end calendar lib-->
         <script type='text/javascript' src='timesheet_js.js'></script>
+        <link rel="stylesheet" type="text/css" href="../../style/payroll.css"></link>
 	</HEAD>
 	
     <BODY>
@@ -159,7 +160,7 @@
                 			<tr>
                 				<td>
                                     <CENTER>
-                                    	<input type="button" name="searchTS4" id="searchTS4" <? echo $searchTS4_dis; ?> value="Overtime/Night Differential" onClick="valSearchTS(this.id);">
+                                    	<input type="button" name="searchTS4" id="searchTS4" class="inputs" <? echo $searchTS4_dis; ?> value="Overtime/Night Differential" onClick="valSearchTS(this.id);">
                                     </CENTER>
                 				</td>
                 			</tr>
@@ -171,7 +172,7 @@
                 	<td class="gridToolbarOnTopOnly" colspan="6">
                         <CENTER>
                             <BLINK> 
-                            	<input name="msfg" id="mfsg" type="text" size="100" style="color:RED; background-color:#c3daf9; height:18px; text-align: center;  border:0px solid;" value="<? echo $msg; ?>">
+                            	<input name="msfg" id="mfsg" type="text" size="100" style="color:RED; background-color:#fff; height:18px; text-align: center;  border:0px solid;" value="<? echo $msg; ?>">
                             </BLINK> 
                         </CENTER>	
                     </td>

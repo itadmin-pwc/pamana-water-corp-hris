@@ -159,7 +159,7 @@
                 			<tr>
                 				<td>
                                     <CENTER>
-                                      <input type="button" name="GovLoans" id="GovLoans" <? echo $searchTS4_dis; ?> value="Gov't Loans Remittance" onClick="Loans();">
+                                      <input type="button" name="GovLoans" class="inputs" id="GovLoans" <? echo $searchTS4_dis; ?> value="Gov't Loans Remittance" onClick="Loans();">
                                   </CENTER>
                 				</td>
                 			</tr>
@@ -171,7 +171,7 @@
                 	<td class="gridToolbarOnTopOnly" colspan="6">
                         <CENTER>
                             <BLINK> 
-                            	<input name="msfg" id="mfsg" type="text" size="100" style="color:RED; background-color:#c3daf9; height:18px; text-align: center;  border:0px solid;" value="<? echo $msg; ?>">
+                            	<input name="msfg" id="mfsg" type="text" size="100" style="color:RED; background-color:#fff; height:18px; text-align: center;  border:0px solid;" value="<? echo $msg; ?>">
                             </BLINK> 
                         </CENTER>	
                     </td>

@@ -185,7 +185,7 @@
             	<td class="gridToolbarOnTopOnly" colspan="6">
             		<CENTER>
             			<BLINK> 
-            				<input  name="msgs" id="mssg" type="text" size="100" style="color:RED; background-color:#c3daf9; height:18px; text-align: center;  border:0px solid;" value="">
+            				<input  name="msgs" id="mssg" type="text" size="100" style="color:RED; background-color:#fff; height:18px; text-align: center;  border:0px solid;" value="">
             			</BLINK> 
             		</CENTER>	
             	</td>

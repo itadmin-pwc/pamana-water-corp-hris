@@ -34,6 +34,7 @@ switch ($_GET['action']){
 		<script type="text/javascript" src="../../../includes/calendar/calendar-setup.js"></script>        
         <style>@import url('../../style/reports.css');</style>
         <STYLE TYPE="text/css" MEDIA="screen">@import url("../../../includes/calendar/calendar-blue.css");</STYLE>    
+		<link rel="stylesheet" type="text/css" href="../../style/payroll.css"></link>
     </head>
   
 <body onLoad="setValue();">
@@ -59,7 +60,7 @@ switch ($_GET['action']){
             <br>
             <table cellpadding="1" cellspacing="1" width="100%" class="childGrid" border="0">
             	<tr>
-                	<td align="center"><input type="button" id="headCountDivision" name="headCountDivision" value="Print Head Count Report (Division)" onClick="validateValues();"/></td>
+                	<td align="center"><input type="button" id="headCountDivision" name="headCountDivision" class="inputs" value="Print Head Count Report (Division)" onClick="validateValues();"/></td>
                 </tr>
             </table>
             </td>

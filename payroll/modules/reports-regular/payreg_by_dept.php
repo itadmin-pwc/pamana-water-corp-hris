@@ -112,7 +112,8 @@
                       <tr>
                         <td>
                             <CENTER>
-                                <input type="button" name="searchTS11" id="searchTS11" <? echo $searchTS11_dis; ?> value="Generate Payroll Register By Department (PDF)" onClick="valSearchTS(this.id);"><input type="button" name="searchTS12" id="searchTS12" <? echo $searchTS12_dis; ?> value="Generate Payroll Register By Department (EXCEL)" onClick="valSearchTS(this.id);">
+                                <input type="button" name="searchTS11" id="searchTS11" class="inputs" <? echo $searchTS11_dis; ?> value="Generate Payroll Register By Department (PDF)" onClick="valSearchTS(this.id);">
+								<input class="inputs" type="button" name="searchTS12" id="searchTS12" <? echo $searchTS12_dis; ?> value="Generate Payroll Register By Department (EXCEL)" onClick="valSearchTS(this.id);">
                             </CENTER>
                         </td>
                       </tr>
@@ -123,7 +124,7 @@
                 <td class="gridToolbarOnTopOnly" colspan="6">
                     <CENTER>
                         <BLINK> 
-                            <input name="mdsg" id="msdg" type="text" size="100" style="color:RED; background-color:#c3daf9; height:18px; text-align: center;  border:0px solid;" value="<? echo $msg; ?>">
+                            <input name="mdsg" id="msdg" type="text" size="100" style="color:RED; background-color:#fff; height:18px; text-align: center;  border:0px solid;" value="<? echo $msg; ?>">
                         </BLINK> 
                     </CENTER>	
                 </td>

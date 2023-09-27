@@ -73,6 +73,7 @@ switch ($_GET['action']){
 		<title><?=SYS_TITLE;?></title>
         <script type="text/javascript" src="../../../includes/prototype.js"></script>
         <style>@import url('../../style/reports.css');</style>
+		<link rel="stylesheet" type="text/css" href="../../style/payroll.css"></link>
     </head>
   
 <body onLoad="setValue();">
@@ -119,8 +120,8 @@ switch ($_GET['action']){
             <br>
             <table cellpadding="1" cellspacing="1" width="100%" class="childGrid" border="0">
             	<tr>
-                	<td align="center"><input type="button" id="gpai" name="gpai" value="Print GPAI Update Form (PDF Format)" onClick="validateValues(this.id);"/>
-               	    <input type="button" id="gpaiExcel" name="gpaiExcel" value="Print GPAI Update Form (EXCEL Format)" onClick="validateValues(this.id);"/></td>
+                	<td align="center"><input type="button" id="gpai" class="inputs" name="gpai" value="Print GPAI Update Form (PDF Format)" onClick="validateValues(this.id);"/>
+               	    <input type="button" id="gpaiExcel" name="gpaiExcel" class="inputs" value="Print GPAI Update Form (EXCEL Format)" onClick="validateValues(this.id);"/></td>
                 </tr>
             </table>
             </td>

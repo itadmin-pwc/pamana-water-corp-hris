@@ -58,7 +58,8 @@ switch ($_GET['action']){
 	<head>
 		<title><?=SYS_TITLE;?></title>
         <script type="text/javascript" src="../../../includes/prototype.js"></script>
-        <style>@import url('../../style/reports.css');</style>
+        <style>@import url('../../style/reports.css');</style>  
+		<link rel="stylesheet" type="text/css" href="../../style/payroll.css"></link>
     </head>
   
 <body onLoad="setValue();">
@@ -105,8 +106,8 @@ switch ($_GET['action']){
             <br>
             <table cellpadding="1" cellspacing="1" width="100%" class="childGrid" border="0">
             	<tr>
-                	<td align="center"><input type="button" id="manpowerReport" name="manpowerReport" value="Print Manpower Report" onClick="validateValues(this.id);"/>
-               	    <input type="button" id="manpowerReportBatch" name="manpowerReportBatch" value="Print Manpower Report (BATCH TOTAL)" onClick="validateValues(this.id);"/></td>
+                	<td align="center"><input type="button" id="manpowerReport" name="manpowerReport" class="inputs" value="Print Manpower Report" onClick="validateValues(this.id);"/>
+               	    <input type="button" id="manpowerReportBatch" name="manpowerReportBatch" class="inputs" value="Print Manpower Report (BATCH TOTAL)" onClick="validateValues(this.id);"/></td>
                 </tr>
             </table>
             </td>

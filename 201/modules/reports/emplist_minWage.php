@@ -26,6 +26,7 @@
 		<style>@import url('../../../payroll/style/main_emp_loans.css');</style>
         <script type='text/javascript' src='../../../includes/jSLib.js'></script>
         <script type='text/javascript' src='../../../includes/prototype.js'></script>
+		<link rel="stylesheet" type="text/css" href="../../style/payroll.css"></link>
        <!--calendar lib-->
 		<script type="text/javascript" src="../../../includes/calendar/calendar.js"></script>
         <script type="text/javascript" src="../../../includes/calendar/calendar-en.js"></script>
@@ -55,7 +56,7 @@
             		<td class="parentGridDtl" >
             			<TABLE border="0" width="100%" cellpadding="1" cellspacing="1" class="childGrid" >
             				<tr > 
-            					<td class="gridToolbar" colspan="6"> 
+            					<td class="gridToolbar" colspan="6" style="border-color: #335554;"> 
                                 	<input name="hide_option" type="hidden" id="hide_option" value="<? echo $option_menu; ?>"> 
             						<? echo $new_; ?>&nbsp;&nbsp;<? echo $refresh_; ?> <input name='updateFlag' type='hidden' id='updateFlag'> 
             						<input name='fileName' type='hidden' id='fileName' value="blacklist.php">            
@@ -75,7 +76,7 @@
                             
                             
                             <tr > 
-                                <td  class="gridToolbarWithColor" colspan="6">
+                                <td  class="gridToolbarWithColor" colspan="6" style="background-color: #8ED5FF; border-color: #335554;">
                                     <center></center>
                                 </td>
                             </tr>
@@ -101,7 +102,7 @@
             				<tr>
             					<td>
                                     <CENTER>
-                                    	<input type="button" name="btnempra1" id="btnempra1" <? echo $btnempra1_dis; ?> value="Generate Emp. Listing Report" onClick="return generatera1_validate('listMinWage');">
+                                    	<input type="button" name="btnempra1" class="inputs" id="btnempra1" <? echo $btnempra1_dis; ?> value="Generate Emp. Listing Report" onClick="return generatera1_validate('listMinWage');">
                                     </CENTER>
             					</td>
             				</tr>

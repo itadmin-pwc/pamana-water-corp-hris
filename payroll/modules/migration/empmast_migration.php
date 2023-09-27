@@ -1330,7 +1330,7 @@ function empMasttextFile()
     		<td class="gridToolbarOnTopOnly" colspan="6">
     			<CENTER>
     				
-    					<input style="background-color:#c3daf9; height:18px; text-align: center;  border:0px solid;" >
+    					<input style="background-color:#fff; height:18px; text-align: center;  border:0px solid;" >
     				
     			</CENTER>	
     		</td>

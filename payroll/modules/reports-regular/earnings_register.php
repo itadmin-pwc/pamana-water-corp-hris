@@ -29,6 +29,7 @@
         <STYLE TYPE="text/css" MEDIA="screen">@import url("../../../includes/calendar/calendar-blue.css");</STYLE>
         <!--end calendar lib-->
         <script type='text/javascript' src='timesheet_js.js'></script>
+        <link rel="stylesheet" type="text/css" href="../../style/payroll.css"></link>
     </HEAD>
 	<BODY>
 
@@ -124,7 +125,7 @@
                         </tr>
             
                         <tr > 
-                            <td  class="gridToolbarWithColor" colspan="6">
+                            <td  class="gridToolbarWithColor" colspan="6" style="background-color: #8ED5FF; border-color: #335554;">
                                 <center></center>
                             </td>
                         </tr>
@@ -173,7 +174,7 @@
                       	<tr>
                         	<td>
                                 <CENTER>
-                                     <input type="button" name="searchTS2" id="searchTS2" <? echo $searchTS2_dis; ?> value="Earnings Register" onClick="valSearchTS(this.id);">
+                                     <input type="button" name="searchTS2" class="inputs" id="searchTS2" <? echo $searchTS2_dis; ?> value="Earnings Register" onClick="valSearchTS(this.id);">
                                 </CENTER>
                         	</td>
                       	</tr>
@@ -185,7 +186,7 @@
             	<td class="gridToolbarOnTopOnly" colspan="6">
             		<CENTER>
             			<BLINK> 
-            				<input  name="msgs" id="mssg" type="text" size="100" style="color:RED; background-color:#c3daf9; height:18px; text-align: center;  border:0px solid;" value="">
+            				<input  name="msgs" id="mssg" type="text" size="100" style="color:RED; background-color:#fff; height:18px; text-align: center;  border:0px solid;" value="">
             			</BLINK> 
             		</CENTER>	
             	</td>

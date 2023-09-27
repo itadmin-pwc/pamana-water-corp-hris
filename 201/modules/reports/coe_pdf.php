@@ -162,7 +162,7 @@ class PDF extends fpdf_multicelltag
 		$this->Ln(40);
 		$this->Cell(115,4,"",0,0);
 		$this->SetFont('Arial', 'B', '14');
-		$this->Cell(25,4,'GIRLIE P. MENDOZA',0,0,'C');
+		$this->Cell(25,4,'__________________________',0,0,'C');
 		//$this->Cell(25,4,$this->signatory,0,0,'C');
 		$this->SetFont('Arial', '', '14');
 		$this->Ln(6);

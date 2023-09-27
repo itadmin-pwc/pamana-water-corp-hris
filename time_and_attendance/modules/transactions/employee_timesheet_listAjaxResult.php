@@ -74,7 +74,7 @@ $arr_period_Info = $emptimesheetObj->getPeriodWil($_SESSION["company_code"],$arr
                         	<?php
 								$emptimesheetObj->DropDownMenu($arr_OpenPeriod,'pdSeries',$pdSeries,"onChange=\"changePayPeriod();\"");
                             ?>
-                            <input name="back" type="button" id="back" value="Back" onClick="location.href='view_edit_employee_timesheet.php?&url=<?=$_GET["url"]?>';">
+                            <input name="back" class="inputs" type="button" id="back" value="Back" onClick="location.href='view_edit_employee_timesheet.php?&url=<?=$_GET["url"]?>';">
                         </td>
                     </tr>
                     
@@ -116,7 +116,7 @@ $arr_period_Info = $emptimesheetObj->getPeriodWil($_SESSION["company_code"],$arr
                                             </tr>
                                        </TABLE>
                                       </div>
-                                     <div id="Panel1" style="height: 200px; width:1200px; overflow-y: scroll;">   
+                                     <div id="Panel1" style="height: 200px; width:1255px; overflow-y: scroll;">   
                                      	<TABLE border="1" width="100%"  cellpadding="1" cellspacing="1" style="border-collapse:collapse;">
                                         	<?php
 												$arr_EmpTsInfo =  $emptimesheetObj->getTblData("tblTK_Timesheet", " and empNo='".$arr_empInfo["empNo"]."' and tsDate between '".date("Y-m-d", strtotime($arr_period_Info["pdFrmDate"]))."' and '".date("Y-m-d", strtotime($arr_period_Info["pdToDate"]))."'", " order by tsDate", "");

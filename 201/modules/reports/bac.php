@@ -93,6 +93,7 @@ switch ($_GET['action']){
 <script type="text/javascript" src="../../../includes/datepicker/dhtmlxCalendar/codebase/dhtmlxcalendar.js"></script>
 <link rel="stylesheet" type="text/css" href="../../../includes/datepicker/dhtmlxCalendar/codebase/dhtmlxcalendar.css"></link>
 <link rel="stylesheet" type="text/css" href="../../../includes/datepicker/dhtmlxCalendar/codebase/skins/dhtmlxcalendar_dhx_skyblue.css"></link>
+<link rel="stylesheet" type="text/css" href="../../style/payroll.css"></link>
 <script>
 var myCalendar;
 function doOnLoad() {
@@ -249,7 +250,7 @@ function dates(){
 				  <tr>
 					<td>
 						<CENTER>
-                <input type="button" name="cmdbac" id="cmdbac" <? echo $searchTS4_dis; ?> value="Print Compensation and Benefits" onClick="loanCertificate();">
+                <input type="button" class="inputs" name="cmdbac" id="cmdbac" <? echo $searchTS4_dis; ?> value="Print Compensation and Benefits" onClick="loanCertificate();">
               </CENTER>
 					</td>
 				  </tr>
@@ -260,7 +261,7 @@ function dates(){
 		<td class="gridToolbarOnTopOnly" colspan="6">
 			<CENTER>
           <BLINK> 
-	          <input name="msg" id="msg" type="text" size="100" style="color:RED; background-color:#c3daf9; height:18px; text-align: center;  border:0px solid;" value="<? echo $msg; ?>">
+	          <input name="msg" id="msg" type="text" size="100" style="color:RED; background-color:#fff; height:18px; text-align: center;  border:0px solid;" value="<? echo $msg; ?>">
           </BLINK> 
         </CENTER>	
 		</td>

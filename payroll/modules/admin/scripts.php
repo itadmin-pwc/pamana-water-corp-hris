@@ -26,6 +26,7 @@ $scriptsObj->validateSessions('','MODULES');
 <script type="text/javascript" src="../../../includes/calendar/calendar-en.js"></script>
 <script type="text/javascript" src="../../../includes/calendar/calendar-setup.js"></script>		
 <STYLE TYPE="text/css" MEDIA="screen">@import url("../../../includes/calendar/calendar-blue.css");</STYLE>
+<link rel="stylesheet" type="text/css" href="../../style/payroll.css"></link>
 <!--end calendar lib-->
 <script type='text/javascript' src='../transactions/timesheet_js.js'></script>
 </HEAD>
@@ -74,7 +75,7 @@ $scriptsObj->validateSessions('','MODULES');
     		<td class="gridToolbarOnTopOnly" colspan="6">
     			<CENTER>
     				
-    					<input style="background-color:#c3daf9; height:18px; text-align: center;  border:0px solid;" >
+    					<input style="background-color:#fff; height:18px; text-align: center;  border:0px solid;" >
     				
     			</CENTER>	
     		</td>

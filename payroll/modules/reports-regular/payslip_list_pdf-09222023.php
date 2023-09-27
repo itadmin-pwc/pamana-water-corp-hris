@@ -19,7 +19,6 @@ class PDF extends FPDF
 		$ctr_payslipregandAllow = 0;
 		$net_payslipregandAllow = 0;
 		$ctr_payslipallow = 0;
-		$i = 1;
 		foreach ($resEmpList as $ArrEmpList) {
 			$this->SetFont('Arial','',7);
 			$Department=$this->getDept($ArrEmpList['compCode'], $ArrEmpList['empDiv'], $ArrEmpList['empDepCode']);
@@ -44,13 +43,9 @@ class PDF extends FPDF
 			if ($_GET['tbl']==2) {
 				$Dedwhere .=" AND (sprtPS='0' or sprtPS IS NULL)";
 				$SumDeductions=$this->SumEarnDed("tblDeductions{$this->hist}",'trnAmountD',$Dedwhere);
-				if ($i % 2 == 0) {
-					$ctr_payslipreg++;
-				}
+				$ctr_payslipreg++;
 			} else {
-				if ($i % 2 == 0) {
-					$ctr_payslipallow++;
-				}
+				$ctr_payslipallow++;
 			}		
 			
 			$cutOff = $this->getCutOffPeriod($PayPeriod['pdNumber']);
@@ -73,35 +68,27 @@ class PDF extends FPDF
 				}
 			//}			
 			$NetPay=(float)$SumEarnings['totamount'] - (float)$SumDeductions['totamount'];
-			if ($i % 2 == 0) {
-				$net_payslipreg += $NetPay;
-			}
-			$this->Ln(10);
+			$net_payslipreg += $NetPay;
 			$this->SetFont('Arial','B','10');
 			$this->Cell(50,6,'PAYSLIP','LTR');
 			$this->SetFont('Arial','B','7'); 
 			$this->Cell(14,6,'COMPANY:','LT');
-			$this->SetFont('Arial','', 7); 
-			$this->Cell(38,6,strtoupper($this->getCompanyName($_SESSION['company_code'])),'TR');
+			$this->SetFont('Arial',''); 
+			$this->Cell(61,6,$this->getCompanyName($_SESSION['company_code']),'TR');
 			$this->SetFont('Arial','B'); 
 			$this->Cell(8,6,'DEPT:' ,'LT');
 			$this->SetFont('Arial',''); 
-			$this->Cell(40,6,$Department['deptShortDesc'],'TR');
+			$this->Cell(17,6,$Department['deptShortDesc'],'TR');
 			$this->SetFont('Arial','B'); 
-			$this->Cell(14,6,'BRANCH.:','LT',0);
+			$this->Cell(12,6,'EMP No.:','LT',0);
 			$this->SetFont('Arial',''); 
-			$this->Cell(26,6,$ArrEmpList['brnShortDesc'],'TR',0);
+			$this->Cell(28,6,$ArrEmpList['empNo'] . " - P" .$ArrEmpList['empBrnCode'],'TR',0);
 			$this->Ln();
 			$this->SetFont('Arial','B'); 
 			$this->Cell(50,6,'','LR');
-			$this->SetFont('Arial','B'); 
-			$this->Cell(12,6,'EMP NO.:','LT',0);
-			$this->SetFont('Arial',''); 
-			$this->Cell(19,6,$ArrEmpList['empNo'],'TR',0);
-			$this->SetFont('Arial','B'); 
 			$this->Cell(15,6,'EMPLOYEE:','LT');
 			$this->SetFont('Arial',''); 
-			$this->Cell(54,6,$ArrEmpList['empLastName'] . ", " . $ArrEmpList['empFirstName'] . " " . $ArrEmpList['empMidName'] ,'T');
+			$this->Cell(85,6,$ArrEmpList['empLastName'] . ", " . $ArrEmpList['empFirstName'] . " " . $ArrEmpList['empMidName'] ,'T');
 			$this->SetFont('Arial','B'); 
 			$this->Cell(17,6,'BASIC RATE:','LT',0);
 			$this->SetFont('Arial',''); 
@@ -154,14 +141,12 @@ class PDF extends FPDF
 			$this->SetFont('Arial','',7);
 			$this->Cell(50,5,'for service rendered.','R','','L');
 			$this->Ln();
-			$this->Cell(190,20,$this->EarningsAndDeductions($ArrEmpList['empNo'],$PayPeriod, '', $i));
+			$this->Cell(190,20,$this->EarningsAndDeductions($ArrEmpList['empNo'],$PayPeriod));
 			$this->Cell(50,2,'','R','','C');
 			$this->Ln();
 
 			if (in_array($ArrEmpList['empNo'],$arrEmpWithAllow) && $_GET['tbl']==2) {
-				if ($i % 2 == 0) {
-					$ctr_payslipregandAllow++;
-				}
+			$ctr_payslipregandAllow++;
 				$this->SetFont('Arial','',7);				
 				$Earnwhere="where empNo='" . $ArrEmpList['empNo'] . "'
 						and compCode='" . $_SESSION['company_code'] . "' 
@@ -180,9 +165,7 @@ class PDF extends FPDF
 				$Dedwhere .=" AND sprtPS='1'";
 				$SumDeductions=$this->SumEarnDed("tblDeductions{$this->hist}",'trnAmountD',$Dedwhere);
 				$NetPay=(float)$SumEarnings['totamount'] - (float)$SumDeductions['totamount'];
-				if ($i % 2 == 0) {
-					$net_payslipregandAllow += $NetPay;
-				}
+				$net_payslipregandAllow += $NetPay;
 				$cutOffDate = date('m/d/Y',strtotime($PayPeriod['pdFrmDate'])) . '-' . date('m/d/Y',strtotime($PayPeriod['pdToDate']));
 				$this->SetFont('Arial','B','10');
 				$this->Cell(50,6,'PAYSLIP','LTR');
@@ -255,11 +238,10 @@ class PDF extends FPDF
 				$this->SetFont('Arial','',7);
 				$this->Cell(50,5,'for service rendered.','R','','L');
 				$this->Ln();
-				$this->Cell(190,20,$this->EarningsAndDeductions($ArrEmpList['empNo'],$PayPeriod,'1', $i));
+				$this->Cell(190,20,$this->EarningsAndDeductions($ArrEmpList['empNo'],$PayPeriod,'1'));
 				$this->Cell(50,2,'','R','','C');
 				$this->Ln();			
 			}
-			$i++;
 		}
 		if ($_GET['tbl']==2) {
 			$this->SetFont('Arial','B',7);
@@ -297,7 +279,7 @@ class PDF extends FPDF
 
 	}
 	
-	function EarningsAndDeductions($empNo, $payPd, $act="", $oddEven) {
+	function EarningsAndDeductions($empNo,$payPd,$act="") {
 		$this->SetFont('Arial','',7);
 		$arrYTD=$this->getYTD($empNo);
 		$ArrempEarnings=$this->getEmpEearnings($empNo,$payPd,$act);
@@ -371,6 +353,7 @@ class PDF extends FPDF
 			$this->Ln();
 		}	
 
+
 		$this->SetFont('Arial','B'); 
 		$this->Cell(25,4,'TOTAL EARNINGS:','LTB','L');
 		$this->Cell(45,4,'Php ' .number_format($totearnings,2),'TRB','','R');
@@ -383,12 +366,6 @@ class PDF extends FPDF
 		$this->SetFont('Arial','B','5'); 
 		$this->Cell(50,4,"Printed By : ".$dispUser["empFirstName"]." ".$dispUser["empLastName"],'','','L');
 		$this->Cell(50,4,"Run Date: " . $this->currentDateArt(),'','','L');
-		$copy = "Original Copy";
-		if ($oddEven % 2 == 0) {
-			$copy = "Employee's Copy";
-		}
-		$this->Cell(90,4,$copy,'','','R');
-		$this->Ln(10);
 	}
 	
 	function getEmpEearnings($empNo,$payPd,$act="") {
@@ -457,7 +434,7 @@ class PDF extends FPDF
 }
 
 $pdf=new PDF();
-$pdf->FPDF($orientation='P',$unit='mm',$format='a4');
+$pdf->FPDF($orientation='P',$unit='mm',$format='payslip');
 $psObj=new inqTSObj();
 $sessionVars = $psObj->getSeesionVars();
 //Column titles
@@ -508,55 +485,18 @@ if ($branch != 0 && $empNo=="") {
 } else {
 	$branch = "";
 }
-$qryIntMaxRec = "SELECT * FROM (
-							SELECT tblEmpMast.*, tblbranch.brnShortDesc
-							FROM tblEmpMast 
-							JOIN tblbranch ON tblbranch.brnCode = tblEmpMast.EmpBrnCode
-							WHERE tblEmpMast.compCode = '{$sessionVars['compCode']}'
-							AND tblEmpMast.empNo IN (
-								SELECT empNo
-								FROM tblPayrollSummary{$pdf->hist}
-								WHERE pdYear='{$arrPayPd['pdYear']}'
+$qryIntMaxRec = "SELECT * FROM tblEmpMast 
+			     WHERE compCode = '{$sessionVars['compCode']}'
+			     AND empNo  IN (Select empNo from tblPayrollSummary{$pdf->hist} where
+								pdYear='{$arrPayPd['pdYear']}'
 								AND pdNumber = '{$arrPayPd['pdNumber']}'
 								AND payGrp = '{$_SESSION['pay_group']}'
 								AND payCat = '{$_SESSION['pay_category']}'
 								AND compCode = '{$_SESSION['company_code']}'
-							)
-							$empNo1 $empName1 $empDiv1 $empDept1 $empSect1 $groupType1 $branch
-							AND empNo IN (
-								SELECT empNo
-								FROM tblEarnings{$pdf->hist}
-								WHERE compCode='" . $_SESSION['company_code'] . "'
-								AND pdYear='" . $arrPayPd['pdYear']. "'
-								AND pdNumber='" . $arrPayPd['pdNumber'] . "'
-								$payallow
-							)
-							UNION ALL
-							SELECT tblEmpMast.*, tblbranch.brnShortDesc
-							FROM tblEmpMast 
-							JOIN tblbranch ON tblbranch.brnCode = tblEmpMast.EmpBrnCode
-							WHERE tblEmpMast.compCode = '{$sessionVars['compCode']}'
-							AND tblEmpMast.empNo IN (
-								SELECT empNo
-								FROM tblPayrollSummary{$pdf->hist}
-								WHERE pdYear='{$arrPayPd['pdYear']}'
-								AND pdNumber = '{$arrPayPd['pdNumber']}'
-								AND payGrp = '{$_SESSION['pay_group']}'
-								AND payCat = '{$_SESSION['pay_category']}'
-								AND compCode = '{$_SESSION['company_code']}'
-							)
-							$empNo1 $empName1 $empDiv1 $empDept1 $empSect1 $groupType1 $branch
-							AND empNo IN (
-								SELECT empNo
-								FROM tblEarnings{$pdf->hist}
-								WHERE compCode='" . $_SESSION['company_code'] . "'
-								AND pdYear='" . $arrPayPd['pdYear']. "'
-								AND pdNumber='" . $arrPayPd['pdNumber'] . "'
-								$payallow
-							)
-						) AS doubled_data
-						ORDER BY empBrnCode, empLastName;";
-						
+								    )
+				 $empNo1 $empName1 $empDiv1 $empDept1 $empSect1 $groupType1 $branch
+				 AND empNo IN (Select empNo FROM tblEarnings{$pdf->hist} where compCode='" . $_SESSION['company_code'] . "' and pdYear='" . $arrPayPd['pdYear']. "' and pdNumber='" . $arrPayPd['pdNumber'] . "' $payallow)
+				 order by empBrnCode,empLastName ";
 $resEmpList = $psObj->execQry($qryIntMaxRec);
 $arrEmpList = $psObj->getArrRes($resEmpList);
 

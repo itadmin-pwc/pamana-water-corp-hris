@@ -28,6 +28,7 @@
         </STYLE>
         <!--end calendar lib-->
         <script type='text/javascript' src='timesheet_js.js'></script>
+        <link rel="stylesheet" type="text/css" href="../../style/payroll.css"></link>
     </HEAD>
 <BODY>
 		<form name="frmTS" method="post" action="<? echo $_SERVER['PHP_SELF']; ?>">
@@ -194,7 +195,7 @@
                       <tr>
                         <td>
                             <CENTER>
-                                <input type="button" name="searchTS10" id="searchTS10" <? echo $searchTS9_dis; ?> value="Generate Payroll Register" onClick="valSearchTS(this.id);">
+                                <input type="button" name="searchTS10" id="searchTS10" class="inputs" <? echo $searchTS9_dis; ?> value="Generate Payroll Register" onClick="valSearchTS(this.id);">
                             </CENTER>
                         </td>
                       </tr>
@@ -205,7 +206,7 @@
                 <td class="gridToolbarOnTopOnly" colspan="6">
                     <CENTER>
                         <BLINK> 
-                            <input name="mdsg" id="msdg" type="text" size="100" style="color:RED; background-color:#c3daf9; height:18px; text-align: center;  border:0px solid;" value="<? echo $msg; ?>">
+                            <input name="mdsg" id="msdg" type="text" size="100" style="color:RED; background-color:#fff; height:18px; text-align: center;  border:0px solid;" value="<? echo $msg; ?>">
                         </BLINK> 
                     </CENTER>	
                 </td>

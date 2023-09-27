@@ -19,6 +19,7 @@ include("movement.trans.php");
 <style>@import url('../../style/reports.css');</style>
 <SCRIPT type="text/javascript" src="../../../includes/jSLib.js"></SCRIPT>
 <script type='text/javascript' src='../../../includes/prototype.js'></script>
+<link rel="stylesheet" type="text/css" href="../../style/payroll.css"></link>
 <!--calendar lib-->
 <script type="text/javascript" src="../../../includes/calendar/calendar.js"></script>
 <script type="text/javascript" src="../../../includes/calendar/calendar-en.js"></script>
@@ -136,8 +137,8 @@ include("movement.trans.php");
 				  <tr>
 					<td>
 						<CENTER>
-                <input type="button" name="searchTS4" id="paf_prooflist" <? echo $searchTS4_dis; ?> value="Print Held PAF Proof List in PDF Format" onClick="valSearchTS(this.id);">
-                <input type="button" name="searchTS4" id="held_paf_prooflist_excel" <? echo $searchTS2_dis?> value="Print Held PAF Proof List in Excel Format" onClick="valSearchTS(this.id);">
+                <input type="button" name="searchTS4" id="paf_prooflist" class="inputs" <? echo $searchTS4_dis; ?> value="Print Held PAF Proof List in PDF Format" onClick="valSearchTS(this.id);">
+                <input type="button" name="searchTS4" id="held_paf_prooflist_excel" class="inputs" <? echo $searchTS2_dis?> value="Print Held PAF Proof List in Excel Format" onClick="valSearchTS(this.id);">
               </CENTER>
 					</td>
 				  </tr>
@@ -148,7 +149,7 @@ include("movement.trans.php");
 		<td class="gridToolbarOnTopOnly" colspan="6">
 			<CENTER>
           <BLINK> 
-	          <input name="msg" id="msg" type="text" size="100" style="color:RED; background-color:#c3daf9; height:18px; text-align: center;  border:0px solid;" value="<? echo $msg; ?>">
+	          <input name="msg" id="msg" type="text" size="100" style="color:RED; background-color:#fff; height:18px; text-align: center;  border:0px solid;" value="<? echo $msg; ?>">
           </BLINK> 
         </CENTER>	
 		</td>

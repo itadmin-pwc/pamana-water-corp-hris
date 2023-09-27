@@ -94,9 +94,9 @@ function ref(){
 				  <tr>
 					<td>
                       <CENTER>
-                <input type="button" name="btnPrintTSProoflistP" id="btnPrintTSProoflistP" <? echo $searchTS4_dis; ?> value="Print Timesheet Adjustment Prooflist ALL" onClick="TS_Adjustment_with_Amount('P');">&nbsp;
-					  <input type="button" name="btnPrintTSProoflistO" id="btnPrintTSProoflistO" <? echo $searchTS4_dis; ?> value="Print Timesheet Adjustment Prooflist HELD" onClick="TS_Adjustment_with_Amount('O');">&nbsp;
-					  <input type="button" name="btnPrintTSProoflistA" id="btnPrintTSProoflistA" <? echo $searchTS4_dis; ?> value="Print Timesheet Adjustment Prooflist POSTED" onClick="TS_Adjustment_with_Amount('A');">
+                <input type="button" name="btnPrintTSProoflistP" class="inputs" id="btnPrintTSProoflistP" <? echo $searchTS4_dis; ?> value="Print Timesheet Adjustment Prooflist ALL" onClick="TS_Adjustment_with_Amount('P');">&nbsp;
+					  <input type="button" name="btnPrintTSProoflistO" class="inputs" id="btnPrintTSProoflistO" <? echo $searchTS4_dis; ?> value="Print Timesheet Adjustment Prooflist HELD" onClick="TS_Adjustment_with_Amount('O');">&nbsp;
+					  <input type="button" name="btnPrintTSProoflistA" class="inputs" id="btnPrintTSProoflistA" <? echo $searchTS4_dis; ?> value="Print Timesheet Adjustment Prooflist POSTED" onClick="TS_Adjustment_with_Amount('A');">
 					  </CENTER>
 					</td>
 				  </tr>
@@ -107,7 +107,7 @@ function ref(){
 		<td class="gridToolbarOnTopOnly" colspan="6">
 			<CENTER>
           <BLINK> 
-	          <input name="msg" id="msg" type="text" size="100" style="color:RED; background-color:#c3daf9; height:18px; text-align: center;  border:0px solid;" value="<? echo $msg; ?>">
+	          <input name="msg" id="msg" type="text" size="100" style="color:RED; background-color:#fff; height:18px; text-align: center;  border:0px solid;" value="<? echo $msg; ?>">
           </BLINK> 
         </CENTER>	
 		</td>

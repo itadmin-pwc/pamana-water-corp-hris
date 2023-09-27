@@ -20,6 +20,8 @@ $reportPath = 'organizational_hierarchy_pdf.php?';
 		<SCRIPT type="text/javascript" src="../../../includes/jSLib.js"></SCRIPT>
 		<script type='text/javascript' src='timesheet_js.js'></script>
 		<STYLE>@import url('../../style/maintenance_employee.css');</STYLE>
+		
+		<link rel="stylesheet" type="text/css" href="../../style/payroll.css"></link>
 	</HEAD>
 	<BODY>
 		<div class="niftyCorner">

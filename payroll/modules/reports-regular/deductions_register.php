@@ -27,6 +27,7 @@
         <STYLE TYPE="text/css" MEDIA="screen">@import url("../../../includes/calendar/calendar-blue.css");</STYLE>
         <!--end calendar lib-->
         <script type='text/javascript' src='timesheet_js.js'></script>
+        <link rel="stylesheet" type="text/css" href="../../style/payroll.css"></link>
     </HEAD>
 	<BODY>
         <form name="frmTS" method="post" action="<? echo $_SERVER['PHP_SELF']; ?>">
@@ -121,7 +122,7 @@
                             </tr>
             
                             <tr > 
-                                <td  class="gridToolbarWithColor" colspan="6">
+                                <td  class="gridToolbarWithColor" colspan="6" style="background-color: #8ED5FF; border-color: #335554;">
                                 	<center></center>
                                 </td>
                             </tr>
@@ -159,7 +160,7 @@
             				<tr>
             					<td>
                                     <CENTER>
-                                    	<input type="button" name="searchTS3" id="searchTS3" <? echo $searchTS3_dis; ?> value="Deductions Register" onClick="valSearchTS(this.id);">
+                                    	<input type="button" name="searchTS3" id="searchTS3" class="inputs" <? echo $searchTS3_dis; ?> value="Deductions Register" onClick="valSearchTS(this.id);">
                                     </CENTER>
             					</td>
             				</tr>
@@ -170,7 +171,7 @@
             		<td class="gridToolbarOnTopOnly" colspan="6">
             			<CENTER>
             				<BLINK> 
-                            	<input name="dd" id="msddddg" type="text" size="100" style="color:RED; background-color:#c3daf9; height:18px; text-align: center;  border:0px solid;" value="<? echo $msg; ?>">
+                            	<input name="dd" id="msddddg" type="text" size="100" style="color:RED; background-color:#fff; height:18px; text-align: center;  border:0px solid;" value="<? echo $msg; ?>">
                             </BLINK> 
             			</CENTER>	
             		</td>

@@ -186,8 +186,8 @@ class PDF extends FPDF
 		$this->SetFont('arial','',6);
 		$this->Cell(35,5,$signee,'LR',0,'C');
 		$this->Cell(33,5,strtoupper($arrInfo['brnSignatory']),'LR',0,'C');
-		$this->Cell(32,5,'ELVIRA D. GUTIERREZ','LR',0,'C');
-		$this->Cell(35,5,'LEONARDO B. DAYAO','LR',0,'C');
+		$this->Cell(32,5,'','LR',0,'C'); //HR
+		$this->Cell(35,5,'','LR',0,'C'); //President
 		$this->Cell(35,5,'','LR',0,'C');
 		//$this->Cell(30,5,strtoupper($arrInfo['empFirstName'][0].$arrInfo['empMidName'][0].' '.$arrInfo['empLastName']),'LR',1,'C');
 		$this->Cell(30,5,($arrInfo['empSex']=="M"?"MR.":"MS."). " ".strtoupper($arrInfo['empLastName']),'LR',1,'C');

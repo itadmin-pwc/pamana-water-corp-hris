@@ -12,6 +12,7 @@ session_start();?>
 <script type="text/javascript" src="../../../js/extjs/adapter/prototype/window_effects.js"></script>
 <STYLE>@import url('../../../js/themes/default.css');</STYLE>
 <STYLE>@import url("../../../js/themes/mac_os_x.css");</STYLE>
+<link rel="stylesheet" type="text/css" href="../../style/payroll.css"></link>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>Untitled Document</title>
 </head>
@@ -21,7 +22,7 @@ session_start();?>
 		<div id="TSCont"></div>
 		<div id="indicator1" align="center"></div>
 <? } else {?><br /><br /><br />
-		<div align="center" style=" font-size:20px; color:#F00; font-family:Verdana; "> This Module is available only under "Resigned" Category!</div>
+		<div align="center" style=" font-size:20px; color:#20A5C4; font-family:Verdana; "> Please Re-login and Choose "Resigned" Pay Category.</div>
 <? }?>
 </body>
 </body>

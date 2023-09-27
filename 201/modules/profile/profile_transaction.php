@@ -460,7 +460,7 @@ if($_GET['action']=="loadMunicipality")
 	</HEAD>
 	<BODY onLoad="<? if ($_GET['frmRefNo'] !="") { echo "checkECOLA();"; }?>">
 		<FORM name='frmActionType' id="frmActionType" action="" onSubmit="return validateTabs('<?=$_GET['act']?>');" method="post" >
-			<TABLE border="0" cellpadding="1" cellspacing="0" class="parentGrid" width="600">
+			<TABLE border="0" cellpadding="1" cellspacing="0" class="parentGrid" width="600" style="margin: 10px;">
 			  <tr>
 					
       <td class="parentGridHdr" height="30"> &nbsp;<img src="../../../images/grid.png">&nbsp;

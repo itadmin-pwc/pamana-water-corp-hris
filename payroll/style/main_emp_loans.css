@@ -59,11 +59,277 @@
 	font : normal normal 11px Verdana, Arial, Helvetica, sans-serif;
 }
 .gridToolbarWithColor {
-	background-color:#c3daf9;
-	border-bottom : 1px solid #6495ED;
-	border-top : 1px solid #6495ED;
+	background-color: #8ED5FF; 
+	border-color: #335554;
 	font : normal normal 11px Verdana, Arial, Helvetica, sans-serif;
 }
 .actionImg {
 	border:none;
 }
+
+.parentGrid {
+	border : 1px solid #c0c0c0;
+	border-radius: 5px;
+	-moz-border-radius: 3px 3px 3px 3px;
+	-webkit-box-shadow: 1px 1px 5px 0px rgba(0,0,0,0.25);
+	-moz-box-shadow: 1px 1px 5px 0px rgba(0,0,0,0.25);
+	box-shadow: 1px 1px 5px 0px rgba(0,0,0,0.25);
+}
+
+input.inputs[type="text"] {
+    /* Styles for text input */
+    /* width: 100%; */
+	padding-left: 5px;
+	padding-right: 5px;
+    height: 30px;
+	font-size: 12px;
+    border-radius: 3px;
+    border: 1px solid #c9c9c9;
+	vertical-align: top;
+}
+
+input.inputs[type="password"] {
+    /* Styles for password input */
+    /* width: 100%; */
+	padding-left: 5px;
+	padding-right: 5px;
+    height: 30px;
+	font-size: 12px;
+    border-radius: 3px;
+    border: 1px solid #c9c9c9;
+}
+
+select {
+    height: 30px;
+    border-radius: 3px;
+    border: 1px solid #c9c9c9;
+	vertical-align: top;
+}
+
+.parentGridHdr {
+	height : 30px;
+	border-radius: 5px;
+	background-color: #ffffff;
+	color : #181818;
+	font : normal bold 13px Arial, Helvetica, sans-serif;
+	border-bottom: 1px solid #c0c0c0;
+	
+}
+
+.parentGridDtl {
+	background-color: #ffffff;
+	padding : 5px 5px 5px 5px;
+	border-radius: 5px;
+}
+
+.w-100 {
+	width: 100%;
+}
+
+.w-95 {
+	width: 95%;
+}
+
+.logInCont {
+	padding-top: 15%;
+	width : 100%;
+	height : 500px;	
+}
+
+input.inputs[type="button"],input.inputs[type="submit"],input.inputs[type="reset"] {
+	background-color:#0D6BF7; 
+	color:white; 
+	height:30px; 
+	border-radius:3px; 
+	border:0px #0D6BF7;
+}
+
+input.inputs[type="button"]:hover,input.inputs[type="submit"]:hover,input.inputs[type="reset"]:hover{
+	background-color:#3d89fc; 
+}
+
+input.inputs[type="button"]:active,input.inputs[type="submit"]:active,input.inputs[type="reset"]:active{
+	background-color:#035de4;
+}
+
+button.inputs {
+	background-color:#0D6BF7; 
+	color:white; 
+	height:30px; 
+	border-radius:3px; 
+	border:0px #0D6BF7;
+}
+
+button.inputs:hover{
+	background-color:#3d89fc; 
+}
+
+button.inputs:active{
+	background-color:#035de4;
+}
+
+.childGrid {
+	border : 2px #ffffff;
+	-moz-border-radius: 10px 10px 10px 10px;
+}
+
+.hdrLblRow {
+	
+	color : #FFFFFF;
+	border-bottom : 2px solid #000080;
+	padding: 0 0 0 0;
+}
+
+.hdrLbl {
+	font : normal bold 12px Verdana, Arial, Helvetica, sans-serif;
+	background-color: #0A3A3A;
+}
+
+.gridToolbar {
+	border-bottom : 1px solid #6495ED;
+	font : normal normal 11px Verdana, Arial, Helvetica, sans-serif;
+}
+
+.ToolBarseparator {
+	font : normal bold 10px Verdana, Arial, Helvetica, sans-serif;
+	color : silver;
+	position : relative;
+	top: -3px;
+}
+
+.gridDtlVal, .inputs {
+	font : normal normal 11px Verdana, Arial, Helvetica, sans-serif;
+}
+
+.gridDtlVal2 {
+	font : normal normal 15px Verdana, Arial, Helvetica, sans-serif;
+	
+}
+
+.gridDtlLbl {
+	background-color:#E8E8E8;
+	font : normal bold 9px Verdana, Arial, Helvetica, sans-serif;
+}
+
+.gridDtlLbl2 {
+	
+	font : normal bold 13px Verdana, Arial, Helvetica, sans-serif;
+}
+
+.inputs, .hdrInputsLvl {
+	font : normal normal 11px Verdana, Arial, Helvetica, sans-serif;
+}
+
+.inputsAddDtl {
+	font : normal normal 11px Verdana, Arial, Helvetica, sans-serif;
+	width : 100%;
+	border:1px solid silver;
+}
+
+.inputsAddDtlRO {
+
+	font : normal normal 11px Verdana, Arial, Helvetica, sans-serif;
+	width : 100%;
+	background : #FFFFF0;
+	border:1px solid silver;
+}
+
+.inputsRO {
+
+	font : normal normal 12px Verdana, Arial, Helvetica, sans-serif;
+	background : #FFFFF0;
+	border: 1px solid silver;
+}
+
+.zeroMsg {
+	font : normal bold 15px Verdana, Arial, Helvetica, sans-serif;
+	color : #FF3300;
+}
+
+
+.childGridFooter {
+	font : normal normal 12px Verdana, Arial, Helvetica, sans-serif;
+	height : 25px;
+	background-color: #ffffff;
+}
+
+.gridDtlLblTxt {
+	position : relative ;
+	left: 5px;
+}
+
+.toolbarImg {
+	border:none;
+}
+
+.anchor {
+	cursor:pointer;
+	border:none;
+	text-decoration:none;
+	font : normal normal 9px Verdana, Arial, Helvetica, sans-serif;
+}
+
+.anchor:hover {
+	cursor:pointer;
+	text-decoration:underline;
+	font : normal normal 9px Verdana, Arial, Helvetica, sans-serif;
+	color : red;
+}
+
+.btnClendar {
+	cursor:pointer;
+	position:relative;
+	top:3px;
+	border:none;
+}
+
+.infoLabel {
+	background-color:#FFFFFF;
+	font : normal bold 11px Verdana, Arial, Helvetica, sans-serif;
+}
+
+/*previous employer*/
+.tblPrevEmp {
+	background-color:#c3daf9;
+	border: 2px inset #000;
+	-moz-border-radius: 2px 2px 2px 2px;
+	
+}
+
+.prevEmpHdr {
+	font : normal bold 9px Verdana, Arial, Helvetica, sans-serif;
+	color : #000066;
+}
+
+.prevEmpArrw {
+	position : relative;
+	top:3px;
+}
+
+.rowDtlEmplyrLst {
+	background-color: #FFFFCC;
+	cursor:pointer;
+}
+
+.prevEmpZeroMsg {
+	font : normal normal 11px Verdana, Arial, Helvetica, sans-serif;
+	color : #FF3300;
+}
+
+.prevEmpHeader {
+	background-color:#F0F8FF;
+	font : normal normal 11px Verdana, Arial, Helvetica, sans-serif;
+	border-bottom: 1px solid #6495ED;
+}
+/*end previous employer*/
+
+button.inputs:disabled{
+	opacity: 75%;
+	background-color:#67a1f8;
+}
+
+input.inputs[type="button"]:disabled {
+	opacity: 75%;
+	background-color:#67a1f8;
+}
+

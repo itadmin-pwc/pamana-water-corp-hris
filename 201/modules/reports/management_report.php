@@ -37,6 +37,7 @@ else{
 <script type="text/javascript" src="../../../includes/calendar/calendar-en.js"></script>
 <script type="text/javascript" src="../../../includes/calendar/calendar-setup.js"></script>		
 <STYLE TYPE="text/css" MEDIA="screen">@import url("../../../includes/calendar/calendar-blue.css");</STYLE>
+<link rel="stylesheet" type="text/css" href="../../style/payroll.css"></link>
 <!--end calendar lib-->
 <script type='text/javascript' src='movement.js'></script>
 <script>
@@ -106,8 +107,8 @@ function managementReportS() {
 				  <tr>
 					<td>
 						<CENTER>
-                <input type="button" name="managementReports" id="managementReports" <? echo $searchTS4_dis; ?> value="Print to Excel" onClick="managementReport();">
-					  <input type="button" name="managementReportsSalary" id="managementReportsSalary" <? echo $searchTS4_dis; echo $restrict;?> value="Print to Excel(With Salary)" onClick="managementReportS();">
+                <input type="button" name="managementReports" id="managementReports" class="inputs" <? echo $searchTS4_dis; ?> value="Print to Excel" onClick="managementReport();">
+					  <input type="button" name="managementReportsSalary" class="inputs" id="managementReportsSalary" <? echo $searchTS4_dis; echo $restrict;?> value="Print to Excel(With Salary)" onClick="managementReportS();">
 					  </CENTER>
 					</td>
 				  </tr>
@@ -118,7 +119,7 @@ function managementReportS() {
 		<td class="gridToolbarOnTopOnly" colspan="6">
 			<CENTER>
           <BLINK> 
-	          <input name="msg" id="msg" type="text" size="100" style="color:RED; background-color:#c3daf9; height:18px; text-align: center;  border:0px solid;" value="<? echo $msg; ?>">
+	          <input name="msg" id="msg" type="text" size="100" style="color:RED; background-color:#fff; height:18px; text-align: center;  border:0px solid;" value="<? echo $msg; ?>">
           </BLINK> 
         </CENTER>	
 		</td>

@@ -118,7 +118,7 @@ switch ($_GET['action']){
           <tr>
             <td width="18%" class="gridDtlLbl">Employee Number</td>
             <td width="1%" class="gridDtlLbl">:</td>
-            <td width="158" colspan="3" class="gridDtlVal"><input name="txtEmpNo" type="text" id="txtEmpNo" onKeyDown="getEmployee(event,this.value)" maxlength="9" <?=$searchTS_dis;?>><FONT color="#FF0000" class="gridDtlLbl" id="hlprMsg">
+            <td width="158" colspan="3" class="gridDtlVal"><input class="inputs" name="txtEmpNo" type="text" id="txtEmpNo" onKeyDown="getEmployee(event,this.value)" maxlength="9" <?=$searchTS_dis;?>><FONT color="#FF0000" class="gridDtlLbl" id="hlprMsg">
               
             </font><input type="hidden" name="txtVerify" id="txtVerify">
             <input type="hidden" name="txtStat" id="txtStat"></td>
@@ -126,17 +126,17 @@ switch ($_GET['action']){
           <tr>
             <td width="18%" class="gridDtlLbl">Lastname</td>
             <td width="1%" class="gridDtlLbl">:</td>
-            <td width="158" colspan="3" class="gridDtlVal"><input name="txtLName" type="text" id="txtLName" size="30" disabled></td>
+            <td width="158" colspan="3" class="gridDtlVal"><input class="inputs" name="txtLName" type="text" id="txtLName" size="30" disabled></td>
             </tr>            
           <tr>
             <td width="18%" class="gridDtlLbl">Firstname</td>
             <td width="1%" class="gridDtlLbl">:</td>
-            <td width="158" colspan="3" class="gridDtlVal"><input name="txtFName" type="text" id="txtFName" size="30" disabled></td>
+            <td width="158" colspan="3" class="gridDtlVal"><input class="inputs" name="txtFName" type="text" id="txtFName" size="30" disabled></td>
             </tr>            
           <tr>
             <td width="18%" class="gridDtlLbl">Middlename</td>
             <td width="1%" class="gridDtlLbl">:</td>
-            <td width="158" colspan="3" class="gridDtlVal"><input name="txtMName" type="text" id="txtMName" size="30" disabled></td>
+            <td width="158" colspan="3" class="gridDtlVal"><input class="inputs" name="txtMName" type="text" id="txtMName" size="30" disabled></td>
             </tr>            
           <tr>
             <td class="gridDtlLbl">Civil Status</td>
@@ -149,27 +149,27 @@ switch ($_GET['action']){
           <tr>
             <td width="18%" class="gridDtlLbl">Position</td>
             <td width="1%" class="gridDtlLbl">:</td>
-            <td width="158" colspan="3" class="gridDtlVal"><input name="txtPosition" type="text" id="txtPosition" size="50" disabled></td>
+            <td width="158" colspan="3" class="gridDtlVal"><input class="inputs" name="txtPosition" type="text" id="txtPosition" size="50" disabled></td>
             </tr>            
           <tr>
             <td width="18%" class="gridDtlLbl">Department</td>
             <td width="1%" class="gridDtlLbl">:</td>
-            <td width="158" colspan="3" class="gridDtlVal"><input name="txtDepartment" type="text" id="txtDepartment" size="50" disabled></td>
+            <td width="158" colspan="3" class="gridDtlVal"><input class="inputs" name="txtDepartment" type="text" id="txtDepartment" size="50" disabled></td>
             </tr>            
           <tr>
             <td class="gridDtlLbl">Address</td>
             <td class="gridDtlLbl">:</td>
-            <td colspan="3" class="gridDtlVal"><input name="txtAddress" type="text" id="txtAddress" size="50" disabled></td>
+            <td colspan="3" class="gridDtlVal"><input name="txtAddress" class="inputs" type="text" id="txtAddress" size="50" disabled></td>
           </tr>
           <tr>
             <td class="gridDtlLbl">Spouse</td>
             <td class="gridDtlLbl">:</td>
-            <td colspan="3" class="gridDtlVal"><input name="txtSpouse" type="text" id="txtSpouse" size="50" disabled></td>
+            <td colspan="3" class="gridDtlVal"><input name="txtSpouse" class="inputs" type="text" id="txtSpouse" size="50" disabled></td>
           </tr>
           <tr>
             <td class="gridDtlLbl">SSS ID No.</td>
             <td class="gridDtlLbl">:</td>
-            <td colspan="3" class="gridDtlVal"><input name="txtSSS" type="text" id="txtSSS" size="35" disabled></td>
+            <td colspan="3" class="gridDtlVal"><input name="txtSSS" class="inputs" type="text" id="txtSSS" size="35" disabled></td>
           </tr>
           <tr>
             <td width="18%" class="gridDtlLbl">Agreement Type</td>
@@ -186,7 +186,7 @@ switch ($_GET['action']){
 					<td>
 
 						<CENTER>
-                <input type="button" name="contractReports" id="contractReports" <? echo $searchTS4_dis; ?> value="Print Report" onClick="contractReport();">
+                <input type="button" name="contractReports" class="inputs" id="contractReports" <? echo $searchTS4_dis; ?> value="Print Report" onClick="contractReport();">
 				    </CENTER></td>
 				  </tr>
 			  </table> 
@@ -196,7 +196,7 @@ switch ($_GET['action']){
 		<td class="gridToolbarOnTopOnly" colspan="6">
 			<CENTER>
           <BLINK> 
-	          <input name="msg" id="msg" type="text" size="100" style="color:RED; background-color:#c3daf9; height:18px; text-align: center;  border:0px solid;" value="<? echo $msg; ?>">
+	          <input name="msg" id="msg" type="text" size="100" style="color:RED; background-color:#fff; height:18px; text-align: center;  border:0px solid;" value="<? echo $msg; ?>">
           </BLINK> 
         </CENTER>	
 		</td>

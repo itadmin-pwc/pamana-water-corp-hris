@@ -109,7 +109,7 @@
                             <tr>
                                 <td>
                                     <CENTER>
-                                        <input type="button" name="btnempCert" id="btnempCert" <? echo $btnempCert_dis; ?> value="Generate Certification Report" onClick="valSearchTS();">
+                                        <input type="button" class="inputs" name="btnempCert" id="btnempCert" <? echo $btnempCert_dis; ?> value="Generate Certification Report" onClick="valSearchTS();">
                                     </CENTER>
                                 </td>
                             </tr>

@@ -28,6 +28,7 @@ if ($_GET['code']=="") {
 <script type="text/javascript" src="../../../includes/calendar/calendar-en.js"></script>
 <script type="text/javascript" src="../../../includes/calendar/calendar-setup.js"></script>		
 <STYLE TYPE="text/css" MEDIA="screen">@import url("../../../includes/calendar/calendar-blue.css");</STYLE>
+<link rel="stylesheet" type="text/css" href="../../style/payroll.css"></link>
 <!--end calendar lib-->
 <script type='text/javascript' src='movement.js'></script>
 <script>
@@ -90,8 +91,8 @@ function printPdf () {
 				  <tr>
 					<td>
 						<CENTER>
-                <input type="button" name="salary2" id="salary2" <? echo $searchTS4_dis; ?> value="Print to PDF" onClick="printPdf();">
-                <input type="button" name="salary" id="salary" <? echo $searchTS4_dis; ?> value="Export to Excel" onClick="exportExcel();">
+                <input type="button" name="salary2" class="inputs" id="salary2" <? echo $searchTS4_dis; ?> value="Print to PDF" onClick="printPdf();">
+                <input type="button" name="salary" id="salary" class="inputs" <? echo $searchTS4_dis; ?> value="Export to Excel" onClick="exportExcel();">
 					  </CENTER>
 					</td>
 				  </tr>
@@ -102,7 +103,7 @@ function printPdf () {
 		<td class="gridToolbarOnTopOnly" colspan="6">
 			<CENTER>
           <BLINK> 
-	          <input name="msg" id="msg" type="text" size="100" style="color:RED; background-color:#c3daf9; height:18px; text-align: center;  border:0px solid;" value="<? echo $msg; ?>">
+	          <input name="msg" id="msg" type="text" size="100" style="color:RED; background-color:#fff; height:18px; text-align: center;  border:0px solid;" value="<? echo $msg; ?>">
           </BLINK> 
         </CENTER>	
 		</td>

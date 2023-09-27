@@ -117,7 +117,7 @@ include("timesheet.trans.php");
 				  <tr>
 					<td>
 						<CENTER>
-                <input type="button" name="searchTS3" id="searchTS3" <? echo $searchTS3_dis; ?> value="Philhealth Contributions" onClick="valSearchTS(this.id);">
+                <input type="button" name="searchTS3" class="inputs" id="searchTS3" <? echo $searchTS3_dis; ?> value="Philhealth Contributions" onClick="valSearchTS(this.id);">
               </CENTER>
 					</td>
 				  </tr>
@@ -128,7 +128,7 @@ include("timesheet.trans.php");
 		<td class="gridToolbarOnTopOnly" colspan="6">
 			<CENTER>
           <BLINK> 
-	          <input name="msg" id="msg" type="text" size="100" style="color:RED; background-color:#c3daf9; height:18px; text-align: center;  border:0px solid;" value="<? echo $msg; ?>">
+	          <input name="msg" id="msg" type="text" size="100" style="color:RED; background-color:#fff; height:18px; text-align: center;  border:0px solid;" value="<? echo $msg; ?>">
           </BLINK> 
         </CENTER>	
 		</td>

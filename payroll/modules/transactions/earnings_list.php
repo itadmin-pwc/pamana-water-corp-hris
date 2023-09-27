@@ -29,6 +29,7 @@ $inqTSObj->validateSessions('','MODULES');
 		<script type="text/javascript" src="../../../includes/calendar/calendar-en.js"></script>
 		<script type="text/javascript" src="../../../includes/calendar/calendar-setup.js"></script>		
 		<STYLE TYPE="text/css" MEDIA="screen">@import url("../../../includes/calendar/calendar-blue.css");</STYLE>
+        <link rel="stylesheet" type="text/css" href="../../style/payroll.css"></link>
 		<!--end calendar lib-->
 	</HEAD>
 	<BODY>

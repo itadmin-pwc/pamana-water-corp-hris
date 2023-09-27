@@ -353,7 +353,7 @@ switch ($_GET['action']){
             </table>   
             <table cellpadding="1" cellspacing="1" width="100%" class="childGrid" border="0">
             	<tr>
-                	<td align="center"><input type="button" id="btnTransfer" name="btnTransfer" value="Print Transfer Report" onClick="validateValues();"/></td>
+                	<td align="center"><input type="button" id="btnTransfer" name="btnTransfer" class="inputs" value="Print Transfer Report" onClick="validateValues();"/></td>
                 </tr>
             </table>
           </td>

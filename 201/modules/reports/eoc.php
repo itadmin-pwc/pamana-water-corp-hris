@@ -23,6 +23,7 @@ if ($_GET['code']=="") {
 <style>@import url('../../style/reports.css');</style>
 <SCRIPT type="text/javascript" src="../../../includes/jSLib.js"></SCRIPT>
 <script type='text/javascript' src='../../../includes/prototype.js'></script>
+<link rel="stylesheet" type="text/css" href="../../style/payroll.css"></link>
 <!--calendar lib-->
 <script type="text/javascript" src="../../../includes/calendar/calendar.js"></script>
 <script type="text/javascript" src="../../../includes/calendar/calendar-en.js"></script>
@@ -146,8 +147,8 @@ function printPdf () {
 				  <tr>
 					<td>
 						<CENTER>
-                <input type="button" name="salary2" id="salary2" <? echo $searchTS4_dis; ?> value="Print to PDF" onClick="printPdf(); valDateStartEnd(document.frmTS.txtfrDate.value,document.frmTS.txtfrDate.id,document.frmTS.txttoDate.value);">
-                <input type="button" name="salary" id="salary" <? echo $searchTS4_dis; ?> value="Export to Excel" onClick="exportExcel(); valDateStartEnd(document.frmTS.txtfrDate.value,document.frmTS.txtfrDate.id,document.frmTS.txttoDate.value);">
+                <input type="button" name="salary2" class="inputs" id="salary2" <? echo $searchTS4_dis; ?> value="Print to PDF" onClick="printPdf(); valDateStartEnd(document.frmTS.txtfrDate.value,document.frmTS.txtfrDate.id,document.frmTS.txttoDate.value);">
+                <input type="button" name="salary" class="inputs" id="salary" <? echo $searchTS4_dis; ?> value="Export to Excel" onClick="exportExcel(); valDateStartEnd(document.frmTS.txtfrDate.value,document.frmTS.txtfrDate.id,document.frmTS.txttoDate.value);">
 					  </CENTER>
 					</td>
 				  </tr>
@@ -158,7 +159,7 @@ function printPdf () {
 		<td class="gridToolbarOnTopOnly" colspan="6">
 			<CENTER>
           <BLINK> 
-	          <input name="msg" id="msg" type="text" size="100" style="color:RED; background-color:#c3daf9; height:18px; text-align: center;  border:0px solid;" value="<? echo $msg; ?>">
+	          <input name="msg" id="msg" type="text" size="100" style="color:RED; background-color:#fff; height:18px; text-align: center;  border:0px solid;" value="<? echo $msg; ?>">
           </BLINK> 
         </CENTER>	
 		</td>
