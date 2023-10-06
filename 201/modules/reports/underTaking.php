@@ -84,7 +84,7 @@ class PDF extends fpdf_multicelltag
 		$this->Ln();
 		$this->MultiCellTag(155,5,"\t2. To formalize this representation, I hereby undertake to put my loyalty into action by giving my very best in performing the duties and responsibilities entrusted to me; observing honesty and good faith in dealing with the Company and its customers; and keeping in strict confidence all information that have been acquired by or disclosed to me in the performance of my duties;",0,"J",0,true);  
 		$this->Ln();	
-		$this->MultiCellTag(155,5,"\t3. I expressly warrant that I will not disclose any information acquired by or given to me during my employment to any party especially to competitors of the Company, nor will I seek employment with any person or company which is a competitor of Puregold, not only during the period of my employment but also within two (2) years from the time I have ceased to be an employee of Puregold;",0,0,"J");
+		$this->MultiCellTag(155,5,"\t3. I expressly warrant that I will not disclose any information acquired by or given to me during my employment to any party especially to competitors of the Company, nor will I seek employment with any person or company which is a competitor of Puregold, not only during the period of my employment but also within two (2) years from the time I have ceased to be an employee of Pamana Water Corporation;",0,0,"J");
 		$this->Ln();
 		$this->MultiCellTag(155,5,"\t4. All the foregoing have been explained to me both in English and in the dialect I understand and speak.",0,'J',0,true); 
 		$this->Ln();
@@ -114,7 +114,7 @@ class PDF extends fpdf_multicelltag
 		$this->Cell(10,5,"",0,0,'C');
 		$this->Cell(68,5,"SSS ID No.: ".$this->sss,'B','1','L');
 		$this->Cell(10,5,"",0,0,'C');
-		$this->Cell(67,5,"Elvira D. Gutierrez",'B',0,'L');
+		$this->Cell(67,5,"____________________",'B',0,'L'); // Elvira D. Gutierrez HRD
 		$this->Cell(10,5,"",0,0,'C');
 		$this->Cell(68,5,"SSS ID No.: ",'B','1','L');
 		$this->Ln(15);

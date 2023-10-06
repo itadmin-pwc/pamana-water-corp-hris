@@ -156,7 +156,7 @@ class PDF extends fpdf_multicelltag
 				$bnkAcct 	= "";
 			break;
 			default:
-				$compName 	= "PUREGOLD";
+				$compName 	= "PAMANA WATER";
 				$bnkAcct 	= "XXXX";
 			break;	
 		}

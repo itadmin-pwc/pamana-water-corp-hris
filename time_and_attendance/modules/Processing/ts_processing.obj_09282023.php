@@ -10,8 +10,10 @@ class TSProcessingObj extends dateDiff {
 	var $arrUTExempEmpList 	= array();
 	var $arrLeaveAppTypes 	= array();
 	var $arrUTEmpList	 	= array();
+	var $arrHolidays	 	= array();
 	function ProcessTS() {
 		$Trns = $this->beginTranI();//begin transaction
+		$this->resetTKlogs();
 		$this->EmpShiftCode();
 		$this->getOB();
 		$this->getOBGrpd();
@@ -46,8 +48,8 @@ class TSProcessingObj extends dateDiff {
 		$sqlUnpostedRD = "";
 		$arrCRD = $this->getChangeRestDay();
 		foreach($arrCRD as $valRD) {
-			$dayTypeFrom = $this->checkHolidayDate($valRD['cRDDateFrom'],'',$valRD['brnCode']);
-			$dayTypeTo = $this->checkHolidayDate($valRD['cRDDateTo'],'Y',$valRD['brnCode']);
+			$dayTypeFrom = $this->checkHolidayDate($valRD['cRDDateFrom'],'',$valRD['brnCode'],$valRD['empdv']);
+			$dayTypeTo = $this->checkHolidayDate($valRD['cRDDateTo'],'Y',$valRD['brnCode'],$valRD['empdv']);
 			$dtCdFrom	= date('Ymd',strtotime($valRD['cRDDateFrom']));
 			$dtCdTo	= date('Ymd',strtotime($valRD['cRDDateTo']));
 			if ($valRD['shftTimeIn'] == '') {
@@ -66,9 +68,9 @@ class TSProcessingObj extends dateDiff {
 				break; 	
 			}			
 
-			$sqlUpdateRD .= " Update tblTK_Timesheet set crdTag='Y',shftTimeIn='{$arr['shftTimeIn']}', shftLunchOut='{$arr['shftLunchOut']}', shftLunchIn='{$arr['shftLunchIn']}', shftBreakOut='{$arr['shftBreakOut']}', shftBreakIn='{$arr['shftBreakIn']}', shftTimeOut='{$arr['shftTimeOut']}',dayType='{$dayTypeFrom}' where empNo='{$valRD['empNo']}' and cast(tsDate as date)= '".date('Y-m-d',strtotime($valRD['cRDDateFrom']))."' and compCode='".$_SESSION["company_code"]."';";
+			$sqlUpdateRD .= " Update tblTK_Timesheet set crdTag='Y',shftTimeIn='{$arr['shftTimeIn']}', shftLunchOut='{$arr['shftLunchOut']}', shftLunchIn='{$arr['shftLunchIn']}', shftBreakOut='{$arr['shftBreakOut']}', shftBreakIn='{$arr['shftBreakIn']}', shftTimeOut='{$arr['shftTimeOut']}',dayType='$dayTypeFrom' where empNo='{$valRD['empNo']}' and cast(tsDate as date)= '".date('Y-m-d',strtotime($valRD['cRDDateFrom']))."' and compCode='".$_SESSION["company_code"]."';";
 			
-			$sqlUpdateRD .= " Update tblTK_Timesheet set crdTag='Y',shftTimeIn='00:00', shftLunchOut='00:00', shftLunchIn='00:00', shftBreakOut='00:00', shftBreakIn='00:00', shftTimeOut='00:00',dayType='{$dayTypeTo}' where compCode='".$_SESSION["company_code"]."' and empNo='{$valRD['empNo']}' and cast(tsDate as date)= '".date('Y-m-d',strtotime($valRD['cRDDateTo']))."';";	
+			$sqlUpdateRD .= " Update tblTK_Timesheet set crdTag='Y',shftTimeIn='00:00', shftLunchOut='00:00', shftLunchIn='00:00', shftBreakOut='00:00', shftBreakIn='00:00', shftTimeOut='00:00',dayType='$dayTypeTo' where compCode='".$_SESSION["company_code"]."' and empNo='{$valRD['empNo']}' and cast(tsDate as date)= '".date('Y-m-d',strtotime($valRD['cRDDateTo']))."';";	
 			
 			
 			if ($dtCdTo > $dtTo || $dtCdFrom > $dtTo) { 
@@ -86,9 +88,7 @@ class TSProcessingObj extends dateDiff {
 				}
 				$sqlUnpostedRD .= " Update tblTK_ChangeRDApp  set completeTag='C' where empNo = '{$valRD['empNo']}' AND cast(cRDDateTo as date) = '".date('Y-m-d',strtotime($valRD['cRDDateTo']))."' AND  compCode='{$_SESSION['company_code']}';";
 			}
-		}	
-
-		
+		}
 
 		//Process Change Shift
 		$sqlUpdateCS = "";
@@ -103,24 +103,6 @@ class TSProcessingObj extends dateDiff {
 				
 			}
 		}
-		
-		
-		//Process OB
-		if ($Trns) {
-			$tmp_empNo = $tmp_obDate = $sqlUpdateOB = "";
-			foreach($this->arrOBListgrp as $valOB) {
-				//$sqlUpdateOB .= $this->getEmpOB($valOB['empNo'],$valOB['obDate'],$valOB['hrs8Deduct']);
-				if ($Trns) {
-					$Trns = $this->execQryI($this->getEmpOB($valOB['empNo'],$valOB['obDate'],$valOB['hrs8Deduct']));
-				} else {
-					break; 	
-				}
-			}
-		}
-		
-		
-
-		
 		
 		//Process Leaves
 		if ($Trns) {
@@ -175,7 +157,20 @@ class TSProcessingObj extends dateDiff {
 			}
 		}
 		
-
+	//Process OB
+		if ($Trns) {
+			$tmp_empNo = $tmp_obDate = $sqlUpdateOB = "";
+			foreach($this->arrOBListgrp as $valOB) {
+				//$sqlUpdateOB .= $this->getEmpOB($valOB['empNo'],$valOB['obDate'],$valOB['hrs8Deduct']);
+				if ($Trns) {
+					$Trns = $this->execQryI($this->getEmpOB($valOB['empNo'],$valOB['obDate'],$valOB['hrs8Deduct']));
+				} else {
+					break; 	
+				}
+			}
+		}
+		
+		
 		
 		//Process TS Corrections
 		if ($Trns) {
@@ -213,7 +208,7 @@ class TSProcessingObj extends dateDiff {
 					}  else {
 						break; 	
 					}				
-					$arrCorrLogs1[] = "('{$_SESSION['company_code']}','{$valCor['empNo']}','{$valCor['tsDate']}','{$valCor['cor_timeIn']}','{$valCor['cor_lunchOut']}','{$valCor['cor_lunchIn']}','{$valCor['cor_breakOut']}','{$valCor['cor_breakIn']}','{$valCor['cor_timeOut']}','1','{$valCor['editReason']}')";
+					$arrCorrLogs1[] = "('{$_SESSION['company_code']}','{$valCor['empNo']}','{$valCor['tsDate']}','{$valCor['cor_timeIn']}','{$valCor['cor_lunchOut']}','{$valCor['cor_lunchIn']}','{$valCor['cor_breakOut']}','{$valCor['cor_breakIn']}','{$valCor['cor_timeOut']}','1','{$valCor['editReason']}','{$valCor['cor_crossTag']}')";
 				
 	
 					if ($Trns) {
@@ -229,8 +224,8 @@ class TSProcessingObj extends dateDiff {
 			}
 		}
 							
-		if ($Trns && count($arrCorrLogs1)>0) {		
-			$Trns = $this->execQryI(" Insert into tblTK_TimeSheetCorrLogs (compCode, empNo, tsDate, timeIn, lunchOut, lunchIn, breakOut, breakIn, timeOut, cat, editReason) values ".implode(',', $arrCorrLogs1));
+	if ($Trns && count($arrCorrLogs1)>0) {		
+			$Trns = $this->execQryI(" Insert into tblTK_TimeSheetCorrLogs (compCode, empNo, tsDate, timeIn, lunchOut, lunchIn, breakOut, breakIn, timeOut, cat, editReason,crossTag) values ".implode(',', $arrCorrLogs1));
 		} 
 		if ($Trns && count($arrCorrLogs2)>0) {
 			$Trns = $this->execQryI("Insert into tblTK_TimeSheetCorrLogs (crossTag,compCode, empNo, tsDate, timeIn, lunchOut, lunchIn, breakOut, breakIn, timeOut, cat, editReason) values ".implode(',', $arrCorrLogs2));
@@ -257,7 +252,7 @@ class TSProcessingObj extends dateDiff {
 	}
 	
 	function GetChangeShift() {
-		$sqlChangeShift = "SELECT tblTK_CSApp.empNo, tblTK_CSApp.csShiftToIn, tblTK_CSApp.csHiftToOut, tblTK_CSApp.csStat, tblTK_Timesheet.tsDate,tblTK_Timesheet.crossDay FROM tblTK_CSApp INNER JOIN
+		$sqlChangeShift = "SELECT tblTK_CSApp.empNo, tblTK_CSApp.csShiftToIn, tblTK_CSApp.csHiftToOut, tblTK_CSApp.csStat, tblTK_Timesheet.tsDate,tblTK_CSApp.crossDay FROM tblTK_CSApp INNER JOIN
                       	tblTK_Timesheet ON tblTK_CSApp.compcode = tblTK_Timesheet.compcode AND tblTK_CSApp.empNo = tblTK_Timesheet.empNo
 						WHERE (tblTK_CSApp.csStat = 'A') AND (tblTK_CSApp.compcode = {$_SESSION['company_code']}) AND (tblTK_Timesheet.tsDate BETWEEN tblTK_CSApp.csDateFrom AND 
                       	tblTK_CSApp.csDateTo) AND (tblTK_Timesheet.tsDate BETWEEN '{$this->pdFrom}' AND '{$this->pdTo}') 
@@ -280,6 +275,7 @@ class TSProcessingObj extends dateDiff {
 						WHERE (tblTK_ShiftHdr.status = 'A') AND tblTK_ShiftHdr.compCode='{$_SESSION['company_code']}'";
 		$this->arrShiftCodes = $this->getArrResI($this->execQryI($sqlShiftCode));				
 	}
+
 	function getEmpShift($tsDate,$shiftCode) {
 		//echo "$tsDate=" . date('D',strtotime($tsDate))." \n";
 		switch(date('D',strtotime($tsDate))) {
@@ -313,6 +309,7 @@ class TSProcessingObj extends dateDiff {
 			}
 		}
 	}
+	
 	function PlotLogs() {
 		$sqlLogs = "Call sp_TK_SetEventLogs ({$this->Group},'{$this->pdFrom}','{$this->pdTo}',{$_SESSION['company_code']},'{$_SESSION['employee_number']}')\n";
 		$arrLogs = $this->getArrResI($this->execQryI($sqlLogs));
@@ -320,7 +317,7 @@ class TSProcessingObj extends dateDiff {
 		return $arrLogs;
 	}
 	function getChangeRestDay() {
-		$sqlRD = "SELECT     tblTK_ChangeRDApp.empNo, tblTK_ChangeRDApp.cRDDateTo, tblTK_ChangeRDApp.cRDDateFrom, tblEmpMast.empBrnCode AS brnCode, tblTK_Timesheet.shftTimeIn, tblTK_Timesheet.shftLunchOut, tblTK_Timesheet.shftLunchIn, tblTK_Timesheet.shftBreakOut, tblTK_Timesheet.shftBreakIn, tblTK_Timesheet.shftTimeOut FROM tblTK_ChangeRDApp INNER JOIN  tblEmpMast ON tblTK_ChangeRDApp.compCode = tblEmpMast.compCode AND tblTK_ChangeRDApp.empNo = tblEmpMast.empNo LEFT OUTER JOIN tblTK_Timesheet ON tblTK_ChangeRDApp.cRDDateTo = tblTK_Timesheet.tsDate AND tblTK_ChangeRDApp.empNo = tblTK_Timesheet.empNo AND tblTK_ChangeRDApp.compCode = tblTK_Timesheet.compcode 
+		$sqlRD = "SELECT     tblTK_ChangeRDApp.empNo, tblTK_ChangeRDApp.cRDDateTo, tblTK_ChangeRDApp.cRDDateFrom, tblEmpMast.empBrnCode AS brnCode, tblTK_Timesheet.shftTimeIn, tblTK_Timesheet.shftLunchOut, tblTK_Timesheet.shftLunchIn, tblTK_Timesheet.shftBreakOut, tblTK_Timesheet.shftBreakIn, tblTK_Timesheet.shftTimeOut, tblEmpMast.empDiv AS empdv FROM tblTK_ChangeRDApp INNER JOIN  tblEmpMast ON tblTK_ChangeRDApp.compCode = tblEmpMast.compCode AND tblTK_ChangeRDApp.empNo = tblEmpMast.empNo LEFT OUTER JOIN tblTK_Timesheet ON tblTK_ChangeRDApp.cRDDateTo = tblTK_Timesheet.tsDate AND tblTK_ChangeRDApp.empNo = tblTK_Timesheet.empNo AND tblTK_ChangeRDApp.compCode = tblTK_Timesheet.compcode 
 				  where tblTK_ChangeRDApp.compCode='{$_SESSION['company_code']}' AND cRDStat='A' AND (cRDDateFrom BETWEEN '{$this->pdFrom}' AND '{$this->pdTo}'  OR cRDDateTo BETWEEN '{$this->pdFrom}' AND '{$this->pdTo}')  AND empPayGrp='{$this->Group}'
 				  AND empBrnCode IN (Select brnCode from tblTK_UserBranch where empNo='{$_SESSION['employee_number']}' AND compCode='{$_SESSION['company_code']}' AND processTag='Y') AND (completeTag is null or completeTag  = 'P')
 				  ";
@@ -328,10 +325,14 @@ class TSProcessingObj extends dateDiff {
 	}
 	
 	function getOB() {
-		$sqlOB = "Select empNo,obSchedIn,obSchedOut,obDate,obActualTimeIn,obActualTimeOut,hrs8Deduct,crossDay from tblTK_OBApp where compCode='{$_SESSION['company_code']}' AND obDate BETWEEN '{$this->pdFrom}' AND '{$this->pdTo}' AND obStat='A' 
+	$sqlOB = "SELECT tbltk_obapp.empNo,tbltk_obapp.obSchedIn,tbltk_obapp.obSchedOut,tbltk_obapp.obDate,tbltk_obapp.obActualTimeIn,tbltk_obapp.obActualTimeOut,tbltk_obapp.hrs8Deduct,tbltk_obapp.crossDay,tbltk_timesheet.dayType FROM tbltk_obapp 
+INNER JOIN tbltk_timesheet ON tbltk_timesheet.empNo = tbltk_obapp.empNo AND tbltk_timesheet.compcode = tbltk_obapp.compCode AND tbltk_timesheet.tsDate = tbltk_obapp.obDate
+where tbltk_obapp.compCode='{$_SESSION['company_code']}' AND tbltk_obapp.obDate BETWEEN '{$this->pdFrom}' AND '{$this->pdTo}' AND tbltk_obapp.obStat='A' AND tbltk_obapp.empNo IN (Select empno from tblEmpMast where compCode='{$_SESSION['company_code']}' AND empPayGrp='{$this->Group}' AND empBrnCode IN (Select brnCode from tblTK_UserBranch where empNo='{$_SESSION['employee_number']}' AND compCode='{$_SESSION['company_code']}' AND processTag='Y')) order by tbltk_obapp.empNo,tbltk_obapp.obDate,tbltk_obapp.obActualTimeIn \n";
+
+		/*$sqlOB = "Select empNo,obSchedIn,obSchedOut,obDate,obActualTimeIn,obActualTimeOut,hrs8Deduct,crossDay from tblTK_OBApp where compCode='{$_SESSION['company_code']}' AND obDate BETWEEN '{$this->pdFrom}' AND '{$this->pdTo}' AND obStat='A' 
 					AND empNo IN (Select empno from tblEmpMast where compCode='{$_SESSION['company_code']}' AND empPayGrp='{$this->Group}'
 										AND empBrnCode IN (Select brnCode from tblTK_UserBranch where empNo='{$_SESSION['employee_number']}' AND compCode='{$_SESSION['company_code']}' AND processTag='Y')
-									) order by empNo,obDate,obActualTimeIn \n";
+									) order by empNo,obDate,obActualTimeIn \n";*/
 		$this->arrOBList = $this->getArrResI($this->execQryI($sqlOB));
 	}
 	function getOBGrpd() {
@@ -366,6 +367,7 @@ class TSProcessingObj extends dateDiff {
 				}
 				$obIN = $val['obSchedIn'];
 				$obOut = $val['obSchedOut'];
+				$dType=$val['dayType'];
 				
 					
 			}
@@ -380,7 +382,8 @@ class TSProcessingObj extends dateDiff {
 		}
 
 		if ($obIN !="") {
-			return " Update tblTK_Timesheet Set crossDay='$crossDay',obTag='Y',shftTimeIn='$obIN',shftTimeOut='$obOut', editReason='".FAIL_SKIPLUNCH."' $hrs8Deduct $checkTag " . $this->ProcessEventLog($ctr,$arrLog)." where empNo='$empNo' and compCode='{$_SESSION['company_code']}' and cast(tsDate as date)='".date('Y-m-d',strtotime($obDate))."'; \n";
+			return " Update tblTK_Timesheet Set crossDay='$crossDay',obTag='Y',shftTimeIn='$obIN',shftTimeOut='$obOut' $hrs8Deduct $checkTag " . $this->ProcessEventLog($ctr,$arrLog,$dType)." where empNo='$empNo' and compCode='{$_SESSION['company_code']}' and cast(tsDate as date)='".date('Y-m-d',strtotime($obDate))."'; \n";
+		//, editReason='".FAIL_SKIPLUNCH."'
 		} else {
 			return "";
 		}
@@ -388,7 +391,122 @@ class TSProcessingObj extends dateDiff {
 	}
 	
 	function ProcessEventLog($ctr,$arrLog=array(),$appTypeCode = "", $arrTS = "") {
+//ALEJO UPATE 2020
+
+$arrPrev = $this->checkifPrevDateisCrossDay($arrTS['empNo'],date('Y-m-d',strtotime($arrTS['tsDate'])),'');
 		switch($ctr) {
+			
+			case 1:
+
+			if ($arrPrev['otCrossTag']=='Y' || $arrPrev['crossDay']=='Y') {
+					//if ($arrTS['otCrossTag']=='Y' || $arrTS['crossDay']=='Y') {
+				$UpdateTS = " ,timeIn='{$arrLog[1]}',lunchOut=NULL,lunchIn=NULL,breakOut=NULL,breakIn=NULL,timeOut='{$arrLog[2]}'";
+					// }else{
+					// 					$UpdateTS = " ,timeIn='{$arrLog[1]}',lunchOut=NULL,lunchIn=NULL,breakOut=NULL,breakIn=NULL,timeOut=NULL";
+
+					// }
+				}else{
+				$UpdateTS = " ,timeIn='{$arrLog[0]}',lunchOut=NULL,lunchIn=NULL,breakOut=NULL,breakIn=NULL,timeOut=NULL";
+				}
+				break;
+			case 2:
+				if (in_array($appTypeCode,array(13,15)) || ((float)str_replace(":",".",$arrTS['shftLunchOut'])!=0 && (float)str_replace(":",".",$arrTS['shftTimeOut'])==0))
+					$UpdateTS = " ,timeIn='{$arrLog[0]}',lunchOut='{$arrLog[1]}',lunchIn=NULL,breakOut=NULL,breakIn=NULL,timeOut=NULL";
+				elseif (in_array($appTypeCode,array(12,14)))
+					$UpdateTS = " ,timeIn=NULL,lunchOut=NULL,lunchIn='{$arrLog[0]}',breakOut=NULL,breakIn=NULL,timeOut='{$arrLog[1]}'";				
+				elseif (!in_array($appTypeCode,array(12,14,13,15))){
+					if(in_array($appTypeCode,array(03,04))){
+						$otobnobiologs=",otIn='{$arrLog[0]}',otOut='{$arrLog[1]}'";
+					}else{
+					$otobnobiologs="";
+					}
+					//$arrPrev = $this->checkifPrevDateisCrossDay($arrTS['empNo'],date('Y-m-d',strtotime($arrTS['tsDate'])),'');
+				if ($arrPrev['otCrossTag']=='Y' || $arrPrev['crossDay']=='Y') {
+				$UpdateTS = ",timeIn='{$arrLog[1]}',lunchOut=NULL,lunchIn=NULL,breakOut=NULL,breakIn=NULL,timeOut='{$arrLog[2]}'";
+				}else{
+					$UpdateTS = ",timeIn='{$arrLog[0]}',lunchOut=NULL,lunchIn=NULL,breakOut=NULL,breakIn=NULL,timeOut='{$arrLog[1]}' $otobnobiologs";
+				}
+				}
+				break;
+			case 3:
+			//$arrPrev = $this->checkifPrevDateisCrossDay($arrTS['empNo'],date('Y-m-d',strtotime($arrTS['tsDate'])),'');
+				if ($arrPrev['otCrossTag']=='Y' || $arrPrev['crossDay']=='Y') {
+					if ($arrTS['otCrossTag']=='Y' || $arrTS['crossDay']=='Y') {
+						$UpdateTS = " ,timeIn='{$arrLog[1]}',lunchOut='{$arrLog[2]}',lunchIn='{$arrLog[3]}',breakOut=NULL,breakIn=NULL,timeOut='{$arrLog[4]}'";
+				}else{
+						$UpdateTS = " ,timeIn='{$arrLog[1]}',lunchOut='{$arrLog[2]}',lunchIn=NULL,breakOut=NULL,breakIn=NULL,timeOut='{$arrLog[3]}'";
+				}				
+				}else{
+					$UpdateTS = " ,timeIn='{$arrLog[0]}',lunchOut='{$arrLog[1]}',lunchIn=NULL,breakOut=NULL,breakIn=NULL,timeOut='{$arrLog[2]}'";
+				}
+				break;
+			case 4:
+				if (!in_array($appTypeCode,array(12,14))) {
+
+					if ($arrPrev['otCrossTag']=='Y' || $arrPrev['crossDay']=='Y') {
+					//if ($arrTS['otCrossTag']=='Y' || $arrTS['crossDay']=='Y') {
+					$UpdateTS = " ,timeIn='{$arrLog[1]}',lunchOut='{$arrLog[2]}',lunchIn='{$arrLog[3]}',breakOut=NULL,breakIn=NULL,timeOut='{$arrLog[4]}'";
+					
+				}else{
+					$UpdateTS = " ,timeIn='{$arrLog[0]}',lunchOut='{$arrLog[1]}',lunchIn='{$arrLog[2]}',breakOut=NULL,breakIn=NULL,timeOut='{$arrLog[3]}'";
+				}
+				} else {
+					$UpdateTS = " ,timeIn=NULL,lunchOut=NULL,lunchIn='{$arrLog[0]}',breakOut='{$arrLog[1]}',breakIn='{$arrLog[2]}',timeOut='{$arrLog[3]}'";
+				}
+				break;
+			case 5:
+				if ($arrPrev['otCrossTag']=='Y' || $arrPrev['crossDay']=='Y') {
+				
+						$UpdateTS = " ,timeIn='{$arrLog[1]}',lunchOut='{$arrLog[2]}',lunchIn='{$arrLog[3]}',breakOut=NULL,breakIn=NULL,timeOut='{$arrLog[4]}'";
+					
+
+				}else{
+					$UpdateTS = " ,timeIn='{$arrLog[0]}',lunchOut='{$arrLog[1]}',lunchIn='{$arrLog[2]}',breakOut='{$arrLog[3]}',breakIn=NULL,timeOut='{$arrLog[4]}'";					
+				}
+
+				
+				
+				break;
+
+			case 6:
+			if ($arrPrev['otCrossTag']=='Y' || $arrPrev['crossDay']=='Y') {
+						$UpdateTS = " ,timeIn='{$arrLog[1]}',lunchOut='{$arrLog[2]}',lunchIn='{$arrLog[3]}',breakOut='{$arrLog[4]}',breakIn='{$arrLog[5]}',timeOut='{$arrLog[6]}'";
+					
+
+				}else{
+						$UpdateTS = " ,timeIn='{$arrLog[0]}',lunchOut='{$arrLog[1]}',lunchIn='{$arrLog[2]}',breakOut='{$arrLog[3]}',breakIn='{$arrLog[4]}',timeOut='{$arrLog[5]}'";
+				}
+				break;
+			case 7:
+				if ($arrPrev['otCrossTag']=='Y' || $arrPrev['crossDay']=='Y') {
+						$UpdateTS =  " ,timeIn='{$arrLog[1]}',lunchOut='{$arrLog[2]}',lunchIn='{$arrLog[3]}',breakOut='{$arrLog[4]}',breakIn='{$arrLog[5]}',timeOut='{$arrLog[7]}'";
+					
+
+				}else{
+				$UpdateTS = " ,timeIn='{$arrLog[0]}',lunchOut='{$arrLog[1]}',lunchIn='{$arrLog[2]}',breakOut='{$arrLog[3]}',breakIn='{$arrLog[4]}',timeOut='{$arrLog[6]}'";
+				}
+				break;
+			case 8:
+			if ($arrPrev['otCrossTag']=='Y' || $arrPrev['crossDay']=='Y') {
+						$UpdateTS =  " ,timeIn='{$arrLog[1]}',lunchOut='{$arrLog[2]}',lunchIn='{$arrLog[3]}',breakOut='{$arrLog[4]}',breakIn='{$arrLog[5]}',timeOut='{$arrLog[8]}'";
+					
+
+				}else{
+
+				$UpdateTS = " ,timeIn='{$arrLog[0]}',lunchOut='{$arrLog[1]}',lunchIn='{$arrLog[2]}',breakOut='{$arrLog[3]}',breakIn='{$arrLog[4]}',timeOut='{$arrLog[7]}'";
+			}
+				break;
+			default:
+				$UpdateTS = " ,timeIn='{$arrLog[0]}',lunchOut='{$arrLog[1]}',lunchIn='{$arrLog[2]}',breakOut='{$arrLog[3]}',breakIn='{$arrLog[4]}',timeOut='{$arrLog[6]}'";
+		}
+		
+		return $UpdateTS;
+
+//ALEJO UPDATE 2020
+
+
+		//OLD CODE
+		/*switch($ctr) {
 			case 1:
 				$UpdateTS = " ,timeIn='{$arrLog[0]}',lunchOut=NULL,lunchIn=NULL,breakOut=NULL,breakIn=NULL,timeOut=NULL";
 				break;
@@ -397,8 +515,14 @@ class TSProcessingObj extends dateDiff {
 					$UpdateTS = " ,timeIn='{$arrLog[0]}',lunchOut='{$arrLog[1]}',lunchIn=NULL,breakOut=NULL,breakIn=NULL,timeOut=NULL";
 				elseif (in_array($appTypeCode,array(12,14)))
 					$UpdateTS = " ,timeIn=NULL,lunchOut=NULL,lunchIn='{$arrLog[0]}',breakOut=NULL,breakIn=NULL,timeOut='{$arrLog[1]}'";				
-				else
-					$UpdateTS = " ,timeIn='{$arrLog[0]}',lunchOut=NULL,lunchIn=NULL,breakOut=NULL,breakIn=NULL,timeOut='{$arrLog[1]}'";
+				elseif (!in_array($appTypeCode,array(12,14,13,15))){
+					if(in_array($appTypeCode,array(03,04))){
+						$otobnobiologs=",otIn='{$arrLog[0]}',otOut='{$arrLog[1]}'";
+					}else{
+					$otobnobiologs="";
+					}
+					$UpdateTS = ",timeIn='{$arrLog[0]}',lunchOut=NULL,lunchIn=NULL,breakOut=NULL,breakIn=NULL,timeOut='{$arrLog[1]}' $otobnobiologs";
+				}
 				break;
 			case 3:
 				$UpdateTS = " ,timeIn='{$arrLog[0]}',lunchOut='{$arrLog[1]}',lunchIn=NULL,breakOut=NULL,breakIn=NULL,timeOut='{$arrLog[2]}'";
@@ -426,7 +550,8 @@ class TSProcessingObj extends dateDiff {
 				$UpdateTS = " ,timeIn='{$arrLog[0]}',lunchOut='{$arrLog[1]}',lunchIn='{$arrLog[2]}',breakOut='{$arrLog[3]}',breakIn='{$arrLog[4]}',timeOut='{$arrLog[6]}'";
 		}
 		
-		return $UpdateTS;
+		return $UpdateTS;*/ 
+		//OLD CODE
 	}
 	
 	function getLeaves() {
@@ -466,7 +591,7 @@ class TSProcessingObj extends dateDiff {
 	}
 	
 	function SetEventLog($arrTS) {
-	
+	$NewdayType = "";
 	$tsDate = date('Y-m-d',strtotime($arrTS['tsDate']));
 		
 	$empNo = $arrTS['empNo'];
@@ -475,12 +600,23 @@ class TSProcessingObj extends dateDiff {
 	$appTag = "";
 		$ctr=0;
 		$arrLog = array();
-		$RD = ($arrTS['dayType']=='02') ? "Y":"";
+		$RD = ($arrTS['dayType']=="02") ? "Y":"";
+		$yr=date('Y',strtotime($tsDate));
+		$qcday='2022-08-19';
 		//$RD = ($arrTS['dayType']=='01') ? "":"Y";
-		$NewdayType = $this->checkHolidayDate($tsDate,$RD,$arrTS['brnCode']);
+		$NewdayType = $this->checkHolidayDate($arrTS['tsDate'],$RD,$arrTS['brnCode'],$arrTS['empDiv']);
 		if ($NewdayType != $arrTS['dayType']) {
-			$dayTypeField = ",dayType='$NewdayType'";
+			$dayTypeField = ",dayType='{$NewdayType}'";
+			// echo print_r($dayTypeField);
 		}
+		/*if(date('Y-m-d',strtotime($tsDate)) == $qcday && $arrTS['empdiv'] =='6' ){
+			$arrTS['dayType']='01';
+				if ($RD=="Y") {
+					$dayTypeField = ",dayType='02'";
+				}else{
+					$dayTypeField = ",dayType='01'";
+				}
+			}*/
 		$trans = 0;
 		$ctr = $arrTS['NoLogs'];
 		$arrLog[0] = $arrTS['Log1'];
@@ -677,7 +813,7 @@ class TSProcessingObj extends dateDiff {
 				if ($arrTS['empBrnCode'] !='0001' && $arrTS['empDiv']==7) 
 				//if (in_array($arrTS['empDiv'], array('7'))) 
 				{
-					if (in_array($arrTS['dayType'],array('02','05','06'))) 
+					if (in_array($arrTS['dayType'],array('02','05','06','08'))) 
 					{ 
 						if ($ctr!=0)
 							$checkTag = ",checkTag='Y'";
@@ -762,7 +898,7 @@ class TSProcessingObj extends dateDiff {
 		} 
 		else 
 		{
-			$arrQry[] = "Update tblTK_Timesheet Set empNo='$empNo' $checkTag where empNo='$empNo' and compCode='{$_SESSION['company_code']}' and tsDate='$tsDate';";
+			$arrQry[] = "Update tblTK_Timesheet Set empNo='$empNo' $dayTypeField $checkTag  where empNo='$empNo' and compCode='{$_SESSION['company_code']}' and tsDate='$tsDate';";
 			return $arrQry;
 		}
 	}
@@ -771,8 +907,21 @@ class TSProcessingObj extends dateDiff {
 		$sqlHoliday = "SELECT holidayDate, brnCode, dayType from tblHolidayCalendar where compCode='{$_SESSION['company_code']}' AND holidayStat='A' AND holidayDate BETWEEN '{$this->pdFrom}' AND '{$this->pdTo}'";
 		$this->arrHolidays = $this->getArrResI($this->execQryI($sqlHoliday));		
 	}
-	function checkHolidayDate($tsDate,$RDTag,$brnCode) {
-		if ($RDTag=='Y') 
+	function checkHolidayDate($tsDate,$RDTag,$brnCode,$empdiv) {
+		// $yr=date('Y',strtotime($tsDate));
+		
+		// 	if ($RDTag=='Y') 
+		// 	$dayType='02';
+		// 			else
+		// 	$dayType='01';
+		
+		// foreach($this->arrHolidays as $valHol) {
+			
+			
+		// 	///old code
+			
+			
+			if ($RDTag=='Y') 
 			$dayType='02';
 		else
 			$dayType='01';
@@ -785,14 +934,129 @@ class TSProcessingObj extends dateDiff {
 						$dayType='05';
 					elseif ($valHol['dayType']=='04')
 						$dayType='06';
+						elseif ($valHol['dayType']=='07')
+		 				$dayType='08';
 				} 
 				else 
 				{
-					$dayType=$valHol['dayType'];
+
+
+			
+			$qcday='2022-08-19';
+
+			if(date('Y-m-d',strtotime($valHol['holidayDate'])) == date('Y-m-d',strtotime($qcday)) && $empdiv == '6' || date('Y-m-d',strtotime($qcday)) == date('Y-m-d',strtotime($tsDate)) && $empdiv == '6' ){
+				if ($RDTag=="Y") {
+					$dayType='02';
+				}else{
+					$dayType='01';
+				}
+			}else{
+				$dayType=$valHol['dayType'];
+			}
+					
 				}
 			}
 		}
 		return $dayType;
+			
+	
+			
+			
+			
+			
+			
+						
+			///old code
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+		// 	$qcday='2021-08-19';
+
+		// 	if(date('Y-m-d',strtotime($valHol['holidayDate'])) == date('Y-m-d',strtotime($qcday)) && $empdiv == '6' || date('Y-m-d',strtotime($qcday)) == date('Y-m-d',strtotime($tsDate)) && $empdiv == '6' ){
+		// 		if ($RDTag=="Y") {
+		// 			$dayType='02';
+		// 		}else{
+		// 			$dayType='01';
+		// 		}
+		// 	}else{
+
+		
+		// 	if (date('Y-m-d',strtotime($valHol['holidayDate'])) == date('Y-m-d',strtotime($tsDate)) && ($valHol['brnCode'] =='0' || $valHol['brnCode']==$brnCode)) 
+		// 	{
+		// 		if ($RDTag=="Y") 
+		// 		{
+		// 			if(	$qcday == date('Y-m-d',strtotime($tsDate)) && $empdiv == '6' ){
+		// 				$dayType='02';
+		// 				}else{
+					
+		// 			if ($valHol['dayType']=='03')
+		// 				$dayType='05';
+		// 			elseif ($valHol['dayType']=='04')
+		// 				$dayType='06';
+		// 			elseif ($valHol['dayType']=='07')
+		// 				$dayType='08';}
+		// 		} 
+		// 		else 
+		// 		{
+		// 			if(	date('Y-m-d',strtotime($qcday)) == date('Y-m-d',strtotime($tsDate)) && $empdiv == '6' ){
+		// 				$dayType='01';
+		// 			}
+		// 			else{
+		// 			$dtnew=$valHol['dayType'];
+		// 			$dayType=$dtnew;
+
+		// 				}
+		// 		}
+		// 	//}
+		// 	//for head office  date('Y-m-d',strtotime($qcday))
+		// 	}else {
+		// 		if (date('Y-m-d',strtotime($valHol['holidayDate'])) == date('Y-m-d',strtotime($tsDate)) && $empdiv == '6' && $brnCode=='0001'  && ($valHol['brnCode'] =='0001')) 
+		// 	{
+		// 		if ($RDTag=="Y") 
+		// 		{
+		// 			if(	$qcday == date('Y-m-d',strtotime($tsDate)) && $empdiv == '6' ){
+		// 				$dayType='02';
+		// 				}else{
+					
+		// 			if ($valHol['dayType']=='03')
+		// 				$dayType='05';
+		// 			elseif ($valHol['dayType']=='04')
+		// 				$dayType='06';
+		// 			elseif ($valHol['dayType']=='07')
+		// 				$dayType='08';
+		// 			}
+		// 		} 
+		// 		else 
+		// 		{
+		// 			if(date('Y-m-d',strtotime($qcday)) == date('Y-m-d',strtotime($tsDate)) && $empdiv == '6' ){
+		// 			$dayType='01';
+
+		// 		}else{
+
+		// 			$dtypenew=$valHol['dayType'];
+		// 			$dayType=$dtypenew;
+					
+		// 		}
+		// 		}
+		// 	} 
+		// }
+		//   }
+		// }
+		// return $dayType;
 	}
 	
 	function getOTList() {
@@ -917,10 +1181,16 @@ FROM         tblTK_TimeSheetCorr INNER JOIN
 		return $appType;
 	}
 	function resetCheckTag() {
-		$sqlUpdateCT = " Update tblTK_Timesheet set checkTag=NULL,tsAppTypeCd=NULL,otIn=NULL,otOut=NULL,otCrossTag=NULL,hrsRequired=NULL,hrsWorked=NULL,legalPayTag=NULL,attendType=NULL,dedTag=NULL,otTag=NULL 
+		$sqlUpdateCT = " Update tblTK_Timesheet set checkTag=NULL,tsAppTypeCd=NULL,otIn=NULL,otOut=NULL,otCrossTag=NULL,hrsRequired=NULL,hrsWorked=NULL,legalPayTag=NULL,attendType=NULL,dedTag=NULL,otTag=NULL,hrs8Deduct=NULL,csTag=NULL,obTag=NULL,crossDay=NULL,satPayTag=NULL
 							WHERE tblTK_Timesheet.compCode='{$_SESSION['company_code']}' AND tsDate between '{$this->pdFrom}' AND '{$this->pdTo}' AND empNo IN ( Select empNo from tblEmpMast where empPayGrp='{$this->Group}' AND compCode=  '{$_SESSION['company_code']}' AND empBrnCode IN (Select brnCode from tblTK_UserBranch where empNo='{$_SESSION['employee_number']}' AND compCode='{$_SESSION['company_code']}' AND processTag='Y'))		
 		";
 		return $this->execQryI($sqlUpdateCT);
+	}
+		function resetTKlogs() {
+		$sqlUpdateTK = " Update tblTK_Timesheet set TimeIn=NULL,lunchOut=NULL,lunchIn=NULL,breakOut=NULL,breakIn=NULL,otOut=NULL,otIn=NULL,timeOut=NULL
+							WHERE tblTK_Timesheet.compCode='{$_SESSION['company_code']}' AND tsDate between '{$this->pdFrom}' AND '{$this->pdTo}' AND empNo IN ( Select empNo from tblEmpMast where empPayGrp='{$this->Group}' AND compCode=  '{$_SESSION['company_code']}' AND empBrnCode IN (Select brnCode from tblTK_UserBranch where empNo='{$_SESSION['employee_number']}' AND compCode='{$_SESSION['company_code']}' AND processTag='Y'))		
+		";
+		return $this->execQryI($sqlUpdateTK);
 	}
 	
 	function checkOTCrossDate($tsDate,$empNo) {
@@ -998,7 +1268,7 @@ FROM         tblTK_TimeSheetCorr INNER JOIN
 	
 	function ProcessLogs() {
 	//{$this->Group},'{$this->pdFrom}','{$this->pdTo}',{$_SESSION['company_code']},'{$_SESSION['employee_number']}'		
-		 $sqlProcessLogs = "SELECT tblTK_Timesheet.compCode,tblTK_Timesheet.empNo, tblTK_Timesheet.tsDate,otCrossTag,crossDay,empbrnCode,bioNo,dayType,tsAppTypeCd, obTag, case dateResigned when null then endDate else  dateResigned end as rDate
+		 $sqlProcessLogs = "SELECT tblTK_Timesheet.compCode,tblTK_Timesheet.empNo, tblTK_Timesheet.tsDate,otCrossTag,crossDay,empbrnCode,bioNo,dayType,tsAppTypeCd, obTag, case dateResigned when null then endDate else  dateResigned end as rDate,tblEmpmast.empDiv as empdiv
 						  FROM tblTK_Timesheet INNER JOIN
 	                      tblEmpMast ON tblTK_Timesheet.compcode = tblEmpMast.compCode AND tblTK_Timesheet.empNo = tblEmpMast.empNo
 						  WHERE tblTK_Timesheet.compCode='{$_SESSION['company_code']}' AND tsDate between '{$this->pdFrom}' AND '{$this->pdTo}' AND  empPayGrp= {$this->Group} 
@@ -1140,6 +1410,24 @@ FROM         tblTK_TimeSheetCorr INNER JOIN
 		$sql = "SELECT otCrossTag,crossDay  FROM tblTK_Timesheet$hist  WHERE  tsDate =DATE_ADD('$tsDate', INTERVAL -1 DAY)  AND empNo='$empNo'";	
 		return $this->getSqlAssocI($this->execQryI($sql));
 	}
+
+
+function createTempTables1111() {
+	
+		$sql = "Truncate table tbltk_translogs";
+		$this->execQryI($sql);
+
+		$sql = "Truncate table TK_Timesheet";
+		$this->execQryI($sql);
+
+		$sql = "Truncate table TK_Logs";
+		$this->execQryI($sql);	
+
+		$sql = "Truncate table tk_eventlogs";
+		$this->execQryI($sql);		
+
+	}
+
 	
 	function createTempTables() {
 		$sql = "drop table tbltk_translogs";
@@ -1168,7 +1456,7 @@ FROM         tblTK_TimeSheetCorr INNER JOIN
 			obTag varchar(2) NULL,
 			rDate datetime NULL,
 			PRIMARY KEY ( tsID ),
-			UNIQUE KEY `tsdate` (`tsdate`,`empNo`) USING BTREE
+			UNIQUE KEY `tsdate` (`tsdate`,`empNo`)
 			 );";	
 		$this->execQryI($sql);
 		$sql = "drop table TK_Logs";
@@ -1212,10 +1500,10 @@ FROM         tblTK_TimeSheetCorr INNER JOIN
 			   `id`  bigint(18) NOT NULL AUTO_INCREMENT,
 			  `ProcessTag` varchar(1) DEFAULT NULL,
 			  PRIMARY KEY (`id`),
-			  KEY `cStoreNum` (`cStoreNum`,`EDATE`,`ETIME`,`ETAG`) USING BTREE
-			) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+			  KEY `EDATE` (`EDATE`,`ETIME`,`ETAG`)
+			) ;
 		
-		";
+		";//ENGINE=InnoDB DEFAULT CHARSET=latin1
 		$this->execQryI($sql);	
 	}
 	

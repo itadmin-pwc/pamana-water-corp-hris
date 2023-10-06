@@ -91,8 +91,8 @@ class PDF extends fpdf_multicelltag
 		$this->Ln(40);
 		$this->Cell(115,4,"",0,0);
 		$this->SetFont('Times', 'B', '14');
-		$this->Cell(25,4,"ELVIRA D. GUTIERREZ",0,0,'C');
-		$this->SetFont('Times', '', '14');
+		$this->Cell(25,4,"",0,0,'C');
+		$this->SetFont('Times', '', '14'); //Senior Manager HRD ELVIRA D. GUTIERREZ
 		$this->Ln(6);
 		$this->Cell(115,4,"",0,0);
 		$this->Cell(25,4,"Senior Manager, HRD",0,0,'C');

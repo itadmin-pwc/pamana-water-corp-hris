@@ -182,7 +182,7 @@
 		$arrprintedby = $pagRemObj->getUserHeaderInfo($sessionVars['empNo'],$_SESSION['employee_id']); 
 		
 		$arrSignatory = $pagRemObj-> getCompanyArt($compCode);
-		$pdf->userbrnch = "GIRLIE P. MENDOZA";//$arrSignatory["compSignatory"];
+		$pdf->userbrnch = "";//$arrSignatory["compSignatory"]; //HR Manager Name
 		$pdf->userbrnchpos = "HR Manager";//$arrSignatory["compSignTitle"];		
 //		$arrSignatory = $pagRemObj-> getEmpBranchArt($compCode,$arrprintedby["empBrnCode"]);
 //		$pdf->userbrnch = $arrSignatory["brnSignatory"];

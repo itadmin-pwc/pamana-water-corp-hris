@@ -171,7 +171,7 @@ class PDF extends FPDF
 
 		$this->SetFont('arial','',8);
 		$this->Cell(35,5,'Dept Manager','LTR',0,'C');
-		$this->Cell(33,5,'Store Manager/Appointee','LTR',0,'C');
+		$this->Cell(33,5,'Branch Manager/Appointee','LTR',0,'C');
 		$this->Cell(32,5,'HR Manager','LTR',0,'C');
 		$this->Cell(35,5,'President','LTR',0,'C');
 		$this->Cell(35,5,'Chairman','LTR',0,'C');

@@ -143,8 +143,8 @@ class PDF extends fpdf_multicelltag
 		$this->Cell(30,10,substr($this->user['empFirstName'],0,1).". ".$this->user['empLastName'],0,0,'C');
 		$this->Cell(30,10,"",0,0,'C');
 		$this->Cell(40,10,"",0,0,'C');
-		$this->Cell(27,10,"GIRLIE P. MENDOZA",0,0,'C');
-		$this->Cell(32,10,"AIDA B. DE GUZMAN",0,0,'C');
+		$this->Cell(27,10,"",0,0,'C'); //HR Manager
+		$this->Cell(32,10,"",0,0,'C'); //President
 		$this->Cell(35,10,substr(base64_decode($_GET['fname']),0,1).". ".base64_decode($_GET['lname']),0,0,'C');
 		
 	}

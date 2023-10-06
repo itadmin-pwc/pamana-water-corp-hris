@@ -69,7 +69,7 @@ class PDF extends fpdf_multicelltag
 		$this->MultiCellTag(155,5,"\tThis Training Agreement executed by:",0,"L",0,true);
 		$this->Ln();	
 		$this->Cell(10,5,"",0,0);
-		$this->MultiCellTag(135,5,"\t<t2>".ucwords(strtolower($this->company['compName']))."</t2>, a corporation duly organized and existing under Philippines laws with principal office at No. 900 Romualdez St., Paco, Manila, represented by Elvira D. Gutierrez, Senior Manager of Human Resources Department, hereinafter referred to as the ".'"Company;"',0,"J",0,true);
+		$this->MultiCellTag(135,5,"\t<t2>".ucwords(strtolower($this->company['compName']))."</t2>, a corporation duly organized and existing under Philippines laws with principal office at No. 900 Romualdez St., Paco, Manila, represented by ___________________________, Senior Manager of Human Resources Department, hereinafter referred to as the ".'"Company;"',0,"J",0,true);
 		$this->Ln();	
 		$this->MultiCellTag(155,5,"-and-",0,"C",0,true);	
 		$this->Ln();	
@@ -98,7 +98,7 @@ class PDF extends fpdf_multicelltag
 		$this->Ln();
 		$this->MultiCellTag(155,5,"\t3.  <t1>Confidentiality and Non-Compete.</t1>---For and in consideration of his enrollment, the Trainee shall strictly and faithfully keep all the information he will receive during his training in confidence, especially the confidential information which he shall not disclose to any party or use for personal purpose, without the written consent of the company. Confidential information means all information, whether written, oral, electronic or other forms such as manuals, reports, designs, drawings, plans, flowcharts, product information, product plans, sales and marketing plans, leasing plans and tenants lists, pricing, customer and financial information about the company, its sister companies, business partners and clients, except information which are of public record, or in the public domain, or required to be disclosed by law.",0,"J",0,true);  
 		$this->Ln();
-		$this->MultiCellTag(155,5,"\tFurthermore, if his employment is terminated either by himself by resignation or otherwise, or by the company for cause, the Trainee binds himself not to work, directly or indirectly, either as an employee, officer, partner, shareholder, director, or agent of any company which is a competitor of Puregold for a period of two (2) years from the date of his separation.",0,"J",0,true);  
+		$this->MultiCellTag(155,5,"\tFurthermore, if his employment is terminated either by himself by resignation or otherwise, or by the company for cause, the Trainee binds himself not to work, directly or indirectly, either as an employee, officer, partner, shareholder, director, or agent of any company which is a competitor of Pamana Water for a period of two (2) years from the date of his separation.",0,"J",0,true);  
 		$this->Ln();
 		$this->MultiCellTag(155,5,"\t4.  <t1>Results of Training.</t1>---The Company will periodically evaluate the progress of the Trainee's training. If, at any periodic and at final period, the Trainee has failed to regularly undergo or attend to all the aspects of the training or to pass the tests, or is found guilty of any act or omission which is a ground for termination of employment, it shall be a ground for the company to terminate the employment of the Trainee or not to rehire or extend his hiring for another period. If he passes and qualifies for the position, his employment as such shall be regularized.",0,"J",0,true);  
 		$this->Ln();
@@ -114,7 +114,7 @@ class PDF extends fpdf_multicelltag
 		$this->Cell(190,1,"By:",0,1,'l');
 		$this->Ln();
 		$this->Cell(10,5,"",0,0,'C');
-		$this->Cell(65,5,"Elvira D. Gutierrez",0,0,'C');
+		$this->Cell(65,5,"________________________",0,0,'C'); // Elvira D. Gutierrez HRD
 		$this->Cell(10,5,"",0,0,'C');
 		$this->Cell(65,5,ucwords(strtolower($this->fname." ".$this->mname." ".$this->lname)),0,0,'C');
 		$this->Cell(10,5,"",0,0,'C');
@@ -141,7 +141,7 @@ class PDF extends fpdf_multicelltag
 		$this->Cell(77,5,"Names",0,0,'C');
 		$this->Cell(78,5,"Competent Evidence of Identity",0,'1','C');
 		$this->Cell(10,5,"",0,0,'C');
-		$this->Cell(77,5,"Elvira D. Gutierrez",0,0,'L');
+		$this->Cell(77,5,"",0,0,'L'); // HRD Elvira D. Gutierrez
 		$this->Cell(68,5,"_____________________________",0,'1','L');
 		$this->Cell(10,5,"",0,0,'C');
 		$this->Cell(77,5,ucwords(strtolower($this->fname." ".$this->mname." ".$this->lname)),0,0,'L');

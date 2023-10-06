@@ -263,18 +263,22 @@ class maintenanceObj extends commonObj {
 	
 	function maint_EmpShift($action, $array)
 	{
+		$gp = 0;
+		if (!empty($array["gracePeriod"]) && is_numeric($array["gracePeriod"])) {
+			$gp = $array["gracePeriod"];
+		}
 		$ans = 0;
 		switch($action)
 		{
 			case "Add":
 				$Trns = $this->beginTran();
 					$Qry_EmpShift = "Insert tblTK_EmpShift(compCode,empNo, shiftCode, bioNo, trdHrsExempt, utHrsExempt, 
-										otExempt, dateAdded, addedBy, status, CWWTag) 
+										otExempt, dateAdded, addedBy, status, CWWTag, gracePeriod) 
 									values('".$_SESSION["company_code"]."','".$array["txtEmpNo"]."','".$array["shiftcode"]."',
 										'".$array["txtEmpBio"]."','".($array["chkWrkHrsExemptTag"]!=""?"Y":"N")."',
 										'".($array["chkFlexiExemptTag"]!=""?"Y":"N")."','".($array["chkOtExemptTag"]!=""?"Y":"N")."',
 										'".date("Y-m-d")."','".$_SESSION['employee_number']."','A',
-										".($array["chkCWWTag"]!=""?"'Y'":"NULL").")";
+										".($array["chkCWWTag"]!=""?"'Y'":"NULL").", " . $gp . ")";
 				if($Trns){
 					$Trns = $this->execQry($Qry_EmpShift);	
 				}				 
@@ -294,7 +298,7 @@ class maintenanceObj extends commonObj {
 						$arr_EmpShiftDtl = $this->getShiftInfo('tblTK_EmpShift', " and empNo='".$array["txtEmpNo"]."'", '');
 					
 						$Qry_EmpShiftHist = "Insert tblTK_EmpShiftHist(compCode,empNo, shiftCode, bioNo, trdHrsExempt, utHrsExempt, 
-												otExempt, dateAdded, addedBy, dateUpdated ,updatedBy, status, CWWTag)
+												otExempt, dateAdded, addedBy, dateUpdated ,updatedBy, status, CWWTag, gracePeriod)
 											 values('".$arr_EmpShiftDtl["compCode"]."','".$array["txtEmpNo"]."',
 											 	'".$arr_EmpShiftDtl["shiftCode"]."','".$arr_EmpShiftDtl["bioNo"]."',
 												'".$arr_EmpShiftDtl["trdHrsExempt"]."','".$arr_EmpShiftDtl["utHrsExempt"]."',
@@ -302,7 +306,8 @@ class maintenanceObj extends commonObj {
 												'".date("Y-m-d", strtotime($arr_EmpShiftDtl["dateAdded"]))."',
 												'".$arr_EmpShiftDtl["addedBy"]."','".date("Y-m-d")."',
 												'".$_SESSION['employee_number']."','".$arr_EmpShiftDtl["status"]."',
-												'".$arr_EmpShiftDtl["CWWTag"]."')";
+												'".$arr_EmpShiftDtl["CWWTag"]."',
+												" . $arr_EmpShiftDtl["gracePeriod"] . ")";
 				
 					/*$Qry_EmpShift.= "Update tblTK_EmpShift set shiftCode='".$array["shiftcode"]."', bioNo='".$array["txtEmpBio"]."', 
 					absentExempt='".($array["chkAbsentExemptTag"]!=""?"Y":"N")."', 
@@ -314,7 +319,8 @@ class maintenanceObj extends commonObj {
 			
 					$Qry_EmpShift = "Update tblTK_EmpShift set shiftCode='".$array["shiftcode"]."', bioNo='".$array["txtEmpBio"]."', 
 									 dateUpdated='".date("Y-m-d")."', updatedBy='".$_SESSION['employee_number']."', status='A',
-									 CWWTag=".($array["chkCWWTag"]!=""?"'Y'":"NULL")."
+									 CWWTag=".($array["chkCWWTag"]!=""?"'Y'":"NULL").",
+									 gracePeriod=" . $gp . "
 									 where compCode='".$_SESSION["company_code"]."' and empNo='".$array["txtEmpNo"]."'"; 
 					if($Trns){
 						$Trns = $this->execQry($Qry_EmpShiftHist);

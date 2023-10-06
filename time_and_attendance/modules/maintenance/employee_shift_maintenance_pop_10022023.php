@@ -54,7 +54,6 @@ switch($_GET["action"])
 		$chkOtExemptTag = $arr_chkRankLevelTExempt["otExempt"];
 		$chkFlexiExemptTag = $arr_chkRankLevelTExempt["utHrsExempt"];
 		$chkWrkHrsExemptTag = $arr_chkRankLevelTExempt["trdHrsExempt"];
-		$gp = 15;
 		//$chkLunchExemptTag = $arr_chkRankLevelTExempt["lunchHrsExempt"];
 		
 		//echo $arr_chkRankLevelTExempt["utHrsExempt"]."GEN";
@@ -71,7 +70,6 @@ switch($_GET["action"])
 		$chkOtExemptTag = $arr_EmpShiftDtl["otExempt"];
 		$chkFlexiExemptTag = $arr_EmpShiftDtl["utHrsExempt"];
 		$chkWrkHrsExemptTag = $arr_EmpShiftDtl["trdHrsExempt"];
-		$gp = $arr_EmpShiftDtl["gracePeriod"];
 		//$chkLunchExemptTag = $arr_EmpShiftDtl["lunchHrsExempt"];
 		
 	break;
@@ -285,8 +283,6 @@ switch($_GET["action"])
                                 <td><font class='gridDtlLblTxt'><b>UT Time  Exempt</font></td>
                                  <td><input type="checkbox" name="chkOtExemptTag" onClick="return readOnlyCheckBox();"   value="1" <?php echo ($chkOtExemptTag=='Y'?"checked":"");?>></td>
                                 <td><font class='gridDtlLblTxt'><b>Fixed Schedule</font></td>
-                                <td><font class='gridDtlLblTxt' style="margin-right: 10px;"><b>Grace Period (No. in Min)</font>
-								<input type="text" name="gracePeriod" style="width: 30px;" value="<?=$gp?>"></td>
                             </tr>
                         </table>
                          <br>
@@ -330,6 +326,8 @@ switch($_GET["action"])
 	function validation()
 	{
 		var empShiftInputs = $('frmEmpShift').serialize(true);
+		
+		
 		
 		if(empShiftInputs["txtEmpBio"]=="")
 		{

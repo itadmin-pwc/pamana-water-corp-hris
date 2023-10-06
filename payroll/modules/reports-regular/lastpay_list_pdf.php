@@ -70,8 +70,8 @@ class PDF extends FPDF
 			$this->Cell(92,5,'');
 			$this->Cell(52,5,'APPROVED BY',0,1);
 			$this->Ln(10);
-			$this->Cell(143,5,'ALMA M. VILLANUEVA','');
-			$this->Cell(10,5,'   AIDA B. DE GUZMAN');
+			$this->Cell(143,5,'',''); // Admin Manager ALMA M. VILLANUEVA
+			$this->Cell(10,5,'   '); // President AIDA B. DE GUZMAN
 			$this->Ln(5);
 			
 			$this->Cell(30,5,'ADMIN MANAGER','T');

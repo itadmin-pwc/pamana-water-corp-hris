@@ -133,6 +133,39 @@ class TSProcessingObj extends dateDiff {
 			}
 		}
 		
+		//procces Grace Period
+		if($Trns) {
+			$timeArray = $this->processGracePeriod();
+			foreach($timeArray as $t) {
+				if(!empty($t['empNo']) && !empty($t['bioNo'])) {
+					$queryGP = "Select gracePeriod from tbltk_empshift where empNo='" . $t['empNo'] . "' and bioNo='" . $t['bioNo'] . "'";
+					$gpRes = $this->getSqlAssocI($this->execQryI($queryGP));
+					$gracePeriod = $gpRes['gracePeriod'];
+	
+					$timeIn = strtotime(date("H:i:s",strtotime($t['ETIME'])));
+					$date = date('Ymd', strtotime($t['EDATE']));
+	
+					$queryTS = "Select shftTimeIn from tbltk_timesheet where empNo='" . $t['empNo'] . "' and bioNo='" . $t['bioNo'] . "' and tsDate='" . $date . "'";
+					$tsRes = $this->getSqlAssocI($this->execQryI($queryTS));
+					$shiftTimeIn = $tsRes['shftTimeIn'];
+	
+					// Convert time to seconds
+					$timestampShiftTimeIn = strtotime($shiftTimeIn);
+					$etime = date('His', $timestampShiftTimeIn);
+					// Calculate the end time by adding the grace period in seconds
+					$timestampEndTime = $timestampShiftTimeIn + ($gracePeriod * 60); // Convert grace period to seconds
+	
+					if ($timeIn >= $timestampShiftTimeIn && $timeIn <= $timestampEndTime) {
+						if ($Trns) {
+							$Trns = $this->execQryI("UPDATE tbltk_eventlogs SET SET ETIME='" . $etime . "' WHERE id=" . $t['id'] . ";");
+						} else {
+							break; 	
+						}
+					}
+				}
+			}
+		}
+
 		//Process Event Logs
 		if ($Trns) {
 			$sqlUpdateTS = "";
@@ -250,6 +283,16 @@ class TSProcessingObj extends dateDiff {
 			}
 		}		
 	}
+
+	function processGracePeriod() {
+		$query = "SELECT evlogs.*, mast.empNo, bio.bioNumber  FROM tbltk_eventlogs evlogs 
+				LEFT OUTER JOIN tblbioemp bio 
+				ON bio.bioNumber = evlogs.ETAG
+				LEFT OUTER JOIN tblempmast mast 
+				ON mast.empNo = bio.empNo";
+		return $this->getArrResI($this->execQryI($query));
+		
+	}
 	
 	function GetChangeShift() {
 		$sqlChangeShift = "SELECT tblTK_CSApp.empNo, tblTK_CSApp.csShiftToIn, tblTK_CSApp.csHiftToOut, tblTK_CSApp.csStat, tblTK_Timesheet.tsDate,tblTK_CSApp.crossDay FROM tblTK_CSApp INNER JOIN
@@ -261,6 +304,7 @@ class TSProcessingObj extends dateDiff {
 												)";
 		return $this->getArrResI($this->execQryI($sqlChangeShift));				
 	}
+
 	function GetPayPeriod() {
 		$sqlpayPd = "Select pdFrmDate,pdToDate from tblPayPeriod where compCode='{$_SESSION['company_code']}' and payCat=3 and payGrp='{$this->Group}' AND pdTSStat='O'";
 		$res = $this->getSqlAssocI($this->execQryI($sqlpayPd));

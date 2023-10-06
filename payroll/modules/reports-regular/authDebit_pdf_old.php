@@ -159,7 +159,7 @@ class PDF extends fpdf_multicelltag
 				}
 			}
 		}
-		$this->MultiCellTag(170,8,"              This is to authorize Banco de Oro Universal Bank (\"Bank\") to debit <t1>Puregold Duty Free, Inc.</t1> CA/SA No. __________________________ with the Bank's <t1>BDO Branch of Account</t1> Branch on __________________ for the amount of PESOS: ". strtoupper($awords). ". (<t1>".number_format($this->netsallary,2)."</t1>) corresponding to the payroll period from $date with details as per attached Payroll Prooflist, and as per Payroll File in diskette or transmitted electronically. 
+		$this->MultiCellTag(170,8,"              This is to authorize Banco de Oro Universal Bank (\"Bank\") to debit <t1>Pamana Water Duty Free, Inc.</t1> CA/SA No. __________________________ with the Bank's <t1>BDO Branch of Account</t1> Branch on __________________ for the amount of PESOS: ". strtoupper($awords). ". (<t1>".number_format($this->netsallary,2)."</t1>) corresponding to the payroll period from $date with details as per attached Payroll Prooflist, and as per Payroll File in diskette or transmitted electronically. 
 
                  This authority to debit is issued pursuant to and subject to the terms and conditions of the Company's Regular Payroll Agreement with the Bank.
 				 
