@@ -21,6 +21,18 @@ class PDF extends FPDF
 		$ctr_payslipallow = 0;
 		$i = 1;
 		foreach ($resEmpList as $ArrEmpList) {
+
+			$y1 = 23;
+			$y2 = 154;
+			if($i < 3) {
+				$y1 = 21;
+				$y2 = 152;
+			}
+
+			$this->Image('../../../images/OWI-LOGO.png', 45, $y1, 10);
+
+			$this->Image('../../../images/OWI-LOGO.png', 45, $y2, 10);
+
 			$this->SetFont('Arial','',7);
 			$Department=$this->getDept($ArrEmpList['compCode'], $ArrEmpList['empDiv'], $ArrEmpList['empDepCode']);
 			$PayPeriod=$this->getPayPeriod($_SESSION['company_code']," and pdSeries = '" . $_GET['payPd']."'");
