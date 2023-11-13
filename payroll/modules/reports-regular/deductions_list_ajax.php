@@ -113,7 +113,7 @@
 						  	<td colspan="10" class="gridToolbar" align=""> &nbsp; <a href="#" onClick="printDeductionsList('<?=$_GET['repType']?>','<?=$tbl?>');" title="Print Deductions Register"> 
                                 <img src="../../../images/printer.png" align="absbottom" class="actionImg" title="Print Deductions Register">Deductions Register
                                 </a>&nbsp; <FONT class="ToolBarseparator">|</font> &nbsp; 
-                                <input name="back" type="button" id="back" value="Back" onClick="location.href='deductions_register.php';">            				
+                                <input name="back" type="button" class="inputs" id="back" value="Back" onClick="location.href='deductions_register.php';">            				
                             </td>
                             
 							<tr>

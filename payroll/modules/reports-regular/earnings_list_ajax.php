@@ -120,7 +120,7 @@
                     		<td colspan="15" class="gridToolbar" align=""> &nbsp; <a href="#" onClick="printEarningsList('<?=$_GET['repType']?>','<?=$tbl?>');" title="Print Earnings Register"> 
                     			<img src="../../../images/printer.png" align="absbottom" class="actionImg" title="Print Earnings Register">Earnings Register
                     			</a>&nbsp; <FONT class="ToolBarseparator">|</font> &nbsp; 
-                    			<input name="back" type="button" id="back" value="Back" onClick="location.href='earnings_register.php';">
+                    			<input name="back" class="inputs" type="button" id="back" value="Back" onClick="location.href='earnings_register.php';">
                     		</td>
                 
                 			<tr>

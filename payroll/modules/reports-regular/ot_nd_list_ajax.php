@@ -113,7 +113,7 @@
             			<td colspan="27" class="gridToolbar" align=""> &nbsp; <a href="#" onClick="printOtNdList('<?=$_GET['repType']?>','<?=$tbl?>');" title="Print Overtime / Night Differential "> 
             				<img src="../../../images/printer.png" align="absbottom" class="actionImg" title="Print Overtime / Night Differential">Overtime / Night Differential 
             				</a>&nbsp; <FONT class="ToolBarseparator">|</font> &nbsp; 
-            				<input name="back" type="button" id="back" value="Back" onClick="location.href='ot_nd.php';"> &nbsp; 
+            				<input name="back" class="inputs" type="button" id="back" value="Back" onClick="location.href='ot_nd.php';"> &nbsp; 
             				<FONT class="ToolBarseparator">|</font> &nbsp; <font color="#FF0000">note: OT/ND</font> </td>
                             <tr>
                                 <td width="1%" class="gridDtlLbl" align="left">#</td>

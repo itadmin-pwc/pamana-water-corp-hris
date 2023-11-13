@@ -31,6 +31,7 @@
 <HTML>
     <head>
         <script type='text/javascript' src='timesheet_js.js'></script>
+        <link rel="stylesheet" type="text/css" href="../../style/payroll.css"></link>
     </head>
 	<BODY>
 		<div class="niftyCorner">
@@ -48,7 +49,7 @@
 					<td class="parentGridDtl">
 						<TABLE border="0" width="100%" cellpadding="1" cellspacing="1" class="childGrid" >
 						  	<td colspan="20" class="gridToolbar" align="">  
-								<input name="back" type="button" id="back" value="Back" onClick="location.href='deductions_type.php';">
+								<input class="inputs" name="back" type="button" id="back" value="Back" onClick="location.href='deductions_type.php';">
             				</td>
 							<tr>
                             	<iframe src="<?php echo $reportPath; ?>" height="380px;" width="99%">

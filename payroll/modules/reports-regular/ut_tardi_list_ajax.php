@@ -110,7 +110,7 @@
                 			<td colspan="27" class="gridToolbar" align=""> &nbsp; <a href="#" onClick="printUtTardiList('<?=$_GET['repType']?>','<?=$tbl?>');" title="Print Undertime/Tardiness "> 
                 				<img src="../../../images/printer.png" align="absbottom" class="actionImg" title="Print Undertime/Tardiness">Undertime/Tardiness 
                 				</a>&nbsp; <FONT class="ToolBarseparator">|</font> &nbsp; 
-                				<input name="back" type="button" id="back" value="Back" onClick="location.href='ut_tardi.php';">
+                				<input name="back" class="inputs" type="button" id="back" value="Back" onClick="location.href='ut_tardi.php';">
                 			</td>
                 
                 			<tr>

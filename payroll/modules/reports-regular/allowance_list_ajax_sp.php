@@ -33,6 +33,7 @@ $reportPath = "allowance_list_sp_pdf.php?empNo=".$empNo."&empName=".$empName."&e
 <HTML>
     <head>
         <script type='text/javascript' src='timesheet_js.js'></script>
+		<link rel="stylesheet" type="text/css" href="../../style/payroll.css"></link>
     </head>
 	<BODY>
 		<div class="niftyCorner">
@@ -50,7 +51,7 @@ $reportPath = "allowance_list_sp_pdf.php?empNo=".$empNo."&empName=".$empName."&e
 					<td class="parentGridDtl">
 						<TABLE border="0" width="100%" cellpadding="1" cellspacing="1" class="childGrid" >
 						  	<td colspan="27" class="gridToolbar" align="">
-								<input name="back" type="button" id="back" value="Back" onClick="location.href='allowance_sp.php';">
+								<input name="back" type="button" class="inputs" id="back" value="Back" onClick="location.href='allowance_sp.php';">
               				</td>
 							
                             <tr>

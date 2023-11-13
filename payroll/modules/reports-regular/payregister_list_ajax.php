@@ -53,7 +53,7 @@ $reportPath = "payregister_pdf.php?empNo=".$empNo."&empName=".$empName."&empDiv=
 					<td class="parentGridDtl">
 						<TABLE border="0" width="100%" cellpadding="1" cellspacing="1" class="childGrid" >
 						  	<td colspan="27" class="gridToolbar" align="">
-								<input name="back" type="button" id="back" value="Back" onClick="location.href='payregister.php';">
+								<input name="back" type="button" class="inputs" id="back" value="Back" onClick="location.href='payregister.php';">
               				</td>
 							
                             <tr>

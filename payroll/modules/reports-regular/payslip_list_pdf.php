@@ -23,10 +23,10 @@ class PDF extends FPDF
 		foreach ($resEmpList as $ArrEmpList) {
 
 			$y1 = 23;
-			$y2 = 154;
+			$y2 = 155;
 			if($i < 3) {
 				$y1 = 21;
-				$y2 = 152;
+				$y2 = 153;
 			}
 
 			$this->Image('../../../images/OWI-LOGO.png', 45, $y1, 10);

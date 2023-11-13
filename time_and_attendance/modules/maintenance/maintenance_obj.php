@@ -461,11 +461,11 @@ class maintenanceObj extends commonObj {
 		switch($action)
 		{
 			case "Add":
-				$qryAttdnType = "Insert into tblTK_AppTypes(compCode,tsAppTypeCd,appTypeDesc,appTypeShortDesc, deductionTag,leaveTag,appStatus) values('".$_SESSION["company_code"]."','".$array["txtAppTypeCode"]."','".str_replace("'","''",stripslashes($array["txtAppTypeDesc"]))."','".substr($array["txtAppTypeDesc"],0,5)."','".($array["dedTag"]!='0'?"Y":"N")."','".($array["leaveTag"]!='0'?"Y":"N")."','".$array["cmbAttenAppCodeStat"]."')";
+				$qryAttdnType = "Insert into tblTK_AppTypes(compCode,tsAppTypeCd,appTypeDesc,appTypeShortDesc, deductionTag,leaveTag,appStatus, leaveTypeTag) values('".$_SESSION["company_code"]."','".$array["txtAppTypeCode"]."','".str_replace("'","''",stripslashes($array["txtAppTypeDesc"]))."','".substr($array["txtAppTypeDesc"],0,5)."','".($array["dedTag"]!='0'?"Y":"N")."','".($array["leaveTag"]!='0'?"Y":"N")."','".$array["cmbAttenAppCodeStat"]."','".($array["leaveTypeTag"]!='0'?"Y":"N")."')";
 			break;
 			
 			case "Update":
-				$qryAttdnType = "Update tblTK_AppTypes set deductionTag='".($array["dedTag"]!='0'?"Y":"N")."', leaveTag='".($array["leaveTag"]!='0'?"Y":"N")."', appStatus='".$array["cmbAttenAppCodeStat"]."' where compCode='".$_SESSION["company_code"]."' and tsAppTypeCd='".$array["txtAppTypeCode"]."'";
+				$qryAttdnType = "Update tblTK_AppTypes set deductionTag='".($array["dedTag"]!='0'?"Y":"N")."', leaveTag='".($array["leaveTag"]!='0'?"Y":"N")."', leaveTypeTag='".($array["leaveTypeTag"]!='0'?"Y":"N")."', appStatus='".$array["cmbAttenAppCodeStat"]."' where compCode='".$_SESSION["company_code"]."' and tsAppTypeCd='".$array["txtAppTypeCode"]."'";
 			break;
 			
 			case "Delete":
