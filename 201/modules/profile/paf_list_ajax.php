@@ -52,7 +52,7 @@ if($_SESSION['employee_number']!='999999999' && $_SESSION['Confiaccess'] != "Y")
 	//$user_payCat_view = " AND empPayCat <> 'A' AND empPayCat IN (1,2,3,9)";
 }
 //08-30-2023
-$qryEmpList = "SELECT     *, tblBranch.brnDesc
+$qryEmpList = "SELECT *, tblBranch.brnDesc
 FROM         tblEmpMast INNER JOIN
                       tblBranch ON tblEmpMast.empBrnCode = tblBranch.brnCode
 				Where tblEmpMast.compCode = '{$sessionVars['compCode']}' and tblEmpMast.empBrnCode IN (Select brnCode from tblUserBranch where compCode='{$_SESSION['company_code']}' and empNo='{$_SESSION['employee_number']}')

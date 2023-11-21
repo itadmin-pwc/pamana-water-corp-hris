@@ -112,12 +112,6 @@ if ($_POST['save']!="") {
 	}
 	elseif ($_GET['act']=="Edit") {
 		if ($_POST['chRelease'] != "") {
-			$proceed = array(
-				$maintEmpObj->SSS,
-				$maintEmpObj->PhilHealth,
-				$maintEmpObj->TIN,
-				$maintEmpObj->HDMF
-			);
 			if($maintEmpObj->PhilHealth)
 			$maintEmpObj->updateemployee($_GET['empNo'],$_GET['compCode']);	
 			$maintEmpObj->releaseEmp($_GET['empNo'],$_GET['compCode']);	
@@ -1113,11 +1107,21 @@ include("../../../includes/calendar.php");
 		?>	
 	}	
 	function submitProfile() {
-		if (validateTabs('<?=$_GET['act']?>')) {
-			document.frmViewEditEmp.submit();
-			return true;
-		} else {
-			return false;
+		var post = document.getElementById('chRelease')
+		if(post && post.checked) {
+			if (validateTabsForPosting('<?=$_GET['act']?>')) {
+				document.frmViewEditEmp.submit();
+				return true;
+			} else {
+				return false;
+			}
+		}else{
+			if (validateTabs('<?=$_GET['act']?>')) {
+				document.frmViewEditEmp.submit();
+				return true;
+			} else {
+				return false;
+			}
 		}
 	}	
 	function popProvince(provcd){
