@@ -319,7 +319,9 @@ class PDF extends FPDF
 			$ArrempDeductions=$this->getEmpDeductions($empNo,$payPd,"'1'");
 		}
 		$totearnings = 0;
-		$totdeductions=0;
+		$totdeductions = 0;
+		$sss = 0;
+		$sssDesc = 'SSS Contribution';
 		for ($i=0;$i<16;$i++) {
 			$empearn="";
 			$totearnings += (float)$ArrempEarnings[$i]['trnAmountE'];
@@ -330,11 +332,23 @@ class PDF extends FPDF
 				$empearn = "($empearn)";
 				}
 			}
-			$this->Cell(35,3,'  ' . $ArrempEarnings[$i]['trnDesc'],'L','','L');
-			$this->Cell(35,3, $empearn,'R','','R');
+			if($ArrempDeductions[$i]['trnCode'] !== 5200) {
+				$this->Cell(35,3,'  ' . $ArrempEarnings[$i]['trnDesc'],'L','','L');
+				$this->Cell(35,3, $empearn,'R','','R');
+			}
 			if (!empty($ArrempDeductions[$i]['trnAmountD'])) {
-				$this->Cell(35,3,'  ' . $ArrempDeductions[$i]['trnDesc'],'','','L');
-				$this->Cell(35,3,number_format($ArrempDeductions[$i]['trnAmountD'],2),'R','','R');
+				if($ArrempDeductions[$i]['trnCode'] == 5200) { //SSS
+					$sss = $ArrempDeductions[$i]['trnAmountD'];
+					$this->Cell(35,3,'','','','L');
+					$this->Cell(35,3,'','R','','R');
+				}elseif($ArrempDeductions[$i]['trnCode'] == 5201){ //SSS
+					$sss = $sss + $ArrempDeductions[$i]['trnAmountD'];
+					$this->Cell(35,3,'  ' . $sssDesc,'','','L');
+					$this->Cell(35,3,number_format($sss,2),'R','','R');
+				}else{
+					$this->Cell(35,3,'  ' . $ArrempDeductions[$i]['trnDesc'],'','','L');
+					$this->Cell(35,3,number_format($ArrempDeductions[$i]['trnAmountD'],2),'R','','R');
+				}
 			}
 			else {	
 				$this->Cell(35,3,'','','','L');

@@ -427,7 +427,36 @@ class TSPostingObj extends dateDiff {
 				if ($Trns) {
 					$sqlDeductions = "Insert into tblTK_Deductions (compCode, empNo, tsDate, hrsTardy, hrsUT) values ('{$_SESSION['company_code']}','{$valTSList['empNo']}','{$valTSList['tsDate']}','$hrsTardy','$hrsUT');";
 					$Trns = $this->execQryI($sqlDeductions);
-				} 				
+
+					//12-08-2023 Add Managers remaining late time here
+					$isManager = $this->getRecCount("SELECT * FROM tbltk_managersattendance WHERE empNo='{$valTSList['empNo']}'");
+					if($isManager > 0) {
+						$first = 300;
+						$second = 300;
+						$field = 'firstPeriodLate';
+						$current = $this->getTblData("tblPayPeriod", " payGrp='1' and payCat = '3' and pdStat IN ('O','')");
+						if ($current["pdNumber"] % 2 == 0) {
+							// Even number
+							$field = 'secondPeriodLate';
+							$second = $second - $hrsTardy;
+						}else{
+							$first = $first - $hrsTardy;
+						}
+
+						$sqlManagerAtt = "Update tbltk_managersattendance SET $field=$field-$hrsTardy WHERE empNo='{$valTSList['empNo']}'";
+						$Trns = $this->execQryI($sqlManagerAtt);
+
+						$lateRecord = $this->getRecCount("SELECT * FROM tbltk_managersattendanceLateRecord WHERE empNo='{$valTSList['empNo']}' and period='{$current["pdNumber"]}'");
+						if($lateRecord > 0) {
+							$sqlManagerAtt = "Update tbltk_managersattendanceLateRecord SET $field=$field-$hrsTardy WHERE empNo='{$valTSList['empNo']}' and period='{$current["pdNumber"]}'";
+							$Trns = $this->execQryI($sqlManagerAtt);
+						}else{
+							$sqlManagerAtt = "INSERT INTO tbltk_managersattendanceLateRecord (empNo, firstPeriodLate, secondPeriodLate, period) VALUES ('{$valTSList['empNo']}', {$first}, {$second}, '{$current["pdNumber"]}')";
+							$Trns = $this->execQryI($sqlManagerAtt);
+						}
+					}
+					//12-08-2023
+				}
 			}
 
 			$hrsWrk = ($hrsWrk < 0) ? 0:$hrsWrk;
@@ -691,7 +720,7 @@ if ($valTSList['CWWTag'] !='Y' && $hrsWrk>8 && $arr['obTag']=='Y'  && $valTSList
                       tblTK_Timesheet.empNo = tblEmpMast.empNo INNER JOIN
                       tblTK_EmpShift ON tblEmpMast.empNo = tblTK_EmpShift.empNo
 					  WHERE tblTK_Timesheet.compCode='{$_SESSION['company_code']}' AND tsDate between '{$this->pdFrom}' AND '{$this->pdTo}' AND  empPayGrp='{$this->Group}'
-											AND empBrnCode IN ((Select brnCode from tblTK_UserBranch where empNo='{$_SESSION['employee_number']}' AND compCode='{$_SESSION['company_code']}' AND processTag='Y')) order by tblTK_Timesheet.tsDate
+											AND empBrnCode IN ((Select brnCode from tblTK_UserBranch where empNo='{$_SESSION['employee_number']}' AND compCode='{$_SESSION['company_code']}' AND postTag='Y')) order by tblTK_Timesheet.tsDate
 						";
 		
 		return $this->getArrResI($this->execQryI($sqlEmpList));		
@@ -1647,7 +1676,7 @@ if ($cday!='Y'){$hrsWrk=$hrsWrk;}else {
 	}
 	function clearCWW() {
 		$sqlCWW ="delete from tblTK_HrsWorkedRepository where compCode='{$_SESSION['company_code']}' AND tsDate between '{$this->pdFrom}' AND '{$this->pdTo}' 						AND empNo IN (Select empNo from tblEmpMast where compCode='{$_SESSION['company_code']}' AND empPayGrp='{$this->Group}' 
-							AND empBrnCode IN (Select brnCode from tblTK_UserBranch where empNo='{$_SESSION['employee_number']}' AND compCode='{$_SESSION['company_code']}' AND processTag='Y'));";
+							AND empBrnCode IN (Select brnCode from tblTK_UserBranch where empNo='{$_SESSION['employee_number']}' AND compCode='{$_SESSION['company_code']}' AND postTag='Y'));";
 		return $this->execMultiQryI($sqlCWW);							
 	
 	}
@@ -1660,13 +1689,13 @@ if ($cday!='Y'){$hrsWrk=$hrsWrk;}else {
 	function Repost() {
 		$sqlClearDedAndOTAndViolations = " Delete from tblTK_Deductions where compCode='{$_SESSION['company_code']}' AND tsDate between '{$this->pdFrom}' AND '{$this->pdTo}' 
 						AND empNo IN (Select empNo from tblEmpMast where compCode='{$_SESSION['company_code']}' AND empPayGrp='{$this->Group}' 
-							AND empBrnCode IN (Select brnCode from tblTK_UserBranch where empNo='{$_SESSION['employee_number']}' AND compCode='{$_SESSION['company_code']}' AND processTag='Y')); \n";
+							AND empBrnCode IN (Select brnCode from tblTK_UserBranch where empNo='{$_SESSION['employee_number']}' AND compCode='{$_SESSION['company_code']}' AND postTag='Y')); \n";
 		
 		$sqlClearDedAndOTAndViolations .= " Delete from tblTK_Overtime where compCode='{$_SESSION['company_code']}' AND tsDate between '{$this->pdFrom}' AND '{$this->pdTo}' 
 						AND empNo IN (Select empNo from tblEmpMast where compCode='{$_SESSION['company_code']}' AND empPayGrp='{$this->Group}' 
-							AND empBrnCode IN (Select brnCode from tblTK_UserBranch where empNo='{$_SESSION['employee_number']}' AND compCode='{$_SESSION['company_code']}' AND processTag='Y'));";
+							AND empBrnCode IN (Select brnCode from tblTK_UserBranch where empNo='{$_SESSION['employee_number']}' AND compCode='{$_SESSION['company_code']}' AND postTag='Y'));";
 		$sqlClearDedAndOTAndViolations .="Update tbltk_timesheet set satPaytag=NULL where compCode='{$_SESSION['company_code']}' AND tsDate between '{$this->pdFrom}' AND '{$this->pdTo}' 						AND empNo IN (Select empNo from tblEmpMast where compCode='{$_SESSION['company_code']}' AND empPayGrp='{$this->Group}' 
-							AND empBrnCode IN (Select brnCode from tblTK_UserBranch where empNo='{$_SESSION['employee_number']}' AND compCode='{$_SESSION['company_code']}' AND processTag='Y'));";
+							AND empBrnCode IN (Select brnCode from tblTK_UserBranch where empNo='{$_SESSION['employee_number']}' AND compCode='{$_SESSION['company_code']}' AND postTag='Y'));";
 
 
 		/*$sqlClearDedAndOTAndViolations .= " Delete from tblTK_EmpViolations where compCode='{$_SESSION['company_code']}' AND tsDate between '{$this->pdFrom}' AND '{$this->pdTo}' 
@@ -1676,7 +1705,7 @@ if ($cday!='Y'){$hrsWrk=$hrsWrk;}else {
 	}
 
 	function ClearViolations(){
-		$sqlClearViolations = "Delete from tblTK_EmpViolations WHERE compCode='{$_SESSION['company_code']}' AND tsDate between '{$this->pdFrom}' AND '{$this->pdTo}' AND empNo IN ( Select empNo from tblEmpMast where empPayGrp='{$this->Group}' AND compCode=  '{$_SESSION['company_code']}' AND empBrnCode IN (Select brnCode from tblTK_UserBranch where empNo='{$_SESSION['employee_number']}' AND compCode='{$_SESSION['company_code']}' AND processTag='Y')) AND process='Posting' ";	
+		$sqlClearViolations = "Delete from tblTK_EmpViolations WHERE compCode='{$_SESSION['company_code']}' AND tsDate between '{$this->pdFrom}' AND '{$this->pdTo}' AND empNo IN ( Select empNo from tblEmpMast where empPayGrp='{$this->Group}' AND compCode=  '{$_SESSION['company_code']}' AND empBrnCode IN (Select brnCode from tblTK_UserBranch where empNo='{$_SESSION['employee_number']}' AND compCode='{$_SESSION['company_code']}' AND postTag='Y')) AND process='Posting' ";	
 		return $this->execQryI($sqlClearViolations);
 	}
 	
@@ -1685,7 +1714,7 @@ if ($cday!='Y'){$hrsWrk=$hrsWrk;}else {
 				FROM tblTK_Overtime INNER JOIN tblEmpMast ON tblTK_Overtime.compCode = tblEmpMast.compCode AND tblTK_Overtime.empNo = tblEmpMast.empNo INNER JOIN tblOtPrem ON tblTK_Overtime.dayType = tblOtPrem.dayType
 				Where tblTK_Overtime.compCode = '{$_SESSION['company_code']}' AND empPayGrp='{$this->Group}' 
 						AND empBrnCode IN (Select brnCode from tblTK_UserBranch where empNo='{$_SESSION['employee_number']}' 
-					AND compCode='{$_SESSION['company_code']}' AND processTag='Y') AND tsDate between '{$this->pdFrom}' AND '{$this->pdTo}' ";	
+					AND compCode='{$_SESSION['company_code']}' AND postTag='Y') AND tsDate between '{$this->pdFrom}' AND '{$this->pdTo}' ";	
 		return $this->getArrResI($this->execQryI($sqlOT));		
 	}
 
@@ -1695,7 +1724,7 @@ if ($cday!='Y'){$hrsWrk=$hrsWrk;}else {
 				FROM tblEmpMast INNER JOIN tblTK_Deductions ON tblEmpMast.compCode = tblTK_Deductions.compCode AND tblEmpMast.empNo = tblTK_Deductions.empNo
 				Where tblEmpMast.compCode = '{$_SESSION['company_code']}' AND empPayGrp='{$this->Group}' 
 						AND empBrnCode IN (Select brnCode from tblTK_UserBranch where empNo='{$_SESSION['employee_number']}' 
-					AND compCode='{$_SESSION['company_code']}' AND processTag='Y') AND tsDate between '{$this->pdFrom}' AND '{$this->pdTo}' ";	
+					AND compCode='{$_SESSION['company_code']}' AND postTag='Y') AND tsDate between '{$this->pdFrom}' AND '{$this->pdTo}' ";	
 		return $this->getArrResI($this->execQryI($sqlDed));		
 	}
 	
@@ -1981,7 +2010,7 @@ order by tsDate desc";
 	
 	
 	function checkErrorTag() {
-		$sqlError = "Select count(empNo) as ctr from tblTK_Timesheet  WHERE tblTK_Timesheet.compCode='{$_SESSION['company_code']}' AND tsDate between '{$this->pdFrom}' AND '{$this->pdTo}' AND checkTag='Y' AND empNo IN (Select empNo from tblEmpMast where compCode='{$_SESSION['company_code']}' AND empPayGrp='{$this->Group}' AND empBrnCode IN (Select brnCode from tblTK_UserBranch where empNo='{$_SESSION['employee_number']}' AND compCode='{$_SESSION['company_code']}' AND processTag='Y'))";
+		$sqlError = "Select count(empNo) as ctr from tblTK_Timesheet  WHERE tblTK_Timesheet.compCode='{$_SESSION['company_code']}' AND tsDate between '{$this->pdFrom}' AND '{$this->pdTo}' AND checkTag='Y' AND empNo IN (Select empNo from tblEmpMast where compCode='{$_SESSION['company_code']}' AND empPayGrp='{$this->Group}' AND empBrnCode IN (Select brnCode from tblTK_UserBranch where empNo='{$_SESSION['employee_number']}' AND compCode='{$_SESSION['company_code']}' AND postTag='Y'))";
 		return $this->getSqlAssocI($this->execQryI($sqlError));
 	}
 	
@@ -1989,6 +2018,7 @@ order by tsDate desc";
 		$sql = "Select * from tblTK_HalfDayMatrix";
 		$this->arrHDMatrix =  $this->getArrResI($this->execQryI($sql));
 	}
+
 	function getHalfDaySched($arr) {
 		$arrSched = array();
 		foreach($this->arrHDMatrix as $val) {
@@ -2004,19 +2034,22 @@ order by tsDate desc";
 		}
 		return $arrSched;
 	}
+
 	function AddViolation($empNo,$tsDate,$violationCode) {
 		$proc = "Posting";
 		$sqlAddViolation = "Insert into tblTK_EmpViolations ( compCode, empNo, violationCd, tsDate, dateAdded,process) values ('{$_SESSION['company_code']}','$empNo','$violationCode','$tsDate','".date('m-d-Y')."','$proc');";
 		$this->execQryI($sqlAddViolation);	
 	}	
+
 	function getOTList() {
 		$sqlOT = "SELECT otDate, empNo, otIn, otOut,crossTag FROM tblTK_OTApp 
 						where compCode='{$_SESSION['company_code']}' AND otStat='A' AND otDate BETWEEN '{$this->pdFrom}' AND '{$this->pdTo}'
 							AND empNo IN (Select empNo from tblEmpMast where empPayGrp='{$this->Group}' AND compCode='{$_SESSION['company_code']}' 
-											AND empBrnCode IN (Select brnCode from tblTK_UserBranch where empNo='{$_SESSION['employee_number']}' AND compCode='{$_SESSION['company_code']}' AND processTag='Y'))						
+											AND empBrnCode IN (Select brnCode from tblTK_UserBranch where empNo='{$_SESSION['employee_number']}' AND compCode='{$_SESSION['company_code']}' AND postTag='Y'))						
 						order by tblTK_OTApp.empNo,otDate";
 		$this->arrOTList = $this->getArrResI($this->execQryI($sqlOT));
 	}
+
 	function checkEmpOT ($empNo,$tsDate) {
 		$var = false;
 		foreach($this->arrOTList as $val) {
@@ -2026,15 +2059,15 @@ order by tsDate desc";
 		}
 		return $var;
 	}	
+
 	function getempLegalHolidays() {
 		$sqlEmpLegalHolidays = "Select tk.empNo,tk.tsDate,tk.dayType,hrsOtle8 as hrsOT,tk.otTag from tblTK_Timesheet tk 
 										inner join tblEmpMast emp on tk.empNo=emp.empNo 
 										left join tblTK_overtime ot on tk.empNo=ot.empNo and tk.tsDate=ot.tsDate
 										where tk.daytype IN ('03','05','07','08') and tk.compCode='{$_SESSION['company_code']}' AND tk.tsDate between '{$this->pdFrom}' AND '{$this->pdTo}' AND  empPayGrp='{$this->Group}'
-												AND brnchCd IN ((Select brnCode from tblTK_UserBranch where empNo='{$_SESSION['employee_number']}' AND compCode='{$_SESSION['company_code']}' AND processTag='Y'))"	;
+												AND brnchCd IN ((Select brnCode from tblTK_UserBranch where empNo='{$_SESSION['employee_number']}' AND compCode='{$_SESSION['company_code']}' AND postTag='Y'))"	;
 		return $this->getArrResI($this->execQryI($sqlEmpLegalHolidays));
 	}
-
 	
 	function getEmployeeListWithHolidayPay() {
 		$sqlEmpListWithPay = "Select empNo from tblTK_ManagersAttendance";	
@@ -2045,13 +2078,14 @@ order by tsDate desc";
 		}
 		return $arr;
 	}
+
 	function updateTSsatDate(){
 		//OLD CODE
 		// $sqlupdateTSsatDate= "update tbltk_timesheet tk inner join view_HrsWorkedRepository hr on tk.empNo=hr.empno and tk.tsDate=hr.satDate  set satPayTag='Y' where hr.hrsWorked>0 and  tsDate between '{$this->pdFrom}' AND '{$this->pdTo}' AND  tk.empNo in (select empNo from tblEmpmast where empPayGrp='{$this->Group}' AND brnchCd IN ((Select brnCode from tblTK_UserBranch where empNo='{$_SESSION['employee_number']}' AND compCode='{$_SESSION['company_code']}' AND processTag='Y' and dayCode<6)))";
 		// return $this->execQryI($sqlupdateTSsatDate);
 
 //ALEJO UPDATE
-		$satqry="select tk.empNo,tk.tsDate,sum(hr.hrsWorked) as hrs from tbltk_timesheet tk inner join view_HrsWorkedRepository hr on tk.empNo=hr.empno and tk.tsDate=hr.satDate   where hr.hrsWorked>0 and  tsDate between '{$this->pdFrom}' AND '{$this->pdTo}' AND  tk.empNo in (select empNo from tblEmpmast where empPayGrp='{$this->Group}' AND brnchCd IN ((Select brnCode from tblTK_UserBranch where empNo='{$_SESSION['employee_number']}' AND compCode='{$_SESSION['company_code']}' AND processTag='Y' and dayCode<6)))		GROUP BY tk.empNo,tk.tsDate";
+		$satqry="select tk.empNo,tk.tsDate,sum(hr.hrsWorked) as hrs from tbltk_timesheet tk inner join view_HrsWorkedRepository hr on tk.empNo=hr.empno and tk.tsDate=hr.satDate   where hr.hrsWorked>0 and  tsDate between '{$this->pdFrom}' AND '{$this->pdTo}' AND  tk.empNo in (select empNo from tblEmpmast where empPayGrp='{$this->Group}' AND brnchCd IN ((Select brnCode from tblTK_UserBranch where empNo='{$_SESSION['employee_number']}' AND compCode='{$_SESSION['company_code']}' AND postTag='Y' and dayCode<6)))		GROUP BY tk.empNo,tk.tsDate";
 	
 		$ressat = $this->getArrResI($this->execQryI($satqry));
 		
@@ -2091,6 +2125,24 @@ order by tsDate desc";
 	{
 		$result = $this->execQryI($query);
 		return $this->getRecCountI($result);
+	}
+
+	function getTblData($tbl, $cond)
+	{
+		$qryTblInfo = "Select * from " . $tbl . " where " . $cond;
+		$resTblInfo = $this->execQryI($qryTblInfo);
+		return $this->getSqlAssocI($resTblInfo);
+	}
+
+	function setUserBranch(){
+		$this->execQryI("Update tblTK_UserBranch set postTag=Null where empNo='".$_SESSION['employee_number']."'");
+		for($i=0;$i<=(int)$_GET['chCtr'];$i++) {
+			if ($_GET["chkBrnCode$i"] !="") {
+				$arrStr = $_GET["chkBrnCode$i"];
+				$qry = "Update tblTK_UserBranch set postTag='Y' where brnCode='".$arrStr."' and empNo='".$_SESSION['employee_number']."';";
+				$this->execQryI($qry);
+			}
+		}
 	}
 }
 

@@ -1596,9 +1596,699 @@ class pafObj extends commonObj {
 		}								
 		return $arrPAF;
 	}	
+
+	function getPAF_others2($empNo,$pafType,$hist="") {
+		$i=0;
+		$compCode = $_SESSION['company_code'];
+		if (empty($pafType) || $pafType == "others") {
+			if (in_array($empNo,$this->arrOthers)){
+				$qryPAF = "Select * from tblPAF_Others$hist where empNo=$empNo order by effectivitydate";
+				echo $qryPAF;
+			$res = $this->getArrRes($this->execQry($qryPAF));
+			$arrPAF =array('field','value1','value2','effdate','refno');
+			foreach($res as $val) {
+				if (trim($val['new_empLastName']) !="") {
+					$arrPAF['type'][$i]='others,'.$val['refNo'];
+					$arrPAF['stat'][$i]=$val['stat'];
+					$arrPAF['field'][$i]="Last Name";
+					$arrPAF['value1'][$i]=$val['old_empLastName'];
+					$arrPAF['value2'][$i]=$val['new_empLastName'];
+					$arrPAF['effdate'][$i]=$val['effectivitydate'];
+					$arrPAF['dateupdated'][$i]=$val['dateupdated'];
+					$arrPAF['refno'][$i]=$val['refNo'];
+					$arrPAF['remarks'][$i]=$val['remarks'];
+					$i++;
+				}
+				if (trim($val['new_empFirstName']) !="") {
+					$arrPAF['type'][$i]='others,'.$val['refNo'];
+					$arrPAF['stat'][$i]=$val['stat'];
+					$arrPAF['field'][$i]="First Name";
+					$arrPAF['value1'][$i]=$val['old_empFirstName'];
+					$arrPAF['value2'][$i]=$val['new_empFirstName'];
+					$arrPAF['effdate'][$i]=$val['effectivitydate'];
+					$arrPAF['dateupdated'][$i]=$val['dateupdated'];
+					$arrPAF['refno'][$i]=$val['refNo'];
+					$arrPAF['remarks'][$i]=$val['remarks'];
+					$i++;
+				}
+				if (trim($val['new_empMidName']) !="") {
+					$arrPAF['type'][$i]='others,'.$val['refNo'];
+					$arrPAF['stat'][$i]=$val['stat'];
+					$arrPAF['field'][$i]="Middle Name";
+					$arrPAF['value1'][$i]=$val['old_empMidName'];
+					$arrPAF['value2'][$i]=$val['new_empMidName'];
+					$arrPAF['effdate'][$i]=$val['effectivitydate'];
+					$arrPAF['dateupdated'][$i]=$val['dateupdated'];
+					$arrPAF['refno'][$i]=$val['refNo'];
+					$arrPAF['remarks'][$i]=$val['remarks'];
+					$i++;
+				}
+					if (trim($val['new_empbday']) !="") {
+					$arrPAF['type'][$i]='others,'.$val['refNo'];
+					$arrPAF['stat'][$i]=$val['stat'];
+					$arrPAF['field'][$i]="BDAY";
+					$arrPAF['value1'][$i]=$val['old_empbday'];
+					$arrPAF['value2'][$i]=$val['new_empbday'];
+					$arrPAF['effdate'][$i]=$val['effectivitydate'];
+					$arrPAF['dateupdated'][$i]=$val['dateupdated'];
+					$arrPAF['refno'][$i]=$val['refNo'];
+					$arrPAF['remarks'][$i]=$val['remarks'];
+					$i++;
+				}
+				if (trim($val['new_bioNumber']) !="") {
+					$arrPAF['type'][$i]='others,'.$val['refNo'];
+					$arrPAF['stat'][$i]=$val['stat'];
+					$arrPAF['field'][$i]="Bio Number";
+					$arrPAF['value1'][$i]=$val['old_bioNumber'];
+					$arrPAF['value2'][$i]=$val['new_bioNumber'];
+					$arrPAF['effdate'][$i]=$val['effectivitydate'];
+					$arrPAF['dateupdated'][$i]=$val['dateupdated'];
+					$arrPAF['refno'][$i]=$val['refNo'];
+					$arrPAF['remarks'][$i]=$val['remarks'];
+					$i++;
+				}
+				if (trim($val['new_empAddr1']) !="") {
+					$arrPAF['type'][$i]='others,'.$val['refNo'];
+					$arrPAF['stat'][$i]=$val['stat'];
+					$arrPAF['field'][$i]="Others";
+					$arrPAF['value1'][$i]=$val['old_empAddr1'];
+					$arrPAF['value2'][$i]=$val['new_empAddr1'];
+					$arrPAF['effdate'][$i]=$val['effectivitydate'];
+					$arrPAF['dateupdated'][$i]=$val['dateupdated'];
+					$arrPAF['refno'][$i]=$val['refNo'];
+					$arrPAF['remarks'][$i]=$val['remarks'];
+					$i++;
+				}
+				if (trim($val['new_empAddr2']) !="") {
+					$arrPAF['type'][$i]='others,'.$val['refNo'];
+					$arrPAF['stat'][$i]=$val['stat'];
+					$arrPAF['field'][$i]="Others";
+					$arrPAF['value1'][$i]=$val['old_empAddr2'];
+					$arrPAF['value2'][$i]=$val['new_empAddr2'];
+					$arrPAF['effdate'][$i]=$val['effectivitydate'];
+					$arrPAF['dateupdated'][$i]=$val['dateupdated'];
+					$arrPAF['refno'][$i]=$val['refNo'];
+					$arrPAF['remarks'][$i]=$val['remarks'];
+					$i++;
+				}
+				if ($val['new_empCityCd'] !=0) {
+					$old_city = $this->getcitywil(" where CityCd='{$val['old_empCityCd']}'");
+					$new_city = $this->getcitywil(" where CityCd='{$val['new_empCityCd']}'");
+					$arrPAF['type'][$i]='others,'.$val['refNo'];
+					$arrPAF['stat'][$i]=$val['stat'];
+					$arrPAF['field'][$i]="Others";
+					$arrPAF['value1'][$i]=$old_city['cityDesc'];
+					$arrPAF['value2'][$i]=$new_city['cityDesc'];
+					$arrPAF['effdate'][$i]=$val['effectivitydate'];
+					$arrPAF['dateupdated'][$i]=$val['dateupdated'];
+					$arrPAF['refno'][$i]=$val['refNo'];
+					$arrPAF['remarks'][$i]=$val['remarks'];
+					$i++;
+				}
+				if (trim($val['new_empSssNo']) !="") {
+					$arrPAF['type'][$i]='others,'.$val['refNo'];
+					$arrPAF['stat'][$i]=$val['stat'];
+					$arrPAF['field'][$i]="SSS No.";
+					$arrPAF['value1'][$i]=$val['old_empSssNo'];
+					$arrPAF['value2'][$i]=$val['new_empSssNo'];
+					$arrPAF['effdate'][$i]=$val['effectivitydate'];
+					$arrPAF['dateupdated'][$i]=$val['dateupdated'];
+					$arrPAF['refno'][$i]=$val['refNo'];
+					$arrPAF['remarks'][$i]=$val['remarks'];
+					$i++;
+				}
+				if (trim($val['new_empPhicNo']) !="") {
+					$arrPAF['type'][$i]='others,'.$val['refNo'];
+					$arrPAF['stat'][$i]=$val['stat'];
+					$arrPAF['field'][$i]="Philhealth No.";
+					$arrPAF['value1'][$i]=$val['old_empPhicNo'];
+					$arrPAF['value2'][$i]=$val['new_empPhicNo'];
+					$arrPAF['effdate'][$i]=$val['effectivitydate'];
+					$arrPAF['dateupdated'][$i]=$val['dateupdated'];
+					$arrPAF['refno'][$i]=$val['refNo'];
+					$arrPAF['remarks'][$i]=$val['remarks'];
+					$i++;
+				}
+				if (trim($val['new_empTin']) !="") {
+					$arrPAF['type'][$i]='others,'.$val['refNo'];
+					$arrPAF['stat'][$i]=$val['stat'];
+					$arrPAF['field'][$i]="Tax ID No.";
+					$arrPAF['value1'][$i]=$val['old_empTin'];
+					$arrPAF['value2'][$i]=$val['new_empTin'];
+					$arrPAF['effdate'][$i]=$val['effectivitydate'];
+					$arrPAF['dateupdated'][$i]=$val['dateupdated'];
+					$arrPAF['refno'][$i]=$val['refNo'];
+					$arrPAF['remarks'][$i]=$val['remarks'];
+					$i++;
+				}
+				if (trim($val['new_empPagibig']) !="") {
+					$arrPAF['type'][$i]='others,'.$val['refNo'];
+					$arrPAF['stat'][$i]=$val['stat'];
+					$arrPAF['field'][$i]="HDMF No.";
+					$arrPAF['value1'][$i]=$val['old_empPagibig'];
+					$arrPAF['value2'][$i]=$val['new_empPagibig'];
+					$arrPAF['effdate'][$i]=$val['effectivitydate'];
+					$arrPAF['dateupdated'][$i]=$val['dateupdated'];
+					$arrPAF['refno'][$i]=$val['refNo'];
+					$arrPAF['remarks'][$i]=$val['remarks'];
+					$i++;
+				}
+				if(trim($val['new_empProvinceCd'])!=""){
+					$arrPAF['type'][$i]='others,'.$val['refNo'];
+					$arrPAF['stat'][$i]=$val['stat'];
+					$arrPAF['field'][$i]="Others";
+					$arrPAF['value1'][$i]=$this->empProvince($val['old_empProvinceCd']);
+					$arrPAF['value2'][$i]=$this->empProvince($val['new_empProvinceCd']);
+					$arrPAF['effdate'][$i]=$val['effectivitydate'];
+					$arrPAF['dateupdated'][$i]=$val['dateupdated'];
+					$arrPAF['refno'][$i]=$val['refNo'];
+					$arrPAF['remarks'][$i]=$val['remarks'];
+					$i++;
+					}			
+				if(trim($val['new_empMunicipalityCd'])!=""){
+					$arrPAF['type'][$i]='others,'.$val['refNo'];
+					$arrPAF['stat'][$i]=$val['stat'];
+					$arrPAF['field'][$i]="Others";
+					$arrPAF['value1'][$i]=$this->empMunicipality($val['old_empMunicipalityCd']);
+					$arrPAF['value2'][$i]=$this->empMunicipality($val['new_empMunicipalityCd']);
+					$arrPAF['effdate'][$i]=$val['effectivitydate'];
+					$arrPAF['dateupdated'][$i]=$val['dateupdated'];
+					$arrPAF['refno'][$i]=$val['refNo'];
+					$arrPAF['remarks'][$i]=$val['remarks'];
+					$i++;
+					}	
+				if(trim($val['new_empMarStat'])!=""){
+					$arrPAF['type'][$i]='others,'.$val['refNo'];
+					$arrPAF['stat'][$i]=$val['stat'];
+					$arrPAF['field'][$i]="Civil Status";
+					$arrPAF['value1'][$i]=$this->EmpCivilStat($val['old_empMarStat']);
+					$arrPAF['value2'][$i]=$this->EmpCivilStat($val['new_empMarStat']);
+					$arrPAF['effdate'][$i]=$val['effectivitydate'];
+					$arrPAF['dateupdated'][$i]=$val['dateupdated'];
+					$arrPAF['refno'][$i]=$val['refNo'];
+					$arrPAF['remarks'][$i]=$val['remarks'];
+					$i++;	
+				}	
+				if(trim($val['new_empContactPerson'])!=""){
+					$arrPAF['type'][$i]='others,'.$val['refNo'];
+					$arrPAF['stat'][$i]=$val['stat'];
+					$arrPAF['field'][$i]="Contact Person";
+					$arrPAF['value1'][$i]=$val['old_empContactPerson'];
+					$arrPAF['value2'][$i]=$val['new_empContactPerson'];
+					$arrPAF['effdate'][$i]=$val['effectivitydate'];
+					$arrPAF['dateupdated'][$i]=$val['dateupdated'];
+					$arrPAF['refno'][$i]=$val['refNo'];
+					$arrPAF['remarks'][$i]=$val['remarks'];
+					$i++;	
+				}	
+				if(trim($val['new_empContactNumber'])!=""){
+					$arrPAF['type'][$i]='others,'.$val['refNo'];
+					$arrPAF['stat'][$i]=$val['stat'];
+					$arrPAF['field'][$i]="Contact Number";
+					$arrPAF['value1'][$i]=$val['old_empContactNumber'];
+					$arrPAF['value2'][$i]=$val['new_empContactNumber'];
+					$arrPAF['effdate'][$i]=$val['effectivitydate'];
+					$arrPAF['dateupdated'][$i]=$val['dateupdated'];
+					$arrPAF['refno'][$i]=$val['refNo'];
+					$arrPAF['remarks'][$i]=$val['remarks'];
+					$i++;	
+				}	
+				if(trim($val['new_empBloodType'])!=""){
+					$arrPAF['type'][$i]='others,'.$val['refNo'];
+					$arrPAF['stat'][$i]=$val['stat'];
+					$arrPAF['field'][$i]="Blood Type";
+					$arrPAF['value1'][$i]=($val['old_empBloodType']=="0")?"":$val['old_empBloodType'];
+					$arrPAF['value2'][$i]=$val['new_empBloodType'];
+					$arrPAF['effdate'][$i]=$val['effectivitydate'];
+					$arrPAF['dateupdated'][$i]=$val['dateupdated'];
+					$arrPAF['refno'][$i]=$val['refNo'];
+					$arrPAF['remarks'][$i]=$val['remarks'];
+					$i++;	
+				}	
+				if(trim($val['new_empSunLine'])!=""){
+					$arrPAF['type'][$i]='others,'.$val['refNo'];
+					$arrPAF['stat'][$i]=$val['stat'];
+					$arrPAF['field'][$i]="Company Issued Mobile Phone Line";
+					$arrPAF['value1'][$i]=$val['old_empSunLine'];
+					$arrPAF['value2'][$i]=($val['new_empSunLine']=="Y"?"Sun Line":"Remove/Cancel Sun Line");
+					$arrPAF['effdate'][$i]=$val['effectivitydate'];
+					$arrPAF['dateupdated'][$i]=$val['dateupdated'];
+					$arrPAF['refno'][$i]=$val['refNo'];
+					$arrPAF['remarks'][$i]=$val['remarks'];
+					$i++;	
+				}	
+				if(trim($val['new_empGlobeLine'])!=""){
+					$arrPAF['type'][$i]='others,'.$val['refNo'];
+					$arrPAF['stat'][$i]=$val['stat'];
+					$arrPAF['field'][$i]="Company Issued Mobile Phone Line";
+					$arrPAF['value1'][$i]=$val['old_empGlobeLine'];
+					$arrPAF['value2'][$i]=($val['new_empGlobeLine']=="Y"?"Globe Line":"Remove/Cancel Globe Line");
+					$arrPAF['effdate'][$i]=$val['effectivitydate'];
+					$arrPAF['dateupdated'][$i]=$val['dateupdated'];
+					$arrPAF['refno'][$i]=$val['refNo'];
+					$arrPAF['remarks'][$i]=$val['remarks'];
+					$i++;	
+				}	
+				if(trim($val['new_empSmartLine'])!=""){
+					$arrPAF['type'][$i]='others,'.$val['refNo'];
+					$arrPAF['stat'][$i]=$val['stat'];
+					$arrPAF['field'][$i]="Company Issued Mobile Phone Line";
+					$arrPAF['value1'][$i]=$val['old_empSmartLine'];
+					$arrPAF['value2'][$i]=($val['new_empSmartLine']=="Y"?"Smart Line":"Remove/Cancel Smart Line");
+					$arrPAF['effdate'][$i]=$val['effectivitydate'];
+					$arrPAF['dateupdated'][$i]=$val['dateupdated'];
+					$arrPAF['refno'][$i]=$val['refNo'];
+					$arrPAF['remarks'][$i]=$val['remarks'];
+					$i++;	
+				}	
+			}
+			unset($res,$val,$qryPAF);
+			}
+		}
+		if (empty($pafType) || $pafType == "empstat") {
+			if (in_array($empNo,$this->arrEmpStat)){
+				$qryPAF = "Select * from tblPAF_EmpStatus$hist where empNo=$empNo order by effectivitydate";
+			$res = $this->getArrRes($this->execQry($qryPAF));
+			foreach($res as $val) {
+				if (trim($val['new_status']) !="") {
+					$arrPAF['type'][$i]='empstat,'.$val['refNo'];
+					$arrPAF['stat'][$i]=$val['stat'];
+					$arrPAF['field'][$i]="Employment Status";
+					$arrPAF['value1'][$i]=$this->EmpStat($val['old_status']);
+					$arrPAF['value2'][$i]=$this->EmpStat($val['new_status']);
+					$arrPAF['effdate'][$i]=$val['effectivitydate'];
+					$arrPAF['dateupdated'][$i]=$val['dateupdated'];
+					$arrPAF['refno'][$i]=$val['refNo'];
+					$arrPAF['remarks'][$i]=$val['remarks'];
+					$i++;
+				}			
+				if (trim($val['new_enddate']) !="") {
+					$arrPAF['type'][$i]='empstat,'.$val['refNo'];
+					$arrPAF['stat'][$i]=$val['stat'];
+					$arrPAF['field'][$i]="End Date";
+					$arrPAF['value1'][$i]=$this->valDateArt($val['old_enddate']);
+					$arrPAF['value2'][$i]=$this->valDateArt($val['new_enddate']);
+					$arrPAF['effdate'][$i]=$val['effectivitydate'];
+					$arrPAF['dateupdated'][$i]=$val['dateupdated'];
+					$arrPAF['refno'][$i]=$val['refNo'];
+					$arrPAF['remarks'][$i]=$val['remarks'];
+					$i++;
+				}			
+				if (trim($val['new_nos']) !="") {
+					$arrPAF['type'][$i]='empstat,'.$val['refNo'];
+					$arrPAF['stat'][$i]=$val['stat'];
+					$arrPAF['field'][$i]="Nature of separation";
+					$arrPAF['value1'][$i]=$this->getNatures($val['old_nos']);
+					$arrPAF['value2'][$i]=$this->getNatures($val['new_nos']);
+					$arrPAF['effdate'][$i]=$val['effectivitydate'];
+					$arrPAF['dateupdated'][$i]=$val['dateupdated'];
+					$arrPAF['refno'][$i]=$val['refNo'];
+					$arrPAF['remarks'][$i]=$val['remarks'];
+					$i++;
+				}			
+			}
+			unset($res,$val,$qryPAF);
+			}
+		}
+		if (empty($pafType) || $pafType == "branch") {
+			if (in_array($empNo,$this->arrBranch)){
+				$qryPAF = "Select * from tblPAF_Branch$hist where empNo=$empNo order by effectivitydate";
+				$res = $this->getArrRes($this->execQry($qryPAF));
+				foreach($res as $val) {
+					if (trim($val['new_branchCode']) !="") {
+						$old_branch = $this->getEmpBranchArt($_SESSION['company_code'],$val['old_branchCode']);		
+						$new_branch = $this->getEmpBranchArt($_SESSION['company_code'],$val['new_branchCode']);			
+						$arrPAF['type'][$i]='branch,'.$val['refNo'];
+						$arrPAF['stat'][$i]=$val['stat'];
+						$arrPAF['field'][$i]="Branch";
+						$arrPAF['value1'][$i]=$old_branch['brnDesc'];
+						$arrPAF['value2'][$i]=$new_branch['brnDesc'];
+						$arrPAF['effdate'][$i]=$val['effectivitydate'];
+						$arrPAF['dateupdated'][$i]=$val['dateupdated'];
+						$arrPAF['refno'][$i]=$val['refNo'];
+						$arrPAF['remarks'][$i]=$val['remarks'];
+						$i++;
+					}			
+					if (trim($val['new_payGrp']) !="") {
+						$arrPAF['type'][$i]='branch,'.$val['refNo'];
+						$arrPAF['stat'][$i]=$val['stat'];
+						$arrPAF['field'][$i]="Pay Group";
+						$arrPAF['value1'][$i]="Group " . $val['old_payGrp'];
+						$arrPAF['value2'][$i]="Group " . $val['new_payGrp'];
+						$arrPAF['effdate'][$i]=$val['effectivitydate'];
+						$arrPAF['dateupdated'][$i]=$val['dateupdated'];
+						$arrPAF['refno'][$i]=$val['refNo'];
+					$arrPAF['remarks'][$i]=$val['remarks'];
+						$i++;
+					}			
+				}	
+				unset($res,$val,$qryPAF);
+			}	
+		}
+		if (empty($pafType) || $pafType == "position") {
+			if (in_array($empNo,$this->arrPosition)){
+			$qryPAF = "Select * from tblPAF_Position$hist where  empNo=$empNo order by effectivitydate";
+			$compCode = $_SESSION['company_code'];
+			$res = $this->getArrRes($this->execQry($qryPAF));
+			foreach($res as $val) {
+				$pos_old = $this->getpositionwil("where compCode='$compCode' and posCode='{$val['old_posCode']}'",2);
+				$pos_new = $this->getpositionwil("where compCode='$compCode' and posCode='{$val['new_posCode']}'",2);
+				$division_new = $this->getDivDescArt($compCode, $pos_new['divCode']);
+				$department_new = $this->getDeptDescArt($compCode, $pos_new['divCode'],$pos_new['deptCode']);
+				$section_new =  $this->getSectDescArt($compCode, $pos_new['divCode'],$pos_new['deptCode'],$pos_new['sectCode']);
+				$rank_new = $this->getRank($val['new_cat']);
+				$level_new = "Level " . $val['new_level'];
+				
+				$division_old = $this->getDivDescArt($compCode, $pos_old['divCode']);
+				$department_old = $this->getDeptDescArt($compCode, $pos_old['divCode'],$pos_old['deptCode']);
+				$section_old =  $this->getSectDescArt($compCode, $pos_old['divCode'],$pos_old['deptCode'],$pos_old['sectCode']);
+				$rank_old = $this->getRank($val['old_cat']);
+				$level_old = "Level " . $val['old_level'];
+				if (trim($val['new_posCode']) !="" && trim($val['new_posCode']) !="0") {
+					$arrPAF['type'][$i]='position,'.$val['refNo'];
+					$arrPAF['stat'][$i]=$val['stat'];
+					$arrPAF['field'][$i]="Position";
+					$arrPAF['value1'][$i]=$pos_old['posDesc'];
+					$arrPAF['value2'][$i]=$pos_new['posDesc'];;
+					$arrPAF['effdate'][$i]=$val['effectivitydate'];
+					$arrPAF['dateupdated'][$i]=$val['dateupdated'];
+					$arrPAF['refno'][$i]=$val['refNo'];
+					$arrPAF['remarks'][$i]=$val['remarks'];
+					$i++;
+				}				
+				if (trim($pos_new['divCode']) !="" && trim($pos_new['divCode']) !="0") {
+					$arrPAF['type'][$i]='position,'.$val['refNo'];
+					$arrPAF['stat'][$i]=$val['stat'];
+					$arrPAF['field'][$i]="Division";
+					$arrPAF['value1'][$i]=$division_old['deptDesc'];
+					$arrPAF['value2'][$i]=$division_new['deptDesc'];
+					$arrPAF['effdate'][$i]=$val['effectivitydate'];
+					$arrPAF['dateupdated'][$i]=$val['dateupdated'];
+					$arrPAF['refno'][$i]=$val['refNo'];
+					$arrPAF['remarks'][$i]=$val['remarks'];
+					$i++;
+				}			
+				if (trim($pos_new['deptCode']) !="" && trim($pos_new['deptCode']) !=0) {
+					$arrPAF['type'][$i]='position,'.$val['refNo'];
+					$arrPAF['stat'][$i]=$val['stat'];
+					$arrPAF['field'][$i]="Department";
+					$arrPAF['value1'][$i]=$department_old['deptDesc'];
+					$arrPAF['value2'][$i]=$department_new['deptDesc'];
+					$arrPAF['effdate'][$i]=$val['effectivitydate'];
+					$arrPAF['dateupdated'][$i]=$val['dateupdated'];
+					$arrPAF['refno'][$i]=$val['refNo'];
+					$arrPAF['remarks'][$i]=$val['remarks'];
+					$i++;
+				}	
+				if (trim($pos_new['sectCode']) !="" && trim($pos_new['sectCode']) !="0") {
+					$arrPAF['type'][$i]='position,'.$val['refNo'];
+					$arrPAF['stat'][$i]=$val['stat'];
+					$arrPAF['field'][$i]="Section";
+					$arrPAF['value1'][$i]=$section_old['deptDesc'];
+					$arrPAF['value2'][$i]=$section_new['deptDesc'];
+					$arrPAF['effdate'][$i]=$val['effectivitydate'];
+					$arrPAF['dateupdated'][$i]=$val['dateupdated'];
+					$arrPAF['refno'][$i]=$val['refNo'];
+					$arrPAF['remarks'][$i]=$val['remarks'];
+					$i++;
+				}
+				if (trim($val['new_cat']) !="" && trim($val['new_cat']) !="0") {
+					$arrPAF['type'][$i]='position,'.$val['refNo'];
+					$arrPAF['stat'][$i]=$val['stat'];
+					$arrPAF['field'][$i]="Rank ";
+					$arrPAF['value1'][$i]=$rank_old['rankDesc'];
+					$arrPAF['value2'][$i]=$rank_new['rankDesc'];
+					$arrPAF['effdate'][$i]=$val['effectivitydate'];
+					$arrPAF['dateupdated'][$i]=$val['dateupdated'];
+					$arrPAF['refno'][$i]=$val['refNo'];
+					$arrPAF['remarks'][$i]=$val['remarks'];
+					$i++;
+				}									
+				if (trim($val['new_level']) !="" && trim($val['new_level']) !="0") {
+					$arrPAF['type'][$i]='position,'.$val['refNo'];
+					$arrPAF['stat'][$i]=$val['stat'];
+					$arrPAF['field'][$i]="Level";
+					$arrPAF['value1'][$i]=$level_old;
+					$arrPAF['value2'][$i]=$level_new;
+					$arrPAF['effdate'][$i]=$val['effectivitydate'];
+					$arrPAF['dateupdated'][$i]=$val['dateupdated'];
+					$arrPAF['refno'][$i]=$val['refNo'];
+					$arrPAF['remarks'][$i]=$val['remarks'];
+					$i++;
+				}									
+			}
+			unset($res,$val,$qryPAF);
+			}
+		}
+		if (empty($pafType) || $pafType == "payroll") {
+			if (in_array($empNo,$this->arrPayroll)){
+				$qryPAF = "Select *,
+									CASE old_empPayType
+									  WHEN 'D' THEN 'Daily'
+									  WHEN 'M' THEN 'Monthly'
+									END as oldPType,
+									CASE new_empPayType
+									  WHEN 'D' THEN 'Daily'
+									  WHEN 'M' THEN 'Monthly'
+									END as newPType
+									 from tblPAF_PayrollRelated$hist where empNo=$empNo order by effectivitydate";
+			$res = $this->getArrRes($this->execQry($qryPAF));
+			foreach($res as $val) {
+				if (trim($val['new_empTeu']) !="") {
+					$arrPAF['type'][$i]='payroll,'.$val['refNo'];
+					$arrPAF['stat'][$i]=$val['stat'];
+					$arrPAF['field'][$i]="TAX Exemption";
+					//$arrPAF['value1'][$i]=$this->EmpTEU($val['old_empTeu']);
+					//$arrPAF['value2'][$i]=$this->EmpTEU($val['new_empTeu']);
+					$arrPAF['value1'][$i]=$val['old_empTeu'];
+					$arrPAF['value2'][$i]=$val['new_empTeu'];
+					$arrPAF['effdate'][$i]=$val['effectivitydate'];
+					$arrPAF['dateupdated'][$i]=$val['dateupdated'];
+					$arrPAF['refno'][$i]=$val['refNo'];
+					$arrPAF['remarks'][$i]=$val['reasonCd'];
+					$i++;
+				}			
+				if (trim($val['new_empBankCd']) !="") {
+					$bank_old =$this->getEmpBankArt($compCode,$val['old_empBankCd']);
+					$bank_new =$this->getEmpBankArt($compCode,$val['new_empBankCd']);
+					$arrPAF['type'][$i]='payroll,'.$val['refNo'];
+					$arrPAF['stat'][$i]=$val['stat'];
+					$arrPAF['field'][$i]="Bank";
+					$arrPAF['value1'][$i]=$bank_old['bankDesc'];
+					$arrPAF['value2'][$i]=$bank_new['bankDesc'];
+					$arrPAF['effdate'][$i]=$val['effectivitydate'];
+					$arrPAF['dateupdated'][$i]=$val['dateupdated'];
+					$arrPAF['refno'][$i]=$val['refNo'];
+					$arrPAF['remarks'][$i]=$val['reasonCd'];
+					$i++;
+				}		
+				if (trim($val['new_empAcctNo']) !="") {
+					$arrPAF['type'][$i]='payroll,'.$val['refNo'];
+					$arrPAF['stat'][$i]=$val['stat'];
+					$arrPAF['field'][$i]="Account No.";
+					$arrPAF['value1'][$i]=$val['old_empAcctNo'];
+					$arrPAF['value2'][$i]=$val['new_empAcctNo'];
+					$arrPAF['effdate'][$i]=$val['effectivitydate'];
+					$arrPAF['dateupdated'][$i]=$val['dateupdated'];
+					$arrPAF['refno'][$i]=$val['refNo'];
+					$arrPAF['remarks'][$i]=$val['reasonCd'];
+					$i++;
+				}
+				if (trim($val['new_empMrate']) !=0) {
+					$arrPAF['type'][$i]='payroll,'.$val['refNo'];
+					$arrPAF['stat'][$i]=$val['stat'];
+					$arrPAF['field'][$i]="Salary";
+					if ($val['oldPType']=='Monthly') {
+						$arrPAF['value1'][$i]=number_format($val['old_empMrate'],2) . " per month";
+					} elseif ($val['oldPType']=='Daily') {
+						$arrPAF['value1'][$i]=number_format($val['old_empDrate'],2) . " per day";
+					} else {
+						$arrchEmp = $this->checkEmpInfo($val['empNo']);
+						if ($arrchEmp['empPayType']=='M') 
+							$arrPAF['value1'][$i]=number_format($val['old_empMrate'],2) . " per month";
+						else
+							$arrPAF['value1'][$i]=number_format($val['old_empDrate'],2) . " per day";
+					}
+					if ($val['newPType']=='Monthly') {
+						$arrPAF['value2'][$i]=number_format($val['new_empMrate'],2) . " per month";
+					} elseif ($val['newPType']=='Daily') {
+						$arrPAF['value2'][$i]=number_format($val['new_empDrate'],2) . " per day";
+					} else {
+						$arrchEmp = $this->checkEmpInfo($val['empNo']);
+						if ($arrchEmp['empPayType']=='M') 
+							$arrPAF['value2'][$i]=number_format($val['new_empMrate'],2) . " per month";
+						else
+							$arrPAF['value2'][$i]=number_format($val['new_empDrate'],2) . " per day";
+					}
+					$arrPAF['effdate'][$i]=$val['effectivitydate'];
+					$arrPAF['dateupdated'][$i]=$val['dateupdated'];
+					$arrPAF['refno'][$i]=$val['refNo'];
+					$arrPAF['remarks'][$i]=$val['reasonCd'];
+					$i++;
+				}	
+				if (trim($val['new_empPayType']) !="") {
+					$arrPAF['type'][$i]='payroll,'.$val['refNo'];
+					$arrPAF['stat'][$i]=$val['stat'];
+					$arrPAF['field'][$i]="Rate Mode";
+					$arrPAF['value1'][$i]=$val['oldPType'];
+					$arrPAF['value2'][$i]=$val['newPType'];
+					$arrPAF['effdate'][$i]=$val['effectivitydate'];
+					$arrPAF['dateupdated'][$i]=$val['dateupdated'];
+					$arrPAF['refno'][$i]=$val['refNo'];
+					$arrPAF['remarks'][$i]=$val['reasonCd'];
+					$i++;
+				}									
+				if (trim($val['new_payGrp']) !="") {
+					$arrPAF['type'][$i]='payroll,'.$val['refNo'];
+					$arrPAF['stat'][$i]=$val['stat'];
+					$arrPAF['field'][$i]="Pay Group";
+					$arrPAF['value1'][$i]="Group " . $val['old_payGrp'];
+					$arrPAF['value2'][$i]="Group " . $val['new_payGrp'];
+					$arrPAF['effdate'][$i]=$val['effectivitydate'];
+					$arrPAF['dateupdated'][$i]=$val['dateupdated'];
+					$arrPAF['refno'][$i]=$val['refNo'];
+					$arrPAF['remarks'][$i]=$val['reasonCd'];
+					$i++;
+				}			
+				if (trim($val['new_category']) !="") {
+					$arrPAF['type'][$i]='payroll,'.$val['refNo'];
+					$arrPAF['stat'][$i]=$val['stat'];
+					$arrOldCat = $this->getPayCat($_SESSION['company_code'],"and payCat='".$val['old_category']."'");
+					$arrNewCat = $this->getPayCat($_SESSION['company_code'],"and payCat='".$val['new_category']."'");
+					$arrPAF['field'][$i]="Pay Category";
+					$arrPAF['value1'][$i]=$arrOldCat['payCatDesc'];
+					$arrPAF['value2'][$i]=$arrNewCat['payCatDesc'];
+					$arrPAF['effdate'][$i]=$val['effectivitydate'];
+					$arrPAF['dateupdated'][$i]=$val['dateupdated'];
+					$arrPAF['refno'][$i]=$val['refNo'];
+					$arrPAF['remarks'][$i]=$val['reasonCd'];
+					$i++;
+				}			
+			}	
+			unset($res,$val,$qryPAF);		
+			}
+		}
+		if (empty($pafType) || $pafType == "allow") {
+			if (in_array($empNo,$this->arrAllow)){
+			//$qryPAF = "Select * from tblPAF_Allowance$hist where empNo=$empNo $and2 order by effectivitydate";
+			$qryPAF="Select * from tblPAF_Allowance$hist INNER JOIN tblAllowType ON tblPAF_Allowance$hist.allowCode = tblAllowType.allowCode where empNo=$empNo";
+			$arrAllow = $this->getAllowType($_SESSION['company_code']);
+			$res = $this->getArrRes($this->execQry($qryPAF));
+			foreach($res as $val) {
+				$allowType = "";
+				$arrEmpAllow = $this->getEmpAllow($val['empNo'],$val['allowCode']);
+				foreach($arrAllow as $valAllow) {
+					if ($valAllow['allowCode']==$val['allowCode'])
+						$allowType = $valAllow['allowDesc'];
+				}
+				
+				if($val['allowTag_type']=="D"){
+					$allowtagtype=" per day";	
+				}
+				else{
+					$allowtagtype=" per month";		
+				}
+				
+				if($val['allowSked']==1){
+					$sked="1st Payroll of the Month";	
+				}
+				elseif($val['allowSked']==2){
+					$sked="2nd Payroll of the Month";	
+				}
+				else{
+					$sked="Attendance Based";	
+				}
+				
+				if($arrEmpAllow['allowSked']==1){
+					$skedemp="1st Payroll of the Month";	
+				}
+				elseif($arrEmpAllow['allowSked']==2){
+					$skedemp="2nd Payroll of the Month";	
+				}
+				else{
+					$skedemp="Attendance Based";	
+				}
+
+				if ($val['allowAmt'] != $val['allowAmtold']) {
+					$arrPAF['type'][$i]='allow,'.$val['refNo'];
+					$arrPAF['stat'][$i]=$val['stat'];
+					$arrPAF['field'][$i]="$allowType";
+					$arrPAF['value1'][$i]=(number_format($val['allowAmtold'],2)=="0.00") ? "0.00":number_format($val['allowAmtold'],2).$allowtagtype;
+					$arrPAF['value2'][$i]=(number_format($val['allowAmt'],2)=="0.00") ? "0.00":number_format($val['allowAmt'],2) . $allowtagtype;
+					$arrPAF['effdate'][$i]=$val['effectivitydate'];
+					$arrPAF['dateupdated'][$i]=$val['dateupdated'];
+					$arrPAF['refno'][$i]=$val['refNo'];
+					$arrPAF['remarks'][$i]=$val['remarks'];
+					$i++;
+				}
+				if ($val['allowSked'] != $arrEmpAllow['allowSked'] && $arrEmpAllow['allowSked'] !="") {
+					$arrPAF['type'][$i]='allow,'.$val['refNo'];
+					$arrPAF['stat'][$i]=$val['stat'];
+					$arrPAF['field'][$i]="Schedule";
+					$arrPAF['value1'][$i]=$skedemp;//$arrEmpAllow['allowSked'];
+					$arrPAF['value2'][$i]=$sked;//$val['allowSked'];
+					$arrPAF['effdate'][$i]=$val['effectivitydate'];
+					$arrPAF['dateupdated'][$i]=$val['dateupdated'];
+					$arrPAF['refno'][$i]=$val['refNo'];
+					$arrPAF['remarks'][$i]=$val['remarks'];
+					$i++;
+				}
+				if ($val['allowTag'] != $arrEmpAllow['allowTag'] && $arrEmpAllow['allowTag'] !="") {
+					$arrPAF['type'][$i]='allow,'.$val['refNo'];
+					$arrPAF['stat'][$i]=$val['stat'];
+					$arrPAF['field'][$i]="Allowance Tag";
+					$arrPAF['value1'][$i]=($arrEmpAllow['allowTag']=='M') ? "Monthly":"Daily";
+					$arrPAF['value2'][$i]=($val['allowTag']=='M') ? "Monthly":"Daily";
+					$arrPAF['effdate'][$i]=$val['effectivitydate'];
+					$arrPAF['dateupdated'][$i]=$val['dateupdated'];
+					$arrPAF['refno'][$i]=$val['refNo'];
+					$arrPAF['remarks'][$i]=$val['remarks'];
+					$i++;
+				}												
+				if ($val['allowStat'] != $arrEmpAllow['allowStat'] && $arrEmpAllow['allowStat'] !="") {
+					$arrPAF['type'][$i]='allow,'.$val['refNo'];
+					$arrPAF['stat'][$i]=$val['stat'];
+					$arrPAF['field'][$i]="Allowance Status";
+					$arrPAF['value1'][$i]=($arrEmpAllow['allowStat']=='A') ? "Active":"Held";
+					$arrPAF['value2'][$i]=($val['allowStat']=='A') ? "Active":"Held";
+					$arrPAF['effdate'][$i]=$val['effectivitydate'];
+					$arrPAF['dateupdated'][$i]=$val['dateupdated'];
+					$arrPAF['refno'][$i]=$val['refNo'];
+					$arrPAF['remarks'][$i]=$val['remarks'];
+					$i++;
+				}
+				if ($val['allowPayTag'] != $arrEmpAllow['allowPayTag'] && $arrEmpAllow['allowPayTag'] !="") {
+					$arrPAF['type'][$i]='allow,'.$val['refNo'];
+					$arrPAF['stat'][$i]=$val['stat'];
+					$arrPAF['field'][$i]="Pay Tag";
+					$arrPAF['value1'][$i]=($arrEmpAllow['allowPayTag']=='P') ? "Permanent":"Temporary";
+					$arrPAF['value2'][$i]=($val['allowPayTag']=='P') ? "Permanent":"Temporary";
+					$arrPAF['effdate'][$i]=$val['effectivitydate'];
+					$arrPAF['dateupdated'][$i]=$val['dateupdated'];
+					$arrPAF['refno'][$i]=$val['refNo'];
+					$arrPAF['remarks'][$i]=$val['remarks'];
+					$i++;
+				}					
+			}
+			//unset($res,$val,$qryPAF);
+			}
+		}								
+		return $arrPAF;
+	}	
+
 	function convertArr($table,$And) {
 		$array = array();
 		$qry = "SELECT $table.empNo from tblEmpMast INNER JOIN $table ON tblEmpMast.compCode = $table.compCode AND tblEmpMast.empNo = $table.empNo where tblEmpMast.compCode='{$_SESSION['company_code']}' $And";
+		$res = $this->getArrRes($this->execQry($qry));
+		foreach($res as $val) {
+			$array[] = $val['empNo']; 
+		}
+		return $array;	
+	}	
+
+	function convertArr2($table,$empNo) {
+		$array = array();
+		$qry = "SELECT $table.empNo from tblEmpMast INNER JOIN $table ON tblEmpMast.compCode = $table.compCode AND tblEmpMast.empNo = $table.empNo where tblEmpMast.compCode='{$_SESSION['company_code']}' AND tblEmpMast.empNo = '{$empNo}'";
 		$res = $this->getArrRes($this->execQry($qry));
 		foreach($res as $val) {
 			$array[] = $val['empNo']; 

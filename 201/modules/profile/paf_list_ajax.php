@@ -31,6 +31,7 @@ $pafObj->arrAllow 		= $pafObj->convertArr("tblPAF_Allowance$hist", " $stat ");
 $arrPAF = array_unique(array_merge($pafObj->arrOthers,$pafObj->arrEmpStat,$pafObj->arrBranch,$pafObj->arrPosition,$pafObj->arrPayroll,$pafObj->arrAllow));
 
 $strPAF = implode(",",$arrPAF);
+ECHO $strPAF;
 if ($strPAF != "") {$strPAF = " AND empNo IN ($strPAF)";} else {$strPAF = "";}
 if ($orderBy==3) {$orderBy1 = " ORDER BY empDiv, empDepCode, empSecCode ";}
   $qryIntMaxRec = "SELECT * FROM tblEmpMast 

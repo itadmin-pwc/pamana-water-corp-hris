@@ -951,6 +951,7 @@ $arrPrev = $this->checkifPrevDateisCrossDay($arrTS['empNo'],date('Y-m-d',strtoti
 		$sqlHoliday = "SELECT holidayDate, brnCode, dayType from tblHolidayCalendar where compCode='{$_SESSION['company_code']}' AND holidayStat='A' AND holidayDate BETWEEN '{$this->pdFrom}' AND '{$this->pdTo}'";
 		$this->arrHolidays = $this->getArrResI($this->execQryI($sqlHoliday));		
 	}
+
 	function checkHolidayDate($tsDate,$RDTag,$brnCode,$empdiv) {
 		// $yr=date('Y',strtotime($tsDate));
 		
@@ -1129,7 +1130,6 @@ FROM         tblTK_TimeSheetCorr INNER JOIN
 	
 	}
 
-
 	function DateAdd($date) {
 		$month = date('m',strtotime($date));
 		$day = date('d',strtotime($date));
@@ -1162,6 +1162,7 @@ FROM         tblTK_TimeSheetCorr INNER JOIN
 		}
 		return $res;
 	}
+
 	function getLeaveAppTypes() {
 		$sqlLeaveAppTypes = "Select tsAppTypeCd from tblTK_AppTypes where compCode='{$_SESSION['company_code']}' AND leaveTag='Y'";
 		$this->arrLeaveAppTypes = $this->getArrResI($this->execQryI($sqlLeaveAppTypes));
@@ -1176,6 +1177,7 @@ FROM         tblTK_TimeSheetCorr INNER JOIN
 		}
 		return $res;
 	}
+
 	function gettimeOut($arr) {
 		if ((float)str_replace(":",".",$arr['shftTimeOut'])!=0) {
 			$timeOut = $arr['shftTimeOut'];
@@ -1184,6 +1186,7 @@ FROM         tblTK_TimeSheetCorr INNER JOIN
 		}
 		return $timeOut;
 	}
+
 	function getUTEmpList() {
 		$sqlUTlist = "SELECT empNo, offTimeOut, utTimeOut, utDate FROM tblTK_UTApp Where utStat='A' AND compCode='{$_SESSION['company_code']}' AND utDate BETWEEN '{$this->pdFrom}' AND '{$this->pdTo}' 
 						AND empNo IN (Select empNo from tblEmpMast where empPayGrp='{$this->Group}' AND compCode='{$_SESSION['company_code']}' 
@@ -1303,9 +1306,6 @@ FROM         tblTK_TimeSheetCorr INNER JOIN
 				$arrStr = $_GET["chkBrnCode$i"];
 				$qry = "Update tblTK_UserBranch set processTag='Y' where brnCode='".$arrStr."' and empNo='".$_SESSION['employee_number']."';";
 				$this->execQryI($qry);
-			}
-			if ($val['my_rDate'] == '') {
-				
 			}
 		}
 	}

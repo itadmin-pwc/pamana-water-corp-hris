@@ -870,6 +870,35 @@
 	  tabEle.style.zIndex = 99;
 	  conEle.style.zIndex = 98;
 	}
+
+	var numTabs2 = 8;
+	
+	function focusTab2(idNum)
+	{
+	  var tabId = 'tab' + idNum;
+	  var conId = 'content' + idNum;
+	
+	  var tabEle = document.getElementById(tabId);
+	  var conEle = document.getElementById(conId);
+	
+	  chClss(tabId, 'tab' + idNum + '-focus');
+	  chClss(conId, 'content' + idNum + '-focus');
+	
+	  for (var i = 1; i <= numTabs2; i++)
+	  {
+		if (i != idNum)
+		{
+		  chClss('tab' + i, 'tab' + i);
+		  chClss('content' + i, 'content' + i);
+	
+		  document.getElementById('tab' + i).style.zIndex = 2;
+		  document.getElementById('content' + i).style.zIndex = 1;
+		}
+	  }
+	
+	  tabEle.style.zIndex = 99;
+	  conEle.style.zIndex = 98;
+	}
 	
 	function chClss(eleId, newClass)
 	{
@@ -879,7 +908,7 @@
 	  if (!theEle || typeof(theEle.className) == 'undefined') return false;
 	
 	  theEle.className = newClass;
-	
+	  
 	  return true;
 	}
 

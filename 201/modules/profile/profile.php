@@ -5,7 +5,6 @@ include("profile.obj.php");
 include("../../../includes/pager.inc.php");
 include("profile_userdef.obj.php");
 include("profile_content6.obj.php");
-	
 
 $mainUserDefObjObj = new  mainUserDefObj();
 $maintEmpObj = new ProfileObj();
@@ -198,12 +197,12 @@ include("../../../includes/calendar.php");
 		<STYLE>@import url("../../../js/themes/mac_os_x.css");</STYLE>
         
 		<style type="text/css">
-        <!--
+        /**
         .headertxt {font-family: verdana; font-size: 11px;}
-        -->
+         */
         </style>        
 	</HEAD>
-	<BODY onLoad="focusTab(1);">
+	<BODY onLoad="focusTab2(1);">
 		<FORM name='frmViewEditEmp' id="frmViewEditEmp" action="" method="post" >
 			<TABLE border="0" cellpadding="1" cellspacing="0" class="parentGrid" width="100%">
 				<tr>
@@ -274,14 +273,14 @@ include("../../../includes/calendar.php");
                     <br>
                     <br><br><br>
 
-
-			<div id="tab1" class="tab1" onClick="focusTab(1)" >General Info</div>
-              <div id="tab2" class="tab2" onClick="focusTab(2)">Contacts</div>
-              <div id="tab3" class="tab3" onClick="focusTab(3)">Employment</div>
-              <div id="tab4" class="tab4" onClick="focusTab(4)">Performance</div>
-              <div id="tab5" class="tab5" onClick="focusTab(5)">Employee Profile</div>
-              <div id="tab6" class="tab6" onClick="focusTab(6);">Training</div>
-              <div id="tab7" class="tab7" onClick="focusTab(7); viewTabEight();">Other Info</div>
+			  <div id="tab1" class="tab1" onClick="focusTab2(1)">General Info</div>
+              <div id="tab2" class="tab2" onClick="focusTab2(2)">Contacts</div>
+              <div id="tab3" class="tab3" onClick="focusTab2(3)">Employment</div>
+              <div id="tab4" class="tab4" onClick="focusTab2(4)">Performance</div>
+              <div id="tab5" class="tab5" onClick="focusTab2(5)">Employee Profile</div>
+              <div id="tab6" class="tab6" onClick="focusTab2(6);">Training</div>
+              <div id="tab7" class="tab7" onClick="focusTab2(7); viewTabEight();">Other Info</div>
+			  <div id="tab8" class="tab8" onClick="focusTab2(8)">History</div>
           		<div id="content1" class="content1" style="height: 520px;">
                     <TABLE align="center" cellpadding="0" cellspacing="2" border="0" class="childGrid" width="100%">
                       <tr> 
@@ -656,25 +655,45 @@ include("../../../includes/calendar.php");
                 
               	<div id="content6" class="content6" style="height: 520px;">
                     <TABLE align="center" cellpadding="0" cellspacing="2" border="0" class="childGrid" width="100%">
-                      <tr> 
-                        <td align="left" class="parentGridDtl" height="470" valign="top">
-               		     <table width="100%" border="0" cellspacing="1" cellpadding="2">
-					  <tr> 
-						<td colspan="3" height="15"></td>
-					  </tr>
-                      <tr>
-                    	<td colspan="3"><div id="Trainings"></div>
-                        <div id="indicator4" align="center"></div>
-                        </td>
-                    </tr>               
-					</table>
-                        </td>
-                      </tr>
+						<tr> 
+							<td align="left" class="parentGridDtl" height="470" valign="top">
+								<table width="100%" border="0" cellspacing="1" cellpadding="2">
+									<tr> 
+										<td colspan="3" height="15"></td>
+									</tr>
+									<tr>
+										<td colspan="3"><div id="Trainings"></div>
+											<div id="indicator4" align="center"></div>
+										</td>
+									</tr>               
+								</table>
+							</td>
+						</tr>
                     </TABLE>                                                
                 </div>
+
                 <div id="content7" class="content7" style="height: 520px;">
-                        <div id='divCont7'></div>
+                    <div id='divCont7'></div>
                  </div>
+
+			<div id="content8" class="content8" style="height: 520px;">
+				<TABLE align="center" cellpadding="0" cellspacing="2" border="0" class="childGrid" width="100%">
+					<tr> 
+						<td align="left" class="parentGridDtl" height="470" valign="top">
+							<table width="100%" border="0" cellspacing="1" cellpadding="2">
+								<tr> 
+									<td colspan="3" height="15"></td>
+								</tr>
+								<tr>
+									<td colspan="3"><div id="History"></div>
+									<div id="indicator3" align="center"></div>
+									</td>
+								</tr>               
+							</table>
+						</td>
+					</tr>
+				</TABLE>   
+			</div>
 </td>
 				</tr>
                 <tr><td class="parentGridDtl" >
@@ -695,6 +714,7 @@ include("../../../includes/calendar.php");
 	pager("restday_list_ajax.php","RDlist",'load',0,0,'','','&disPayGrp=<?=$dis_empRestday?>','../../../images/');  
 	pager("employee_profile_performance_list_ajax_result.php","Performance",'load',0,0,'','','','../../../images/');  	
 	pager("employee_profile_trainings_list_ajax_result.php","Trainings",'load',0,0,'','','','../../../images/');  	
+	pager("employee_profile_history_ajax_result.php","History",'load',0,0,'','','','../../../images/');  
 </SCRIPT>
 <script src="../../../includes/validations.js"></script>
 <script type='text/javascript' src='timesheet_js.js'></script>
