@@ -31,7 +31,7 @@ $pafObj->arrAllow 		= $pafObj->convertArr("tblPAF_Allowance$hist", " $stat ");
 $arrPAF = array_unique(array_merge($pafObj->arrOthers,$pafObj->arrEmpStat,$pafObj->arrBranch,$pafObj->arrPosition,$pafObj->arrPayroll,$pafObj->arrAllow));
 
 $strPAF = implode(",",$arrPAF);
-ECHO $strPAF;
+
 if ($strPAF != "") {$strPAF = " AND empNo IN ($strPAF)";} else {$strPAF = "";}
 if ($orderBy==3) {$orderBy1 = " ORDER BY empDiv, empDepCode, empSecCode ";}
   $qryIntMaxRec = "SELECT * FROM tblEmpMast 
@@ -45,7 +45,7 @@ $intLimit = $pager->_limit;
 $intOffset = $pager->_watToDo($_GET['action'],$_GET['offSet'],$_GET['isSearch']);
 $payGrp = $pafObj->getProcGrp();
 //08-30-2023
-if($_SESSION['employee_number']!='999999999' && $_SESSION['Confiaccess'] != "Y"){
+if($_SESSION['employee_number']=='999999999' || $_SESSION['Confiaccess'] != "Y"){
 	//$user_payCat_view = " AND empPayCat IN (1,2,3,9)";
 	$user_payCat_view = " AND empPayCat IN (1,3,9)";
 }else{
@@ -59,6 +59,7 @@ FROM         tblEmpMast INNER JOIN
 				Where tblEmpMast.compCode = '{$sessionVars['compCode']}' and tblEmpMast.empBrnCode IN (Select brnCode from tblUserBranch where compCode='{$_SESSION['company_code']}' and empNo='{$_SESSION['employee_number']}')
 				And empPayGrp<>'$payGrp' $user_payCat_view
 				$strPAF order by tblEmpMast.empLastName";
+				
 $resEmpList = $pafObj->execQry($qryEmpList);
 $arrEmpList = $pafObj->getArrRes($resEmpList);
 

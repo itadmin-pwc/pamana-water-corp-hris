@@ -22,7 +22,7 @@ $pafObj->arrPayroll 	= $pafObj->convertArr2("tblPAF_PayrollRelated$hist", $empNo
 $pafObj->arrAllow 		= $pafObj->convertArr2("tblPAF_Allowance$hist", $empNo);
 $arrPAF = array_unique(array_merge($pafObj->arrOthers,$pafObj->arrEmpStat,$pafObj->arrBranch,$pafObj->arrPosition,$pafObj->arrPayroll,$pafObj->arrAllow));
 
-$strPAF = implode(",",$arrPAF);
+// $strPAF = implode(",",$arrPAF);
 // if ($strPAF != "") {$strPAF = " AND empNo IN ($strPAF)";} else {$strPAF = "";}
 $strPAF = " AND empNo = '{$empNo}'";
 if ($orderBy==3) {$orderBy1 = " ORDER BY empDiv, empDepCode, empSecCode ";}
