@@ -183,7 +183,6 @@ class regPayrollProcObj extends commonObj {
 	}
 	
 	private function OneHalfBasic($monthlyRate){
-		
 		$amntBasic = (float)$monthlyRate/2;
 		return sprintf("%01.2f",$amntBasic);
 	}

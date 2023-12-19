@@ -17,6 +17,7 @@ $inqTSObj->validateSessions('','MODULES');
 		<SCRIPT type="text/javascript" src="../../../includes/jSLib.js"></SCRIPT>
 		<script type='text/javascript' src='timesheet_js.js'></script>
 		<STYLE>@import url('../../style/maintenance_employee.css');</STYLE>
+		<STYLE>@import url('../../style/payroll.css');</STYLE>
 	</HEAD>
 	<BODY>
 		<form name="frmTS" method="post" action="">
