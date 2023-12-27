@@ -164,7 +164,6 @@
                          <FONT class="ToolBarseparator">&nbsp;</font>
 						<?
 							if(isset($_GET['action']) != 'load' || isset($_GET['action']) != 'refresh'){
-								
 								if(isset($_GET['srchType']) ){ 
 									$srchType = $_GET['srchType'];
 								}
@@ -173,6 +172,7 @@
 						Search<INPUT type="text" name="txtSrch" id="txtSrch" value="<? if(isset($_GET['txtSrch'])){echo $_GET['txtSrch'];} ?>" class="inputs">In<?=$common->DropDownMenu($arrSrch,'cmbSrch',$_GET['srchType'],'class="inputs"');?>
 						<?php if($brnCode_View==""){echo  "Branch |";}?> <? if($brnCode_View ==""){echo $common->DropDownMenu($arrBrnch,'brnCd',$_GET['brnCd'],'class="inputs"');}?>
 						<INPUT class="inputs" type="button" name="btnSrch" id="btnSrch" value="SEARCH" onClick="pager('view_edit_employee_timesheet_listAjaxResult.php','empMastCont','Search',0,1,'txtSrch','cmbSrch','&url=<?=$url?>&brnCd='+document.getElementById('brnCd').value,'','../../../images/')">
+						
 					</td>
 					
                     <tr>
@@ -213,7 +213,7 @@
                             <tr  bgcolor="<?php echo $bgcolor; ?>" <?php echo $on_mouse; ?>>
                                 <td class="gridDtlVal"><?=$i?></td>
                                 <td class="gridDtlVal"><font class="gridDtlLblTxt"><?=$empListVal['empNo']?></font></td>
-                                <td class="gridDtlVal"><font class="gridDtlLblTxt"><?=str_replace("Ñ","&Ntilde;",$empListVal['empLastName']. ", " . $empListVal['empFirstName'] ." ". $empListVal['empMidName'])?></font></td>
+                                <td class="gridDtlVal"><font class="gridDtlLblTxt"><?=str_replace("ï¿½","&Ntilde;",$empListVal['empLastName']. ", " . $empListVal['empFirstName'] ." ". $empListVal['empMidName'])?></font></td>
                               	<?
 									if($url=='processing')
 									{

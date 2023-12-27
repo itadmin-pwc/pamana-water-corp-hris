@@ -47,6 +47,4 @@
 </HTML>
 <SCRIPT>
 	pager('view_edit_employee_timesheet_listAjaxResult.php','empMastCont','load',0,0,'','','&url=<?=$_GET["url"]?>','../../../images/');  
-	
-	
 </SCRIPT>

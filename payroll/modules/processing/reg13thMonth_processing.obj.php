@@ -488,8 +488,6 @@ class reg13thMonthProcObj extends commonObj
 					
 					if($Trns)
 						$Trns = $this->execQryI($qryToPayrollSum);
-					
-							
 						
 					$qryToYtdData = "INSERT INTO tblYtdData(compCode,pdYear,empNo,YtdGross,YtdTaxable,YtdTax,Ytd13NBonus,Ytdtx13NBonus,YTd13NAdvance,sprtAllow,payGrp,pdNumber)
 									 VALUES('{$this->session['company_code']}',

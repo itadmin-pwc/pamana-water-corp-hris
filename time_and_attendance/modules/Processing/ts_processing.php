@@ -44,6 +44,11 @@ switch ($_GET['code']) {
 <STYLE>@import url('../../style/payroll.css');</STYLE>
 <script type='text/javascript' src='../../../includes/jSLib.js'></script>
 <script type='text/javascript' src='../../../js/extjs/adapter/prototype/prototype.js'></script>
+<script type="text/javascript" src="../../../js/extjs/adapter/prototype/effects.js"></script>
+<script type="text/javascript" src="../../../js/extjs/adapter/prototype/window.js"></script>
+<script type="text/javascript" src="../../../js/extjs/adapter/prototype/window_effects.js"></script>
+<STYLE>@import url('../../../js/themes/default.css');</STYLE>
+<STYLE>@import url("../../../js/themes/mac_os_x.css");</STYLE>
 <!--calendar lib-->
 <script type="text/javascript" src="../../../includes/calendar/calendar.js"></script>
 <script type="text/javascript" src="../../../includes/calendar/calendar-en.js"></script>
@@ -121,11 +126,19 @@ switch ($_GET['code']) {
           </tr>          
 		  <tr>
 		    <td height="25" colspan="7" class="childGridFooter">
-							<div align="center">
-							  <input name="btnProcess" type="button" class="inputs" id="btnProcess" onClick="ProcessTS();" value="Process Timesheet">
-							  <input type="hidden" value="<?=$q;?>" name="chCtr" id="chCtr"><input type="hidden" name="checker" id="checker" value="0">
-			               </div></td>
-		    </tr>
+				<div align="center">
+				<?php
+				if($_SESSION['user_level'] == 1) {
+				?>
+					<INPUT class="inputs" type="button" name="btnCutoff" id="btnSrch" value="Early Cut-off" onClick="earlyCutOff()">
+				<?php
+					}
+				?>
+				<input name="btnProcess" type="button" class="inputs" id="btnProcess" onClick="ProcessTS();" value="Process Timesheet">
+				<input type="hidden" value="<?=$q;?>" name="chCtr" id="chCtr"><input type="hidden" name="checker" id="checker" value="0">
+				</div>
+			</td>
+		  </tr>
         </table>
 <div id="caption" align="center">        </div>				
 	</td>
@@ -157,6 +170,41 @@ switch ($_GET['code']) {
 				$('checker').value = 1;
 			} 
 		}
+	}
+
+		
+	
+	function earlyCutOff()
+	{
+		var editAllw = new Window({
+		id: "editAllw2",
+		className : 'mac_os_x',
+		width:750, 
+		height:310, 
+		zIndex: 100, 
+		resizable: false, 
+		minimizable : true,
+		title: "Early Cut-off", 
+		showEffect:Effect.Appear, 
+		destroyOnClose: true,
+		maximizable: false,
+		hideEffect: Effect.SwitchOff, 
+		draggable:true })
+		editAllw.setURL('employee_early_cut_off.php');
+		editAllw.show(true);
+		editAllw.showCenter();	
+		
+		myObserver = {
+			onDestroy: function(eventName, win) {
+
+			if (win == editAllw) {
+				editAllw = null;
+				
+				Windows.removeObserver(this);
+			}
+			}
+		}
+		Windows.addObserver(myObserver);
 	}
 
 

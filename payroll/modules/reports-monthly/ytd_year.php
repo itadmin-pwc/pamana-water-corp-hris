@@ -44,7 +44,8 @@
                                 <td class="gridToolbar" colspan="7"> 
                                     <input name="hide_option" type="hidden" id="hide_option" value="<? echo $option_menu; ?>"> 
                                     <? echo $new_; ?>&nbsp;&nbsp;<? echo $refresh_; ?> <input name='updateFlag' type='hidden' id='updateFlag'> 
-                                    <input name='fileName' type='hidden' id='fileName' value="tax.php">                                <input name="hide_empDept" type="hidden" id="hide_empDept" value="<? echo $empDept; ?>">
+                                    <input name='fileName' type='hidden' id='fileName' value="tax.php">                                
+									<input name="hide_empDept" type="hidden" id="hide_empDept" value="<? echo $empDept; ?>">
                                     <input name="hide_empSect2" type="hidden" id="hide_empSect2" value="<? echo $empDept; ?>">
                                     <input name="empNo" type="hidden" id="empNo" value="<? echo $empDept; ?>">
                                     <input name="empName" type="hidden" id="empName" value="<? echo $empDept; ?>">
