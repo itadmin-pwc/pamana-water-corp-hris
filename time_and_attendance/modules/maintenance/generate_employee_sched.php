@@ -80,10 +80,11 @@ switch ($_GET['code']) {
             <td height="25" class="style4">Year </td>
             <td class="style1">:</td>
             <td width="81%" class="gridDtlVal style5">&nbsp;<?
-            if (date('m')==12 and date('d')>=17)
-				echo $Year = date('Y')+1;
-			else
-				echo $Year = date('Y');
+            // if (date('m')==12 and date('d')>=17)
+			// 	echo $Year = date('Y')+1;
+			// else
+			// 	echo $Year = date('Y');
+			echo $Year = date('Y');
 			
 			?><input type="hidden" name="txtYear" value="<?=$Year?>" id="txtYear"></td>
           </tr>
