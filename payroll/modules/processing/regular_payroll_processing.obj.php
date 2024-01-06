@@ -722,7 +722,7 @@ class regPayrollProcObj extends commonObj {
 										  ('{$this->session['company_code']}','{$this->get['pdYear']}',
 										   '{$this->get['pdNum']}','{$empNo}',
 										   '{$tranCode}','".sprintf("%01.2f",$tranAmount)."','{$finalTaxTag}')";
-		
+		//echo $writeToTblEarnings . '<br><br>';
 		return $this->execQryI($writeToTblEarnings);
 	}
 	
@@ -1266,6 +1266,7 @@ WHERE tk.compCode = '".$_SESSION["company_code"]."'
                                 $rowcomputeWithTax = $this->getSqlAssocI($rescomputeWithTax);
 								//original code until 060623
                                 //$compTax = ((($taxInc-$rowcomputeWithTax["txLowLimit"]-0.01)*$rowcomputeWithTax["txAddPcent"])+$rowcomputeWithTax["txFixdAmt"]);
+								//echo 'Annual Tax : ' . ((($taxInc-$rowcomputeWithTax["txLowLimit"])*$rowcomputeWithTax["txAddPcent"])+$rowcomputeWithTax["txFixdAmt"]) . '<br>';
 								$compTax = ((($taxInc-$rowcomputeWithTax["txLowLimit"])*$rowcomputeWithTax["txAddPcent"])+$rowcomputeWithTax["txFixdAmt"]);
 								return (float)$compTax;
 	}
@@ -1313,8 +1314,7 @@ WHERE tk.compCode = '".$_SESSION["company_code"]."'
         //echo $empNo."==".$gross_Taxable."\n";
         //Estimate the Total Taxable Earnings for the Year
         if($empMinTag=='Y')
-        {
-                                               
+        {                           
             /*echo                 $empNo."==".$gross_Taxable."+".$arrYtdDataHist["YtdTaxable"]."+".$empPrevEarnings."-".
             $arrYtdDataHist["YtdGovDed"]."-".$arrYtdDataHist["YtdBasic"]."-".$basicPay."-".$sumGov."\n";*/
                                                
@@ -1359,7 +1359,7 @@ WHERE tk.compCode = '".$_SESSION["company_code"]."'
 			//echo "net_taxable_income: " . $net_taxable_income . "<br>";
 			$estEarn = $net_taxable_income;
         }
-                                                 
+                         
         //Compute for the Net Taxable Earnings
         //$netTaxable = (float) $estEarn - (float) $this->getTaxExemption($empTeu);
         $netTaxable = (float) $estEarn;

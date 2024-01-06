@@ -105,12 +105,13 @@ class extractTNATSObj extends commonObj {
 				$hrsAbsent 	= 0;
 				
 				if ($val['hrsWorked'] == 0) {
-					if (!in_array($val['dayType'], array(2,4,5,6)) && $val['empPayType']=='M') {
-						if ($val['tsAppTypeCd']==11)
+					if (!in_array($val['dayType'], array('02','04','05','06')) && $val['empPayType']=='M') {
+						if ($val['tsAppTypeCd']==11){
 							$hrsAbsent = 8;
-						if ($val['dayType']==3 && $val['legalPayTag']!="Y") {	
+						}
+						if ($val['dayType']=='03' && $val['legalPayTag']!="Y") {	
 							$hrsAbsent = 8;
-						} elseif ($val['dayType']==1) {
+						} elseif ($val['dayType']=='01') {
 							$hrsAbsent = 8;
 						}
 					}  else {
@@ -122,12 +123,16 @@ class extractTNATSObj extends commonObj {
 				}
 				$dayCode = date('N',strtotime($val['tsDate']));
 				$hrsWorked = $val['hrsWorked'];
-				if ($val['CWWTag']=="Y" && $dayCode==6 && $val['dayType']==1) {
+				if ($val['CWWTag']=="Y" && $dayCode==6 && $val['dayType']=='01') {
 					if ($val['satPayTag']=="Y") {
 						$hrsAbsent = 0;
 						$hrsWorked = 8;
 					} else {
 						$hrsAbsent = 8;
+						$hrsWorked = 0;
+					}
+					if($val['shiftCode'] == '01') {
+						$hrsAbsent = 0;
 						$hrsWorked = 0;
 					}
 				}
@@ -231,7 +236,7 @@ class extractTNATSObj extends commonObj {
 				}
 		}
 
-
+		//die();
 
 		
 		if ($Trns) {
@@ -929,7 +934,8 @@ FROM         tblTK_CSApp where compCode='{$_SESSION['company_code']}' AND csStat
 				emp.empDrate,
 				emp.empHrate,
 				tsAppTypeCd,
-				legalPayTag,satPayTag,CWWTag
+				legalPayTag,satPayTag,CWWTag,
+				sf.shiftCode
 				FROM tblTK_Timesheet tk LEFT OUTER JOIN
 										tblTK_Overtime ON tk.empNo = tblTK_Overtime.empNo AND tk.tsDate = tblTK_Overtime.tsDate LEFT OUTER JOIN
 										tblTK_Deductions ON tk.empNo = tblTK_Deductions.empNo AND tk.tsDate = tblTK_Deductions.tsDate
