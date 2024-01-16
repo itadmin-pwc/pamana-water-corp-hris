@@ -26,7 +26,8 @@ $reportPath = 'employees_timesheet_pdf.php?empBrnCode='.$empBrnCode.'&fileName='
 		<SCRIPT type="text/javascript" src="../../../js/extjs/adapter/prototype/prototype.js"></SCRIPT>
 		<SCRIPT type="text/javascript" src="../../../includes/jSLib.js"></SCRIPT>
 		<script type='text/javascript' src='timesheet_js.js'></script>
-		<STYLE>@import url('../../style/maintenance_employee.css');</STYLE>
+		<STYLE>@import url('../../style/payroll.css');</STYLE>
+		<link rel="stylesheet" type="text/css" href="../../style/payroll.css"></link>
 	</HEAD>
 	<BODY>
 		<div class="niftyCorner">
@@ -39,7 +40,7 @@ $reportPath = 'employees_timesheet_pdf.php?empBrnCode='.$empBrnCode.'&fileName='
 					<td class="parentGridDtl">
 						<TABLE border="0" width="100%" cellpadding="1" cellspacing="1" class="childGrid" >
 						  	<td colspan="27" class="gridToolbar" align="">
-								<input name="back" type="button" id="back" value="Back" onClick="location.href='employees_timesheet.php';">
+								<input name="back" type="button" id="back" value="Back" class="inputs" onClick="location.href='employees_timesheet.php';">
               				</td>
 							
                             <tr>
