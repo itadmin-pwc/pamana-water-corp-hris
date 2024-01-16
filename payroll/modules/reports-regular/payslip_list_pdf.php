@@ -332,23 +332,11 @@ class PDF extends FPDF
 				$empearn = "($empearn)";
 				}
 			}
-			if($ArrempDeductions[$i]['trnCode'] !== 5200) {
-				$this->Cell(35,3,'  ' . $ArrempEarnings[$i]['trnDesc'],'L','','L');
-				$this->Cell(35,3, $empearn,'R','','R');
-			}
+			$this->Cell(35,3,'  ' . $ArrempEarnings[$i]['trnDesc'],'L','','L');
+			$this->Cell(35,3, $empearn,'R','','R');
 			if (!empty($ArrempDeductions[$i]['trnAmountD'])) {
-				if($ArrempDeductions[$i]['trnCode'] == 5200) { //SSS
-					$sss = $ArrempDeductions[$i]['trnAmountD'];
-					$this->Cell(35,3,'','','','L');
-					$this->Cell(35,3,'','R','','R');
-				}elseif($ArrempDeductions[$i]['trnCode'] == 5201){ //SSS
-					$sss = $sss + $ArrempDeductions[$i]['trnAmountD'];
-					$this->Cell(35,3,'  ' . $sssDesc,'','','L');
-					$this->Cell(35,3,number_format($sss,2),'R','','R');
-				}else{
-					$this->Cell(35,3,'  ' . $ArrempDeductions[$i]['trnDesc'],'','','L');
-					$this->Cell(35,3,number_format($ArrempDeductions[$i]['trnAmountD'],2),'R','','R');
-				}
+				$this->Cell(35,3,'  ' . $ArrempDeductions[$i]['trnDesc'],'','','L');
+				$this->Cell(35,3,number_format($ArrempDeductions[$i]['trnAmountD'],2),'R','','R');
 			}
 			else {	
 				$this->Cell(35,3,'','','','L');
@@ -357,6 +345,41 @@ class PDF extends FPDF
 			$this->Cell(50,3,'','R');
 			$this->Ln();
 		}	
+		// for ($i=0;$i<16;$i++) {
+		// 	$empearn="";
+		// 	$totearnings += (float)$ArrempEarnings[$i]['trnAmountE'];
+		// 	$totdeductions += (float)$ArrempDeductions[$i]['trnAmountD'];
+		// 	if (!empty($ArrempEarnings[$i]['trnAmountE'])) {
+		// 		$empearn = number_format($ArrempEarnings[$i]['trnAmountE'],2);
+		// 		if ($empearn<0) {
+		// 		$empearn = "($empearn)";
+		// 		}
+		// 	}
+		// 	if($ArrempDeductions[$i]['trnCode'] !== 5200) {
+		// 		$this->Cell(35,3,'  ' . $ArrempEarnings[$i]['trnDesc'],'L','','L');
+		// 		$this->Cell(35,3, $empearn,'R','','R');
+		// 	}
+		// 	if (!empty($ArrempDeductions[$i]['trnAmountD'])) {
+		// 		if($ArrempDeductions[$i]['trnCode'] == 5200) { //SSS
+		// 			$sss = $ArrempDeductions[$i]['trnAmountD'];
+		// 			$this->Cell(35,3,'','','','L');
+		// 			$this->Cell(35,3,'','R','','R');
+		// 		}elseif($ArrempDeductions[$i]['trnCode'] == 5201){ //SSS
+		// 			$sss = $sss + $ArrempDeductions[$i]['trnAmountD'];
+		// 			$this->Cell(35,3,'  ' . $sssDesc,'','','L');
+		// 			$this->Cell(35,3,number_format($sss,2),'R','','R');
+		// 		}else{
+		// 			$this->Cell(35,3,'  ' . $ArrempDeductions[$i]['trnDesc'],'','','L');
+		// 			$this->Cell(35,3,number_format($ArrempDeductions[$i]['trnAmountD'],2),'R','','R');
+		// 		}
+		// 	}
+		// 	else {	
+		// 		$this->Cell(35,3,'','','','L');
+		// 		$this->Cell(35,3,'','R','','R');
+		// 	}
+		// 	$this->Cell(50,3,'','R');
+		// 	$this->Ln();
+		// }	
 		$this->Cell(70,4,'','L','','C');
 		$this->Cell(70,4,'','L','','C');
 		$this->SetFont('Arial','B'); 

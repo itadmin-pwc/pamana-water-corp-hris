@@ -44,10 +44,11 @@ class TSPostingObj extends dateDiff {
 		foreach($this->getEmpList() as $valTSList)
 		{
 			//balik dito nga
-			// if($valTSList['empNo'] == '010000065' && $valTSList['tsDate'] == '2023-10-25' || $valTSList['empNo'] == '010000065' && $valTSList['tsDate'] == '2023-10-21') {
-			// 	echo $valTSList['hrsWork'] . " - " . $valTSList['tsDate'] . ' - ' . $valTSList['dayType'] . '<br>' . '<br>'; 
+			// if($valTSList['empNo'] == '010000065' && $valTSList['tsDate'] == '2023-11-11' || $valTSList['empNo'] == '010000065' && $valTSList['tsDate'] == '2023-10-18') {
+			// 	echo 'Sat Pay' . $valTSList['satPayTag'] . " - " . $valTSList['tsDate'] . ' - ' . $valTSList['dayType'] . '<br>' . '<br>'; 
 			// 	var_dump($valTSList) . '<br>' . '<br>';
 			// }
+			//var_dump($valTSList) . '<br>' . '<br>';
 
 			$dedTag=false;
 			$hrsOt = $hrsND = $hrsregND = $halfDayLeavePay = 0 ;
@@ -219,13 +220,10 @@ class TSPostingObj extends dateDiff {
 					}
 					$hrsND = ($hrsND > 0) ? $hrsND:0;
 
-					
 					if (!in_array($valTSList['dayType'],array('01'))) {
 						$hrsWrk = $hrsTardy = $hrsUT = 0;
 					}
-
-
-
+					
 				if ($this->IsLeaveAppType($valTSList['tsAppTypeCd'])) 
 				{ //apptype is an leavetype
 				
@@ -243,7 +241,6 @@ class TSPostingObj extends dateDiff {
 					}
 			}
 		
-
 			}//end of crossDay
 			else {
 				
@@ -541,8 +538,6 @@ class TSPostingObj extends dateDiff {
 			unset($fieldDed,$fieldAppType,$legalPayTag);	
 		}
 
-
-		
 		if ($Trns) {
 			// $Trns = $this->updateTSsatDate();
 			$this->updateTSsatDate();
@@ -688,15 +683,16 @@ class TSPostingObj extends dateDiff {
                       tblTK_Timesheet.attendType, tblTK_Timesheet.brnchCd AS brnCode, tblTK_Timesheet.crossDay, 
                       tblTK_Timesheet.dedTag, tblTK_Timesheet.otTag, tblEmpMast.empPayType, tblEmpMast.empBrnCode, 
                       tblEmpMast.empDiv, tblTK_Timesheet.hrs8Deduct, tblTK_Timesheet.obTag, tblTK_Timesheet.csTag, 
-                      tblTK_Timesheet.crdTag, tblTK_Timesheet.editReason, tblTK_EmpShift.CWWTag, tblTK_EmpShift.shiftCode
-					  FROM tblTK_Timesheet INNER JOIN
+                      tblTK_Timesheet.crdTag, tblTK_Timesheet.editReason, 
+					  tblTK_EmpShift.CWWTag, tblTK_EmpShift.shiftCode
+					  FROM tbltk_timesheet LEFT OUTER JOIN
                       tblEmpMast ON tblTK_Timesheet.compcode = tblEmpMast.compCode AND 
-                      tblTK_Timesheet.empNo = tblEmpMast.empNo INNER JOIN
+                      tblTK_Timesheet.empNo = tblEmpMast.empNo LEFT OUTER JOIN
                       tblTK_EmpShift ON tblEmpMast.empNo = tblTK_EmpShift.empNo
 					  WHERE tblTK_Timesheet.compCode='{$_SESSION['company_code']}' AND tsDate between '{$this->pdFrom}' AND '{$this->pdTo}' AND  empPayGrp='{$this->Group}'
 											AND empBrnCode IN ((Select brnCode from tblTK_UserBranch where empNo='{$_SESSION['employee_number']}' AND compCode='{$_SESSION['company_code']}' AND postTag='Y')) order by tblTK_Timesheet.tsDate
 						";
-		
+						//echo var_dump($this->getArrResI($this->execQryI($sqlEmpList)));
 		return $this->getArrResI($this->execQryI($sqlEmpList));		
 	}
 	
@@ -1062,16 +1058,16 @@ if ($cday!='Y'){$hrsWrk=$hrsWrk;}else {
 						$time['hrsTardy']	= 0;
 						$time['hrsUT']		= 0;
 					} else {
-							$time['hrsWork'] = $SchedHrsWork;
-							if (((float)$time['hrsTardy']+(float)$time['hrsUT']) == $SchedHrsWork){
-								$time['hrsWork'] = 0;
-							}
-							else{
-								$time['hrsWork'] = $SchedHrsWork - $time['hrsTardy'] - $time['hrsUT'];
-							}
+						$time['hrsWork'] = $SchedHrsWork;
+						if (((float)$time['hrsTardy']+(float)$time['hrsUT']) == $SchedHrsWork){
+							$time['hrsWork'] = 0;
+						}
+						else{
+							$time['hrsWork'] = $SchedHrsWork - $time['hrsTardy'] - $time['hrsUT'];
+						}
 					}
 
-					// if($arr['empNo'] == '010000065') {
+					// if($arr['empNo'] == '010000065' && $arr['tsDate'] == '2023-11-11') {
 					// 	echo $arr['empNo'] == '010000065' ? $arr['empNo'] . ' - ' . $arr['tsDate'] . '<br>' : '';
 						
 					// 	echo $arr['empNo'] == '010000065' ? $arr['timeIn'] . '<br>' : '';
@@ -1206,14 +1202,14 @@ if ($cday!='Y'){$hrsWrk=$hrsWrk;}else {
 								$OTOut = $arr['otOut'];
 								//01/03/2023
 								// $OTOut = ((float)str_replace(":",".",$arr['otOut'])<(float)str_replace(":",".",$arr['timeOut'])) ? $arr['otOut']:$arr['timeOut'];
-								// if($arr['empNo'] == '010000065' && $arr['tsDate'] == '2023-10-28') {
+								// if($arr['empNo'] == '010000065' && $arr['tsDate'] == '2023-11-11') {
 								// 	echo $OTOut . '<br>';
 								// 	echo $time['hrsWork'] . " - " . $arr['tsDate'] . ' - ' . $arr['dayType'] . '<br>' . '<br>'; 
 								// 	var_dump($arr) . '<br>' . '<br>';
 								// 	echo $arr['otIn'] . '<br>' . '<br>';
 								// 	echo $arr['otOut'] . '<br>' . '<br>';
 								// 	echo $arr['otOut'] . '<br>' . '<br>';
-								// echo $SchedHrsWork;
+								// 	echo $SchedHrsWork;
 								// }
 							}
 							else{
@@ -1232,7 +1228,6 @@ if ($cday!='Y'){$hrsWrk=$hrsWrk;}else {
 						}						
 					}
 						
-
 					if ($arr['otCrossTag']=='Y') {  //if OT is cross day
 						//$OTIn = ((float)str_replace(":",".",$arr['otIn'])<(float)str_replace(":",".",$time['Out'])) ? $time['Out']:$arr['otIn'];						
 
@@ -1244,9 +1239,21 @@ if ($cday!='Y'){$hrsWrk=$hrsWrk;}else {
 						if (((float)str_replace(":",".",$arr['timeOut'])>22 || (float)str_replace(":",".",$arr['otOut'])>22))  {
 							$time['hrsND'] += $OtHrs - round($this->calDiff("{$arr['tsDate']} $OTIn","{$arr['tsDate']} 22:00",'m')/60,2);
 						}
+
+						//hanap ot dito
+						// if($arr['empNo'] == '010000065' && $arr['tsDate'] == '2023-11-11') {
+						// 	echo "" . '<br>';
+						// 	echo $OTOut . '<br>';
+						// 	echo $time['hrsWork'] . " - " . $arr['tsDate'] . ' - ' . $arr['dayType'] . '<br>' . '<br>'; 
+						// 	var_dump($arr) . '<br>' . '<br>';
+						// 	echo $arr['otIn'] . '<br>' . '<br>';
+						// 	echo $arr['otOut'] . '<br>' . '<br>';
+						// 	echo $OtHrs . '<br>' . '<br>';
+						// 	echo $SchedHrsWork;
+						// }
 					}
 					
-					if ($dayCode==6 && $arr['CWWTag']=='Y' && $OtHrs >=8){
+					if ($dayCode==6 && $arr['CWWTag']=='Y' && $OtHrs >=5){
 						$OtHrs--;
 					}
 											
@@ -1992,8 +1999,7 @@ order by tsDate desc";
 					$paytagsat='Y';
 				}else{
 					$paytagsat='NULL';
-				}
-					
+				}	
 			}
 
 			$sqlupdateTSsatDate="update tblTK_Timesheet set satPaytag='$paytagsat' where empNo='{$satlist['empNo']}' and tsDate='".date('Y-m-d',strtotime($satlist['tsDate'])). "'";

@@ -1338,25 +1338,25 @@ WHERE tk.compCode = '".$_SESSION["company_code"]."'
             // echo $empNo."==".$estEarn."\n" . "<br>";
 
 			//PAMANA 6/24/2023
-			//echo "<br><br>" . $empNo;
+			echo "<br><br>" . $empNo . '<br>';
 			$salary = (float)$arrEmpInfo["empMrate"];
 			$gross = $salary * 12;
-			//echo "gross: " . $gross . "<br>";
+			echo "gross: " . $gross . "<br>";
 
 			$sssArr = $this->getGovDedAmnt($salary);
 			if ($sssArr['sssEmployee']!="") {$SssEmp=$sssArr['sssEmployee'];} else {$SssEmp=0;}
 			if ($sssArr['mProveFund_EE']!="") {$mProveEE=$sssArr['mProveFund_EE'];} else {$mProveEE=0;}
 			$sss = ($SssEmp + $mProveEE) * 12;
 
-			//echo "sss: " . $sss . "<br>";
+			echo "sss: " . $sss . "<br>";
 			$phil = $this->getGovDedAmntPhic($salary) * 12;
-			//echo "phil: " . $phil . "<br>";
+			echo "phil: " . $phil . "<br>";
 			$hdmf = 100 * 12;
-			//echo "hdmf: " . $hdmf . "<br>";
+			echo "hdmf: " . $hdmf . "<br>";
 			$total_deduction = $sss + $phil + $hdmf;
-			//echo "total_deduction: " . $total_deduction . "<br>";
+			echo "total_deduction: " . $total_deduction . "<br>";
 			$net_taxable_income = $gross - $total_deduction;
-			//echo "net_taxable_income: " . $net_taxable_income . "<br>";
+			echo "net_taxable_income: " . $net_taxable_income . "<br>";
 			$estEarn = $net_taxable_income;
         }
                          
