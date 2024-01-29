@@ -136,6 +136,8 @@ class extractTNATSObj extends commonObj {
 						$hrsWorked = 0;
 					}
 				}
+
+				$rph = $val['empDrate'] / 8;
 				
 				$hrsTardy		= (float)$val['hrsTardy']; 
 				$hrsUT			= (float)$val['hrsUT'];
@@ -147,7 +149,8 @@ class extractTNATSObj extends commonObj {
 				$payGrp			= $val['emppayGrp'];
 				$payCat			= $val['emppayCat'];
 				$dayType		= $val['dayType'];
-				$amtAbsent		= round($hrsAbsent * (float)$val['empHrate'],2);
+				//$amtAbsent		= round($hrsAbsent * (float)$val['empHrate'],2);
+				$amtAbsent		= round($hrsAbsent * $rph, 2);
 				$amtTardy		= (float)$val['amtTardy'];
 				$amtUT			= (float)$val['amtUT'];
 				$amtOTLe8		= (float)$val['amtOTLe8'];

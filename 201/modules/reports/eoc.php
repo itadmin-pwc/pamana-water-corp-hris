@@ -113,7 +113,7 @@ function printPdf () {
             <td width="158" colspan="3" class="gridDtlVal"><? 	
 			$sqlBranch = "Select * from tblBranch where compCode='{$_SESSION['company_code']}' and brnCode IN (Select brnCode from tblUserBranch where compCode='{$_SESSION['company_code']}' and empNo='{$_SESSION['employee_number']}')";				
 			$arrBranch = $inqTSObj->getArrRes($inqTSObj->execQry($sqlBranch));
-								$arrBranch = $inqTSObj->makeArr($arrBranch,'brnCode','brnDesc','All Stores');
+								$arrBranch = $inqTSObj->makeArr($arrBranch,'brnCode','brnDesc','All Branches');
 								$inqTSObj->DropDownMenu($arrBranch,'branch',$empDiv,$empName_dis);
 							?>            </td>
             </tr>            

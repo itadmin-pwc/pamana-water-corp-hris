@@ -95,7 +95,7 @@ if($_GET['action'] != 'refresh'){
 						<td width="1%" class="gridDtlLbl" align="center">#</td>
 						<td width="10%" class="gridDtlLbl" align="center">CODE</td>
 						<td width="60%" class="gridDtlLbl" align="center">DESCRIPTION</td>
-						<td width="22%" class="gridDtlLbl" align="center">FL MINOR CODE / DESCRIPTION</td>
+						<!-- <td width="22%" class="gridDtlLbl" align="center">FL MINOR CODE / DESCRIPTION</td> -->
 						<td width="22%" class="gridDtlLbl" align="center">STATUS</td>
 						<td class="gridDtlLbl" align="center" colspan="42">ACTION</td>
 					</tr>
@@ -114,7 +114,7 @@ if($_GET['action'] != 'refresh'){
 						<td class="gridDtlVal"><?=$i?></td>
 						<td class="gridDtlVal"><font class="gridDtlLblTxt"><?=$divListVal['deptCode']?></font></td>
 						<td class="gridDtlVal"><font class="gridDtlLblTxt"><?=$divListVal['deptDesc']?></font></td>
-						<td class="gridDtlVal"><font class="gridDtlLblTxt"><?=$divListVal['deptGlCode']." - ".$rowGLInfo['acctDesc']?></font></td>
+						<!-- <td class="gridDtlVal"><font class="gridDtlLblTxt"><?=$divListVal['deptGlCode']." - ".$rowGLInfo['acctDesc']?></font></td> -->
 						<td class="gridDtlVal" align="center">
 							<font class="gridDtlLblTxt">
 								<?=($divListVal['deptStat']=='A') ? "Active" : 'Deleted'?>

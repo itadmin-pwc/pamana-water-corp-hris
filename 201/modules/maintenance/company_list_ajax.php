@@ -60,7 +60,7 @@ $resCompList = $maintEmpObj->getArrRes($resCompList);
 						  	  <td colspan="9" align="center" class="gridToolbar">
                        			 
                                 <div align="left">
-                                <?php if($_SESSION['user_level']==1){ ?>
+                                <?php if($_SESSION['user_level']==10){ ?>
                                 <a href="#" onClick="PopUp('company_act.php?act=AddCompany','ADD COMPANY','<?=$dedListVal['recNo']?>','company_list_ajax.php','TSCont',<?=$intOffset?>,<?=$_GET['isSearch']?>,'txtSrch','cmbSrch')" class="anchor" ><img class="anchor" src="../../../images/add.gif">Add Company </a>|
                       			<FONT class="ToolBarseparator"></font>
                                 <?php } ?>

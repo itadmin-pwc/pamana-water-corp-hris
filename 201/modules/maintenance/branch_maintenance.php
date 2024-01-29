@@ -76,7 +76,7 @@ if($_GET['action'] == 'EDIT'){
 						<td class="gridDtlVal">
 							<INPUT type="text" name="brnCode" id="brnCode" class="inputs" value="<?=$code?>" <?=$disabled?>>						</td>
 					</tr>
-					<tr>
+					<!-- <tr>
 					  <td class="gridDtlLbl" align="left" >Group</td>
 					  <td class="gridDtlLbl" align="center">:</td>
 					  <td class="gridDtlVal"><?
@@ -86,7 +86,7 @@ if($_GET['action'] == 'EDIT'){
 									'cmbGrp',$cmbGrp,'class="inputs"' 
 								);
 							?></td>
-				  </tr>
+				  </tr> -->
 					<tr>
 						<td class="gridDtlLbl" align="left" >
 							Description						</td>
@@ -159,7 +159,7 @@ if($_GET['action'] == 'EDIT'){
 						<td width="1%" class="gridDtlLbl" align="center">:</td>
 						<td class="gridDtlVal">
 							<?
-							$brnchObj->DropDownMenu(array('1'=>'GROUP 1','2'=>'GROUP 2'),'brnGrp',$brnGrp,'class="inputs" ');
+							$brnchObj->DropDownMenu(array('1'=>'GROUP 1'),'brnGrp',$brnGrp,'class="inputs" ');
 							?>						</td>
 					</tr>
                     <?
@@ -180,7 +180,7 @@ if($_GET['action'] == 'EDIT'){
 						<td width="1%" class="gridDtlLbl" align="center">:</td>
 						<td class="gridDtlVal">
 							<?
-							$brnchObj->DropDownMenu(array('ST'=>'STORE','HO'=>'HEAD OFFICE'),'brnLoc',$brnLoc,'class="inputs" ');
+							$brnchObj->DropDownMenu(array('ST'=>'BRANCH','HO'=>'HEAD OFFICE'),'brnLoc',$brnLoc,'class="inputs" ');
 							?>						</td>
 					</tr>
 					<tr>
@@ -199,13 +199,13 @@ if($_GET['action'] == 'EDIT'){
 							$brnchObj->DropDownMenu(array('A'=>'OPEN','D'=>'DELETED'),'brnStat',$brnStat,'class="inputs" ');
 							?>						</td>
 					</tr>
-					<tr>
+					<!-- <tr>
 						<td class="gridDtlLbl" align="left" width="30%">
 							Company Counter						</td>
 						<td width="1%" class="gridDtlLbl" align="center">:</td>
 						<td class="gridDtlVal">
 							<INPUT type="text" name="coCtr" id="coCtr" class="inputs" value="<?=$coCtr?>" size="5"> <FONT color="red">AUB Purpose Only</font>						</td>
-					</tr>
+					</tr> -->
                     <?php if($_SESSION['user_level']==1 || $_SESSION['user_level']==2){ ?>
 					<tr>
 						<td align="center" class="childGridFooter" colspan="3">

@@ -17,7 +17,7 @@ if($_GET['action'] == 'EDIT'){
 	$code = $arrSect['sectCode'];
 	$Desc = $arrSect['deptDesc'];
 	$shrtDesc = $arrSect['deptShortDesc'];
-    $deptglcode = $arrSect['deptGlCode'];
+	$deptglcode = $arrSect['deptGlCode'] == '' ? '-' : $arrSect['deptGlCode'];
 	$stat = $arrSect['deptStat'];
 }
 
@@ -77,14 +77,16 @@ if($_GET['btnMaint'] == 'EDIT'){
 							Short Description						</td>
 						<td width="1%" class="gridDtlLbl" align="center">:</td>
 						<td class="gridDtlVal">
-							<INPUT type="text" name="shrtDesc" id="shrtDesc" class="inputs" size="50" value="<?=$shrtDesc?>">						</td>
+							<INPUT type="text" name="shrtDesc" id="shrtDesc" class="inputs" size="50" value="<?=$shrtDesc?>">		
+							<INPUT name="txtglcode" type="hidden" class="inputs" id="txtglcode" value="<?=$deptglcode?>" size="6" maxlength="3">
+						</td>
 					</tr>
-					<tr>
+					<!-- <tr>
 						<td class="gridDtlLbl" align="left" >
 							Minor GL Code						</td>
 						<td width="1%" class="gridDtlLbl" align="center">:</td>
 						<td class="gridDtlVal"><INPUT name="txtglcode" type="text" class="inputs" id="txtglcode" value="<?=$deptglcode?>" size="6" maxlength="3"></td>
-					</tr>
+					</tr> -->
 					<tr>
                       <td class="gridDtlLbl" align="left" >Status</td>
 					  <td class="gridDtlLbl" align="center">:</td>

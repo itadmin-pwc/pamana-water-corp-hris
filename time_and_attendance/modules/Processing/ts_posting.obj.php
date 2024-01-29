@@ -40,6 +40,7 @@ class TSPostingObj extends dateDiff {
 			$Trns = $this->ClearViolations();
 		}
 		$arrBrnCode = $arrEmpOTs = $arrEmpDeds = $arrEmpCWW = array();
+		$getCompInfo = $this->getCompany($_SESSION['company_code']);
 		
 		foreach($this->getEmpList() as $valTSList)
 		{
@@ -257,7 +258,7 @@ class TSPostingObj extends dateDiff {
 
 				if($valTSList['dayType'] == '03') {
 					$hrsWrk = round($this->calDiff("{$valTSList['otIn']}","{$valTSList['otOut']}",'m')/60,2);
-					if($hrsWrk > 8) 
+					if($hrsWrk > 8)
 						$hrsWrk = $hrsWrk - 1;
 				}
 				//echo $valTSList['empNo'] == '010000065' ? $hrsWrk . '<br>' : '';
@@ -413,8 +414,10 @@ class TSPostingObj extends dateDiff {
 								$hrsOTGt8 = 0;
 						} else {
 							if($valTSList['shiftCode'] == '01' && $sat==6) {
+								//minus break
 								$hrsOTLe8 = $hrsOt;
-								// if($valTSList['empNo'] == '010000065' && $valTSList['tsDate'] == '2023-10-21') {
+								$hrsOTGt8 = 0;
+								// if($valTSList['empNo'] == '010000013' && $valTSList['tsDate'] == '2023-12-09') {
 								// 	echo $hrsOt . '<br>';
 								// 	echo $valTSList['shiftCode'] . '<br>';
 								// 	echo $sat . '<br>';
@@ -583,7 +586,6 @@ class TSPostingObj extends dateDiff {
 		//convert hrsOT to amtOT
 		$sqlUpdateOTtable = "";
 		foreach($this->getOTforComputation() as $valOT) {
-			$getCompInfo = $this->getCompany($_SESSION['company_code']);
 			$emp_allowance = $this->getEmpAllowance($_SESSION['company_code'], $valOT['empNo']);
 
 			$allowance = 0;
@@ -640,9 +642,13 @@ class TSPostingObj extends dateDiff {
 		//convert hrstardy and hrsUT to amt
 		$sqlUpdateDedtable = "";
 		foreach($this->getDedforComputation() as $valDed) {
-				$amtUT="";
-			$amtTardy = round((float)$valDed['hrsTardy'] * ((float)$valDed['empDrate']/8),2);
-			$amtUT = round((float)$valDed['hrsUT'] * ((float)$valDed['empDrate']/8),2);
+			$amtUT="";
+			//orig tardy compute
+			$amtTardy = round((float)$valDed['hrsTardy'] * ((float)$valDed['empDrate']/8), 2);
+			$amtUT = round((float)$valDed['hrsUT'] * ((float)$valDed['empDrate']/8), 2);
+			// echo $valDed['empNo'] . ' - ';
+			// echo $amtTardy . ' - ';
+			// echo $amtUT . '<br><br>';
 			$sqlUpdateDedtable = " Update tblTK_Deductions set amtTardy='$amtTardy',amtUT='$amtUT' where compCode='{$_SESSION['company_code']}' AND empNo='{$valDed['empNo']}' AND tsDate='{$valDed['tsDate']}';\n";	
 			$this->execQryI($sqlUpdateDedtable);
 		}
@@ -1620,7 +1626,7 @@ if ($cday!='Y'){$hrsWrk=$hrsWrk;}else {
 	}
 
 	function getDedforComputation() {
-		$sqlDed= "SELECT tblEmpMast.empDrate, tblTK_Deductions.empNo, tblTK_Deductions.tsDate, tblTK_Deductions.hrsTardy, tblTK_Deductions.hrsUT, 
+		$sqlDed= "SELECT tblEmpMast.empNo, tblEmpMast.empDrate, tblTK_Deductions.empNo, tblTK_Deductions.tsDate, tblTK_Deductions.hrsTardy, tblTK_Deductions.hrsUT, 
                       tblTK_Deductions.amtTardy, tblTK_Deductions.amtUT
 				FROM tblEmpMast INNER JOIN tblTK_Deductions ON tblEmpMast.compCode = tblTK_Deductions.compCode AND tblEmpMast.empNo = tblTK_Deductions.empNo
 				Where tblEmpMast.compCode = '{$_SESSION['company_code']}' AND empPayGrp='{$this->Group}' 

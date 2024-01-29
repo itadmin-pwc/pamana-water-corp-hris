@@ -430,7 +430,9 @@ FROM         tblTK_CSApp where compCode='{$_SESSION['company_code']}' AND csStat
 				} else {
 					$hrsAbsent	= (in_array($val['tsAppTypeCd'],array(14,15,21))) ? 4:0;
 				}
-					
+				
+				$rph = $val['empDrate'] / 8;
+
 				$hrsTardy		= (float)$val['hrsTardy']; 
 				$hrsUT			= (float)$val['hrsUT'];
 				$hrsOTLe8		= (float)$val['hrsOTLe8'];
@@ -441,7 +443,8 @@ FROM         tblTK_CSApp where compCode='{$_SESSION['company_code']}' AND csStat
 				$payGrp			= $val['emppayGrp'];
 				$payCat			= $val['emppayCat'];
 				$dayType		= $val['dayType'];
-				$amtAbsent		= round($hrsAbsent * (float)$val['empHrate'],2);
+				//$amtAbsent		= round($hrsAbsent * (float)$val['empHrate'],2);
+				$amtAbsent		= round($hrsAbsent * $rph, 2);
 				$amtTardy		= (float)$val['amtTardy'];
 				$amtUT			= (float)$val['amtUT'];
 				$amtOTLe8		= (float)$val['amtOTLe8'];

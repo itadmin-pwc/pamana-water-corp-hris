@@ -48,10 +48,10 @@ $userList = $maintEmpObj->getUserName();
 						  	  <td colspan="16" align="center" class="gridToolbar">
                        
                                 <div align="left">
-                                <?php if($_SESSION['user_level']==1){ ?>
+                                <!-- <?php if($_SESSION['user_level']==1){ ?>
                                 <a href="#" onClick="PopUp('period_act.php','GENERATE PAY PERIOD','<?=$dedListVal['recNo']?>','period_list_ajax.php','TSCont',<?=$intOffset?>,<?=$_GET['isSearch']?>,'txtSrch','cmbSrch')" class="anchor" ><img class="anchor" src="../../../images/add.gif">Generate Period </a><span style="visibility:hidden;">
                       			<FONT class="ToolBarseparator">|</font>
-                                <?php } ?>
+                                <?php } ?> -->
 						          <?
 						if(isset($_GET['action']) != 'load' || isset($_GET['action']) != 'refresh'){
 							
@@ -67,13 +67,12 @@ $userList = $maintEmpObj->getUserName();
 						<INPUT type="text" name="txtSrch" id="txtSrch" value="<? if(isset($_GET['txtSrch'])){echo $_GET['txtSrch'];} ?>" class="inputs">
 						In
 						<?=$maintEmpObj->DropDownMenu($arrSrch,'cmbSrch',$_GET['srchType'],'class="inputs"');?>
-						<INPUT class="inputs" type="button" name="btnSrch" id="btnSrch" value="SEARCH" onClick="pager('company_list_ajax.php','TSCont','Search',0,1,'txtSrch','cmbSrch','','../../../images/')">                              
+						<INPUT class="inputs" type="button" name="btnSrch" id="btnSrch" value="SEARCH" onClick="pager('period_list_ajax.php','TSCont','Search',0,1,'txtSrch','cmbSrch','','../../../images/')">                              
                                 </span></div></td>
 					  	  </tr>
 						  	<tr>
 								<td width="2%" class="gridDtlLbl" align="center">#</td>
 								<td width="6%" class="gridDtlLbl" align="center">PAY GRP.</td>
-
 								<td width="6%" class="gridDtlLbl" align="center">PAY CAT</td>
 								<td width="4%" class="gridDtlLbl" align="center">YEAR</td>
 							  <td width="4%" class="gridDtlLbl" align="center">NUMBER</td>
