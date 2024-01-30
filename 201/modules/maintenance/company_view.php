@@ -101,11 +101,13 @@ $compInfo = $maintEmpObj->getCompanyInfo($_GET['compCode']);
           <td class="gridDtlLbl"><span class="headertxt">:</span></td>
           <td class="gridDtlVal"><?=$compInfo['compPaySign']?></td>
         </tr>
+        <!--
         <tr>
           <td class="gridDtlLbl"><span class="headertxt">GL Code</span></td>
           <td class="gridDtlLbl"><span class="headertxt">:</span></td>
           <td class="gridDtlVal"><?=$compInfo['gLCode']?></td>
         </tr>
+        -->
         <tr>
           <td class="gridDtlLbl"><span class="headertxt">Status</span></td>
           <td class="gridDtlLbl"><span class="headertxt">:</span></td>

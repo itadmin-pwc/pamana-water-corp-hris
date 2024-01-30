@@ -80,7 +80,7 @@ $arrBrnList = $brnchObj->getArrRes($resBrnList);
 						<td width="3%" class="gridDtlLbl" align="center">#</td>
 						<td width="10%" class="gridDtlLbl" align="center">CODE</td>
 						<td width="40%" class="gridDtlLbl" align="center">DESCRIPTION</td>
-						<td width="10%" class="gridDtlLbl" align="center">GL CODE STORE / DESCRIPTION</td>
+						<!-- <td width="10%" class="gridDtlLbl" align="center">GL CODE STORE / DESCRIPTION</td> -->
                         <td width="10%" class="gridDtlLbl" align="center">MIN. WAGE</td>
 						<td width="15%" class="gridDtlLbl" align="center">STATUS</td>
 						<td width="10%"class="gridDtlLbl" align="center" colspan="42">ACTION</td>
@@ -99,7 +99,7 @@ $arrBrnList = $brnchObj->getArrRes($resBrnList);
 						<td class="gridDtlVal"><?=$i?></td>
 						<td class="gridDtlVal"><font class="gridDtlLblTxt"><?=$brnLsitVal['brnCode']?></font></td>
 						<td class="gridDtlVal"><font class="gridDtlLblTxt"><?=htmlentities($brnLsitVal['brnDesc']);?></font></td>
-						<td class="gridDtlVal"><font class="gridDtlLblTxt"><?=$brnLsitVal['glCodeStr']." - ".$arrGLInfo['acctDesc']; ?></font></td>
+						<!-- <td class="gridDtlVal"><font class="gridDtlLblTxt"><?=$brnLsitVal['glCodeStr']." - ".$arrGLInfo['acctDesc']; ?></font></td> -->
                         <td class="gridDtlVal" align="right"><font class="gridDtlLblTxt"><?=$brnLsitVal['minWage']?></font></td>
 						<td class="gridDtlVal" align="center">
 							<font class="gridDtlLblTxt">

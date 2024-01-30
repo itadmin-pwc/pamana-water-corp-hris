@@ -132,11 +132,13 @@ switch($_GET['code']) {
           <td class="gridDtlVal">
           <input value="<?=$compInfo['compPaySign']?>" type="text" name="txtpaysign" id="txtpaysign" class="inputs" size="30"></td>
         </tr>
-        <tr>
+        <!-- 
+		<tr>
           <td class="gridDtlLbl"><span class="headertxt">GL Code</span></td>
           <td class="gridDtlVal">
           <input value="<?=$compInfo['gLCode']?>" type="text" name="txtglcode" id="txtglcode" class="inputs" size="30"></td>
-        </tr>
+        </tr> 
+		-->
         <tr>
           <td class="gridDtlLbl"><span class="headertxt">Status</span></td>
           <td class="gridDtlVal">
