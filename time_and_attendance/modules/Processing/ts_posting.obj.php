@@ -127,7 +127,7 @@ class TSPostingObj extends dateDiff {
 			//$hrsTard =round($this->calDiff("{$valTSList['tsDate']} {$valTSList['shftTimeIn']}","{$valTSList['tsDate']} {$valTSList['timeIn']}",'m')/60,2);
 			$hrsTardy = ((float)str_replace(":",".",$valTSList['timeIn'])>(float)str_replace(":",".",$valTSList['shftTimeIn'])) ? round($this->calDiff("{$valTSList['tsDate']} {$valTSList['shftTimeIn']}","{$valTSList['tsDate']} {$valTSList['timeIn']}",'m')/60,2):0;
 			//$hrsTardy = ($hrsTardy > 0) ? $hrsTardy:0;
-			$hrsTardy = $hrsTardy;
+			//$hrsTardy = $hrsTardy;
 
 			if($valTSList['CWWTag']=='Y'  &&  $hrsWrk<=9 && $valTSList['otCrossTag']!='Y'){
 				//old original
@@ -355,9 +355,9 @@ class TSPostingObj extends dateDiff {
 			// 	echo var_dump($valTSList);
 			// 	echo '<br><br>';
 			// }
-			
+			//update remove ot minus tardy hrs code 31324
+			//dito check ang OT
 			if ($hrsOt >= 0.50) {
-
 				if (in_array($valTSList['dayType'],array('03','04','07')) && $SchedHrsWork==3.5) {
 					$hrsOt = $hrsOt + 5.5;
 				}
@@ -365,82 +365,88 @@ class TSPostingObj extends dateDiff {
 						
 					if ($hrsTardy>0 && $valTSList['crossDay']!='Y') {
 						if ($hrsTardy<=$hrsOt && $hrsOt >0 ) {
-							$hrsOt = $hrsOt - $hrsTardy;
+							//$hrsOt = $hrsOt; - $hrsTardy; // 31324 orig ot less tardy
 							$hrsWrk = $hrsWrk + $hrsTardy;
-							$hrsTardy =0;
+							//$hrsTardy = 0; //31324 orig no tardy if paid via ot
 						} else {
 							$hrsWrk = $hrsWrk + $hrsOt;
-							$hrsTardy = $hrsTardy - $hrsOt;
+							//$hrsTardy = $hrsTardy - $hrsOt; //31324 orig tardy paid via ot
 							$hrsOt = 0;
 						}
 					}
-				if ($hrsTardy>0 || $hrsUT > 0 && $valTSList['crossDay']=='Y') {
-					if($hrsOt>=($hrsUT+$hrsTardy)){
-						$hrsOt=$hrsOt-$hrsUT-$hrsTardy;
-						$hrsTardy =0;
-						$hrsUT=0;
-						$hrsWrk = $hrsWrk -$hrsUT-$hrsTardy;
-					}else{
-						$hrsWrk =$hrsWrk-$hrsUT -$hrsTardy;
+					if ($hrsTardy>0 || $hrsUT > 0 && $valTSList['crossDay']=='Y') {
+						$hrsWrk = $hrsWrk-$hrsUT-$hrsTardy;
+						// if($hrsOt>=($hrsUT+$hrsTardy)){ // 31324 orig ot less tardy
+						// 	//$hrsOt=$hrsOt-$hrsUT-$hrsTardy;
+						// 	//$hrsTardy =0;
+						// 	//$hrsUT=0;
+						// 	$hrsWrk = $hrsWrk-$hrsUT-$hrsTardy;
+						// }else{
+						// 	$hrsWrk = $hrsWrk-$hrsUT-$hrsTardy;
+						// }
 					}
-				}
-				if ($hrsOt>0) {
+					if ($hrsOt>0) {
 
-					$sat=date("N",strtotime($valTSList['tsDate']));
-					if ($hrsOt>8 && $valTSList['dayType']!='01') {
-						// $hrsOTLe8 = 8;
-						// $hrsOTGt8 = $hrsOt-8;
+						$sat=date("N",strtotime($valTSList['tsDate']));
+						if ($hrsOt>8 && $valTSList['dayType']!='01') {
+							// $hrsOTLe8 = 8;
+							// $hrsOTGt8 = $hrsOt-8;
 
-						//01-04-2023
-						if($sat==6 && $valTSList['CWWTag']=='Y') {
-							$hrsOTLe8 = $hrsOt;
-							$hrsOTGt8 = 0;
-						}else{
-							$hrsOTLe8 = 8;
-							$hrsOTGt8 = $hrsOt-8;
-						}
-						
-					} else {
-						if ($hrsOt<=8) {
-							//alejo ot halfday duty deduct 1 hr for break
-							if ($valTSList['empBrnCode'] !== 0001 && $valTSList['CWWTag']=='' && $sat==6  && $hrsOt>=5 ){
-								$hrsOTLe8 = $hrsOt;
-							}else{
-								$hrsOTLe8 = $hrsOt;//original code
-								if($hrsOt < 8 && $valTSList['CWWTag']=='Y' && $valTSList['dayType'] == '02') {
-									$hrsOTLe8 = $hrsOt+1;
-								}
-							}
-								$hrsOTGt8 = 0;
-						} else {
-							if($valTSList['shiftCode'] == '01' && $sat==6) {
-								//minus break
+							//01-04-2023
+							if($sat==6 && $valTSList['CWWTag']=='Y') {
 								$hrsOTLe8 = $hrsOt;
 								$hrsOTGt8 = 0;
-								// if($valTSList['empNo'] == '010000013' && $valTSList['tsDate'] == '2023-12-09') {
-								// 	echo $hrsOt . '<br>';
-								// 	echo $valTSList['shiftCode'] . '<br>';
-								// 	echo $sat . '<br>';
-								// 	echo $time['hrsWork'] . " - " . $valTSList['tsDate'] . ' - ' . $valTSList['dayType'] . '<br>' . '<br>'; 
-								// 	var_dump($valTSList) . '<br>' . '<br>';
-								// 	echo $valTSList['otIn'] . '<br>' . '<br>';
-								// 	echo $valTSList['otOut'] . '<br>' . '<br>';
-								// 	echo $valTSList['otOut'] . '<br>' . '<br>';
-								// 	echo $SchedHrsWork;
-								// }
 							}else{
 								$hrsOTLe8 = 8;
-								$hrsOTGt8 = ($hrsOt-8)-$hrsTardy-$hrsUT;
-								$hrsTardy = 0;
+								$hrsOTGt8 = $hrsOt-8;
+							}
+							
+						} else {
+							if ($hrsOt<=8) {
+								//alejo ot halfday duty deduct 1 hr for break
+								if ($valTSList['empBrnCode'] !== 0001 && $valTSList['CWWTag']=='' && $sat==6  && $hrsOt>=5 ){
+									$hrsOTLe8 = $hrsOt;
+								}else{
+									
+						// if($valTSList['empNo'] == '010000065' && $valTSList['tsDate'] == '2024-02-04') {
+						// 	echo var_dump($valTSList);
+						// 	echo '<br><br>';
+						// }
+									$hrsOTLe8 = $hrsOt;//original code
+									if($hrsOt < 8 && $valTSList['CWWTag']=='Y' && $valTSList['dayType'] == '02') {
+										$hrsOTLe8 = $hrsOt;
+									}
+								}
+									$hrsOTGt8 = 0;
+							} else {
+								if($valTSList['shiftCode'] == '01' && $sat==6) {
+									//minus break
+									$hrsOTLe8 = $hrsOt;
+									$hrsOTGt8 = 0;
+									// if($valTSList['empNo'] == '010000013' && $valTSList['tsDate'] == '2023-12-09') {
+									// 	echo $hrsOt . '<br>';
+									// 	echo $valTSList['shiftCode'] . '<br>';
+									// 	echo $sat . '<br>';
+									// 	echo $time['hrsWork'] . " - " . $valTSList['tsDate'] . ' - ' . $valTSList['dayType'] . '<br>' . '<br>'; 
+									// 	var_dump($valTSList) . '<br>' . '<br>';
+									// 	echo $valTSList['otIn'] . '<br>' . '<br>';
+									// 	echo $valTSList['otOut'] . '<br>' . '<br>';
+									// 	echo $valTSList['otOut'] . '<br>' . '<br>';
+									// 	echo $SchedHrsWork;
+									// }
+								}else{
+									$hrsOTLe8 = 8;
+									$hrsOTGt8 = ($hrsOt-8)-$hrsTardy-$hrsUT;
+									$hrsTardy = 0;
+								}
 							}
 						}
-					}
-						$otTag = ",otTag='Y'"; 
-						if ($Trns) {				
-							$sqlOT="Insert into tblTK_Overtime (compCode, empNo, tsDate, dayType, hrsOTLe8, hrsOTGt8, hrsNDLe8,hrsRegNDLe8)  values ('{$_SESSION['company_code']}','{$valTSList['empNo']}','{$valTSList['tsDate']}','{$valTSList['dayType']}','$hrsOTLe8','$hrsOTGt8','$hrsND','$hrsregND')\n";
-							$Trns = $this->execQryI($sqlOT);
-						}						
-					}
+							$otTag = ",otTag='Y'"; 
+							if ($Trns) {				
+								$sqlOT="Insert into tblTK_Overtime (compCode, empNo, tsDate, dayType, hrsOTLe8, hrsOTGt8, hrsNDLe8,hrsRegNDLe8)  values ('{$_SESSION['company_code']}','{$valTSList['empNo']}','{$valTSList['tsDate']}','{$valTSList['dayType']}','$hrsOTLe8','$hrsOTGt8','$hrsND','$hrsregND')\n";
+								$Trns = $this->execQryI($sqlOT);
+							}						
+						}
 	
 				} else {
 					$hrsOt = 0;
@@ -463,10 +469,14 @@ class TSPostingObj extends dateDiff {
 				$cwwhrsut = $hrsUT;
 				$fieldDed=",dedTag='Y'";
 				$hrsUT = round($hrsUT,2);
+				$minUT = round($hrsUT * 60, 0);
 				//added by nhomer
-				$hrsTardy = round($hrsTardy,2);
+				$hrsTardy = round($hrsTardy, 2);
+				$minTardy = round($hrsTardy * 60, 0);
+				// echo $hrsTardy . ' == ' . $minTardy . '<br><br>';
+				// echo $hrsUT . ' == ' . $minUT . '<br><br>';
 				if ($Trns) {
-					$sqlDeductions = "Insert into tblTK_Deductions (compCode, empNo, tsDate, hrsTardy, hrsUT) values ('{$_SESSION['company_code']}','{$valTSList['empNo']}','{$valTSList['tsDate']}','$hrsTardy','$hrsUT');";
+					$sqlDeductions = "Insert into tblTK_Deductions (compCode, empNo, tsDate, hrsTardy, hrsUT, minTardy, minUT) values ('{$_SESSION['company_code']}','{$valTSList['empNo']}','{$valTSList['tsDate']}','$hrsTardy','$hrsUT', '$minTardy', '$minUT');";
 					$Trns = $this->execQryI($sqlDeductions);
 
 					//12-08-2023 Add Managers remaining late time here
@@ -593,7 +603,8 @@ class TSPostingObj extends dateDiff {
 				$allowance = $emp_allowance['allowAmt'];
 			}
 
-			$DailyWithAllowance = round((((float)$valOT['empMrate'] + $allowance) * 12) / (float)$getCompInfo['compDaysInYear'], 2);
+			//$DailyWithAllowance = round((((float)$valOT['empMrate'] + $allowance) * 12) / (float)$getCompInfo['compDaysInYear'], 2);
+			$DailyWithAllowance = (((float)$valOT['empMrate'] + $allowance) * 12) / (float)$getCompInfo['compDaysInYear'];
 			$HourWithAllowance = $DailyWithAllowance / 8;
 
 			// echo "Emp No : " . $valOT['empNo'] . '<br>';
@@ -603,8 +614,8 @@ class TSPostingObj extends dateDiff {
 			// echo "Daily With Allowance : " . $DailyWithAllowance . '<br>';
 			// echo "Hour With Allowance : " . $HourWithAllowance . '<br>';
 
-			$amtOTLe8 = round((float)$valOT['hrsOTLe8'] * (float)$valOT['otPrem8'] * $HourWithAllowance,2);
-			$amtOTGt8 = round((float)$valOT['hrsOTGt8'] * (float)$valOT['otPremOvr8'] *$HourWithAllowance,2);
+			$amtOTLe8 = round((float)$valOT['hrsOTLe8'] * (float)$valOT['otPrem8'] * $HourWithAllowance, 2);
+			$amtOTGt8 = round((float)$valOT['hrsOTGt8'] * (float)$valOT['otPremOvr8'] *$HourWithAllowance, 2);
 			// echo "amtOTLe8 : " . $amtOTLe8 . '<br>';
 			// echo "amtOTGt8 : " . $amtOTGt8 . '<br>';
 
@@ -644,8 +655,24 @@ class TSPostingObj extends dateDiff {
 		foreach($this->getDedforComputation() as $valDed) {
 			$amtUT="";
 			//orig tardy compute
-			$amtTardy = round((float)$valDed['hrsTardy'] * ((float)$valDed['empDrate']/8), 2);
-			$amtUT = round((float)$valDed['hrsUT'] * ((float)$valDed['empDrate']/8), 2);
+			// $amtTardy = round((float)$valDed['hrsTardy'] * ((float)$valDed['empDrate']/8), 2);
+			// $amtUT = round((float)$valDed['hrsUT'] * ((float)$valDed['empDrate']/8), 2);
+
+			//03-14-2024 manually compute daily rate  //start
+			$emp_allowance = $this->getEmpAllowance($_SESSION['company_code'], $valDed['empNo']);
+
+			$allowance = 0;
+			if($emp_allowance['allowAmt'] != '') {
+				$allowance = $emp_allowance['allowAmt'];
+			}
+
+			$DailyWithAllowance = round((((float)$valDed['empMrate'] + $allowance) * 12) / (float)$getCompInfo['compDaysInYear'], 2);
+			//03-14-2024 manually compute daily rate //end
+
+			// $amtTardy = round((float)$valDed['hrsTardy'] * ((float)$DailyWithAllowance/8), 2);
+			// $amtUT = round((float)$valDed['hrsUT'] * ((float)$DailyWithAllowance/8), 2);
+			$amtTardy = (($DailyWithAllowance/8)/60)*$valDed['minTardy'];
+			$amtUT = (($DailyWithAllowance/8)/60)*$valDed['minUT'];
 			// echo $valDed['empNo'] . ' - ';
 			// echo $amtTardy . ' - ';
 			// echo $amtUT . '<br><br>';
@@ -1626,7 +1653,7 @@ if ($cday!='Y'){$hrsWrk=$hrsWrk;}else {
 	}
 
 	function getDedforComputation() {
-		$sqlDed= "SELECT tblEmpMast.empNo, tblEmpMast.empDrate, tblTK_Deductions.empNo, tblTK_Deductions.tsDate, tblTK_Deductions.hrsTardy, tblTK_Deductions.hrsUT, 
+		$sqlDed= "SELECT tblEmpMast.empNo, tblEmpMast.empMrate, tblTK_Deductions.empNo, tblTK_Deductions.tsDate, tblTK_Deductions.minTardy, tblTK_Deductions.minUT, 
                       tblTK_Deductions.amtTardy, tblTK_Deductions.amtUT
 				FROM tblEmpMast INNER JOIN tblTK_Deductions ON tblEmpMast.compCode = tblTK_Deductions.compCode AND tblEmpMast.empNo = tblTK_Deductions.empNo
 				Where tblEmpMast.compCode = '{$_SESSION['company_code']}' AND empPayGrp='{$this->Group}' 

@@ -137,7 +137,20 @@ class extractTNATSObj extends commonObj {
 					}
 				}
 
-				$rph = $val['empDrate'] / 8;
+				//03202024 start
+				$getCompInfo = $this->getCompany($_SESSION['company_code']);
+				$emp_allowance = $this->getEmpAllowance($_SESSION['company_code'], $val['empNo']);
+
+				$allowance = 0;
+				if($emp_allowance['allowAmt'] != '') {
+					$allowance = $emp_allowance['allowAmt'];
+				}
+
+				$DailyWithAllowance = round((((float)$val['empMrate'] + $allowance) * 12) / (float)$getCompInfo['compDaysInYear'], 2);
+				$rph = $DailyWithAllowance / 8;
+				//03202024 end
+
+				//$rph = $val['empDrate'] / 8;
 				
 				$hrsTardy		= (float)$val['hrsTardy']; 
 				$hrsUT			= (float)$val['hrsUT'];
@@ -934,6 +947,7 @@ FROM         tblTK_CSApp where compCode='{$_SESSION['company_code']}' AND csStat
 				tblTK_Deductions.trnCodeTardy, 
 				tblTK_Deductions.trnCodeUT, 
 				tblTK_Deductions.tsStatus,
+				emp.empMrate,
 				emp.empDrate,
 				emp.empHrate,
 				tsAppTypeCd,
@@ -964,6 +978,21 @@ FROM         tblTK_CSApp where compCode='{$_SESSION['company_code']}' AND csStat
 		$resChckPdTSTag = $this->execQryI($qryChckPdTSTag);
 		return $this->getSqlAssocI($resChckPdTSTag);
 	
+	}
+
+	function getEmpAllowance($compCode,$empNo){
+
+		$query = "SELECT * FROM tblallowance 
+						   WHERE compCode = '{$compCode}'
+						   AND   empNo    = '".trim($empNo)."'
+						   AND   allowCode=3";
+
+		return $this->getSqlAssocI($this->execQryI($query));
+	}
+
+	function getCompany($compCode){
+		$qry = "SELECT * FROM tblCompany WHERE compStat = 'A' AND compCode={$compCode}";
+		return $this->getSqlAssocI($this->execQryI($qry));
 	}
 }
 

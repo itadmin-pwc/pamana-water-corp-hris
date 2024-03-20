@@ -358,6 +358,17 @@ class regPayrollProcObj extends commonObj {
 	}
 	
 	private function getProRateAbsent($empNo,$basicPay){
+		//032024 start
+		$getCompInfo = $this->getCompany($_SESSION['company_code']);
+		$emp_allowance = $this->getEmpAllowance2($_SESSION["company_code"], $empNo);
+
+		$allowance = 0;
+		if($emp_allowance['allowAmt'] != '') {
+			$allowance = $emp_allowance['allowAmt'];
+		}
+
+		$empRateDaily = ((($basicPay * 2) + $allowance) * 12) / (float)$getCompInfo['compDaysInYear'];
+		//032024 end
 	
 		$cntAbsent = $cntPresent = $cntRDLG= $empProRateDaily = 0;
 		$qryGetLstAbsent = "SELECT * FROM tblTimeSheet
@@ -368,7 +379,7 @@ class regPayrollProcObj extends commonObj {
 							  AND empPayCat='".$_SESSION["pay_category"]."'
 							  AND empPayGrp='".$_SESSION["pay_group"]."'";
 		$resGetLstAbsent  = $this->execQryI($qryGetLstAbsent );
-		$rowGetLstAbsent  = $this->getArrResI($resGetLstAbsent );
+		$rowGetLstAbsent  = $this->getArrResI($resGetLstAbsent);
 		
 		foreach($rowGetLstAbsent as $rowGetLstAbsent_Val)
 		{
@@ -393,11 +404,13 @@ class regPayrollProcObj extends commonObj {
 		}
 		
 		if($cntPresent==0){
-			$empAmntAbsent = $basicPay;
+			//$empAmntAbsent = $basicPay;
+			$empAmntAbsent = $basicPay - ($empRateDaily * $cntAbsent); //03202024
 		}else{
 			$calDays = $this->getCalendarDays($this->get['dtFrm'], $this->get['dtTo'])+1;
 			$noRegDays = $calDays - $cntRDLG;
-			$empProRateDaily = $basicPay/$noRegDays;
+			//$empProRateDaily = $basicPay/$noRegDays; // orig 032024
+			$empProRateDaily = $empRateDaily;
 			$empAmntAbsent = $cntAbsent*$empProRateDaily;
 			$empAmntAbsent = sprintf("%01.2f",$empAmntAbsent);
 		}
@@ -1344,14 +1357,17 @@ WHERE tk.compCode = '".$_SESSION["company_code"]."'
 			//echo "gross: " . $gross . "<br>";
 
 			$sssArr = $this->getGovDedAmnt($salary);
+			//var_dump($sssArr);
 			if ($sssArr['sssEmployee']!="") {$SssEmp=$sssArr['sssEmployee'];} else {$SssEmp=0;}
 			if ($sssArr['mProveFund_EE']!="") {$mProveEE=$sssArr['mProveFund_EE'];} else {$mProveEE=0;}
+			//echo "sss emp: " . $SssEmp . "<br>";
+			//echo "sss prove: " . $mProveEE . "<br>";
 			$sss = ($SssEmp + $mProveEE) * 12;
 
 			//echo "sss: " . $sss . "<br>";
 			$phil = $this->getGovDedAmntPhic($salary) * 12;
 			//echo "phil: " . $phil . "<br>";
-			$hdmf = 100 * 12;
+			$hdmf = 100 + (200 * 11);
 			//echo "hdmf: " . $hdmf . "<br>";
 			$total_deduction = $sss + $phil + $hdmf;
 			//echo "total_deduction: " . $total_deduction . "<br>";
@@ -2707,6 +2723,15 @@ $qryUpdateEmpLoans = "UPDATE tblEmpLoansDtl SET dedTag = ''
                                 return $phicAmt;
 
                 }
+	
+	function getEmpAllowance2($compCode,$empNo){
+		$query = "SELECT * FROM tblallowance 
+						   WHERE compCode = '{$compCode}'
+						   AND   empNo    = '".trim($empNo)."'
+						   AND   allowCode=3";
+
+		return $this->getSqlAssocI($this->execQryI($query));
+	}
 	
 }
 
