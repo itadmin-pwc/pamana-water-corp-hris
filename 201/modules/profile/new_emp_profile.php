@@ -154,7 +154,6 @@ if($_GET["action"]=='deleNewEmp') {
 		echo "alert('New Employee was unsucessfully deleted.');";
 	}
 	exit();
-	
 }
 
 if($_GET["action"]=='delPrevEmplr')
@@ -242,9 +241,7 @@ include("../../../includes/calendar.php");
 		<STYLE>@import url("../../../js/themes/mac_os_x.css");</STYLE>
         
 		<style type="text/css">
-        <!--
-        .headertxt {font-family: verdana; font-size: 11px;}
-        -->
+        	.headertxt {font-family: verdana; font-size: 11px;}
         </style>        
    	<STYLE>@import url('../../../js/themes/default.css');</STYLE>
 	<STYLE>@import url('../../../js/themes/alphacube.css');</STYLE>	

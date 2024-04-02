@@ -39,6 +39,7 @@
 ?>
 
 <input type="hidden" name="empBrnCode" id="empBrnCode" value="<?=$empInfo["empBrnCode"]?>" />
+
 <TABLE border="0" width="100%" cellpadding="1" cellspacing="0" class="parentGrid">
 	<tr>
 		<td colspan="4" class="parentGridHdr">
@@ -150,8 +151,7 @@
 					</td>
 
 					<td class="gridDtlVal" colspan="4" align="center">
-						<input type="button" name="btnSave" id="btnSave" class="inputs" value="SAVE" onclick="saveUpdateEmpShiftDetail();" />
-						<input type="button" name="btnUpdate" id="btnUpdate" style="background-color: red; color:yellow;" class="inputs" value="UPDATE ALL EMPLOYEE WITH SAME SHIFT" onclick="saveBulkEmpShiftDetail();" />
+						<input type="button" style="float: right; width: 200px;" name="btnSave" id="btnSave" class="inputs" value="SAVE" onclick="saveUpdateEmpShiftDetail();" />
 					</td>
 				</tr>
                 
@@ -174,7 +174,6 @@
 
 				</tr>
                 
-				
 				<?php
 					$weekCnt = 1;
                 	$cntWeek_sel =1;
@@ -245,6 +244,9 @@
 		</td>
 	</tr>
 </TABLE>
+<br>
+<input type="button" name="btnUpdate" id="btnUpdate" style="background-color: red; color:yellow; float: right;" class="inputs" value="UPDATE ALL EMPLOYEE WITH SAME SHIFT [Bulk Update]" onclick="saveBulkEmpShiftDetail();" />
+<br><br><br>
 <INPUT type="hidden" name="hdnTrnsType" id="hdnTrnsType" value="<?=$hdnTrnsType?>">
 <? $updateEmpShiftObj->disConnect();?>
 

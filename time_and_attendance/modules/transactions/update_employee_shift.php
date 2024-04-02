@@ -25,14 +25,13 @@ switch($_GET["action"])
 		
 		if($_GET["chkDayEnabled".$_GET["enableField"]]!="")
 		{
-				echo "document.frmUpdateEmpShift.txtEtimeIn".$_GET["enableField"].".readOnly=false; ";
-				echo "document.frmUpdateEmpShift.txtElunchOut".$_GET["enableField"].".readOnly=false; ";
-				echo "document.frmUpdateEmpShift.txtElunchIn".$_GET["enableField"].".readOnly=false; ";
-				echo "document.frmUpdateEmpShift.txtEbrkOut".$_GET["enableField"].".readOnly=false; ";
-				echo "document.frmUpdateEmpShift.txtEbrkIn".$_GET["enableField"].".readOnly=false; ";
-				echo "document.frmUpdateEmpShift.txtEtimeOut".$_GET["enableField"].".readOnly=false; ";
-				echo "document.frmUpdateEmpShift.chkCrossDay".$_GET["enableField"].".disabled=false; ";
-			
+			echo "document.frmUpdateEmpShift.txtEtimeIn".$_GET["enableField"].".readOnly=false; ";
+			echo "document.frmUpdateEmpShift.txtElunchOut".$_GET["enableField"].".readOnly=false; ";
+			echo "document.frmUpdateEmpShift.txtElunchIn".$_GET["enableField"].".readOnly=false; ";
+			echo "document.frmUpdateEmpShift.txtEbrkOut".$_GET["enableField"].".readOnly=false; ";
+			echo "document.frmUpdateEmpShift.txtEbrkIn".$_GET["enableField"].".readOnly=false; ";
+			echo "document.frmUpdateEmpShift.txtEtimeOut".$_GET["enableField"].".readOnly=false; ";
+			echo "document.frmUpdateEmpShift.chkCrossDay".$_GET["enableField"].".disabled=false; ";	
 		}
 		else
 		{
@@ -347,9 +346,11 @@ switch($_GET["action"])
 			}
 		}
 		
-		var changeUpdateSchedConfirm = confirm('Are you sure you want to update all the employee with the same shift?');
-		if(changeUpdateSchedConfirm == true){
-			var changeUpdateTsApp = confirm('Do you want to clear the generated TS Application Types in the Timesheet?');
+		var changeUpdateSchedConfirm = confirm('WARNING!!! \n\n\n You are about to update all the employee with the same shift. Do you wish to continue?');
+		if(changeUpdateSchedConfirm == true) {
+			var confirm2 = confirm('WARNING!!! \n\n\n Are you really sure to UPDATE ALL EMPLOYEE WITH SAME SHIFT?');
+			if(confirm2 == true){
+				var changeUpdateTsApp = confirm('Do you want to clear the generated TS Application Types in the Timesheet?');
 				
 				if(changeUpdateTsApp == true){
 					params = 'update_employee_shift.php?action=saveBulkSched&delAppTypeCd=Yes';
@@ -367,7 +368,7 @@ switch($_GET["action"])
 						pager('update_employee_shiftAjaxResult.php','updateEmpShiftCont','load',0,0,'','','','../../../images/');  
 					}	
 				});
-				
+			}
 		}
 	}
 	

@@ -146,8 +146,8 @@ class extractTNATSObj extends commonObj {
 					$allowance = $emp_allowance['allowAmt'];
 				}
 
-				$DailyWithAllowance = round((((float)$val['empMrate'] + $allowance) * 12) / (float)$getCompInfo['compDaysInYear'], 2);
-				$rph = $DailyWithAllowance / 8;
+				$DailyWithAllowance = (((float)$val['empMrate'] + $allowance) * 12) / (float)$getCompInfo['compDaysInYear'];
+				$rph = round($DailyWithAllowance / 8, 2);
 				//03202024 end
 
 				//$rph = $val['empDrate'] / 8;

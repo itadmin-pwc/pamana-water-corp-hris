@@ -2113,14 +2113,14 @@ $qryUpdateEmpLoans = "UPDATE tblEmpLoansDtl SET dedTag = ''
 								if ($arrGovDedAmnt['EC']!="") {$EcEmp=$arrGovDedAmnt['EC'];} else {$EcEmp=0;}
 								//if ($arrGovDedAmnt['phicEmployee']!="") {$PhicEmp=$arrGovDedAmnt['phicEmployee'];} else {$PhicEmp=0;}
 								//if ($arrGovDedAmnt['phicEmployer']!=""){$PhicEmplr=$arrGovDedAmnt['phicEmployee'];} else {$PhicEmplr=0;}
-								$HdmfEmp = 100;
-								$HdmfEmplr = 100;
+								$HdmfEmp = 200;
+								$HdmfEmplr = 200;
 								$sumGov = $SssEmp + $PhicEmp + $HdmfEmp+ $mProveEE;
 							} elseif ($empGovtDeduct == 2) {
 								//if ($arrGovDedAmnt['phicEmployee']!="") {$PhicEmp=$arrGovDedAmnt['phicEmployee'];} else {$PhicEmp=0;}
 								//if ($arrGovDedAmnt['phicEmployer']!=""){$PhicEmplr=$arrGovDedAmnt['phicEmployee'];} else {$PhicEmplr=0;}
-								$HdmfEmp = 100;
-								$HdmfEmplr = 100;
+								$HdmfEmp = 200;
+								$HdmfEmplr = 200;
 								$sumGov = $PhicEmp + $HdmfEmp;
 								
 							}	

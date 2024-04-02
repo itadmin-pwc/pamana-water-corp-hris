@@ -229,6 +229,13 @@ $font_editedTs = "993300";
 	function chkBreak(btnAction)
 	{
 		var frmSer_a = $('frmEmpTimeSheet').serialize(true);
+
+		if((frmSer_a['violationCd']=="0"))
+		{
+			alert('Violation Type is required.');
+			$('violationCd').focus();
+			return false;
+		}
 		
 		if((frmSer_a['txtEbrkOut']!="") && (frmSer_a['txtEbrkOut']!=":"))
 		{

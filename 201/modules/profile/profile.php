@@ -197,9 +197,9 @@ include("../../../includes/calendar.php");
 		<STYLE>@import url("../../../js/themes/mac_os_x.css");</STYLE>
         
 		<style type="text/css">
-        /**
+        *
         .headertxt {font-family: verdana; font-size: 11px;}
-         */
+        
         </style>        
 	</HEAD>
 	<BODY onLoad="focusTab2(1);">
