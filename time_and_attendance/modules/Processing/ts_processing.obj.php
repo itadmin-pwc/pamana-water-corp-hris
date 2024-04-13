@@ -139,15 +139,15 @@ class TSProcessingObj extends dateDiff {
 			foreach($timeArray as $t) {
 				//echo var_dump($t);
 					//employee no           //bio no
-				if(!empty($t['ESABUN']) && !empty($t['ETAG'])) {
-					$queryGP = "Select gracePeriod from tbltk_empshift where empNo='" . $t['ESABUN'] . "' and bioNo='" . $t['ETAG'] . "'";
+				if(!empty($t['ETAG'])) {
+					$queryGP = "Select gracePeriod from tbltk_empshift where bioNo='" . $t['ETAG'] . "'";
 					$gpRes = $this->getSqlAssocI($this->execQryI($queryGP));
 					$gracePeriod = $gpRes['gracePeriod'];
 	
 					$timeIn = strtotime(date("H:i:s",strtotime($t['ETIME'])));
 					$date = date('Y-m-d', strtotime($t['EDATE']));
 	
-					$queryTS = "Select shftTimeIn from tbltk_timesheet where empNo='" . $t['ESABUN'] . "' and bioNo='" . $t['ETAG'] . "' and tsDate='" . $date . "'";
+					$queryTS = "Select shftTimeIn from tbltk_timesheet where bioNo='" . $t['ETAG'] . "' and tsDate='" . $date . "'";
 					$tsRes = $this->getSqlAssocI($this->execQryI($queryTS));
 					$shiftTimeIn = $tsRes['shftTimeIn'];
 					//die($shiftTimeIn);
