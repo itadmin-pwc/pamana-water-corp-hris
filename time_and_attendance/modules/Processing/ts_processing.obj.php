@@ -137,7 +137,7 @@ class TSProcessingObj extends dateDiff {
 		if($Trns) {
 			$timeArray = $this->processGracePeriod();
 			foreach($timeArray as $t) {
-				echo var_dump($t);
+				//echo var_dump($t);
 					//employee no           //bio no
 				if(!empty($t['ESABUN']) && !empty($t['ETAG'])) {
 					$queryGP = "Select gracePeriod from tbltk_empshift where empNo='" . $t['ESABUN'] . "' and bioNo='" . $t['ETAG'] . "'";
