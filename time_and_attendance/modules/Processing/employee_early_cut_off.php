@@ -89,7 +89,7 @@ switch($_GET["action"])
 								<?php
 								$empNo = $_GET['empNo'] == '' ? $_SESSION['employeenumber'] : $_GET['empNo'];
 								?>
-								<input tabindex="10" class="inputs" type="text" name="csDateFrom" readonly="readonly" id="csDateFrom" size="10" onfocus="getEmpShift(<?=$empNo?>);"
+								<input tabindex="10" class="inputs" type="text" name="csDateFrom" readonly="readonly" id="csDateFrom" size="10"
 									value="<? 	
 												$format="Y-m-d";
 												$strf=date($format);

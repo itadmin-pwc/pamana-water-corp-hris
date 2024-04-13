@@ -137,25 +137,33 @@ class TSProcessingObj extends dateDiff {
 		if($Trns) {
 			$timeArray = $this->processGracePeriod();
 			foreach($timeArray as $t) {
-				if(!empty($t['empNo']) && !empty($t['bioNo'])) {
-					$queryGP = "Select gracePeriod from tbltk_empshift where empNo='" . $t['empNo'] . "' and bioNo='" . $t['bioNo'] . "'";
+				echo var_dump($t);
+					//employee no           //bio no
+				if(!empty($t['ESABUN']) && !empty($t['ETAG'])) {
+					$queryGP = "Select gracePeriod from tbltk_empshift where empNo='" . $t['ESABUN'] . "' and bioNo='" . $t['ETAG'] . "'";
 					$gpRes = $this->getSqlAssocI($this->execQryI($queryGP));
 					$gracePeriod = $gpRes['gracePeriod'];
 	
 					$timeIn = strtotime(date("H:i:s",strtotime($t['ETIME'])));
-					$date = date('Ymd', strtotime($t['EDATE']));
+					$date = date('Y-m-d', strtotime($t['EDATE']));
 	
-					$queryTS = "Select shftTimeIn from tbltk_timesheet where empNo='" . $t['empNo'] . "' and bioNo='" . $t['bioNo'] . "' and tsDate='" . $date . "'";
+					$queryTS = "Select shftTimeIn from tbltk_timesheet where empNo='" . $t['ESABUN'] . "' and bioNo='" . $t['ETAG'] . "' and tsDate='" . $date . "'";
 					$tsRes = $this->getSqlAssocI($this->execQryI($queryTS));
 					$shiftTimeIn = $tsRes['shftTimeIn'];
+					//die($shiftTimeIn);
 	
 					// Convert time to seconds
 					$timestampShiftTimeIn = strtotime($shiftTimeIn);
 					$etime = date('His', $timestampShiftTimeIn);
+					
 					// Calculate the end time by adding the grace period in seconds
 					$timestampEndTime = $timestampShiftTimeIn + ($gracePeriod * 60); // Convert grace period to seconds
-	
+					
+					//echo $timestampEndTime . '<br>';
+					die($timestampEndTime);
+
 					if ($timeIn >= $timestampShiftTimeIn && $timeIn <= $timestampEndTime) {
+						die($timestampEndTime);
 						if ($Trns) {
 							$Trns = $this->execQryI("UPDATE tbltk_eventlogs SET SET ETIME='" . $etime . "' WHERE id=" . $t['id'] . ";");
 						} else {

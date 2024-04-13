@@ -127,6 +127,8 @@ switch ($_GET['code']) {
 		  <tr>
 		    <td height="25" colspan="7" class="childGridFooter">
 				<div align="center">
+				<input name="btnProcess" type="button" class="inputs" id="btnProcess" onClick="ProcessTS();" value="Process Timesheet">
+
 				<?php
 				if($_SESSION['user_level'] == 1) {
 				?>
@@ -134,7 +136,7 @@ switch ($_GET['code']) {
 				<?php
 					}
 				?>
-				<input name="btnProcess" type="button" class="inputs" id="btnProcess" onClick="ProcessTS();" value="Process Timesheet">
+				
 				<input type="hidden" value="<?=$q;?>" name="chCtr" id="chCtr"><input type="hidden" name="checker" id="checker" value="0">
 				</div>
 			</td>
