@@ -118,7 +118,6 @@ class TSProcessingObj extends dateDiff {
 				}			
 			}		
 		}
-		
 	
 		//procces OT
 		if ($Trns) {
@@ -130,47 +129,6 @@ class TSProcessingObj extends dateDiff {
 				} else {
 					break; 	
 				}			
-			}
-		}
-		
-		//procces Grace Period
-		if($Trns) {
-			$timeArray = $this->processGracePeriod();
-			foreach($timeArray as $t) {
-				//echo var_dump($t);
-					//employee no           //bio no
-				if(!empty($t['ETAG'])) {
-					$queryGP = "Select gracePeriod from tbltk_empshift where bioNo='" . $t['ETAG'] . "'";
-					$gpRes = $this->getSqlAssocI($this->execQryI($queryGP));
-					$gracePeriod = $gpRes['gracePeriod'];
-	
-					$timeIn = strtotime(date("H:i:s",strtotime($t['ETIME'])));
-					$date = date('Y-m-d', strtotime($t['EDATE']));
-	
-					$queryTS = "Select shftTimeIn from tbltk_timesheet where bioNo='" . $t['ETAG'] . "' and tsDate='" . $date . "'";
-					$tsRes = $this->getSqlAssocI($this->execQryI($queryTS));
-					$shiftTimeIn = $tsRes['shftTimeIn'];
-					//die($shiftTimeIn);
-	
-					// Convert time to seconds
-					$timestampShiftTimeIn = strtotime($shiftTimeIn);
-					$etime = date('His', $timestampShiftTimeIn);
-					
-					// Calculate the end time by adding the grace period in seconds
-					$timestampEndTime = $timestampShiftTimeIn + ($gracePeriod * 60); // Convert grace period to seconds
-					
-					//echo $timestampEndTime . '<br>';
-					//die($timestampEndTime);
-
-					if ($timeIn >= $timestampShiftTimeIn && $timeIn <= $timestampEndTime) {
-						die($timestampEndTime);
-						if ($Trns) {
-							$Trns = $this->execQryI("UPDATE tbltk_eventlogs SET SET ETIME='" . $etime . "' WHERE id=" . $t['id'] . ";");
-						} else {
-							break; 	
-						}
-					}
-				}
 			}
 		}
 
@@ -277,6 +235,54 @@ class TSProcessingObj extends dateDiff {
 //		} else {
 //			return 1;
 //		}
+
+	//procces Grace Period
+	if($Trns) {
+		$timeArray = $this->processGracePeriod();
+		//die(var_dump($timeArray));
+		foreach($timeArray as $t) {
+    		//var_dump($t['EDATE']);
+			
+				//employee no           //bio no
+			if(!empty($t['ETAG'])) {
+				$queryGP = "Select gracePeriod from tbltk_empshift where bioNo like '%" . $t['ETAG'] . "%'";
+				$gpRes = $this->getSqlAssocI($this->execQryI($queryGP));
+				$gracePeriod = $gpRes['gracePeriod'];
+
+				$timeIn = strtotime(date("H:i:s",strtotime($t['ETIME'])));
+				$date = date('Y-m-d', strtotime($t['EDATE']));
+				//echo(var_dump($t['EDATE']));
+
+				$queryTS = "Select shftTimeIn from tbltk_timesheet where bioNo like '%" . $t['ETAG'] . "%' and tsDate='" . $date . "'";
+				$tsRes = $this->getSqlAssocI($this->execQryI($queryTS));
+				$shiftTimeIn = $tsRes['shftTimeIn'];
+				//echo($queryTS . "<br>");
+				// Convert time to seconds
+				$timestampShiftTimeIn = strtotime($shiftTimeIn);
+				$etime = date('His', $timestampShiftTimeIn);
+
+				//die(var_dump($t['ETAG']));
+				// if($date == '2024-04-01') {
+				// 	echo(var_dump($etime));
+				// }
+				
+				// Calculate the end time by adding the grace period in seconds
+				$timestampEndTime = $timestampShiftTimeIn + ($gracePeriod * 60); // Convert grace period to seconds
+				
+				//echo $timestampEndTime . '<br>';
+				//die($timestampEndTime);
+
+				if ($timeIn >= $timestampShiftTimeIn && $timeIn <= $timestampEndTime) {
+					//die($timestampEndTime);
+					if ($Trns) {
+						$Trns = $this->execQryI("UPDATE tbltk_eventlogs SET ETIME='" . $etime . "' WHERE id=" . $t['id'] . ";");
+					} else {
+						break; 	
+					}
+				}
+			}
+		}
+	}
 			
 		if(!$Trns){
 			$Trns = $this->rollbackTranI();//rollback transaction
@@ -293,7 +299,7 @@ class TSProcessingObj extends dateDiff {
 	}
 
 	function processGracePeriod() {
-		$query = "SELECT evlogs.*, mast.empNo, bio.bioNumber  FROM tbltk_eventlogs evlogs 
+		$query = "SELECT evlogs.*, bio.bioNumber  FROM tbltk_eventlogs evlogs 
 				LEFT OUTER JOIN tblbioemp bio 
 				ON bio.bioNumber = evlogs.ETAG
 				LEFT OUTER JOIN tblempmast mast 
@@ -1458,6 +1464,7 @@ FROM         tblTK_TimeSheetCorr INNER JOIN
 		$res =  $this->getArrResI($this->execQryI($sqlFinalResult));
 		return $res;
 	}
+
 	function checkifPrevDateisCrossDay($empNo,$tsDate,$hist) {
 		$sql = "SELECT otCrossTag,crossDay  FROM tblTK_Timesheet$hist  WHERE  tsDate =DATE_ADD('$tsDate', INTERVAL -1 DAY)  AND empNo='$empNo'";	
 		return $this->getSqlAssocI($this->execQryI($sql));
