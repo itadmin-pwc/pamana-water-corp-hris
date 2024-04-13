@@ -160,7 +160,7 @@ class TSProcessingObj extends dateDiff {
 					$timestampEndTime = $timestampShiftTimeIn + ($gracePeriod * 60); // Convert grace period to seconds
 					
 					//echo $timestampEndTime . '<br>';
-					die($timestampEndTime);
+					//die($timestampEndTime);
 
 					if ($timeIn >= $timestampShiftTimeIn && $timeIn <= $timestampEndTime) {
 						die($timestampEndTime);
