@@ -6,6 +6,9 @@ class commonObj extends dbHandler {
 						   WHERE empNo    = '".trim($empNo)."'
 						   AND id = '{$empId}'
 						   AND   empStat NOT IN('RS','TR') ";
+		$qryGetUserInfo = "SELECT * FROM tblEmpMast 
+						   WHERE empNo    = '".trim($empNo)."'
+						   AND id = '{$empId}'";
 		$resGetUserInfo = $this->execQry($qryGetUserInfo);
 		return $this->getSqlAssoc($resGetUserInfo);		
 	}
@@ -23,10 +26,14 @@ class commonObj extends dbHandler {
 	
 	function getUserInfo($compCode,$empNo,$where){
 
+		// $qryGetUserInfo = "SELECT * FROM tblEmpMast 
+		// 				   WHERE compCode = '{$compCode}'
+		// 				   AND   empNo    = '".trim($empNo)."'
+		// 				   AND   empStat NOT IN('RS','TR') ";
+
 		$qryGetUserInfo = "SELECT * FROM tblEmpMast 
 						   WHERE compCode = '{$compCode}'
-						   AND   empNo    = '".trim($empNo)."'
-						   AND   empStat NOT IN('RS','TR') ";
+						   AND   empNo    = '".trim($empNo)."'";
 						   
 		if($where != ""){
 			$qryGetUserInfo .= $where;

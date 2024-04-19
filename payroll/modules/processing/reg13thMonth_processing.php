@@ -134,7 +134,7 @@ if(isset($_GET['action'])){
 											// 				 AND pdNumber=25";
 											$andPayPeriod = "AND payGrp = '{$_SESSION['pay_group']}'
 															 AND payCat = '{$_SESSION['pay_category']}'
-															 AND pdYear = '2023'
+															 AND pdYear = $pdYear
 															 AND pdNumber=25";
 											$arrPayPeriod = $reg13thMonthProcObj->getPayPeriod($_SESSION['company_code'],$andPayPeriod);
 											echo $arrPayPeriod['pdNumber']. " - " .$arrPayPeriod['pdYear'];

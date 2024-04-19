@@ -13,7 +13,7 @@ class transferredObj extends commonObj {
 		from payroll_company..tblTransferredEmployees
 		Inner Join tblEmpMast on payroll_company..tblTransferredEmployees.empNo=tblEmpMast.empNo 
 		where payroll_company..tblTransferredEmployees.status='Q' 
-		and tblEmpMast.empPayGrp<>'{$payGrp}' 
+		and tblEmpMast.empPayGrp='{$payGrp}' 
 		and tblEmpMast.empBrnCode IN (Select brnCode from tblUserBranch where compCode='{$_SESSION['company_code']}' 
 		and empNo='{$_SESSION['employee_number']}')
 		order by payroll_company..tblTransferredEmployees.empLastName,payroll_company..tblTransferredEmployees.empFirstName";

@@ -227,13 +227,14 @@ $payGrp = $common->getProcGrp();
                                 	<td>
                                     	<a href="#" onClick="location.href='profile.php?act=View&empNo=<?=$empListVal['empNo']?>&compCode=<?=$empListVal['compCode']?>'"><img class="toolbarImg" src="../../../images/application_form_magnify.png" title="View Employee Information"></a>                                    </td>
                                 	<?php 
-										if ($_SESSION['employee_number'] == '010002408') {
+									//echo $empListVal['empPayGrp'] . '==' . $payGrp;
+										if ($_SESSION['employee_number'] == '123') {
 								   ?>
                                     <td>
                                     	<a href="#" onClick="location.href='profile.php?act=Edit&empNo=<?=$empListVal['empNo']?>&compCode=<?=$empListVal['compCode']?>'"><img class="toolbarImg" src="../../../images/application_form_edit.png" title="Edit Employee Information" /></a>
                                     </td>                   
                                   <? }
-								  	if ($payGrp != $empListVal['empPayGrp']) 
+								  	if ($payGrp == $empListVal['empPayGrp']) 
 									{
 								   ?>
                                 	 <td class="gridDtlVal" align="left">

@@ -35,7 +35,7 @@
 	
 	$array_userPayCat = explode(',', $_SESSION['user_payCat']);
 	// if(in_array(9,$array_userPayCat))old replace by alejo to filter the employee
-	if(in_array(9))
+	if(in_array(9, $array_userPayCat))
 	{
 		$where_empStat = "";
 	}

@@ -275,12 +275,13 @@ class TSPostingObj extends dateDiff {
 					
 				$hrsOt 		= $time['hrsOT'];
 				$hrsND 		= $time['hrsND'];
-				// if ($valTSList['empNo']=='010000065' && date('m/d/Y',strtotime($valTSList['tsDate']))=='10/25/2023')
-				// 	echo "OT = {$time['hrsOT']}\n";		
+				// if ($valTSList['empNo']=='010000065' && date('m/d/Y',strtotime($valTSList['tsDate']))=='03/31/2024') {
+				// 	echo "OT = {$time['hrsOT']}\n" . '<br>';	
+				// 	echo "ND: " . $hrsND;
+				// }	
 				
 				$hrsUT = ($time['hrsUT'] >= $SchedHrsWork) ? 0: $time['hrsUT'];
 				$hrsUT = ($hrsUT < 0) ? 0:$hrsUT;
-
 
 				if (($hrsUT+$hrsWrk) > $SchedHrsWork && $hrsUT>0) {
 					if ($hrsWrk<$SchedHrsWork)
@@ -330,13 +331,20 @@ class TSPostingObj extends dateDiff {
 			$otTag = "";
 			//OT
 				
-			if ($hrsWrk == 0) {
+			if ($hrsWrk == 0 && $valTSList['dayType'] == '01') {
 				$hrsND = $hrsregND = 0;
 			}
+
+			// if ($valTSList['empNo']=='010000065' && date('m/d/Y',strtotime($valTSList['tsDate']))=='03/31/2024') {
+			// 	echo "OT = {$time['hrsOT']}\n" . '<br>';	
+			// 	echo "ND: " . $hrsND;
+			// }	
 
 			$hrsND 		= ($hrsND>8) ? 8:$hrsND;
 
 			$hrsND 		= ($hrsND<$hrsregND)? $hrsND:$hrsND-$hrsregND;
+
+			
 
 			//orig code 08/06/2023
 			//$hrsLunch = round($this->calDiff("{$valTSList['tsDate']} {$valTSList['lunchOut']}","{$valTSList['tsDate']} {$valTSList['lunchIn']}",'m')/60,2);
@@ -485,11 +493,11 @@ class TSPostingObj extends dateDiff {
 				$fieldDed=",dedTag='Y'";
 				$hrsUT = round($hrsUT, 2);
 				$minUT = round($hrsUT * 60, 0);
-				//added by nhomer
+				
 				$hrsTardy = round($hrsTardy, 2);
 				$minTardy = round($hrsTardy * 60, 0);
-				// echo $hrsTardy . ' == ' . $minTardy . '<br><br>';
-				// echo $hrsUT . ' == ' . $minUT . '<br><br>';
+				//echo $hrsTardy . ' == ' . $minTardy . '<br><br>';
+				//echo $hrsUT . ' == ' . $minUT . '<br><br>';
 				if ($Trns) {
 					// $sqlDeductions = "Insert into tblTK_Deductions (compCode, empNo, tsDate, hrsTardy, hrsUT, minTardy, minUT) values ('{$_SESSION['company_code']}','{$valTSList['empNo']}','{$valTSList['tsDate']}','$hrsTardy','$hrsUT', '$minTardy', '$minUT');";
 					// $Trns = $this->execQryI($sqlDeductions);
@@ -541,7 +549,7 @@ class TSPostingObj extends dateDiff {
 			$hrsWrk = ($hrsWrk < 0) ? 0:$hrsWrk;
 			
 			if ($valTSList['CWWTag']=='Y') {
-						$CWWHrswrk =0;
+				$CWWHrswrk =0;
 
 				$cwhrsWrk = ($cwwhrstardy > 0) ? $hrsWrk+$cwwhrstardy:$hrsWrk;
 				$cwhrsWrk += ($cwwhrsut > 0) ? $hrsWrk+$cwwhrsut:$hrsWrk;
@@ -1208,18 +1216,18 @@ if ($cday!='Y'){$hrsWrk=$hrsWrk;}else {
 					$time['hrsWork'] = ($time['hrsWork'] < 0) ? 0:$time['hrsWork'];
 				
 					if($arr['hrs8Deduct']!='Y') {
-					if ($arr['breakOut'] !='' && $arr['breakIn'] !='') {
-						$brkTime = round($this->calDiff("{$arr['tsDate']} {$arr['breakOut']}","{$arr['tsDate']} {$arr['breakIn']}",'m')/60,2);
-						if ($brkTime>0.25) {
-							$time['hrsWork'] -= $brkTime-0.25;
-							$time['hrsTardy'] += $brkTime-0.25;
-								
-						}
-						if ($brkTime>0 && $brkTime<0.83) {
-							$this->AddViolation($arr['empNo'],$arr['tsDate'],'08');
-						}						
-					}
+						if ($arr['breakOut'] !='' && $arr['breakIn'] !='') {
+							$brkTime = round($this->calDiff("{$arr['tsDate']} {$arr['breakOut']}","{$arr['tsDate']} {$arr['breakIn']}",'m')/60,2);
+							if ($brkTime>0.25) {
+								$time['hrsWork'] -= $brkTime-0.25;
+								$time['hrsTardy'] += $brkTime-0.25;
+									
 							}
+							if ($brkTime>0 && $brkTime<0.83) {
+								$this->AddViolation($arr['empNo'],$arr['tsDate'],'08');
+							}						
+						}
+					}
 				
 
 				if ($hrsLunch>0 && $hrsLunch<0.33) {
@@ -1443,12 +1451,25 @@ if ($cday!='Y'){$hrsWrk=$hrsWrk;}else {
 				
 				//compute ND	
 				if (((float)str_replace(":",".",$arr['timeOut'])>22 && (float)str_replace(":",".",$arr['otOut'])>22))  {
+					
 					$time['hrsND'] += round($this->calDiff("{$arr['tsDate']} 22:00","{$arr['tsDate']} $OTOut",'m')/60,2);
+					// if($arr['empNo'] == '010000065') {
+					// 	echo $arr['empNo'] == '010000065' ? $arr['empNo'] . ' - ' . $arr['tsDate'] . '<br>' : '';
+							
+					// 	echo $arr['empNo'] == '010000065' ? $arr['timeIn'] . '<br>' : '';
+					// 	echo $arr['empNo'] == '010000065' ? $arr['timeOut'] . '<br>' : '';
+					// 	echo $arr['empNo'] == '010000065' ? $arr['dayType'] . '<br>' : '';
+					// 	echo $arr['empNo'] == '010000065' ? 'ND: ' . $time['hrsND'] . '<br>' : '';
+					// }
 
 				}elseif ((float)str_replace(":",".",$arr['timeOut'])<22 &&(float)str_replace(":",".",$arr['otOut'])<22 && $arr['otCrossTag']=='Y')  {
 					$dtTo = ((float)str_replace(":",".",$arr['timeOut'])<(float)str_replace(":",".",$arr['otOut'])) ? $this->DateAdd($arr['tsDate'])." {$arr['timeOut']}":$this->DateAdd($arr['tsDate'])."  {$arr['otOut']}";
 					$time['hrsND'] += round($this->calDiff("{$arr['tsDate']} 22:00",$dtTo,'m')/60,2);
 				} 
+
+				// if((float)str_replace(":",".",$arr['timeOut'])>22 || (float)str_replace(":",".",$arr['otOut'])<=6 && $arr['timeOut']!="") {
+					
+				// }
 				$time['hrsWork'] = 0;
 				
 			} else { // without OT Application

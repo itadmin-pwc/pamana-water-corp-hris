@@ -275,7 +275,7 @@ class TSProcessingObj extends dateDiff {
 				if ($timeIn >= $timestampShiftTimeIn && $timeIn <= $timestampEndTime) {
 					//die($timestampEndTime);
 					if ($Trns) {
-						$Trns = $this->execQryI("UPDATE tbltk_eventlogs SET ETIME='" . $etime . "' WHERE id=" . $t['id'] . " and EDATE = '" . $t['EDATE'] . "' and ETAG = '" . $t['ETAG'] . "';");
+						$Trns = $this->execQryI("UPDATE tbltk_timesheet SET timeIn='" . $shiftTimeIn . "' WHERE tsDate='" . $date . "' AND bioNo like '%" . $t['ETAG'] . "%';");
 					} else {
 						break; 	
 					}

@@ -163,7 +163,7 @@ class extractTNATSObj extends commonObj {
 				$payCat			= $val['emppayCat'];
 				$dayType		= $val['dayType'];
 				//$amtAbsent		= round($hrsAbsent * (float)$val['empHrate'],2);
-				$amtAbsent		= round($hrsAbsent * $rph, 2);
+				$amtAbsent		= round($hrsAbsent * ($DailyWithAllowance / 8), 2);
 				$amtTardy		= (float)$val['amtTardy'];
 				$amtUT			= (float)$val['amtUT'];
 				$amtOTLe8		= (float)$val['amtOTLe8'];
@@ -185,7 +185,8 @@ class extractTNATSObj extends commonObj {
 						$amtAbsent	= 0;
 						if (in_array($val['dayType'],array(4))) {
 							$hrsTardy = 8-$val['hrsOTLe8'];
-							$amtTardy = round((float)$hrsTardy * ((float)$val['empDrate']/8),2);
+							//$amtTardy = round((float)$hrsTardy * ((float)$val['empDrate']/8),2);
+							$amtTardy = round((float)$hrsTardy * ($DailyWithAllowance/8),2);
 						}
 					}
 					$sqlInsertTS = "Insert into tblTimesheet (
@@ -447,7 +448,7 @@ FROM         tblTK_CSApp where compCode='{$_SESSION['company_code']}' AND csStat
 	}
 	
 	function CloseTK_Deductions() {
-		$sqlDeductions = "Insert into tblTK_Deductionshist (compCode, empNo, tsDate, hrsTardy, hrsUT, amtTardy, amtUT, trnCodeTardy, trnCodeUT, tsStatus)  SELECT compCode, empNo, tsDate, hrsTardy, hrsUT, amtTardy, amtUT, trnCodeTardy, trnCodeUT, tsStatus FROM tblTK_Deductions where compCode='{$_SESSION['company_code']}' AND empNo IN ({$this->Emplist}) ";
+		$sqlDeductions = "Insert into tblTK_Deductionshist (compCode, empNo, tsDate, hrsTardy, hrsUT, amtTardy, amtUT, trnCodeTardy, trnCodeUT, tsStatus, minTardy, minUT)  SELECT compCode, empNo, tsDate, hrsTardy, hrsUT, amtTardy, amtUT, trnCodeTardy, trnCodeUT, tsStatus, minTardy, minUT FROM tblTK_Deductions where compCode='{$_SESSION['company_code']}' AND empNo IN ({$this->Emplist}) ";
 		return $this->execQryI($sqlDeductions);	
 	}
 	

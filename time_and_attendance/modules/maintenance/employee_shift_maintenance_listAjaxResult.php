@@ -96,11 +96,11 @@
 	$qryIntMaxRec = "SELECT * FROM tblEmpMast 
 					 WHERE compCode = '{$sessionVars['compCode']}' 
 					 $brnCodelist 
-					 and ((empStat='RG') 
-					 OR (((dateResigned between '".date("m/d/Y",strtotime($payperiod['pdFrmDate']))."' 
-					 	AND '".date("m/d/Y",strtotime($payperiod['pdToDate']))."') 
-					 OR (endDate between '".date("m/d/Y",strtotime($payperiod['pdFrmDate']))."' 
-					 	AND '".date("m/d/Y",strtotime($payperiod['pdToDate']))."'))))";
+					 and (empStat='RG') 
+					 OR (dateResigned between '".date("Y-m-d",strtotime($payperiod['pdFrmDate']))."' 
+					 	AND '".date("Y-m-d",strtotime($payperiod['pdToDate']))."') 
+					 OR (endDate between '".date("Y-m-d",strtotime($payperiod['pdFrmDate']))."' 
+					 	AND '".date("Y-m-d",strtotime($payperiod['pdToDate']))."')";
 
 //old codes	
 //	$qryIntMaxRec = "SELECT * FROM tblEmpMast 
@@ -134,11 +134,11 @@
 //new codes
 	$qryEmpList = "SELECT * FROM tblEmpMast
 					WHERE compCode= '{$sessionVars['compCode']}'
-					and ((empStat='RG') 
-					OR (((dateResigned between '".date("m/d/Y",strtotime($payperiod['pdFrmDate']))."' 
-						AND '".date("m/d/Y",strtotime($payperiod['pdToDate']))."') 
-					OR (endDate between '".date("m/d/Y",strtotime($payperiod['pdFrmDate']))."' 
-						AND '".date("m/d/Y",strtotime($payperiod['pdToDate']))."')))) $brnCodelist "; 
+					and (empStat='RG') 
+					OR (dateResigned between '".date("Y-m-d",strtotime($payperiod['pdFrmDate']))."' 
+						AND '".date("Y-m-d",strtotime($payperiod['pdToDate']))."') 
+					OR (endDate between '".date("Y-m-d",strtotime($payperiod['pdFrmDate']))."' 
+						AND '".date("Y-m-d",strtotime($payperiod['pdToDate']))."') $brnCodelist "; 
 //old codes	
 //	$qryEmpList = "SELECT TOP $intLimit *
 //					FROM tblEmpMast

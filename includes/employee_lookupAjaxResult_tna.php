@@ -35,11 +35,11 @@ $qryIntMaxRec = "SELECT * FROM tblEmpMast
 				 WHERE compCode = '{$compCode}' 
 					AND empBrnCode IN (SELECT brnCode FROM tblTK_UserBranch 
 						WHERE compCode ='{$_SESSION['company_code']}'and empNo = '{$_SESSION['employee_number']}')
-					AND ((empStat='RG')  
-					OR (((dateResigned between '".date("m/d/Y",strtotime($payperiod['pdFrmDate']))."' 
-						AND '".date("m/d/Y",strtotime($payperiod['pdToDate']))."') 
-					OR (endDate between '".date("m/d/Y",strtotime($payperiod['pdFrmDate']))."' 
-						AND '".date("m/d/Y",strtotime($payperiod['pdToDate']))."'))))";
+					AND (empStat='RG')  
+					OR (dateResigned between '".date("Y-m-d",strtotime($payperiod['pdFrmDate']))."' 
+						AND '".date("Y-m-d",strtotime($payperiod['pdToDate']))."') 
+					OR (endDate between '".date("Y-m-d",strtotime($payperiod['pdFrmDate']))."' 
+						AND '".date("Y-m-d",strtotime($payperiod['pdToDate']))."')";
 						
         if($_GET['isSearch'] == 1){
         	if($_GET['srchType'] == 0){
@@ -67,11 +67,11 @@ $intOffset = $pager->_watToDo($_GET['action'],$_GET['offSet'],$_GET['isSearch'])
 					WHERE compCode= '{$sessionVars['compCode']}'
 					AND empBrnCode IN (SELECT brnCode FROM tblTK_UserBranch 
 							WHERE compCode ='{$_SESSION['company_code']}'and empNo = '{$_SESSION['employee_number']}')
-					AND ((empStat='RG') 
-					OR (((dateResigned between '".date("m/d/Y",strtotime($payperiod['pdFrmDate']))."' 
-						AND '".date("m/d/Y",strtotime($payperiod['pdToDate']))."') 
-					OR (endDate between '".date("m/d/Y",strtotime($payperiod['pdFrmDate']))."' 
-						AND '".date("m/d/Y",strtotime($payperiod['pdToDate']))."')))) AND compCode = '{$compCode}'"; 
+					AND (empStat='RG') 
+					OR (dateResigned between '".date("Y-m-d",strtotime($payperiod['pdFrmDate']))."' 
+						AND '".date("Y-m-d",strtotime($payperiod['pdToDate']))."') 
+					OR (endDate between '".date("Y-m-d",strtotime($payperiod['pdFrmDate']))."' 
+						AND '".date("Y-m-d",strtotime($payperiod['pdToDate']))."') AND compCode = '{$compCode}'"; 
         if($_GET['isSearch'] == 1){
         	if($_GET['srchType'] == 0){
         		$qryEmpList .= "AND empNo LIKE '".trim($_GET['txtSrch'])."%' ";

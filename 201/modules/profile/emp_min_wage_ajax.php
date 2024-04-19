@@ -16,7 +16,7 @@ $minObj->validateSessions('','MODULES');
 
 $payGrp = $minObj->getProcGrp();
 if($payGrp!="")
-	$where = " and empPayGrp<>'".$payGrp."'";
+	$where = " and empPayGrp='".$payGrp."'";
 else
 	$where = "";
 	

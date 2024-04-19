@@ -21,7 +21,7 @@
 			//Get List of Employees that should be tagged as Minimum Wage
 			$payGrp = $this->getProcGrp();
 			if($payGrp!="")
-				$where = " and empPayGrp<>'".$payGrp."'";
+				$where = " and empPayGrp='".$payGrp."'";
 			else
 				$where = "";
 				

@@ -8,8 +8,9 @@ class PayrollMenuHandler extends commonObj {
    function getMenusObjs(){
    	
       $seesionVars = $this->getSeesionVars();
-		if($_SESSION['pay_category'] == 9)
+		if($_SESSION['pay_category'] == 9) {
 			$filter = " and moduleId not in (26,29)";
+		}
 		else
 			$filter = " and moduleId not in (115,116)";
 		

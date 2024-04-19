@@ -61,7 +61,7 @@ $qryEmpList = "SELECT *, tblBranch.brnDesc
 FROM         tblEmpMast INNER JOIN
                       tblBranch ON tblEmpMast.empBrnCode = tblBranch.brnCode
 				Where tblEmpMast.compCode = '{$sessionVars['compCode']}' and tblEmpMast.empBrnCode IN (Select brnCode from tblUserBranch where compCode='{$_SESSION['company_code']}' and empNo='{$_SESSION['employee_number']}')
-				And empPayGrp<>'$payGrp' $user_payCat_view
+				And empPayGrp='$payGrp' $user_payCat_view
 				$strPAF order by tblEmpMast.empLastName";
 				
 $resEmpList = $pafObj->execQry($qryEmpList);

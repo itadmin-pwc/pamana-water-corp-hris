@@ -11,7 +11,7 @@ $sessionVars = $transObj->getSeesionVars();
 $transObj->validateSessions('','MODULES');
 
 if($payGrp!="")
-	$where = " and empPayGrp<>'".$payGrp."'";
+	$where = " and empPayGrp='".$payGrp."'";
 else
 	$where = "";
 

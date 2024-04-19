@@ -22,7 +22,6 @@ $arr_EmpTsInfo =  $emptimesheetObj->getTblData("tblTK_Timesheet", " and empNo='"
 	
 switch($_GET["action"])
 {
-	
 	case "Update":
 		$btnAction = "Update";
 		$hdrTitle = "Actual Employee Schedule";
