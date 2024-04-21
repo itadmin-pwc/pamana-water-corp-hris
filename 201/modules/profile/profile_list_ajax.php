@@ -114,6 +114,8 @@ $qryEmpList = "SELECT * FROM tblEmpMast
         }
 $qryEmpList .=	" $brnCodelist ORDER BY empLastName limit $intOffset,$intLimit";
 
+//echo $qryEmpList;
+
 $resEmpList = $common->execQry($qryEmpList);
 $arrEmpList = $common->getArrRes($resEmpList);
 $payGrp = $common->getProcGrp();
