@@ -10,10 +10,7 @@ class ApprObj extends commonObj{
 		$this->session = $sessionVars;
 	}
 	
-	function addApprover() {	
-		$arr_lastRefNo = $this->getLastRefNo();
-		$lastRefNo = $arr_lastRefNo["lastRefNo"] + 1;
-		
+	function addApprover() {
 		$qryaddOtApp = "INSERT INTO tblTK_otApp (compCode,empNo,otDate,refNo,dateFiled,otReason,otIn,otOut,crossTag,
 						otStat,userAdded,dateAdded)
 						VALUES ('$_SESSION[company_code]','$_GET[empNo]','$_GET[dateOt]','".$lastRefNo."',
@@ -23,13 +20,10 @@ class ApprObj extends commonObj{
 		$resaddOtApp = $this->execQry($qryaddOtApp);
 		
 		if($resaddOtApp){
-				if($this->updateLastRefNo($lastRefNo)){
-				return true;
-			}
+			return true;
 		}
 		else {
 			return false;
-			
 		}	
 	}
 
@@ -50,7 +44,7 @@ class ApprObj extends commonObj{
 	function getTblData($tbl, $cond, $orderBy, $ouputType)
 	{
 		$qryTblInfo = "Select * from ".$tbl." where compCode='".$_SESSION["company_code"]."' ".$cond." ".$orderBy."";
-		//echo $qryTblInfo;
+		
 		$resTblInfo = $this->execQry($qryTblInfo);
 		if($ouputType == 'sqlAssoc')
 			return $this->getSqlAssoc($resTblInfo);
