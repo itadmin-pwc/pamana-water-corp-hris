@@ -16,44 +16,44 @@
 	
 	$pager = new AjaxPager(10,'../../../images/');
 
-//08-09-2023 AUTO EMPLOYEE LOOKUP
+	//08-09-2023 AUTO EMPLOYEE LOOKUP
 
-$empInfo = $csObj->getEmployee($_SESSION['company_code'],$_SESSION['employeenumber'],'');
+	$empInfo = $csObj->getEmployee($_SESSION['company_code'],$_SESSION['employeenumber'],'');
 
-$midName = (!empty($empInfo['empMidName'])) ? substr($empInfo['empMidName'],0,1)."." : '';
-$fullname = $empInfo['empLastName'] . ", " . htmlspecialchars(addslashes($empInfo['empFirstName'])) . " " . $midName;
-$cwwTag = $csObj->getTblData("tblTK_EmpShift", " and empNo='".$_SESSION['employeenumber']."'", "", "sqlAssoc");
-			
-$deptName = $csObj->getDeptDescGen($_SESSION["company_code"],$empInfo["empDiv"], $empInfo["empDepCode"]);
-$posName = $csObj->getpositionwil("where compCode='".$_SESSION["company_code"]."' and posCode='".$empInfo["empPosId"]."'",'2');
-			
-$department = htmlspecialchars(addslashes($deptName['deptDesc'])) . " - " . $posName['posDesc'];
-$paygroup = $empInfo["empPayGrp"];
-$paycat = $empInfo['empPayCat'];
+	$midName = (!empty($empInfo['empMidName'])) ? substr($empInfo['empMidName'],0,1)."." : '';
+	$fullname = $empInfo['empLastName'] . ", " . htmlspecialchars(addslashes($empInfo['empFirstName'])) . " " . $midName;
+	$cwwTag = $csObj->getTblData("tblTK_EmpShift", " and empNo='".$_SESSION['employeenumber']."'", "", "sqlAssoc");
+				
+	$deptName = $csObj->getDeptDescGen($_SESSION["company_code"],$empInfo["empDiv"], $empInfo["empDepCode"]);
+	$posName = $csObj->getpositionwil("where compCode='".$_SESSION["company_code"]."' and posCode='".$empInfo["empPosId"]."'",'2');
+				
+	$department = htmlspecialchars(addslashes($deptName['deptDesc'])) . " - " . $posName['posDesc'];
+	$paygroup = $empInfo["empPayGrp"];
+	$paycat = $empInfo['empPayCat'];
 
-$openPeriod_OpnPeriodD = $csObj->getOpenPeriod($_SESSION["company_code"],$empInfo["empPayGrp"],$empInfo['empPayCat']); 
-			
-$openPeriod = $csObj->getOpenPeriod($_SESSION["company_code"],$empInfo["empPayGrp"],$empInfo['empPayCat']); 
-$payPayable = $openPeriod['pdPayable'];
-$shiftCodeDtl = $csObj->getTblData("tblTk_TimeSheet", " and empNo='".$_GET['empNo']."' and tsDate='".date("Y-m-d")."'", "", "sqlAssoc");
-			
-if($shiftCodeDtl["shftTimeIn"]=="")
-{
-	$allowSave = false;
-	$schedTimeIn = "Set the Set the Schedule first";
-	$shftTimeOut = '';
-	$dayType = '';
-}	
-else
-{	
-	$allowSave = true;
-	$schedTimeIn = $shiftCodeDtl["shftTimeIn"];
-	$shftTimeOut = $shiftCodeDtl["shftTimeOut"];
-	$dayType = $shiftCodeDtl["dayType"];
-}
+	$openPeriod_OpnPeriodD = $csObj->getOpenPeriod($_SESSION["company_code"],$empInfo["empPayGrp"],$empInfo['empPayCat']); 
+				
+	$openPeriod = $csObj->getOpenPeriod($_SESSION["company_code"],$empInfo["empPayGrp"],$empInfo['empPayCat']); 
+	$payPayable = $openPeriod['pdPayable'];
+	$shiftCodeDtl = $csObj->getTblData("tblTk_TimeSheet", " and empNo='".$_GET['empNo']."' and tsDate='".date("Y-m-d")."'", "", "sqlAssoc");
+				
+	if($shiftCodeDtl["shftTimeIn"]=="")
+	{
+		$allowSave = false;
+		$schedTimeIn = "Set the Set the Schedule first";
+		$shftTimeOut = '';
+		$dayType = '';
+	}	
+	else
+	{	
+		$allowSave = true;
+		$schedTimeIn = $shiftCodeDtl["shftTimeIn"];
+		$shftTimeOut = $shiftCodeDtl["shftTimeOut"];
+		$dayType = $shiftCodeDtl["dayType"];
+	}
 
-//08-09-2023 END LOOK UP
-$branch = $_SESSION['branchCode'];
+	//08-09-2023 END LOOK UP
+	$branch = $_SESSION['branchCode'];
 	
 	if ($_SESSION['user_level'] == 3) 
 	{
@@ -67,7 +67,7 @@ $branch = $_SESSION['branchCode'];
 		$brnCodelist = " AND empMast.empNo='".$_SESSION['employee_number']."' 
 						and empbrnCode ='".$branch."'";
 	}
-	elseif ($_SESSION['user_level'] == 2) 
+	elseif ($_SESSION['user_level'] == 2)
 	{
 		$brnCodelist = " AND empbrnCode IN (Select brnCode from tblTK_UserBranch 
 											where empNo='{$_SESSION['employee_number']}' 
@@ -85,24 +85,62 @@ $branch = $_SESSION['branchCode'];
 	$arrBrnches = $csObj->getArrRes($resBrnches);
 	$arrBrnch = $csObj->makeArr($arrBrnches,'brnCode','brnDesc','All');
 	
-	
+	//New Code for Approver 04-25-2024
+	$_SESSION['uType'] = "T"; // Time Keeper
+	$approverData = $csObj->getTblData("tbltna_approver", " and approverEmpNo='".$_SESSION['employee_number']."' and status='A' AND dateValid >= NOW()", "", "sqlAssoc");
+	$forApproval = '';
+	$timeKeeperApprover = $approverData["approverEmpNo"] != "" && $_SESSION['user_level'] == 2 && $_SESSION['user_release']=="Y";
+	$managerApporver = $approverData["approverEmpNo"] != "" && $_SESSION['user_level'] == 2 && $_SESSION['user_release']!="Y";
+	$timeKeeper = $approverData["approverEmpNo"] == "" && $_SESSION['user_level'] == 2 && $_SESSION['user_release']=="Y";
+	if($timeKeeperApprover) { 
+		$_SESSION['uType'] = "TA"; //Timekeeper Approver
+		$forApproval = " AND (empmast.empNo IN (Select subordinateEmpNo from tbltna_approver 
+											where approverEmpNo='{$_SESSION['employee_number']}' 
+											AND compCode='{$_SESSION['company_code']}') OR empmast.empNo = '{$_SESSION['employee_number']}' OR mStat = 'A')";
+	}elseif($managerApporver){
+		$_SESSION['uType'] = "MA"; //Manager Approver
+		$forApproval = " AND (empmast.empNo IN (Select subordinateEmpNo from tbltna_approver 
+											where approverEmpNo='{$_SESSION['employee_number']}' 
+											AND compCode='{$_SESSION['company_code']}') OR empmast.empNo = '{$_SESSION['employee_number']}')";
+	}elseif($timeKeeper){
+		$forApproval = " AND (mStat = 'A' OR empmast.empNo = '{$_SESSION['employee_number']}')";
+	}
+	//End New Code for Approver 04-25-2024
 	
 	$qryIntMaxRec = "SELECT CsApp.refNo, CsApp.csDateFrom, CsApp.csShiftFromIn, CsApp.csShiftFromOut, CsApp.csDateTo, 
 							CsApp.csShiftToIn, CsApp.csHiftToOut, CsApp.csReason, CsApp.crossDay, empmast.empLastName, 
-							empmast.empFirstName, empmast.empMidName, seqNo,csStat,userApproved
+							empmast.empFirstName, empmast.empMidName, seqNo, csStat, userApproved, mStat
 					 FROM tblTK_CSApp CsApp 
 					 INNER JOIN tblEmpMast empmast ON CsApp.empNo = empmast.empNo
 					 WHERE (CsApp.compcode = '".$_SESSION["company_code"]."') 
-					 		AND (empmast.compCode = '".$_SESSION["company_code"]."') 
+					 		AND (empmast.compCode = '".$_SESSION["company_code"]."') $forApproval
 							$brnCodelist";
 							
 							if($_GET['isSearch'] == 1){
-								if($_GET['srchType'] == 0){
-									$qryIntMaxRec .= "AND csStat='A'";
-								}
-								
-								if($_GET['srchType'] == 1){
-									$qryIntMaxRec .= "AND csStat='H'";
+								if($timeKeeperApprover || $timeKeeper) { 
+									if($_GET['srchType'] == 0){
+										$qryIntMaxRec .= "AND csStat='A' ";
+									}
+									
+									if($_GET['srchType'] == 1){
+										$qryIntMaxRec .= "AND csStat='H' ";
+									}
+								}elseif($managerApporver){
+									if($_GET['srchType'] == 0){
+										$qryIntMaxRec .= "AND mStat='A' ";
+									}
+									
+									if($_GET['srchType'] == 1){
+										$qryIntMaxRec .= "AND mStat='H' ";
+									}
+								}else{
+									if($_GET['srchType'] == 0){
+										$qryIntMaxRec .= "AND mStat='A' ";
+									}
+
+									if($_GET['srchType'] == 1){
+										$qryIntMaxRec .= "AND mStat='H' ";
+									}
 								}
 								
 								if($_GET['srchType'] == 2){
@@ -133,52 +171,62 @@ $branch = $_SESSION['branchCode'];
 	
 	$qryCSApp = "SELECT CsApp.refNo, CsApp.csDateFrom, CsApp.csShiftFromIn, CsApp.csShiftFromOut, CsApp.csDateTo, 
 						CsApp.csShiftToIn, CsApp.csHiftToOut, CsApp.csReason, CsApp.crossDay, empmast.empLastName, 	
-						empmast.empFirstName, empmast.empMidName, seqNo, csStat,userApproved,  empmast.empNo
+						empmast.empFirstName, empmast.empMidName, seqNo, csStat,userApproved, empmast.empNo, mStat
 				 FROM tblTK_CSApp CsApp 
 				 INNER JOIN tblEmpMast empmast ON CsApp.empNo = empmast.empNo
 				 WHERE (CsApp.compcode = '".$_SESSION["company_code"]."') 
-				 		AND (empmast.compCode = '".$_SESSION["company_code"]."') 
+				 		AND (empmast.compCode = '".$_SESSION["company_code"]."') $forApproval
 						$brnCodelist ";
 							
-							if($_GET['isSearch'] == 1){
-										if($_GET['srchType'] == 0){
-											$qryCSApp .= "AND csStat='A'";
-										}
+	if($_GET['isSearch'] == 1){
+		if($timeKeeperApprover || $timeKeeper) { 
+			if($_GET['srchType'] == 0){
+				$qryIntMaxRec .= "AND csStat='A' ";
+			}
+			
+			if($_GET['srchType'] == 1){
+				$qryIntMaxRec .= "AND csStat='H' ";
+			}
+		}elseif($managerApporver){
+			if($_GET['srchType'] == 0){
+				$qryIntMaxRec .= "AND mStat='A' ";
+			}
+			
+			if($_GET['srchType'] == 1){
+				$qryIntMaxRec .= "AND mStat='H' ";
+			}
+		}else{
+			if($_GET['srchType'] == 0){
+				$qryIntMaxRec .= "AND mStat='A' ";
+			}
+	
+			if($_GET['srchType'] == 1){
+				$qryIntMaxRec .= "AND mStat='H' ";
+			}
+		}
+		
+		if($_GET['srchType'] == 2){
+			$qryCSApp .= "and refNo LIKE '".trim($_GET['txtSrch'])."%' ";
+		}
 										
-										if($_GET['srchType'] == 1){
-											$qryCSApp .= "AND csStat='H'";
-										}
+		if($_GET['srchType'] == 3){
+			$qryCSApp .= "AND CsApp.empNo LIKE '".trim($_GET['txtSrch'])."%' ";
+		}
 										
-										if($_GET['srchType'] == 2){
-											$qryCSApp .= "and refNo LIKE '".trim($_GET['txtSrch'])."%' ";
-										}
+		if($_GET['srchType'] == 4){
+			$qryCSApp .= "AND empLastName LIKE '".trim($_GET['txtSrch'])."%' ";
+		}
 										
-										if($_GET['srchType'] == 3){
-											$qryCSApp .= "AND CsApp.empNo LIKE '".trim($_GET['txtSrch'])."%' ";
-										}
-										
-										if($_GET['srchType'] == 4){
-											$qryCSApp .= "AND empLastName LIKE '".trim($_GET['txtSrch'])."%' ";
-										}
-										
-										if ($_GET['brnCd']!=0) 
-										{
-											$qryCSApp .= " AND empbrnCode='".$_GET["brnCd"]."' ";
-										}
-									}
+		if ($_GET['brnCd']!=0) 
+		{
+			$qryCSApp .= " AND empbrnCode='".$_GET["brnCd"]."' ";
+		}
+	}
 							
 	$qryCSApp.=	"ORDER BY empmast.empLastName, empmast.empFirstName,CsApp.refNo limit $intOffset,$intLimit";
 	//echo $qryCSApp;
 	$resCSAppList = $csObj->execQry($qryCSApp);
 	$arrCSAppList = $csObj->getArrRes($resCSAppList);
-	
-	
-//	if($_SESSION['user_level']==3){
-//		$btAppDel_Dis = "hidden";
-//	}
-	
-
-	
 ?>
 <input type="hidden" name="shiftDayType" id="shiftDayType" value="<?=$dayType?>" />
 <input type="hidden" name="empbrnCode" id="empbrnCode" value="<?=$branch?>" />
@@ -213,18 +261,6 @@ $branch = $_SESSION['branchCode'];
 				</tr>
                 
 				<tr>
-					<!--<td class="hdrInputsLvl" width="10%">
-						Reference NO.
-					</td>
-                    
-					<td class="hdrInputsLvl" width="5">
-						:
-					</td>
-                    
-					<td class="gridDtlVal" width="18%">
-						<INPUT tabindex="5" class="inputs" type="text" name="refNo" id="refNo" size="10" value="<?=$refNo?>" readonly onkeyup="return editRefNo('editRef',this.value,event)">
-						<font id="refNoCont"></font>
-					</td>-->
                     
                     <td class="hdrInputsLvl" width="10%">&nbsp;</td>
                     
@@ -248,16 +284,14 @@ $branch = $_SESSION['branchCode'];
 					</td>
                     
 					<td class="hdrInputsLvl" width="18%" colspan="4">
-						<!--<input type="radio" name="chkStat" id="chkStat" class="inputs" />Permanent
-                        <input type="radio" name="chkStat" id="chkStat"  class="inputs" />Temporary
-                        <input type="radio" name="chkStat" id="chkStat" class="inputs" />Once Only-->
+						
 					</td>
                 </tr>
                 
                 <tr>
 					<td class="hdrInputsLvl">
 						<?php
-							if ($_SESSION['user_level'] == 3)  {
+							if ($_SESSION['user_level'] == 3 || $managerApporver) {
 						?>
 							Employee No.
 						<?php
@@ -275,7 +309,7 @@ $branch = $_SESSION['branchCode'];
                     
 					<td class="gridDtlVal">
 						<?php
-							if ($_SESSION['user_level'] == 3)  {
+							if ($_SESSION['user_level'] == 3 || $managerApporver)  {
 						?>
 							<INPUT tabindex="11" class="inputs" readonly="readonly" type="text" name="txtAddEmpNo" size="15" id="txtAddEmpNo" value="<?=$_SESSION['employeenumber'];?>">
 						<?php
@@ -363,27 +397,17 @@ $branch = $_SESSION['branchCode'];
 										echo("$strf"); 
 									?>" >
                     </td>
-                    
-                     
                    
                     <td><input type='text' class='inputs' name='csTimeIn' id='csTimeIn'  style='width:100%;' <?=$allowSave ? '' : 'disabled'?> onKeyDown="javascript:return dFilter (event.keyCode, this, '##:##');" value='' onblur="getContent();"></td>
                     <td><input type='text' class='inputs' name='csTimeOut' id='csTimeOut'  style='width:100%;' <?=$allowSave ? '' : 'disabled'?> onKeyDown="javascript:return dFilter (event.keyCode, this, '##:##');" value=''></td>
                   	<td align="center"><input type="checkbox" name="chkCrossDay" id="chkCrossDay" class="inputs" <?=$allowSave ? '' : 'disabled'?> /></td>
-                  
-                   <!-- <td>
-                    	<?php
-							
-							//$arrPayPd = $csObj->makeArr($csObj->getPeriodGtOpnPer($_SESSION["company_code"],$_GET["empPayGrp"],$_GET['empPayCat'],$_GET["payPayable"]),'pdSeries','pdPayable','');
-							//$csObj->DropDownMenu($arrPayPd,'payPd',$payPd,$payPd_dis.'class="inputs" style="width:100%;" ');
+                    <td align="center">
+						<?
+						$reasons=$csObj->getTblData("tblTK_Reasons "," and stat='A' and changeShift='Y'"," order by reason","sqlArres");
+						$arrReasons = $csObj->makeArr($reasons,'reason_id','reason','');
+						$csObj->DropDownMenu($arrReasons,'cmbReasons',"","class='inputs'");
 						?>
-                   	
-                    </td>-->
-                    <td align="center"><?
-                    $reasons=$csObj->getTblData("tblTK_Reasons "," and stat='A' and changeShift='Y'"," order by reason","sqlArres");
-                    $arrReasons = $csObj->makeArr($reasons,'reason_id','reason','');
-                    $csObj->DropDownMenu($arrReasons,'cmbReasons',"","class='inputs'");
-					?>
-                  </td>
+					</td>
                    	<td align="center"><input type="button" class="inputs" name="btnSave" id="btnSave" value='SAVE' <?=$allowSave ? '' : 'disabled'?> onClick="saveCsDetail();"></td>
                 </tr>
                 
@@ -403,9 +427,9 @@ $branch = $_SESSION['branchCode'];
                 <input tabindex="17" class="inputs" type="button" name="btnSrch" id="btnSrch" value="SEARCH" onclick="pager('csAjaxResult.php','csCont','Search',0,1,'txtSrch','cmbSrch','&refNo=<?=$_GET['refNo']?>&brnCd='+document.getElementById('brnCd').value,'../../../images/')" />
                 <font class="ToolBarseparator">|</font> <a href="#" id="updateEarn" tabindex="3"><img class="toolbarImg" id="btnUpdate"  src="../../../images/application_form_edit.png" title="Update CS Application" 	onclick="getSeqNo()" /></a>
                 <?
-                if($_SESSION['user_release']=="Y"){
+                if($_SESSION['user_release']=="Y" || $_SESSION['user_level'] == 2){
                 ?>
-				<font class="ToolBarseparator">|</font> <a href="#" id="editEarn" tabindex="2"><img class="toolbarImg" id="btnApp" style="visibility:<?=$btAppDel_Dis?>"  src="../../../images/edit_prev_emp.png"  onclick="upObTran('Approved','csCont.php','csCont',<?=$intOffset?>,'',<?=$_GET['isSearch']?>,'txtSrch','cmbSrch');" title="Approved CS Application" />
+					<font class="ToolBarseparator">|</font> <a href="#" id="editEarn" tabindex="2"><img class="toolbarImg" id="btnApp" style="visibility:<?=$btAppDel_Dis?>"  src="../../../images/edit_prev_emp.png"  onclick="upObTran('Approved','csCont.php','csCont',<?=$intOffset?>,'',<?=$_GET['isSearch']?>,'txtSrch','cmbSrch');" title="Approved CS Application" /></a>
                 <?
 				}
 				?>
@@ -426,21 +450,29 @@ $branch = $_SESSION['branchCode'];
               <td width="15%" class="gridDtlLbl" align="center">REASON</td>
             </tr>
             <?php
-					if($csObj->getRecCount($resCSAppList) > 0)
-					{
-						$i=0;
-						$ctr=1;
+				if($csObj->getRecCount($resCSAppList) > 0)
+				{
+					$i=0;
+					$ctr=1;
 							
-						foreach ($arrCSAppList as $arrCSAppList_val)
-						{
-							$bgcolor = ($i++ % 2) ? "#FFFFFF" : "#F8F8FF";
-							$on_mouse = ' onmouseover="this.style.backgroundColor=\'' . '#F0F0F0' . '\';"'. ' onmouseout="this.style.backgroundColor=\'' . $bgcolor  . '\';"';						
+					foreach ($arrCSAppList as $arrCSAppList_val)
+					{
+						$bgcolor = ($i++ % 2) ? "#FFFFFF" : "#F8F8FF";
+						$on_mouse = ' onmouseover="this.style.backgroundColor=\'' . '#F0F0F0' . '\';"'. ' onmouseout="this.style.backgroundColor=\'' . $bgcolor  . '\';"';						
+						if($timeKeeperApprover) {
 							$f_color = ($arrCSAppList_val["csStat"]=='A'?"#CC3300":"");
-				?>
+						}elseif($managerApporver) {
+							$f_color = ($arrCSAppList_val["mStat"]=='A'?"#CC3300":"");
+						}elseif($timeKeeper) {
+							$f_color = ($arrCSAppList_val["csStat"]=='A'?"#CC3300":"");
+						}elseif($_SESSION['user_level'] == 3){
+							$f_color = ($arrCSAppList_val["mStat"]=='A'?"#CC3300":"");
+						}
+			?>
             <tr style="height:20px;"  bgcolor="<?php echo $bgcolor; ?>" <?php echo $on_mouse; ?>>
               <td class="gridDtlVal" align="center">
 			  <?
-				if(($arrCSAppList_val["csStat"]=='H') || (($arrCSAppList_val["userApproved"]==$_SESSION['employee_number']) && ($arrCSAppList_val["csStat"]=='A'))){
+				if($timeKeeperApprover || $timeKeeper || $arrCSAppList_val["mStat"]=='H'){
 			  ?>
                 <input class="inputs" type="checkbox" name="chkseq[]" value="<?=$arrCSAppList_val['seqNo']?>" id="chkseq[]"  />
               <?
@@ -471,18 +503,17 @@ $branch = $_SESSION['branchCode'];
               </font></td>
               <td class="gridDtlVal" align="left"><font color="<?=$f_color?>">
                 <?
-								if(is_numeric($arrCSAppList_val["csReason"])){
-									$reasonsRes=$csObj->getTblData("tblTK_Reasons "," and stat='A' and reason_id='".$arrCSAppList_val["csReason"]."'"," order by reason","sqlAssoc");
-									echo $reasonsRes['reason'];
-									
-								}
-								else{
-									echo strtoupper($arrCSAppList_val["csReason"]);	
-								}
-								?>
+					if(is_numeric($arrCSAppList_val["csReason"])){
+						$reasonsRes=$csObj->getTblData("tblTK_Reasons "," and stat='A' and reason_id='".$arrCSAppList_val["csReason"]."'"," order by reason","sqlAssoc");
+						echo $reasonsRes['reason'];
+					}
+					else{
+						echo strtoupper($arrCSAppList_val["csReason"]);	
+					}
+				?>
               </font></td>
             </tr>
-            <?php
+            	<?php
 							$ctr++;
 						}
 					}

@@ -60,12 +60,7 @@
 	if ($_SESSION['user_level'] == 3) 
 	{
 		$userinfo = $crdObj->getUserHeaderInfo($_SESSION['employee_number'],$_SESSION['employee_id']);
-		$and = ($_GET['isSearch'] == 1) ? 'AND' : 'Where';	
-		//08-08-2023
-		// $brnCodelist = " AND empmast.empNo<>'".$_SESSION['employee_number']."' 
-		// 				and empbrnCode IN (Select brnCode from tblTK_UserBranch 
-		// 								   where empNo='{$_SESSION['employee_number']}' 
-		// 								   AND compCode='{$_SESSION['company_code']}')";
+		$and = ($_GET['isSearch'] == 1) ? 'AND' : 'Where';
 		$brnCodelist = " AND empMast.empNo='".$_SESSION['employee_number']."' 
 		and empbrnCode ='".$branch."'";
 	}
@@ -86,24 +81,62 @@
 	$resBrnches = $crdObj->execQry($queryBrnches);
 	$arrBrnches = $crdObj->getArrRes($resBrnches);
 	$arrBrnch = $crdObj->makeArr($arrBrnches,'brnCode','brnDesc','All');
-	
-	
+
+	//New Code for Approver 04-25-2024
+	$_SESSION['uType'] = "T"; // Time Keeper
+	$approverData = $crdObj->getTblData("tbltna_approver", " and approverEmpNo='".$_SESSION['employee_number']."' and status='A' AND dateValid >= NOW()", "", "sqlAssoc");
+	$forApproval = '';
+	$timeKeeperApprover = $approverData["approverEmpNo"] != "" && $_SESSION['user_level'] == 2 && $_SESSION['user_release']=="Y";
+	$managerApporver = $approverData["approverEmpNo"] != "" && $_SESSION['user_level'] == 2 && $_SESSION['user_release']!="Y";
+	$timeKeeper = $approverData["approverEmpNo"] == "" && $_SESSION['user_level'] == 2 && $_SESSION['user_release']=="Y";
+	if($timeKeeperApprover) { 
+		$_SESSION['uType'] = "TA"; //Timekeeper Approver
+		$forApproval = " AND (empmast.empNo IN (Select subordinateEmpNo from tbltna_approver 
+											where approverEmpNo='{$_SESSION['employee_number']}' 
+											AND compCode='{$_SESSION['company_code']}') OR empmast.empNo = '{$_SESSION['employee_number']}' OR mStat = 'A')";
+	}elseif($managerApporver){
+		$_SESSION['uType'] = "MA"; //Manager Approver
+		$forApproval = " AND (empmast.empNo IN (Select subordinateEmpNo from tbltna_approver 
+											where approverEmpNo='{$_SESSION['employee_number']}' 
+											AND compCode='{$_SESSION['company_code']}') OR empmast.empNo = '{$_SESSION['employee_number']}')";
+	}elseif($timeKeeper){
+		$forApproval = " AND (mStat = 'A' OR empmast.empNo = '{$_SESSION['employee_number']}')";
+	}
+	//End New Code for Approver 04-25-2024
 	
 	$qryIntMaxRec = "SELECT RdApp.refNo, RdApp.dateFiled, RdApp.cRDDateFrom, RdApp.cRDDateTo, RdApp.cRDReason, 
-							empmast.empLastName, empmast.empFirstName, empmast.empMidName, seqNo, cRDStat,userApproved
+							empmast.empLastName, empmast.empFirstName, empmast.empMidName, seqNo, cRDStat,userApproved, mStat
 					 FROM tblTK_ChangeRDApp RdApp 
 					 INNER JOIN tblEmpMast empmast ON RdApp.empNo = empmast.empNo
 					 WHERE (RdApp.compcode = '".$_SESSION["company_code"]."') 
-					 	AND (empmast.compCode = '".$_SESSION["company_code"]."')
+					 	AND (empmast.compCode = '".$_SESSION["company_code"]."') $forApproval
 						$brnCodelist";
 							
 							if($_GET['isSearch'] == 1){
-								if($_GET['srchType'] == 0){
-									$qryIntMaxRec .= "AND cRDStat='A'";
-								}
-								
-								if($_GET['srchType'] == 1){
-									$qryIntMaxRec .= "AND cRDStat='H'";
+								if($timeKeeperApprover || $timeKeeper) { 
+									if($_GET['srchType'] == 0){
+										$qryRdApp .= "AND csStat='A' ";
+									}
+									
+									if($_GET['srchType'] == 1){
+										$qryRdApp .= "AND csStat='H' ";
+									}
+								}elseif($managerApporver){
+									if($_GET['srchType'] == 0){
+										$qryRdApp .= "AND mStat='A' ";
+									}
+									
+									if($_GET['srchType'] == 1){
+										$qryRdApp .= "AND mStat='H' ";
+									}
+								}else{
+									if($_GET['srchType'] == 0){
+										$qryRdApp .= "AND mStat='A' ";
+									}
+
+									if($_GET['srchType'] == 1){
+										$qryRdApp .= "AND mStat='H' ";
+									}
 								}
 								
 								if($_GET['srchType'] == 2){
@@ -135,46 +168,63 @@
 	
 							
 	$qryRdApp = "SELECT RdApp.refNo, RdApp.dateFiled, RdApp.cRDDateFrom, RdApp.cRDDateTo, RdApp.cRDReason, 
-							empmast.empLastName, empmast.empFirstName, empmast.empMidName, seqNo, cRDStat,userApproved, empmast.empNo
+							empmast.empLastName, empmast.empFirstName, empmast.empMidName, seqNo, cRDStat, userApproved, empmast.empNo,
+							mStat
 				 FROM tblTK_ChangeRDApp RdApp 
 				 INNER JOIN tblEmpMast empmast ON RdApp.empNo = empmast.empNo
 				 WHERE (RdApp.compcode = '".$_SESSION["company_code"]."') 
-				 		AND (empmast.compCode = '".$_SESSION["company_code"]."')
+				 		AND (empmast.compCode = '".$_SESSION["company_code"]."') $forApproval
 						$brnCodelist
 						";
 							
 							if($_GET['isSearch'] == 1){
-										if($_GET['srchType'] == 0){
-											$qryRdApp .= "AND cRDStat='A'";
-										}
-										
-										if($_GET['srchType'] == 1){
-											$qryRdApp .= "AND cRDStat='H'";
-										}
-										
-										if($_GET['srchType'] == 2){
-											$qryRdApp .= "and refNo LIKE '".trim($_GET['txtSrch'])."%' ";
-										}
-										
-										if($_GET['srchType'] == 3){
-											$qryRdApp .= "AND RdApp.empNo LIKE '".trim($_GET['txtSrch'])."%' ";
-										}
-										
-										if($_GET['srchType'] == 4){
-											$qryRdApp .= "AND empLastName LIKE '".trim($_GET['txtSrch'])."%' ";
-										}
-										
-										if ($_GET['brnCd']!=0) 
-										{
-											$qryRdApp .= " AND empbrnCode='".$_GET["brnCd"]."' ";
-										}
+								if($timeKeeperApprover || $timeKeeper) { 
+									if($_GET['srchType'] == 0){
+										$qryRdApp .= "AND csStat='A' ";
 									}
+									
+									if($_GET['srchType'] == 1){
+										$qryRdApp .= "AND csStat='H' ";
+									}
+								}elseif($managerApporver){
+									if($_GET['srchType'] == 0){
+										$qryRdApp .= "AND mStat='A' ";
+									}
+									
+									if($_GET['srchType'] == 1){
+										$qryRdApp .= "AND mStat='H' ";
+									}
+								}else{
+									if($_GET['srchType'] == 0){
+										$qryRdApp .= "AND mStat='A' ";
+									}
+
+									if($_GET['srchType'] == 1){
+										$qryRdApp .= "AND mStat='H' ";
+									}
+								}
+								
+								if($_GET['srchType'] == 2){
+									$qryRdApp .= "and refNo LIKE '".trim($_GET['txtSrch'])."%' ";
+								}
+										
+								if($_GET['srchType'] == 3){
+									$qryRdApp .= "AND RdApp.empNo LIKE '".trim($_GET['txtSrch'])."%' ";
+								}
+										
+								if($_GET['srchType'] == 4){
+									$qryRdApp .= "AND empLastName LIKE '".trim($_GET['txtSrch'])."%' ";
+								}
+										
+								if ($_GET['brnCd']!=0) 
+								{
+									$qryRdApp .= " AND empbrnCode='".$_GET["brnCd"]."' ";
+								}
+							}
 							
 	$qryRdApp.=	"ORDER BY RdApp.refNo, RdApp.dateFiled, empmast.empLastName, empmast.empFirstName limit $intOffset,$intLimit;";
 	$resRdAppList = $crdObj->execQry($qryRdApp);
 	$arrRdAppList = $crdObj->getArrRes($resRdAppList);
-	
-	
 ?>
 
 <input type="hidden" name="empPayGrp" id="empPayGrp" value="<?=$empInfo["empPayGrp"]?>" />
@@ -189,10 +239,6 @@
 	<tr>
 		<td colspan="6" class="gridToolbar">
         &nbsp;
-			<!--
-			<a href="#" id="newEarn" tabindex="1"><IMG class="toolbarImg" src="../../../images/application_form_add.png"  onclick="newRef('NEWREFNO'); validateMod('NEWREFNO');" title="New OB Record"></a>
-			
-			<FONT class="ToolBarseparator">|</font>-->
 			<a href="#" tabindex="4"><img class="toolbarImg" src='../../../images/refresh.png'  onclick="pager('crdAjaxResult.php','rdCont','refresh',0,0,'','','','../../../images/'); validateMod('REFRESH');" title="Refresh"></a>		
 		</td>
 	</tr>
@@ -208,19 +254,6 @@
 				</tr>
                 
 				<tr>
-					<!--<td class="hdrInputsLvl" width="10%">
-						Reference NO.
-					</td>
-                    
-					<td class="hdrInputsLvl" width="5">
-						:
-					</td>
-                    
-					<td class="gridDtlVal" width="18%">
-						<INPUT tabindex="5" class="inputs" type="text" name="refNo" id="refNo" size="10" value="<?=$refNo?>" readonly onkeyup="return editRefNo('editRef',this.value,event)">
-						<font id="refNoCont"></font>
-					</td>-->
-                    
                     <td class="hdrInputsLvl" width="10%">&nbsp;</td>
                     
 					<td class="hdrInputsLvl" width="5">&nbsp;</td>
@@ -243,16 +276,14 @@
 					</td>
                     
 					<td class="hdrInputsLvl" width="18%" colspan="4">
-						<!--<input type="radio" name="chkStat" id="chkStat" class="inputs" />Permanent
-                        <input type="radio" name="chkStat" id="chkStat"  class="inputs" />Temporary
-                        <input type="radio" name="chkStat" id="chkStat" class="inputs" />Once Only-->
+						
 					</td>
                 </tr>
                 
                 <tr>
 					<td class="hdrInputsLvl">
 						<?php
-							if ($_SESSION['user_level'] == 3)  {
+							if ($_SESSION['user_level'] == 3 || $managerApporver)  {
 						?>
 							Employee No.
 						<?php
@@ -270,7 +301,7 @@
                     
 					<td class="gridDtlVal">
 						<?php
-							if ($_SESSION['user_level'] == 3)  {
+							if ($_SESSION['user_level'] == 3 || $managerApporver)  {
 						?>
 							<INPUT tabindex="11" class="inputs" readonly="readonly" type="text" name="txtAddEmpNo" size="15" id="txtAddEmpNo" value="<?=$_SESSION['employeenumber']?>">
 						<?php
@@ -370,8 +401,6 @@
                                 
                                 </td>
                                 
-                                 
-                               
                                 <td align="center">
                                 <?
 									$reasons=$crdObj->getTblData("tblTK_Reasons "," and stat='A' and changeRestDay='Y'"," order by reason","sqlArres");
@@ -380,7 +409,7 @@
 								?>
                         </td>
                                 <?php
-									if($arr_ObRec_Checking["cRDStat"]=='')
+									if($arr_ObRec_Checking["cRDStat"]=='' || $arr_ObRec_Checking["cRDStat"]=='H')
 									{
 								?>
                                         <td align="center">
@@ -392,7 +421,6 @@
                                 		<td align="center">
                                             <input type="button" class="inputs" name="btnSave<?=$ctr?>" disabled="disabled"  id="btnSave<?=$ctr?>" value='SAVE' >
                                         </td>
-
                                 <?php } ?>
                             </tr>
                   <?php
@@ -419,10 +447,10 @@
                         <FONT class="ToolBarseparator">|</font>
                             <a href="#" id="updateEarn" tabindex="3"><img class="toolbarImg" id="btnUpdate"  src="../../../images/application_form_edit.png" title="Update RD Application" onclick="getSeqNo()"></a>
 						<?
-                        if($_SESSION['user_release']=="Y"){
+                        if($_SESSION['user_release']=="Y" || $_SESSION['user_level'] == 2){
                         ?>
                         <FONT class="ToolBarseparator">|</font>
-                        <a href="#" id="editEarn" tabindex="2"><img class="toolbarImg" id="btnApp" src="../../../images/edit_prev_emp.png"  onclick="upObTran('Approve','crdAjaxResult.php','rdCont',<?=$intOffset?>,'',<?=$_GET['isSearch']?>,'txtSrch','cmbSrch');" title="Approved CS Application" ></a>
+                        <a href="#" id="editEarn" tabindex="2"><img class="toolbarImg" id="btnApp" src="../../../images/edit_prev_emp.png"  onclick="upObTran('Approved','crdAjaxResult.php','rdCont',<?=$intOffset?>,'',<?=$_GET['isSearch']?>,'txtSrch','cmbSrch');" title="Approved CS Application" ></a>
                         <?
 						}
 						?>
@@ -452,12 +480,20 @@
 						{
 							$bgcolor = ($i++ % 2) ? "#FFFFFF" : "#F8F8FF";
 							$on_mouse = ' onmouseover="this.style.backgroundColor=\'' . '#F0F0F0' . '\';"'. ' onmouseout="this.style.backgroundColor=\'' . $bgcolor  . '\';"';						
-							$f_color = ($arrRdAppList_val["cRDStat"]=='A'?"#CC3300":"");
+							if($timeKeeperApprover) {
+								$f_color = ($arrRdAppList_val["cRDStat"]=='A'?"#CC3300":"");
+							}elseif($managerApporver) {
+								$f_color = ($arrRdAppList_val["mStat"]=='A'?"#CC3300":"");
+							}elseif($timeKeeper) {
+								$f_color = ($arrRdAppList_val["cRDStat"]=='A'?"#CC3300":"");
+							}elseif($_SESSION['user_level'] == 3){
+								$f_color = ($arrRdAppList_val["mStat"]=='A'?"#CC3300":"");
+							}
 				?>
                                 <tr style="height:20px;"  bgcolor="<?php echo $bgcolor; ?>" <?php echo $on_mouse; ?>>
                                 <td class="gridDtlVal" align="center">
                                     <?php
-                                        if(($arrRdAppList_val["cRDStat"]=='H') || ($arrRdAppList_val["userApproved"]==$_SESSION['employee_number']))
+                                        if($timeKeeperApprover || $timeKeeper || $arrRdAppList_val["mStat"]=='H')
                                         {
                                     ?>
                                     <input class="inputs" type="checkbox" name="chkseq[]" value="<?=$arrRdAppList_val['seqNo']?>" id="chkseq[]" />

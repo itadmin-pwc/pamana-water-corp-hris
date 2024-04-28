@@ -16,6 +16,12 @@ else{
 	$compCode =  $_SESSION['company_code'];
 }
 
+if(!empty($_GET['empType'])) {
+	$txtAdd = 'txtAddEmpNo2';
+}else{
+	$txtAdd = 'txtAddEmpNo';
+}
+
 
 //$sqlGrp = "Select payGrp from tblProcGrp where compCode='{$_SESSION['company_code']}' and status='A'";
 $sqlGrp = "Select payGrp from tblProcGrp where compCode='{$_SESSION['company_code']}'";
@@ -108,7 +114,7 @@ $arrEmpList = $common->getArrRes($resEmpList);
 		$on_mouse = ' onmouseover="this.style.backgroundColor=\'' . '#F0F0F0' . '\';"'
 		. ' onmouseout="this.style.backgroundColor=\'' . $bgcolor  . '\';"';						
 	?>
-	<tr style="cursor:pointer;" bgcolor="<?php echo $bgcolor; ?>" <?php echo $on_mouse; ?> onclick="passEmpNo('txtAddEmpNo','<?=$empListVal['empNo']?>');">
+	<tr style="cursor:pointer;" bgcolor="<?php echo $bgcolor; ?>" <?php echo $on_mouse; ?> onclick="passEmpNo(<?=$txtAdd?>,'<?=$empListVal['empNo']?>');">
 		<td class="gridDtlVal"><font class="gridDtlLblTxt"><?=$empListVal['empNo']?></font></td>
 		<td class="gridDtlVal"><font class="gridDtlLblTxt"><?=str_replace('Ñ','&Ntilde;',$empListVal['empLastName']. ", " . $empListVal['empFirstName'] . " " . $empListVal['empMidName'])?></font></td>
 	</tr>
@@ -125,7 +131,9 @@ $arrEmpList = $common->getArrRes($resEmpList);
 	<?}?>
 	<tr>
 		<td colspan="7" align="center" class="childGridFooter">
-			<? $pager->_viewPagerButton('../../../includes/employee_lookupAjaxResult_tna.php','empLukupCont',$intOffset,$_GET['isSearch'],'txtSrch','cmbSrch','&tmpCompCode='.$_GET['tmpCompCode']);?>
+			<? 
+				$pager->_viewPagerButton('../../../includes/employee_lookupAjaxResult_tna.php','empLukupCont',$intOffset,$_GET['isSearch'],'txtSrch','cmbSrch','&tmpCompCode='.$_GET['tmpCompCode'].'&empType='.$_GET['empType']);
+			?>
 		</td>
 	</tr>
 </TABLE>

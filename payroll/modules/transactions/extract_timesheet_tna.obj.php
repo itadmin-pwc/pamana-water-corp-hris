@@ -423,8 +423,8 @@ class extractTNATSObj extends commonObj {
 	
 	function CloseTK_RestDay() {
 		$sqlRD = "Insert into tblTK_ChangeRDApphist (compCode, empNo, refNo, dateFiled, tsAppTypeCd, cRDDateFrom, cRDDateTo, cRDReason, dateApproved, userApproved, dateAdded, addedBy, 
-                      cRDStat, completeTag) Select compCode, empNo, refNo, dateFiled, tsAppTypeCd, cRDDateFrom, cRDDateTo, cRDReason, dateApproved, userApproved, dateAdded, addedBy, 
-                      cRDStat, completeTag from tblTK_ChangeRDApp where compCode='{$_SESSION['company_code']}' AND cRDStat='A' AND completeTag='C' AND empNo IN ({$this->Emplist}) ";
+                      cRDStat, completeTag, mApproverdBy, mStat, mDateApproved) Select compCode, empNo, refNo, dateFiled, tsAppTypeCd, cRDDateFrom, cRDDateTo, cRDReason, dateApproved, userApproved, dateAdded, addedBy, 
+                      cRDStat, completeTag, mApproverdBy, mStat, mDateApproved from tblTK_ChangeRDApp where compCode='{$_SESSION['company_code']}' AND cRDStat='A' AND completeTag='C' AND empNo IN ({$this->Emplist}) ";
 		return $this->execQryI($sqlRD);
 	}
 
@@ -436,8 +436,8 @@ class extractTNATSObj extends commonObj {
 	
 	function CloseTK_ChangeShift() {
 		$sqlCS = "Insert into tblTK_CSApphist (compcode, empNo, refNo, dateFiled, csDateTo, csDateFrom, csShiftFromIn, csShiftFromOut, csShiftToIn, csHiftToOut, csReason, dateApproved, 
-                      userApproved, dateAdded, addedBy, csStat, crossDay)  SELECT     compcode, empNo, refNo, dateFiled, csDateTo, csDateFrom, csShiftFromIn, csShiftFromOut, csShiftToIn, csHiftToOut, csReason, dateApproved, 
-                      userApproved, dateAdded, addedBy, csStat, crossDay
+                      userApproved, dateAdded, addedBy, csStat, crossDay, mApproverdBy, mStat, mDateApproved)  SELECT     compcode, empNo, refNo, dateFiled, csDateTo, csDateFrom, csShiftFromIn, csShiftFromOut, csShiftToIn, csHiftToOut, csReason, dateApproved, 
+                      userApproved, dateAdded, addedBy, csStat, crossDay, mApproverdBy, mStat, mDateApproved
 FROM         tblTK_CSApp where compCode='{$_SESSION['company_code']}' AND csStat='A' AND empNo IN ({$this->Emplist}) ";
 		return $this->execQryI($sqlCS);
 	}

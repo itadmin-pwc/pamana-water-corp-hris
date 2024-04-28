@@ -10,6 +10,8 @@ $obObj = new transactionObj($_GET,$_SESSION);
 $obObj->validateSessions('','MODULES');
 
 $_SESSION['employeenumber']=$_SESSION['employee_number'];
+$approverData = $obObj->getTblData("tbltna_approver", " and approverEmpNo='".$_SESSION['employee_number']."' and subordinateEmpNo='".$_SESSION['employee_number']."' and status='A' AND dateValid >= now()", "", "sqlAssoc");
+$selfApprove = $approverData["approverEmpNo"] == $_SESSION['employee_number'];
 
 switch($_GET["action"])
 {
@@ -223,8 +225,32 @@ switch($_GET["action"])
 		{
 			foreach($chkSeqNo as $indchkSeqNo => $chkSeqNo_val)
 			{
-				$qryApp = "Update  tblTk_ObApp set dateApproved='".date("Y-m-d")."',userApproved='".$_SESSION["employee_number"]."',obStat='A' where seqNo='".$chkSeqNo_val."';";
-				$resApp = $obObj->execQry($qryApp);
+				$tkData = $obObj->getTblData("tblTk_ObApp", " and seqNo='".$chkSeqNo_val."'", "", "sqlAssoc");
+				if($tkData['empNo'] == $_SESSION['employee_number']) {
+					if($selfApprove) {
+						if($_SESSION['uType'] == "T") {
+							$qryApp = "Update  tblTk_ObApp set dateApproved='".date("Y-m-d")."',userApproved='".$_SESSION["employee_number"]."',obStat='A' where seqNo='".$chkSeqNo_val."';";
+							$resApp = $obObj->execQry($qryApp);
+						}elseif($_SESSION['uType'] == "TA") {
+							$qryApp = "Update  tblTk_ObApp set dateApproved='".date("Y-m-d")."',userApproved='".$_SESSION["employee_number"]."',obStat='A',mApproverdBy='" . $_SESSION["employee_number"] . "',mStat='A',mDateApproved='".date("Y-m-d")."' where seqNo='".$chkSeqNo_val."';";
+							$resApp = $obObj->execQry($qryApp);
+						}else{
+							$qryApp = "Update  tblTk_ObApp set mApproverdBy='" . $_SESSION["employee_number"] . "',mStat='A',mDateApproved='".date("Y-m-d")."' where seqNo='".$chkSeqNo_val."';";
+							$resApp = $obObj->execQry($qryApp);
+						}
+					}
+				}else{
+					if($_SESSION['uType'] == "T") {
+						$qryApp = "Update  tblTk_ObApp set dateApproved='".date("Y-m-d")."',userApproved='".$_SESSION["employee_number"]."',obStat='A' where seqNo='".$chkSeqNo_val."';";
+						$resApp = $obObj->execQry($qryApp);
+					}elseif($_SESSION['uType'] == "TA") {
+						$qryApp = "Update  tblTk_ObApp set dateApproved='".date("Y-m-d")."',userApproved='".$_SESSION["employee_number"]."',obStat='A',mApproverdBy='" . $_SESSION["employee_number"] . "',mStat='A',mDateApproved='".date("Y-m-d")."' where seqNo='".$chkSeqNo_val."';";
+						$resApp = $obObj->execQry($qryApp);
+					}else{
+						$qryApp = "Update  tblTk_ObApp set mApproverdBy='" . $_SESSION["employee_number"] . "',mStat='A',mDateApproved='".date("Y-m-d")."' where seqNo='".$chkSeqNo_val."';";
+						$resApp = $obObj->execQry($qryApp);
+					}
+				}
 			}
 			
 			echo "alert('Selected OB Application already Approved.')";

@@ -10,15 +10,6 @@ $UtAppObj->validateSessions('','MODULES');
 
 $pager = new AjaxPager(15,'../../../images/');
 
-$getUtApp      = $UtAppObj->getUtAppDtl;
-$refNo         = $getUtApp['refNo'];
-$otReason      = $getUtApp['utReason'];
-$empNo         = $getUtApp['empNo'];
-$dateFiled     = $getUtApp['dateFiled'];
-$dateUt 	   = $getUtApp['dateUt'];
-$UTOut         = $getUtApp['UTOut'];
-$utStat       = $getUtApp['utStat'];
-
 $branch = $_SESSION['branchCode'];
 
 $empInfo = $UtAppObj->getEmployee($_SESSION['company_code'],$_SESSION['employee_number'],'');
@@ -56,20 +47,60 @@ $fullname = $empInfo['empLastName'] . ", " . htmlspecialchars(addslashes($empInf
 	$arrBrnches = $UtAppObj->getArrRes($resBrnches);
 	$arrBrnch = $UtAppObj->makeArr($arrBrnches,'brnCode','brnDesc','All');
 
-
-
-
+	//New Code for Approver 04-25-2024
+	$_SESSION['uType'] = "T"; // Time Keeper
+	$approverData = $UtAppObj->getTblData("tbltna_approver", " and approverEmpNo='".$_SESSION['employee_number']."' and status='A' AND dateValid >= NOW()", "", "sqlAssoc");
+	$forApproval = '';
+	$timeKeeperApprover = $approverData["approverEmpNo"] != "" && $_SESSION['user_level'] == 2 && $_SESSION['user_release']=="Y";
+	$managerApporver = $approverData["approverEmpNo"] != "" && $_SESSION['user_level'] == 2 && $_SESSION['user_release']!="Y";
+	$timeKeeper = $approverData["approverEmpNo"] == "" && $_SESSION['user_level'] == 2 && $_SESSION['user_release']=="Y";
+	if($timeKeeperApprover) { 
+		$_SESSION['uType'] = "TA"; //Timekeeper Approver
+		$forApproval = " AND (emp.empNo IN (Select subordinateEmpNo from tbltna_approver 
+											where approverEmpNo='{$_SESSION['employee_number']}' 
+											AND compCode='{$_SESSION['company_code']}') OR emp.empNo = '{$_SESSION['employee_number']}' OR mStat = 'A')";
+	}elseif($managerApporver){
+		$_SESSION['uType'] = "MA"; //Manager Approver
+		$forApproval = " AND (emp.empNo IN (Select subordinateEmpNo from tbltna_approver 
+											where approverEmpNo='{$_SESSION['employee_number']}' 
+											AND compCode='{$_SESSION['company_code']}') OR emp.empNo = '{$_SESSION['employee_number']}')";
+	}elseif($timeKeeper){
+		$forApproval = " AND (mStat = 'A' OR emp.empNo = '{$_SESSION['employee_number']}')";
+	}
+	//End New Code for Approver 04-25-2024
 
 	$qryIntMaxRec = "SELECT dtl.empNo
 					 FROM tblTK_utApp as dtl 
 					 LEFT JOIN tblEmpMast as emp ON dtl.compCode = emp.CompCode AND dtl.empNo = emp.empNo 
-					 WHERE dtl.compCode = '{$_SESSION['company_code']}' $brnCodelist";
-				if($_GET['srchType'] == 0){
-						$qryIntMaxRec .= "AND dtl.utStat='A'";
+					 WHERE dtl.compCode = '{$_SESSION['company_code']}' $forApproval $brnCodelist";
+					
+					if($timeKeeperApprover || $timeKeeper) {
+						if($_GET['srchType'] == 0){
+							$qryIntMaxRec .= "AND dtl.utStat='A' ";
+						}
+						
+						if($_GET['srchType'] == 1){
+							$qryIntMaxRec .= "AND dtl.utStat='H' ";
+						}
+					}elseif($managerApporver){
+						if($_GET['srchType'] == 0){
+							$qryIntMaxRec .= "AND dtl.mStat='A' ";
+						}
+						
+						if($_GET['srchType'] == 1){
+							$qryIntMaxRec .= "AND dtl.mStat='H' ";
+						}
+					}else{
+						if($_GET['srchType'] == 0){
+							$qryIntMaxRec .= "AND dtl.mStat='A' ";
+						}
+
+						if($_GET['srchType'] == 1){
+							$qryIntMaxRec .= "AND dtl.mStat='H' ";
+						}
 					}
-					if($_GET['srchType'] == 1){
-						$qryIntMaxRec .= "AND dtl.utStat='H'";
-					}
+
+
 					if($_GET['srchType'] == 2){
 						$qryIntMaxRec .= "AND dtl.refNo LIKE '".str_replace("'","''",trim($_GET['txtSrch']))."%' ";
 					}
@@ -97,18 +128,37 @@ $fullname = $empInfo['empLastName'] . ", " . htmlspecialchars(addslashes($empInf
 	
 	$qryGetUtAppDtl = "SELECT dtl.compCode, dtl.empNo, dtl.utDate, dtl.refNo, dtl.dateFiled, dtl.utReason, dtl.utTimeOut,
 							dtl.utStat, dtl.seqNo, dtl.userApproved, dtl.offTimeOut, emp.empFirstName,emp.empMidName,emp.empLastName,
-							TIME_TO_SEC(TIMEDIFF(dtl.offTimeOut,dtl.utTimeOut))/60 as n
+							TIME_TO_SEC(TIMEDIFF(dtl.offTimeOut,dtl.utTimeOut))/60 as n, mStat
 					   FROM tblTK_utApp as dtl 
 					   LEFT JOIN tblEmpMast as emp ON dtl.compCode = emp.CompCode AND dtl.empNo = emp.empNo
-					   WHERE dtl.compCode='{$_SESSION['company_code']}'";
+					   WHERE dtl.compCode='{$_SESSION['company_code']}' $forApproval $brnCodelist";
 
 	if($_GET['isSearch'] == 1){
-	       	if($_GET['srchType'] == 0){
-	        	$qryGetUtAppDtl .= "AND utStat='A'";
-	        }
-	       	if($_GET['srchType'] == 1){
-	        	$qryGetUtAppDtl .= "AND utStat='H'";
-	        }
+			if($timeKeeperApprover || $timeKeeper) {
+				if($_GET['srchType'] == 0){
+					$qryGetUtAppDtl .= "AND dtl.utStat='A' ";
+				}
+				
+				if($_GET['srchType'] == 1){
+					$qryGetUtAppDtl .= "AND dtl.utStat='H' ";
+				}
+			}elseif($managerApporver){
+				if($_GET['srchType'] == 0){
+					$qryGetUtAppDtl .= "AND dtl.mStat='A' ";
+				}
+				
+				if($_GET['srchType'] == 1){
+					$qryGetUtAppDtl .= "AND dtl.mStat='H' ";
+				}
+			}else{
+				if($_GET['srchType'] == 0){
+					$qryGetUtAppDtl .= "AND dtl.mStat='A' ";
+				}
+
+				if($_GET['srchType'] == 1){
+					$qryGetUtAppDtl .= "AND dtl.mStat='H' ";
+				}
+			}
 	        if($_GET['srchType'] == 2){
         		$qryGetUtAppDtl .= "AND dtl.refNo LIKE '".str_replace("'","''",trim($_GET['txtSrch']))."%' ";
         	}
@@ -162,7 +212,7 @@ $fullname = $empInfo['empLastName'] . ", " . htmlspecialchars(addslashes($empInf
 				<tr>
 					<td class="hdrInputsLvl">
 						<?php
-							if ($_SESSION['user_level'] == 3)  {
+							if ($_SESSION['user_level'] == 3 || $managerApporver)  {
 						?>
 							Employee No.
 						<?php
@@ -178,7 +228,7 @@ $fullname = $empInfo['empLastName'] . ", " . htmlspecialchars(addslashes($empInf
 					</td>
 					<td width="375" class="gridDtlVal">
 						<?php
-							if ($_SESSION['user_level'] == 3)  {
+							if ($_SESSION['user_level'] == 3 || $managerApporver)  {
 						?>
 							<input tabindex="9" class="inputs" type="text" name="txtAddEmpNo" id="txtAddEmpNo" value="<?=$_SESSION['employeenumber'];?>" readonly>
 						<?php
@@ -269,7 +319,7 @@ $fullname = $empInfo['empLastName'] . ", " . htmlspecialchars(addslashes($empInf
          	<FONT class="ToolBarSeparator">|</font>
 			<a href="#"  id="btnEdit"onClick=""><img class="toolbarImg" id="btnUpdate"  src="../../../images/application_form_edit.png" title="Update UT Application" onclick="getSeqNo()"></a> 
 			<?
-            if($_SESSION['user_release']=="Y"){
+            if($_SESSION['user_release']=="Y" || $_SESSION['user_level'] == 2){
             ?>                                                		
 			<FONT class="ToolBarseparator">|</font>
             <a href="#" id="editEarn" tabindex="2"><img class="toolbarImg" src="../../../images/edit_prev_emp.png"  onclick="updateUtTran('updateUtTran','utAppAjaxResult.php','utAppCont',<?=$intOffset?>,'',<?=$_GET['isSearch']?>,'txtSrch','cmbSrch');" title="Approved Undertime Application" ></a>
@@ -304,17 +354,27 @@ $fullname = $empInfo['empLastName'] . ", " . htmlspecialchars(addslashes($empInf
 						$bgcolor = ($i++ % 2) ? "#FFFFFF" : "#F8F8FF";
 						$on_mouse = ' onmouseover="this.style.backgroundColor=\'' . '#F0F0F0' . '\';"'
 						. ' onmouseout="this.style.backgroundColor=\'' . $bgcolor  . '\';"';
-						$f_color = ($utAppDtlVal['utStat']=='A'?"#CC3300":"");
+						if($timeKeeperApprover) {
+							$status = ($utAppDtlVal["utStat"]=='A'?"Approved":"Held");
+							$f_color = ($utAppDtlVal["utStat"]=='A'?"#CC3300":"");
+						}elseif($managerApporver) {
+							$status = ($utAppDtlVal["mStat"]=='A'?"Approved":"Held");
+							$f_color = ($utAppDtlVal["mStat"]=='A'?"#CC3300":"");
+						}elseif($timeKeeper) {
+							$status = ($utAppDtlVal["utStat"]=='A'?"Approved":"Held");
+							$f_color = ($utAppDtlVal["utStat"]=='A'?"#CC3300":"");
+						}elseif($_SESSION['user_level'] == 3){
+							$status = ($utAppDtlVal["mStat"]=='A'?"Approved":"Held");
+							$f_color = ($utAppDtlVal["mStat"]=='A'?"#CC3300":"");
+						}
 				?>
         <tr bgcolor="<?php echo $bgcolor; ?>" <?php echo $on_mouse; ?>> 
           <td class="gridDtlVal" align="center">
           	 <?php
-				if(($utAppDtlVal['utStat']=='H') || (($utAppDtlVal["userApproved"]==$_SESSION['employee_number']) && ($utAppDtlVal["utStat"]=='A')))
+				if($timeKeeperApprover || $timeKeeper || $utAppDtlVal["mStat"]=='H')
 				{
-					
 			?>
           		<input class="inputs" type="checkbox" name="chkseq[]" value="<?=$utAppDtlVal['seqNo']?>" id="chkseq[]" />
-                
             <?php
 				}
 			?>
@@ -367,9 +427,7 @@ $fullname = $empInfo['empLastName'] . ", " . htmlspecialchars(addslashes($empInf
 			}
 		  ?></td>
           <td class="gridDtlVal" align="center"><font color="<?=$f_color?>">
-				<?
-					echo ($utAppDtlVal['utStat'] =="H"? "Held":"Approved");
-				?>
+				<?=$status?>
 				
            </td>
           

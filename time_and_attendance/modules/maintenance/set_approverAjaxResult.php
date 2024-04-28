@@ -9,9 +9,7 @@ $srchType=0;
 $AppObj = new ApprObj($_GET, $_SESSION);
 $AppObj->validateSessions('','MODULES');
 
-$pager = new AjaxPager(15,'../../../images/');
-
-$getOtApp = $AppObj->getOtAppDtl;
+$pager = new AjaxPager(50,'../../../images/');
 
 $branch = $_SESSION['branchCode'];
 
@@ -20,11 +18,6 @@ $empInfo = $AppObj->getEmployee($_SESSION['company_code'],$_SESSION['employeenum
 
 $midName = (!empty($empInfo['empMidName'])) ? substr($empInfo['empMidName'],0,1)."." : '';
 $fullname = $empInfo['empLastName'] . ", " . htmlspecialchars(addslashes($empInfo['empFirstName'])) . " " . $midName;
-$otExempted = false;
-$level = $empInfo['empLevel'];
-if ($level > '70'){
-	$otExempted = true;
-}
 //08-09-2023
 
 	//get users branch access
@@ -38,8 +31,8 @@ if ($level > '70'){
 		// 				 and emp.empbrnCode IN (Select brnCode from tblTK_UserBranch 
 		// 									where empNo='{$_SESSION['employee_number']}' 
 		// 										AND compCode='{$_SESSION['company_code']}')";
-		$brnCodelist = " AND emp.empNo='".$_SESSION['employee_number']."' 
-						and empbrnCode ='".$branch."'";
+		$brnCodelist = " AND tna.approverEmpNo='".$_SESSION['employee_number']."' 
+						and emp_approver.empbrnCode ='".$branch."'";
 	}
 	elseif ($_SESSION['user_level'] == 2) 
 	{
@@ -61,6 +54,7 @@ if ($level > '70'){
 
 	$qryIntMaxRec = "SELECT 
 						tna.approverEmpNo, 
+						emp_approver.empbrnCode,
 						emp_approver.empLastName,
 						emp_approver.empFirstName,
 						emp_approver.empMidName,
@@ -76,25 +70,25 @@ if ($level > '70'){
 				 
         if($_GET['isSearch'] == 1){
 	       	if($_GET['srchType'] == 0){
-	        	$qryGetOtAppDtl .= "AND tna.status='A'";
+	        	$qryGetAppDtl .= "AND tna.status='A'";
 	        }
 	       	if($_GET['srchType'] == 1){
-	        	$qryGetOtAppDtl .= "AND tna.status='H'";
+	        	$qryGetAppDtl .= "AND tna.status='H'";
 	        }
 	        if($_GET['srchType'] == 2){
-        		$qryGetOtAppDtl .= "AND emp_approver.approverEmpNo LIKE '".str_replace("'","''",trim($_GET['txtSrch']))."%' ";
+        		$qryGetAppDtl .= "AND emp_approver.approverEmpNo LIKE '".str_replace("'","''",trim($_GET['txtSrch']))."%' ";
         	}
 			if($_GET['srchType'] == 3){
-        		$qryGetOtAppDtl .= "AND emp_approver.empLastName LIKE '".str_replace("'","''",trim($_GET['txtSrch']))."%' ";
+        		$qryGetAppDtl .= "AND emp_approver.empLastName LIKE '".str_replace("'","''",trim($_GET['txtSrch']))."%' ";
         	}
 			if($_GET['srchType'] == 4){
-        		$qryGetOtAppDtl .= "AND emp_sub.approverEmpNo LIKE '".str_replace("'","''",trim($_GET['txtSrch']))."%' ";
+        		$qryGetAppDtl .= "AND emp_sub.approverEmpNo LIKE '".str_replace("'","''",trim($_GET['txtSrch']))."%' ";
         	}
 			if($_GET['srchType'] == 5){
-        		$qryGetOtAppDtl .= "AND emp_sub.empLastName LIKE '".str_replace("'","''",trim($_GET['txtSrch']))."%' ";
+        		$qryGetAppDtl .= "AND emp_sub.empLastName LIKE '".str_replace("'","''",trim($_GET['txtSrch']))."%' ";
         	}
 	 		if ($_GET['brnCd']!=0){
-				$qryGetOtAppDtl.= " AND empbrnCode='".$_GET["brnCd"]."' ";
+				$qryGetAppDtl.= " AND emp_approver.empbrnCode='".$_GET["brnCd"]."' ";
 			}
 	 	}
         $qryIntMaxRec .= "ORDER BY emp_approver.empLastName, emp_approver.empFirstName";
@@ -109,7 +103,8 @@ if ($level > '70'){
 		$intOffset = 0;
 	}
 	
-	$qryGetOtAppDtl = "SELECT 
+	$qryGetAppDtl = "SELECT 
+							tna.ID,
 							tna.approverEmpNo, 
 							emp_approver.empLastName,
 							emp_approver.empFirstName,
@@ -124,39 +119,42 @@ if ($level > '70'){
 						LEFT OUTER JOIN tblEmpMast as emp_sub ON emp_sub.empNo = tna.subordinateEmpNo
 						WHERE tna.compCode = '{$_SESSION['company_code']}' $brnCodelist ";
 
+	if(empty($_GET['srchType'])) {
+		$qryGetAppDtl .= "AND tna.status='A'";
+	}
 	if($_GET['isSearch'] == 1){
-	       	if($_GET['srchType'] == 0){
-	        	$qryGetOtAppDtl .= "AND tna.status='A'";
-	        }
-	       	if($_GET['srchType'] == 1){
-	        	$qryGetOtAppDtl .= "AND tna.status='H'";
-	        }
-	        if($_GET['srchType'] == 2){
-        		$qryGetOtAppDtl .= "AND emp_approver.approverEmpNo LIKE '".str_replace("'","''",trim($_GET['txtSrch']))."%' ";
-        	}
-			if($_GET['srchType'] == 3){
-        		$qryGetOtAppDtl .= "AND emp_approver.empLastName LIKE '".str_replace("'","''",trim($_GET['txtSrch']))."%' ";
-        	}
-			if($_GET['srchType'] == 4){
-        		$qryGetOtAppDtl .= "AND emp_sub.approverEmpNo LIKE '".str_replace("'","''",trim($_GET['txtSrch']))."%' ";
-        	}
-			if($_GET['srchType'] == 5){
-        		$qryGetOtAppDtl .= "AND emp_sub.empLastName LIKE '".str_replace("'","''",trim($_GET['txtSrch']))."%' ";
-        	}
-	 		if ($_GET['brnCd']!=0){
-				$qryGetOtAppDtl.= " AND empbrnCode='".$_GET["brnCd"]."' ";
-			}
+	    if($_GET['srchType'] == 0){
+	    	$qryGetAppDtl .= "AND tna.status='A'";
+	    }
+	    if($_GET['srchType'] == 1){
+	     	$qryGetAppDtl .= "AND tna.status='V'";
+	    }
+	    if($_GET['srchType'] == 2){
+        	$qryGetAppDtl .= "AND tna.approverEmpNo LIKE '".str_replace("'","''",trim($_GET['txtSrch']))."%' ";
+        }
+		if($_GET['srchType'] == 3){
+        	$qryGetAppDtl .= "AND emp_approver.empLastName LIKE '".str_replace("'","''",trim($_GET['txtSrch']))."%' ";
+        }
+		if($_GET['srchType'] == 4){
+        	$qryGetAppDtl .= "AND tna.subordinateEmpNo LIKE '".str_replace("'","''",trim($_GET['txtSrch']))."%' ";
+        }
+		if($_GET['srchType'] == 5){
+        	$qryGetAppDtl .= "AND emp_sub.empLastName LIKE '".str_replace("'","''",trim($_GET['txtSrch']))."%' ";
+        }
+	 	if ($_GET['brnCd']!=0){
+			$qryGetAppDtl.= " AND emp_approver.empbrnCode='".$_GET["brnCd"]."' ";
+		}
 	 }
 	
-	$qryGetOtAppDtl .= "ORDER BY emp_approver.empLastName, emp_approver.empFirstName limit $intOffset,$intLimit";
+	$qryGetAppDtl .= "ORDER BY emp_approver.empLastName, emp_approver.empFirstName limit $intOffset,$intLimit";
 
-	//echo $qryGetOtAppDtl;
+	//echo $qryGetAppDtl;
 	
-	$resGetOtAppDtl = $AppObj->execQry($qryGetOtAppDtl);
-	$arrGetOtAppDtl = $AppObj->getArrRes($resGetOtAppDtl);
+	$resGetAppDtl = $AppObj->execQry($qryGetAppDtl);
+	$arrGetAppDtl = $AppObj->getArrRes($resGetAppDtl);
 ?>
 
-<TABLE border ="0" width="100%" cellpadding="1" cellspacing="0" class="parentGrid" style="<?=$otExempted ? 'display: none;' : ''?>">
+<TABLE border ="0" width="100%" cellpadding="1" cellspacing="0" class="parentGrid">
 	<tr>
 		
     <td height="4" colspan="4" class="parentGridHdr"><img src="../../../images/grid.png">&nbsp;Set Employee Approver</td>
@@ -164,7 +162,7 @@ if ($level > '70'){
 	<tr>
 		
 		<td colspan="6" class="gridToolbar">
-				<a href="#" tabindex="4"><img class="toolbarImg" src='../../../images/refresh.png'  onclick="pager('set_approverAjaxResult.php','otAppCont','refresh',0,0,'','','','../../../images/'); validateMod('REFRESH');" title="Refresh"></a>		
+				<a href="#" tabindex="4"><img class="toolbarImg" src='../../../images/refresh.png'  onclick="pager('set_approverAjaxResult.php','approverCont','refresh',0,0,'','','','../../../images/'); validateMod('REFRESH');" title="Refresh"></a>		
 		</td>
 	
 	</tr>
@@ -174,7 +172,7 @@ if ($level > '70'){
 			<TABLE cellpadding="1" cellspacing="1" border="0" class="hdrTable" width="100%">
 				<tr>
 					<td class="hdrLblRow" colspan="16">
-						<FONT class="hdrLbl">Application Detail</font>
+						<FONT class="hdrLbl">Add Approver</font>
 					</td>
 				</tr>
 				<tr>
@@ -203,7 +201,7 @@ if ($level > '70'){
 					<?php
 						}else{
 					?>
-						<input tabindex="9" class="inputs" type="text" name="txtAddEmpNo" id="txtAddEmpNo" onKeyDown="getEmployee(event,this.value)" value="<?=$_SESSION['employeenumber'];?>" readonly>
+						<input tabindex="9" class="inputs" type="text" name="txtAddEmpNo" id="txtAddEmpNo" onKeyDown="getEmployee(event,this.value,'apr')" value="<?=$_SESSION['employeenumber'];?>" readonly>
 					<?php
 						}
 					?>
@@ -217,7 +215,7 @@ if ($level > '70'){
 				<td width="535" colspan="4" class="gridDtlVal">
 					<INPUT class="inputs" readonly="readonly" type="text" name="txtAddEmpName" id="txtAddEmpName" size="50" value="<?=$fullname?>">
 					<span class="grdiDtlVal">
-					<input tabindex="10" class="inputs" type="hidden" name="dateFiled" id="dateFiled" size="10"
+					<input tabindex="10" class="inputs" type="hidden" name="app_date" id="app_date" size="10"
 							 value="<? 	
 							 			$format="Y-m-d";
 										$strf=date($format);
@@ -236,7 +234,7 @@ if ($level > '70'){
 					<?php
 						}else{
 					?>
-						<a href="#" onclick="empLookup('../../../includes/employee_lookup_tna.php')">Employee  No.</a>
+						<a href="#" onclick="empLookup('../../../includes/employee_lookup_tna.php?empType=subordinate')">Employee  No.</a>
 					<?php
 						}
 					?>
@@ -248,11 +246,11 @@ if ($level > '70'){
 					<?php
 						if ($_SESSION['user_level'] == 3)  {
 					?>
-						<input tabindex="9" class="inputs" type="text" name="txtAddEmpNo" id="txtAddEmpNo" value="<?=$_SESSION['employeenumber'];?>" readonly>
+						<input tabindex="9" class="inputs" type="text" name="txtAddEmpNo2" id="txtAddEmpNo2" readonly>
 					<?php
 						}else{
 					?>
-						<input tabindex="9" class="inputs" type="text" name="txtAddEmpNo" id="txtAddEmpNo" onKeyDown="getEmployee(event,this.value)" value="<?=$_SESSION['employeenumber'];?>" readonly>
+						<input tabindex="9" class="inputs" type="text" name="txtAddEmpNo2" id="txtAddEmpNo2" onKeyDown="getEmployee(event,this.value,'sub')" readonly>
 					<?php
 						}
 					?>
@@ -264,7 +262,7 @@ if ($level > '70'){
 					:
 				</td>
 				<td width="360" colspan="1" class="gridDtlVal">
-					<INPUT class="inputs" readonly="readonly" type="text" name="txtAddEmpName" id="txtAddEmpName" size="50" value="<?=$fullname?>">
+					<INPUT class="inputs" readonly="readonly" type="text" name="txtAddEmpName2" id="txtAddEmpName2" size="50">
 					<span class="grdiDtlVal">
 					<input tabindex="10" class="inputs" type="hidden" name="dateFiled" id="dateFiled" size="10"
 							 value="<? 	
@@ -275,7 +273,7 @@ if ($level > '70'){
 					</span>
 				</td>
 				<td>
-					<INPUT tabindex="16"class="inputs" type="button" name="btnSaveAddDtl" id="btnSaveAddDtl" value="SAVE" onclick="maintOtApp('otApp.php','otAppCont','<?=$action?>','<?=$intOffset?>','<?=$_GET['isSearch']?>','txtSrch','cmbSrch','','')">
+					<INPUT tabindex="16"class="inputs" type="button" name="btnSaveAddDtl" id="btnSaveAddDtl" value="SAVE" onclick="maintApp('set_approver.php','approverCont','addDtl','<?=$intOffset?>','<?=$_GET['isSearch']?>','txtSrch','cmbSrch','','')">
 				</td>
 			</tr>
 			</TABLE>
@@ -291,20 +289,20 @@ if ($level > '70'){
 			<td colspan="10" class="gridToolbar">
 						Search<INPUT tabindex="15" type="text" name="txtSrch" id="txtSrch" value="<?=$_GET['txtSrch']?>" class="inputs">
             In 
-            <?=$AppObj->DropDownMenu(array('Approved', 'Held', 'Ref. No.','Employee No.','Last Name'),'cmbSrch',$_GET['srchType'],'class="inputs" tabindex="16"');?>
-            <input tabindex="17" class="inputs" type="button" name="btnSrch" id="btnSrch" value="SEARCH" onClick="pager('set_approverAjaxResult.php','otAppCont','Search',0,1,'txtSrch','cmbSrch','&refNo=<?=$_GET['refNo']?>&brnCd='+document.getElementById('brnCd').value,'../../../images/')"> 
-         	<FONT class="ToolBarSeparator">|</font>
-			<a href="#"  id="btnEdit"onClick=""><img class="toolbarImg" id="btnUpdate"  src="../../../images/application_form_edit.png" title="Update OT Application" onclick="getSeqNo()"></a>  
+            <?=$AppObj->DropDownMenu(array('Active', 'Voided', 'Approver EmpNo.', 'Approver Last Name', 'Subordinate EmpNo', 'Subordinate Last Name'),'cmbSrch',$_GET['srchType'],'class="inputs" tabindex="16"');?>
+            <input tabindex="17" class="inputs" type="button" name="btnSrch" id="btnSrch" value="SEARCH" onClick="pager('set_approverAjaxResult.php','approverCont','Search',0,1,'txtSrch','cmbSrch','&refNo=<?=$_GET['refNo']?>&brnCd='+document.getElementById('brnCd').value,'../../../images/')"> 
+         	<!-- <FONT class="ToolBarSeparator">|</font>
+			<a href="#"  id="btnEdit"onClick=""><img class="toolbarImg" id="btnUpdate"  src="../../../images/application_form_edit.png" title="Update Approver Record" onclick="getSeqNo()"></a>   -->
 			<?
             if($_SESSION['user_release']=="Y"){
             ?>                                               	
 			<FONT class="ToolBarseparator">|</font>
-            <a href="#" id="btnApp" tabindex="2"><img class="toolbarImg" src="../../../images/edit_prev_emp.png"  onclick="updateOtTran('updateOtTran','set_approverAjaxResult.php','otAppCont',<?=$intOffset?>,'',<?=$_GET['isSearch']?>,'txtSrch','cmbSrch');" title="Approved OT Application" ></a>
+            <a href="#" id="btnApp" tabindex="2"><img class="toolbarImg" src="../../../images/edit_prev_emp.png"  onclick="updateTran('updateTran','set_approverAjaxResult.php','approverCont',<?=$intOffset?>,'',<?=$_GET['isSearch']?>,'txtSrch','cmbSrch');" title="Set As Active" ></a>
             <?
 			}
 			?>
             <FONT class="ToolBarseparator">|</font>
-            <a href="#" id="btnDel" tabindex="3"><img class="toolbarImg" src="../../../images/application_form_delete.png" title="Delete OT Application" onclick="delOtAppDtl('delOtAppDtl','set_approverAjaxResult.php','otAppCont',<?=$intOffset?>,'',<?=$_GET['isSearch']?>,'txtSrch','cmbSrch')"></a>
+            <a href="#" id="btnDel" tabindex="3"><img class="toolbarImg" src="../../../images/application_form_delete.png" title="Delete Approver Record" onclick="delAppDtl('delAppDtl','set_approverAjaxResult.php','approverCont',<?=$intOffset?>,'',<?=$_GET['isSearch']?>,'txtSrch','cmbSrch')"></a>
 			<FONT class="ToolBarseparator">|</font>
 			<?=$AppObj->DropDownMenu($arrBrnch,'brnCd',$_GET['brnCd'],'class="inputs"');?>
 
@@ -313,69 +311,40 @@ if ($level > '70'){
         <tr> 
 		  <td width="2%" class="gridDtlLbl" align="center"><input type="checkbox" name="selAll" id="selAll" VALUE="1" onclick="this.value=checkAll(this.value);"/></td>
 		  <td width="9%" class="gridDtlLbl" align="center">EMPLOYEE NO</td>
-		  <td width="27%" class="gridDtlLbl" align="center">EMPLOYEE NAME</td>
-          <td width="9%" class="gridDtlLbl" align="center">DATE OF OVERTIME</td>
-          <td width="26%" class="gridDtlLbl" align="center">REASON</td>
-          <td width="7%" class="gridDtlLbl" align="center">OT IN</td>
-          <td width="7%" class="gridDtlLbl" align="center">OT OUT</td>
-		  <td width="7%" class="gridDtlLbl" align="center">CROSS DATE</td>
+		  <td width="15%" class="gridDtlLbl">APPROVER</td>
+		  <td width="9%" class="gridDtlLbl" align="center">EMPLOYEE NO</td>
+		  <td width="15%" class="gridDtlLbl">SUBORDINATE</td>
           <td width="6%" class="gridDtlLbl" align="center"> STATUS</td>
          
         </tr>
 		
 		<?
-				if(@$AppObj->getRecCount($resGetOtAppDtl) > 0){
+				if(@$AppObj->getRecCount($resGetAppDtl) > 0){
 
 					$i=0;
 					$ctr=1;
-					foreach (@$arrGetOtAppDtl as $otAppDtlVal){
+					foreach (@$arrGetAppDtl as $otAppDtlVal){
 
 						$bgcolor = ($i++ % 2) ? "#FFFFFF" : "#F8F8FF";
 						$on_mouse = ' onmouseover="this.style.backgroundColor=\'' . '#F0F0F0' . '\';"'
 						. ' onmouseout="this.style.backgroundColor=\'' . $bgcolor  . '\';"';
-						$f_color = ($otAppDtlVal["otStat"]=='A'?"#CC3300":"");
+						$f_color = ($otAppDtlVal["status"]=='V'?"#CC3300":"");
 		?>
         	<tr bgcolor="<?php echo $bgcolor; ?>" <?php echo $on_mouse; ?>> 
           		<td class="gridDtlVal" align="center">
-                	<?php
-						if(($otAppDtlVal["otStat"]=='H') || (($otAppDtlVal["userApproved"]==$_SESSION['employee_number']) && ($otAppDtlVal["otStat"]=='A')))
-						{
-					?>
-							<input class="inputs" type="checkbox" name="chkseq[]" value="<?=$otAppDtlVal['seqNo']?>" id="chkseq[]" />
-                    <?php
-						}
-					?>
+					<input class="inputs" type="checkbox" name="chkseq[]" value="<?=$otAppDtlVal['ID']?>" id="chkseq[]" />
 				</td>           
-		  		<td class="gridDtlVal" align="center"><font color="<?=$f_color?>"><?=$otAppDtlVal['empNo']?></td>
+		  		<td class="gridDtlVal" align="center"><font color="<?=$f_color?>"><?=$otAppDtlVal['approverEmpNo']?></td>
           		<td class="gridDtlVal"> <font color="<?=$f_color?>">
-           		
             		<?=$otAppDtlVal['empLastName'].", ".$otAppDtlVal['empFirstName']." "?>
+		   		</td>		
+          		<td class="gridDtlVal" align="center"><font color="<?=$f_color?>"><?=$otAppDtlVal['subordinateEmpNo']?></td>
+          		<td class="gridDtlVal"> <font color="<?=$f_color?>">
+            		<?=$otAppDtlVal['subLastName'].", ".$otAppDtlVal['subFirstName']." "?>
 		   		</td>
-		   		<td class="gridDtlVal" align = "center"><font color="<?=$f_color?>"><? 
-		  			echo date("Y-m-d", strtotime($otAppDtlVal['otDate']));
-		 		?></td>			
-          		<td class="gridDtlVal" align="left"><font color="<?=$f_color?>">
-	      <?
-				if(is_numeric($otAppDtlVal['otReason'])){
-					$OTRes=$AppObj->getTblData("tblTK_Reasons "," and stat='A' and reason_id='".$otAppDtlVal['otReason']."'"," order by reason","sqlAssoc");
-					echo $OTRes['reason'];	
-				}
-				else{
-					echo strtoupper($otAppDtlVal['otReason']);	
-				}
-				?></td>
-          		<td class="gridDtlVal" align="center"><font color="<?=$f_color?>"><?=$otAppDtlVal['otIn']?></td>
-          		<td class="gridDtlVal" align="center"><font color="<?=$f_color?>"><?=$otAppDtlVal['otOut']?></td>
-		  		<td class="gridDtlVal" align="center"><font color="<?=$f_color?>"><?=$otAppDtlVal['crossTag']=="Y"?"Yes":""?></td>
           		<td class="gridDtlVal" align="center"><font color="<?=$f_color?>">
 				<?
-					if ($otAppDtlVal['otStat'] == 'H'){
-						echo ($otAppDtlVal['otStat'] =="H"? "Held":"Approved");
-					}else if($otAppDtlVal['otStat'] == 'A'){
-						echo ($otAppDtlVal['otStat'] =="A"? "Approved":"Held");
-					}else{
-						echo ($otAppDtlVal['otStat'] =="Posted");
-					}
+					echo ($otAppDtlVal['status'] == "A"? "Active":"Voided");
 				?>
             	</td>
           
@@ -395,7 +364,7 @@ if ($level > '70'){
         <tr> 
           <td colspan="10" align="center" class="childGridFooter"> 
             <?
-				$pager->_viewPagerButton('set_approverAjaxResult.php','otAppCont',$intOffset,$_GET['isSearch'],'txtSrch','cmbSrch','&refNo='.$_GET['refNo'].'&brnCd='.$_GET['brnCd']);
+				$pager->_viewPagerButton('set_approverAjaxResult.php','approverCont',$intOffset,$_GET['isSearch'],'txtSrch','cmbSrch','&refNo='.$_GET['refNo'].'&brnCd='.$_GET['brnCd']);
 			?>
           </td>
         </tr>

@@ -10,6 +10,8 @@ $otAppObj = new otAppObj();
 $otAppObj->ValidateSessions($_GET, $_SESSION);
 unset($_SESSION['employeenumber']);
 $_SESSION['employeenumber']=$_SESSION['employee_number'];
+$approverData = $otAppObj->getTblData("tbltna_approver", " and approverEmpNo='".$_SESSION['employee_number']."' and subordinateEmpNo='".$_SESSION['employee_number']."' and status='A' AND dateValid >= now()", "", "sqlAssoc");
+$selfApprove = $approverData["approverEmpNo"] == $_SESSION['employee_number'];
 
 if (isset($_GET['action'])) {
 	switch ($_GET['action']) {
@@ -107,11 +109,33 @@ if (isset($_GET['action'])) {
 			$chkSeqNo = $_GET["chkseq"];
 			
 			foreach($chkSeqNo as $indchkSeqNo => $chkSeqNo_val)
-			
 			{
-				$qryApprove = "UPDATE tblTK_OTApp SET dateApproved='".date("Y-m-d")."',userApproved='".$_SESSION["employee_number"]."', 
-							   otStat='A' WHERE seqNo='".$chkSeqNo_val."';";
-				$resApprove = $otAppObj->execQry($qryApprove);
+				$tkData = $otAppObj->getTblData("tblTK_OTApp", " and seqNo='".$chkSeqNo_val."'", "", "sqlAssoc");
+				if($tkData['empNo'] == $_SESSION['employee_number']) {
+					if($selfApprove) {
+						if($_SESSION['uType'] == "T") {
+							$qryApp = "Update  tblTK_OTApp set dateApproved='".date("Y-m-d")."',userApproved='".$_SESSION["employee_number"]."',otStat='A' where seqNo='".$chkSeqNo_val."';";
+							$resApp = $otAppObj->execQry($qryApp);
+						}elseif($_SESSION['uType'] == "TA") {
+							$qryApp = "Update  tblTK_OTApp set dateApproved='".date("Y-m-d")."',userApproved='".$_SESSION["employee_number"]."',otStat='A',mApproverdBy='" . $_SESSION["employee_number"] . "',mStat='A',mDateApproved='".date("Y-m-d")."' where seqNo='".$chkSeqNo_val."';";
+							$resApp = $otAppObj->execQry($qryApp);
+						}else{
+							$qryApp = "Update  tblTK_OTApp set mApproverdBy='" . $_SESSION["employee_number"] . "',mStat='A',mDateApproved='".date("Y-m-d")."' where seqNo='".$chkSeqNo_val."';";
+							$resApp = $otAppObj->execQry($qryApp);
+						}
+					}
+				}else{
+					if($_SESSION['uType'] == "T") {
+						$qryApp = "Update  tblTK_OTApp set dateApproved='".date("Y-m-d")."',userApproved='".$_SESSION["employee_number"]."',otStat='A' where seqNo='".$chkSeqNo_val."';";
+						$resApp = $otAppObj->execQry($qryApp);
+					}elseif($_SESSION['uType'] == "TA") {
+						$qryApp = "Update  tblTK_OTApp set dateApproved='".date("Y-m-d")."',userApproved='".$_SESSION["employee_number"]."',otStat='A',mApproverdBy='" . $_SESSION["employee_number"] . "',mStat='A',mDateApproved='".date("Y-m-d")."' where seqNo='".$chkSeqNo_val."';";
+						$resApp = $otAppObj->execQry($qryApp);
+					}else{
+						$qryApp = "Update  tblTK_OTApp set mApproverdBy='" . $_SESSION["employee_number"] . "',mStat='A',mDateApproved='".date("Y-m-d")."' where seqNo='".$chkSeqNo_val."';";
+						$resApp = $otAppObj->execQry($qryApp);
+					}
+				}
 			}
 
 			echo "alert('Selected Overtime Application already approved.')";
@@ -127,23 +151,23 @@ if (isset($_GET['action'])) {
 		break;
 		
 		case "getSeqNo":
-		$chkSeqNo = $_GET["chkseq"];
-		
-		if(sizeof($chkSeqNo)>1)
-		{
-			echo "alert('Select 1 OT Application to be Modified.')";
-		}
-		else
-		{
-			foreach($chkSeqNo as $indchkSeqNo => $chkSeqNo_val)
-			{
-				$inputTypeSeqNo = $chkSeqNo_val;
-			}
+			$chkSeqNo = $_GET["chkseq"];
 			
-			echo "UpdateRdTran('".$inputTypeSeqNo."');";
-		}
-		exit();
-	break;
+			if(sizeof($chkSeqNo)>1)
+			{
+				echo "alert('Select 1 OT Application to be Modified.')";
+			}
+			else
+			{
+				foreach($chkSeqNo as $indchkSeqNo => $chkSeqNo_val)
+				{
+					$inputTypeSeqNo = $chkSeqNo_val;
+				}
+				
+				echo "UpdateRdTran('".$inputTypeSeqNo."');";
+			}
+			exit();
+		break;
 	
 	default:
 		
@@ -639,81 +663,28 @@ function maintOtApp(URL,ele,action,intOffSet,isSearch,txtSearch,cmbSearch,extra,
 			  }
 			  Windows.addObserver(myObserver);
 		}
-		
 	}
 
-	
-
-	
-	
 	function checkShift(){
-	var arrEle = $('frmOtApp').serialize(true);
-	var dateOt =(arrEle['dateOt']);
-	var empNo = arrEle['txtAddEmpNo'];
+		var arrEle = $('frmOtApp').serialize(true);
+		var dateOt =(arrEle['dateOt']);
+		var empNo = arrEle['txtAddEmpNo'];
 
-	var param = '&empNo='+empNo+'&dateOt='+dateOt;
+		var param = '&empNo='+empNo+'&dateOt='+dateOt;
 	
-			new Ajax.Request('<?=$_SERVER['PHP_SELF']?>?action=checkShift'+param,{
-				method : 'get',
-				parameters : $('frmOtApp').serialize(),
-				onComplete : function (req){
-					eval(req.responseText);	
-					//pager('otAppAjaxResult.php','otAppCont','load',0,0,'','','','../../../images/');  
-				},
-				onCreate : function (){
-					$('indicator1').src="../../../images/wait.gif";
-				},
-				onSuccess : function (){
-					$('indicator1').innerHTML="";
-				}
-			});	
-	
+		new Ajax.Request('<?=$_SERVER['PHP_SELF']?>?action=checkShift'+param,{
+		method : 'get',
+		parameters : $('frmOtApp').serialize(),
+		onComplete : function (req){
+			eval(req.responseText);	
+			//pager('otAppAjaxResult.php','otAppCont','load',0,0,'','','','../../../images/');  
+		},
+		onCreate : function (){
+				$('indicator1').src="../../../images/wait.gif";
+			},
+			onSuccess : function (){
+				$('indicator1').innerHTML="";
+			}
+		});	
 	}
-	
-//	function getContent(){
-//		var arrEle = $('frmOtApp').serialize(true);
-//		var dateOt = new Date(arrEle['dateOt']);
-//		var tOut = (arrEle['txtOtOut']);
-//		var tIn = (arrEle['txtOtIn']);
-//		var tInRes = tIn.replace(":",".");
-//		var valInRes = parseFloat(tInRes);
-//		 
-//		var tOutRes = tOut.replace(":",".");
-//		var valOutRes = parseFloat(tOutRes);
-//		
-//		if(dateOt.getDay()==6 || dateOt.getDay()==7){
-//			if(valOutRes>12){
-//				$('chkCrossDate').checked=true;	
-//			}
-//			else{
-//				$('chkCrossDate').checked=false;		
-//			}
-//		}
-//		else{
-//			if(valOutRes>12){
-//				$('chkCrossDate').checked=true;	
-//			}
-//			else{
-//				$('chkCrossDate').checked=false;		
-//			}
-//		}
-//		
-//		if(valInRes>12){
-//			if()
-//			if(valOutRes>12){
-//				$('chkCrossDate').checked=true;	
-//			}
-//			else{
-//				$('chkCrossDate').checked=false;		
-//			}
-//		}
-//		else{
-//			if(valOutRes>12){
-//				$('chkCrossDate').checked=true;	
-//			}
-//			else{
-//				$('chkCrossDate').checked=false;		
-//			}
-//		}
-//	}
 </SCRIPT>

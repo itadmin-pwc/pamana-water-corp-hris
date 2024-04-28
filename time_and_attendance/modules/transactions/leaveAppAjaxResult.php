@@ -10,23 +10,7 @@ $leaveAppObj = new leaveAppObj($_GET,$_SESSION);
 $leaveAppObj->validateSessions('','MODULES');
 
 $pager = new AjaxPager(15,'../../../images/');
-
-$getLeaveApp      = $leaveAppObj->getLeaveAppDtl;
-$refNo            = $getLeaveApp['refNo'];
-$lvReason         = $getLeaveApp['lvReason'];
-$empNo            = $getLeaveApp['empNo'];
-$dateFiled        = $getLeaveApp['dateFiled'];
-$dateLvFrom 	  = $getLeaveApp['lvDateFrom'];
-$dateFromAMPM 	  = $getLeaveApp['lvFromAMPM'];
-$dateLvTo	      = $getLeaveApp['lvDateTo'];
-$dateToAMPM 	  = $getLeaveApp['lvToAMPM'];
-$tsAppTypeCd      = $getLeaveApp['tsApptypeCd'];
-//$dateReturn       = $getLeaveApp['lvDateReturn'];
-//$dateReturnAMPM   = $getLeaveApp['lvReturnAMPM'];
-$lvStat 	      = $getLeaveApp['lvStat'];
-//$lvReliever       = $getLEaveApp['lvReliever'];
 $branch = $_SESSION['branchCode'];
-
 
 $empInfo = $leaveAppObj->getEmployee($_SESSION['company_code'],$_SESSION['employee_number'],'');
 
@@ -65,20 +49,66 @@ $fullname = $empInfo['empLastName'] . ", " . htmlspecialchars(addslashes($empInf
 	$arrBrnches = $leaveAppObj->getArrRes($resBrnches);
 	$arrBrnch = $leaveAppObj->makeArr($arrBrnches,'brnCode','brnDesc','All');
 
+	//New Code for Approver 04-25-2024
+	$_SESSION['uType'] = "T"; // Time Keeper
+	$approverData = $leaveAppObj->getTblData("tbltna_approver", " and approverEmpNo='".$_SESSION['employee_number']."' and status='A' AND dateValid >= NOW()", "", "sqlAssoc");
+	$forApproval = '';
+	$timeKeeperApprover = $approverData["approverEmpNo"] != "" && $_SESSION['user_level'] == 2 && $_SESSION['user_release']=="Y";
+	$managerApporver = $approverData["approverEmpNo"] != "" && $_SESSION['user_level'] == 2 && $_SESSION['user_release']!="Y";
+	$timeKeeper = $approverData["approverEmpNo"] == "" && $_SESSION['user_level'] == 2 && $_SESSION['user_release']=="Y";
+	if($timeKeeperApprover) { 
+		$_SESSION['uType'] = "TA"; //Timekeeper Approver
+		$forApproval = " AND (emp.empNo IN (Select subordinateEmpNo from tbltna_approver 
+											where approverEmpNo='{$_SESSION['employee_number']}' 
+											AND compCode='{$_SESSION['company_code']}') OR emp.empNo = '{$_SESSION['employee_number']}' OR mStat = 'A')";
+	}elseif($managerApporver){
+		$_SESSION['uType'] = "MA"; //Manager Approver
+		$forApproval = " AND (emp.empNo IN (Select subordinateEmpNo from tbltna_approver 
+											where approverEmpNo='{$_SESSION['employee_number']}' 
+											AND compCode='{$_SESSION['company_code']}') OR emp.empNo = '{$_SESSION['employee_number']}')";
+	}elseif($timeKeeper){
+		$forApproval = " AND (mStat = 'A' OR emp.empNo = '{$_SESSION['employee_number']}')";
+	}
+	//End New Code for Approver 04-25-2024
 
-	$qryIntMaxRec = "SELECT dtl.empNo
-					 FROM tblTK_LeaveApp as dtl 
-					 LEFT JOIN tblEmpMast as emp ON dtl.compCode = emp.CompCode AND dtl.empNo = emp.empNo 
-					 WHERE dtl.compCode = '{$_SESSION['company_code']}' 
-						$brnCodelist";
+	$qryIntMaxRec = "SELECT dtl.compCode,dtl.empNo,dtl.refNo,dtl.dateFiled,dtl.lvDateFrom,dtl.lvFromAMPM,dtl.lvDateTo,
+						dtl.lvToAMPM, dtl.tsAppTypeCd, dtl.lvDateReturn, lvReturnAMPM, dtl.lvReason, dtl.lvReliever, dtl.lvAuthorized, 
+						dtl.lvStat, dtl.seqNo, dtl.userApproved,tblTK_AppTypes.appTypeShortDesc, emp.empFirstName,emp.empMidName,
+						emp.empLastName, emp.empNo, dtl.mStat
+					FROM tblTK_LeaveApp dtl 
+					INNER JOIN tblTK_AppTypes ON dtl.tsAppTypeCd = tblTK_AppTypes.tsAppTypeCd 
+					LEFT OUTER JOIN tblEmpMast emp ON dtl.compCode = emp.compCode AND dtl.empNo = emp.empNo
+					WHERE dtl.compCode = '{$_SESSION['company_code']}' $forApproval 
+					$brnCodelist";
 						
 			if($_GET['isSearch'] == 1){
-				if($_GET['srchType'] == 0){
-					$qryIntMaxRec .= "AND dtl.lvStat='A'";
+				if($timeKeeperApprover || $timeKeeper) { 
+					if($_GET['srchType'] == 0){
+						$qryIntMaxRec .= "AND dtl.lvStat='A'";
+					}
+					
+					if($_GET['srchType'] == 1){
+						$qryIntMaxRec .= "AND dtl.lvStat='H'";
+					}
+				}elseif($managerApporver){
+					if($_GET['srchType'] == 0){
+						$qryIntMaxRec .= "AND dtl.mStat='A'";
+					}
+					
+					if($_GET['srchType'] == 1){
+						
+						$qryIntMaxRec .= "AND dtl.mStat='H' ";
+					}
+				}else{
+					if($_GET['srchType'] == 0){
+						$qryIntMaxRec .= "AND dtl.mStat='A' ";
+					}
+	
+					if($_GET['srchType'] == 1){
+						$qryIntMaxRec .= "AND dtl.mStat='H' ";
+					}
 				}
-				if($_GET['srchType'] == 1){
-					$qryIntMaxRec .= "AND dtl.lvStat='H'";
-				}
+				
 				if($_GET['srchType'] == 2){
 					$qryIntMaxRec .= "AND dtl.refNo LIKE '".str_replace("'","''",trim($_GET['txtSrch']))."%' ";
 				}
@@ -108,21 +138,42 @@ $fullname = $empInfo['empLastName'] . ", " . htmlspecialchars(addslashes($empInf
 	$qrygetLeaveAppDtl = "SELECT dtl.compCode,dtl.empNo,dtl.refNo,dtl.dateFiled,dtl.lvDateFrom,dtl.lvFromAMPM,dtl.lvDateTo,
 							dtl.lvToAMPM, dtl.tsAppTypeCd, dtl.lvDateReturn, lvReturnAMPM, dtl.lvReason, dtl.lvReliever, dtl.lvAuthorized, 
 							dtl.lvStat, dtl.seqNo, dtl.userApproved,tblTK_AppTypes.appTypeShortDesc, emp.empFirstName,emp.empMidName,
-							emp.empLastName, emp.empNo
+							emp.empLastName, emp.empNo, dtl.mStat
 						  FROM tblTK_LeaveApp dtl 
 						  INNER JOIN tblTK_AppTypes ON dtl.tsAppTypeCd = tblTK_AppTypes.tsAppTypeCd 
 						  LEFT OUTER JOIN tblEmpMast emp ON dtl.compCode = emp.compCode AND dtl.empNo = emp.empNo
-						  WHERE dtl.compCode = '{$_SESSION['company_code']}'  
+						  WHERE dtl.compCode = '{$_SESSION['company_code']}' $forApproval 
 						  $brnCodelist
 						  ";
 	
 		if($_GET['isSearch'] == 1){
-				if($_GET['srchType'] == 0){
-					$qrygetLeaveAppDtl .= "AND lvStat='A'";
+				if($timeKeeperApprover || $timeKeeper) { 
+					if($_GET['srchType'] == 0){
+						$qrygetLeaveAppDtl .= "AND dtl.lvStat='A'";
+					}
+					
+					if($_GET['srchType'] == 1){
+						$qrygetLeaveAppDtl .= "AND dtl.lvStat='H'";
+					}
+				}elseif($managerApporver){
+					if($_GET['srchType'] == 0){
+						$qrygetLeaveAppDtl .= "AND dtl.mStat='A'";
+					}
+					
+					if($_GET['srchType'] == 1){
+						
+						$qrygetLeaveAppDtl .= "AND dtl.mStat='H' ";
+					}
+				}else{
+					if($_GET['srchType'] == 0){
+						$qrygetLeaveAppDtl .= "AND dtl.mStat='A' ";
+					}
+	
+					if($_GET['srchType'] == 1){
+						$qrygetLeaveAppDtl .= "AND dtl.mStat='H' ";
+					}
 				}
-				if($_GET['srchType'] == 1){
-					$qrygetLeaveAppDtl .= "AND lvStat='H'";
-				}
+
 				if($_GET['srchType'] == 2){
 					$qrygetLeaveAppDtl .= "AND dtl.refNo LIKE '".str_replace("'","''",trim($_GET['txtSrch']))."%' ";
 				}
@@ -138,6 +189,7 @@ $fullname = $empInfo['empLastName'] . ", " . htmlspecialchars(addslashes($empInf
 		 }
 		
 		$qrygetLeaveAppDtl .= "ORDER BY emp.empLastName, dtl.lvdateFrom limit $intOffset,$intLimit";
+		//echo $qrygetLeaveAppDtl;
 		
 		$resgetLeaveAppDtl = $leaveAppObj->execQry($qrygetLeaveAppDtl);
 		$arrgetLeaveAppDtl = $leaveAppObj->getArrRes($resgetLeaveAppDtl);
@@ -171,7 +223,7 @@ $fullname = $empInfo['empLastName'] . ", " . htmlspecialchars(addslashes($empInf
 				<tr>
 					<td class="hdrInputsLvl">
 						<?php
-							if ($_SESSION['user_level'] == 3)  {
+							if ($_SESSION['user_level'] == 3 || $managerApporver)  {
 						?>
 							Employee No.
 						<?php
@@ -187,7 +239,7 @@ $fullname = $empInfo['empLastName'] . ", " . htmlspecialchars(addslashes($empInf
 					</td>
 					<td class="gridDtlVal">
 						<?php
-							if ($_SESSION['user_level'] == 3)  {
+							if ($_SESSION['user_level'] == 3 || $managerApporver)  {
 						?>
 							<INPUT tabindex="9" class="inputs" type="text" name="txtAddEmpNo" id="txtAddEmpNo" value="<?=$_SESSION['employeenumber']?>" readonly>
 						<?php
@@ -300,7 +352,7 @@ $fullname = $empInfo['empLastName'] . ", " . htmlspecialchars(addslashes($empInf
          	<FONT class="ToolBarseparator">|</font>	
 			<a href="#"  id="btnEdit"onClick=""><img class="toolbarImg" id="btnUpdate"  src="../../../images/application_form_edit.png" title="Update Leave Application" onclick="getSeqNo()"></a> 
 			<?
-            if($_SESSION['user_release']=="Y"){
+            if($_SESSION['user_release']=="Y" || $_SESSION['user_level'] == 2){
             ?>                                                		
 			<FONT class="ToolBarseparator">|</font>
             <a href="#" id="editEarn" tabindex="2"><img class="toolbarImg" src="../../../images/edit_prev_emp.png"  onclick="updateLvTran('updateLvTran','leaveAppAjaxResult.php','leaveCont',<?=$intOffset?>,'',<?=$_GET['isSearch']?>,'txtSrch','cmbSrch');" title="Approved Leave Application" ></a>
@@ -337,14 +389,25 @@ $fullname = $empInfo['empLastName'] . ", " . htmlspecialchars(addslashes($empInf
 						{
 							$bgcolor = ($i++ % 2) ? "#FFFFFF" : "#F8F8FF";
 							$on_mouse = ' onmouseover="this.style.backgroundColor=\'' . '#F0F0F0' . '\';"'. ' onmouseout="this.style.backgroundColor=\'' . $bgcolor  . '\';"';						
-							$f_color = ($leaveAppDtlVal["lvStat"]=='A'?"#CC3300":"");
+							if($timeKeeperApprover) {
+								$status = ($leaveAppDtlVal["lvStat"]=='A'?"Approved":"Held");
+								$f_color = ($leaveAppDtlVal["lvStat"]=='A'?"#CC3300":"");
+							}elseif($managerApporver) {
+								$status = ($leaveAppDtlVal["mStat"]=='A'?"Approved":"Held");
+								$f_color = ($leaveAppDtlVal["mStat"]=='A'?"#CC3300":"");
+							}elseif($timeKeeper) {
+								$status = ($leaveAppDtlVal["lvStat"]=='A'?"Approved":"Held");
+								$f_color = ($leaveAppDtlVal["lvStat"]=='A'?"#CC3300":"");
+							}elseif($_SESSION['user_level'] == 3){
+								$status = ($leaveAppDtlVal["mStat"]=='A'?"Approved":"Held");
+								$f_color = ($leaveAppDtlVal["mStat"]=='A'?"#CC3300":"");
+							}
 				?>
                 			<tr style="height:20px;"  bgcolor="<?php echo $bgcolor; ?>" <?php echo $on_mouse; ?>>
                             	<td class="gridDtlVal" align="center">
                                 <?php
-									if(($leaveAppDtlVal["lvStat"]=='H') || (($leaveAppDtlVal["userApproved"]==$_SESSION['employee_number']) && ($leaveAppDtlVal["lvStat"]=='A')))
+									if($timeKeeperApprover || $timeKeeper || $arrCSAppList_val["mStat"]=='H')
 									{
-										
 								?>
                                 		<input class="inputs" type="checkbox" name="chkseq[]" value="<?=$leaveAppDtlVal['seqNo']?>" id="chkseq[]" />
                                 <?php
@@ -372,11 +435,7 @@ $fullname = $empInfo['empLastName'] . ", " . htmlspecialchars(addslashes($empInf
 								?></td>
                             	<td class="gridDtlVal" align="center"><font color="<?=$f_color?>">
 									<?
-										if ($leaveAppDtlVal['lvStat'] == 'H'){
-											echo ($leaveAppDtlVal['lvStat'] =="H"? "Held":"Approved");
-										}else{
-											echo ($leaveAppDtlVal['lvStat'] =="A"? "Approved":"Held");
-										}
+										echo $status;
 									?>			
 								</td>
                             </tr>

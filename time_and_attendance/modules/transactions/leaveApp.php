@@ -10,13 +10,15 @@ $leaveAppObj->ValidateSessions($_GET, $_SESSION);
 
 unset($_SESSION['employeenumber']);
 $_SESSION['employeenumber']=$_SESSION['employee_number'];
+$approverData = $leaveAppObj->getTblData("tbltna_approver", " and approverEmpNo='".$_SESSION['employee_number']."' and subordinateEmpNo='".$_SESSION['employee_number']."' and status='A' AND dateValid >= now()", "", "sqlAssoc");
+$selfApprove = $approverData["approverEmpNo"] == $_SESSION['employee_number'];
 if (isset($_GET['action'])) {
 	switch ($_GET['action']) {
 	
 		case 'addNewLeaveApp':
-			$empno=$_GET['empno'];
+			$empno = $_GET['empno'];
 			if($empno!=''){
-				$_SESSION['employeenumber']=$empno;
+				$_SESSION['employeenumber'] = $empno;
 			}
 			else{
 				unset($_SESSION['employeenumber']);
@@ -75,28 +77,10 @@ if (isset($_GET['action'])) {
 						echo "
 							var ans = confirm('Leave Application has been saved! Would you like to add new Leave Application?');
 							if(ans==true){
-									
-									location.href='leaveApp.php?action=addNewLeaveApp&empno=$empno';
-						}
-							else{
-									
-									location.href='leaveApp.php';
-						}";
-//						echo "$('cmbReasons').value='';";
-//		
-//						echo "$('cmbLeaveApp').value='';";
-//						//echo "$('txtReliever').value='';";
-//						//echo "$('cmbAuthorized').value='Y';";
-//						echo "$('dateLvFrom').value='';";
-//						echo "$('cmbFromAMPM').value=0;";
-//						echo "$('dateLvTo').value='';";
-//						echo "$('cmbToAMPM').value=0;";
-//						echo "$('cmbLeaveApp').value='';";
-//						
-//						//echo "$('dateLvRtrn').value='';";
-//						//echo "$('cmbReturnAMPM').value=0;";
-//						//echo "$('cmbLeaveStat').value='H';";
-//						echo 2;
+								location.href='leaveApp.php?action=addNewLeaveApp&empno=$empno';
+							}else{
+								location.href='leaveApp.php';
+							}";
 					}else{
 						echo "alert('Saving of Leave Application failed.');";
 					}
@@ -122,8 +106,8 @@ if (isset($_GET['action'])) {
 
 			foreach($chkSeqNo as $indchkSeqNo => $chkSeqNo_val)
 			{
-			$qryDel = "DELETE FROM tblTK_LeaveApp where seqNo='".$chkSeqNo_val."'";
-			$resDel = $leaveAppObj->execQry($qryDel);
+				$qryDel = "DELETE FROM tblTK_LeaveApp where seqNo='".$chkSeqNo_val."'";
+				$resDel = $leaveAppObj->execQry($qryDel);
 			}
 
 			echo "alert('Selected Leave Application already deleted.')";
@@ -138,9 +122,32 @@ if (isset($_GET['action'])) {
 
 			foreach($chkSeqNo as $indchkSeqNo => $chkSeqNo_val)
 			{
-				$qryApprove = "UPDATE tblTK_LeaveApp SET dateApproved='".date("Y-m-d")."',userApproved='".$_SESSION["employee_number"]."', 
-							   lvStat='A' WHERE seqNo='".$chkSeqNo_val."';";
-				$resApprove = $leaveAppObj->execQry($qryApprove);
+				$tkData = $leaveAppObj->getTblData("tblTK_LeaveApp", " and seqNo='".$chkSeqNo_val."'", "", "sqlAssoc");
+				if($tkData['empNo'] == $_SESSION['employee_number']) {
+					if($selfApprove) {
+						if($_SESSION['uType'] == "T") {
+							$qryApp = "Update  tblTK_LeaveApp set dateApproved='".date("Y-m-d")."',userApproved='".$_SESSION["employee_number"]."',lvStat='A' where seqNo='".$chkSeqNo_val."';";
+							$resApp = $leaveAppObj->execQry($qryApp);
+						}elseif($_SESSION['uType'] == "TA") {
+							$qryApp = "Update  tblTK_LeaveApp set dateApproved='".date("Y-m-d")."',userApproved='".$_SESSION["employee_number"]."',lvStat='A',mApproverdBy='" . $_SESSION["employee_number"] . "',mStat='A',mDateApproved='".date("Y-m-d")."' where seqNo='".$chkSeqNo_val."';";
+							$resApp = $leaveAppObj->execQry($qryApp);
+						}else{
+							$qryApp = "Update  tblTK_LeaveApp set mApproverdBy='" . $_SESSION["employee_number"] . "',mStat='A',mDateApproved='".date("Y-m-d")."' where seqNo='".$chkSeqNo_val."';";
+							$resApp = $leaveAppObj->execQry($qryApp);
+						}
+					}
+				}else{
+					if($_SESSION['uType'] == "T") {
+						$qryApp = "Update  tblTK_LeaveApp set dateApproved='".date("Y-m-d")."',userApproved='".$_SESSION["employee_number"]."',lvStat='A' where seqNo='".$chkSeqNo_val."';";
+						$resApp = $leaveAppObj->execQry($qryApp);
+					}elseif($_SESSION['uType'] == "TA") {
+						$qryApp = "Update  tblTK_LeaveApp set dateApproved='".date("Y-m-d")."',userApproved='".$_SESSION["employee_number"]."',lvStat='A',mApproverdBy='" . $_SESSION["employee_number"] . "',mStat='A',mDateApproved='".date("Y-m-d")."' where seqNo='".$chkSeqNo_val."';";
+						$resApp = $leaveAppObj->execQry($qryApp);
+					}else{
+						$qryApp = "Update  tblTK_LeaveApp set mApproverdBy='" . $_SESSION["employee_number"] . "',mStat='A',mDateApproved='".date("Y-m-d")."' where seqNo='".$chkSeqNo_val."';";
+						$resApp = $leaveAppObj->execQry($qryApp);
+					}
+				}
 			}
 
 			echo "alert('Selected Leave Application already approved.')";
@@ -191,12 +198,6 @@ if (isset($_GET['action'])) {
 		<STYLE>@import url('../../../js/themes/default.css');</STYLE>
 		<STYLE>@import url("../../../js/themes/mac_os_x.css");</STYLE>
 		
-		<!--calendar lib-->
-		<!--<script type="text/javascript" src="../../../includes/calendar/calendar.js"></script>
-		<script type="text/javascript" src="../../../includes/calendar/calendar-en.js"></script>
-		<script type="text/javascript" src="../../../includes/calendar/calendar-setup.js"></script>		
-		<STYLE TYPE="text/css" MEDIA="screen">@import url("../../../includes/calendar/calendar-blue.css");</STYLE>
-		<!--end calendar lib-->
 		<script type="text/javascript" src="../../../includes/calendar.js"></script>	
 		<STYLE>@import url('../../../includes/calendar.css');</STYLE>
 		
@@ -399,18 +400,6 @@ function maintLeaveApp(URL,ele,action,intOffSet,isSearch,txtSearch,cmbSearch,ext
 				$('cmbLeaveApp').focus();
 				return false;
 			}
-				
-//			if(arrEle['dateLvRtrn'] == '') {
-//				alert('Date of Return is required');
-//				$('dateLvRtrn').focus();
-//				return false;
-//			}
-			
-//			if(arrEle['dateLvRtrn'] < arrEle['dateLvTo'] ) {
-//				alert('Date of Return is required');
-//				$('dateLvRtrn').focus();
-//				return false;
-//			}
 			
 			if(arrEle['dateLvFrom'] > arrEle['dateLvTo'] ) {
 				alert('Date Leave From should not be greater than Date Leave To');
@@ -487,35 +476,6 @@ function maintLeaveApp(URL,ele,action,intOffSet,isSearch,txtSearch,cmbSearch,ext
 					}
 				}
 			}
-			//----> end
-			
-			// check entry if leave type is COMBO {1/2 day leave WP and 1/2 day WOP}
-
-//			if (cmbLvType == '21') {
-//				
-//				if(arrEle['dateLvTo'] != arrEle['dateLvFrom'] ) {
-//					alert('Unable to Save application. Check selected Leave Type and Leave Dates.');
-//					$('dateLvFrom').focus();
-//					return false;
-//				}
-//				
-//				if (leaveFromAMPM == 'WD' || leaveToAMPM == 'WD') {
-//					alert('Check Date Entries');
-//					return false;
-//				} 
-//					
-//				if (leaveFromAMPM == 'AM' && leaveToAMPM == 'AM') {
-//					alert('Check Date Entries');
-//					return false;
-//				} 
-//				
-//				if (leaveFromAMPM == 'PM' && leaveToAMPM == 'PM') {
-//					alert('Check Date Entries');
-//					return false;
-//				} 
-//			
-//			}
-			//end
 			
 			var refNo = arrEle['refNo'];
 			var lvReason = arrEle['cmbReasons'];

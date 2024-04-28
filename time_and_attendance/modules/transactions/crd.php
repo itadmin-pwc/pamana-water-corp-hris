@@ -5,11 +5,14 @@ include("../../../includes/db.inc.php");
 include("../../../includes/common.php");
 include("transaction_obj.php");
 
-
 $crdObj = new transactionObj($_GET,$_SESSION);
 $crdObj->validateSessions('','MODULES');
 
+unset($_SESSION['employeenumber']);
 $_SESSION['employeenumber']=$_SESSION['employee_number'];
+$approverData = $crdObj->getTblData("tbltna_approver", " and approverEmpNo='".$_SESSION['employee_number']."' and subordinateEmpNo='".$_SESSION['employee_number']."' and status='A' AND dateValid >= now()", "", "sqlAssoc");
+$selfApprove = $approverData["approverEmpNo"] == $_SESSION['employee_number'];
+
 switch($_GET["action"])
 {
 	case "NEWREFNO":
@@ -229,8 +232,32 @@ switch($_GET["action"])
 		{
 			foreach($chkSeqNo as $indchkSeqNo => $chkSeqNo_val)
 			{
-				$qryApp = "Update  tblTK_ChangeRDApp set dateApproved='".date("Y-m-d")."',userApproved='".$_SESSION["employee_number"]."', cRDStat='A' where seqNo='".$chkSeqNo_val."';";
-				$resApp = $crdObj->execQry($qryApp);
+				$tkData = $crdObj->getTblData("tblTK_ChangeRDApp", " and seqNo='".$chkSeqNo_val."'", "", "sqlAssoc");
+				if($tkData['empNo'] == $_SESSION['employee_number']) {
+					if($selfApprove) {
+						if($_SESSION['uType'] == "T") {
+							$qryApp = "Update  tblTK_ChangeRDApp set dateApproved='".date("Y-m-d")."',userApproved='".$_SESSION["employee_number"]."',cRDStat='A' where seqNo='".$chkSeqNo_val."';";
+							$resApp = $crdObj->execQry($qryApp);
+						}elseif($_SESSION['uType'] == "TA") {
+							$qryApp = "Update  tblTK_ChangeRDApp set dateApproved='".date("Y-m-d")."',userApproved='".$_SESSION["employee_number"]."',cRDStat='A',mApproverdBy='" . $_SESSION["employee_number"] . "',mStat='A',mDateApproved='".date("Y-m-d")."' where seqNo='".$chkSeqNo_val."';";
+							$resApp = $crdObj->execQry($qryApp);
+						}else{
+							$qryApp = "Update  tblTK_ChangeRDApp set mApproverdBy='" . $_SESSION["employee_number"] . "', mStat='A', mDateApproved='".date("Y-m-d")."' where seqNo='".$chkSeqNo_val."';";
+							$resApp = $crdObj->execQry($qryApp);
+						}
+					}
+				}else{
+					if($_SESSION['uType'] == "T") {
+						$qryApp = "Update  tblTK_ChangeRDApp set dateApproved='".date("Y-m-d")."',userApproved='".$_SESSION["employee_number"]."',cRDStat='A' where seqNo='".$chkSeqNo_val."';";
+						$resApp = $crdObj->execQry($qryApp);
+					}elseif($_SESSION['uType'] == "TA") {
+						$qryApp = "Update  tblTK_ChangeRDApp set dateApproved='".date("Y-m-d")."',userApproved='".$_SESSION["employee_number"]."',cRDStat='A',mApproverdBy='" . $_SESSION["employee_number"] . "',mStat='A',mDateApproved='".date("Y-m-d")."' where seqNo='".$chkSeqNo_val."';";
+						$resApp = $crdObj->execQry($qryApp);
+					}else{
+						$qryApp = "Update  tblTK_ChangeRDApp set mApproverdBy='" . $_SESSION["employee_number"] . "', mStat='A', mDateApproved='".date("Y-m-d")."' where seqNo='".$chkSeqNo_val."';";
+						$resApp = $crdObj->execQry($qryApp);
+					}
+				}
 			}
 			
 			echo "alert('Selected RD Application already Approved.')";
@@ -577,19 +604,11 @@ switch($_GET["action"])
 				},
 				onCreate : function (){
 					$('indicator2').src="../../../images/wait.gif";
-					//document.frmRD.btnSave.style.visibility = 'hidden';
-					//document.frmRD.btnApp.style.visibility = 'hidden';
-					//document.frmRD.btnDel.style.visibility = 'hidden';
 				},
 				onSuccess : function (){
 					$('indicator2').innerHTML="";
-					//document.frmRD.btnSave.style.visibility = 'visible';
-					//document.frmRD.btnApp.style.visibility = 'visible';
-					//document.frmRD.btnDel.style.visibility = 'visible';
 				}
 			});	
-			
-			
 		}
 	}
 	
@@ -646,18 +665,16 @@ switch($_GET["action"])
 	function checkAll(field)
 	{
 		var chkob = document.frmRD.elements['chkseq[]'];
-		//alert(field);
 		if (field=="1") 
 		{ 
    			for (var i=0; i<chkob.length; i++)
 			{
 				chkob[i].checked = true;
     		}
-				return "0";  
+			return "0";  
   		} 
 		else 
 		{
-			
     		for (var i=0; i<chkob.length; i++)
 			{
 				chkob[i].checked = false;

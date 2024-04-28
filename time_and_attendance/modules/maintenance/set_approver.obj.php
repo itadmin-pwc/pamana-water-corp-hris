@@ -11,15 +11,15 @@ class ApprObj extends commonObj{
 	}
 	
 	function addApprover() {
-		$qryaddOtApp = "INSERT INTO tblTK_otApp (compCode,empNo,otDate,refNo,dateFiled,otReason,otIn,otOut,crossTag,
-						otStat,userAdded,dateAdded)
-						VALUES ('$_SESSION[company_code]','$_GET[empNo]','$_GET[dateOt]','".$lastRefNo."',
-								 '$_GET[dateFiled]','$_GET[otReason]','$_GET[OTIn]','$_GET[OTOut]','{$_GET['checked']}','$_GET[otStat]',
-								 '$_SESSION[employee_number]','".date("Y-m-d")."')";
+		$approverEmpNo = addslashes($_GET['approverEmpNo']);
+    	$subordinateEmpNo = addslashes($_GET['subordinateEmpNo']);
+
+		$qryaddApp = "INSERT INTO tbltna_approver (approverEmpNo,subordinateEmpNo,status,dateValid,addedBy,addedAt,updatedAt,compCode)
+						VALUES ('$approverEmpNo','$subordinateEmpNo','A','2200-12-30','$_SESSION[employee_number]','".date("Y-m-d")."','".date("Y-m-d")."','$_SESSION[company_code]')";
 		
-		$resaddOtApp = $this->execQry($qryaddOtApp);
+		$resaddApp = $this->execQry($qryaddApp);
 		
-		if($resaddOtApp){
+		if($resaddApp){
 			return true;
 		}
 		else {
@@ -44,7 +44,6 @@ class ApprObj extends commonObj{
 	function getTblData($tbl, $cond, $orderBy, $ouputType)
 	{
 		$qryTblInfo = "Select * from ".$tbl." where compCode='".$_SESSION["company_code"]."' ".$cond." ".$orderBy."";
-		
 		$resTblInfo = $this->execQry($qryTblInfo);
 		if($ouputType == 'sqlAssoc')
 			return $this->getSqlAssoc($resTblInfo);

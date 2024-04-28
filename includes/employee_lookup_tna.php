@@ -1,5 +1,5 @@
 <?
-
+	
 ?>
 <HTML>
 	<HEAD>
@@ -19,7 +19,7 @@
 <SCRIPT>
 
 	//disableRightClick()			
-pager('../../../includes/employee_lookupAjaxResult_tna.php','empLukupCont','load',0,0,'','','&tmpCompCode=<?=$_GET['tmpCompCode']?>','../../../images/');  
+pager('../../../includes/employee_lookupAjaxResult_tna.php','empLukupCont','load',0,0,'','','&tmpCompCode=<?=$_GET['tmpCompCode']?>&empType=<?=$_GET['empType']?>','../../../images/');  
 
 function focusHandelr(act){
 }	

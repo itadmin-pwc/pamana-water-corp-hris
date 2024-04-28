@@ -113,11 +113,19 @@ class moduleAccessRightsObj extends commonObj {
 	}
 	
 	function updateUserLevel($userlevel,$empno){
-		$qryUpdate = "Update tblUsers set userLevel='".$userlevel."' where empNo='".$empno."' and compCode='".$_SESSION['company_code']."'";
+		$releaseTag = "";
+		if($userlevel == 1) {
+			$releaseTag = ", releaseTag='Y' ";
+		}
+		if($userlevel == 4) {
+			$userlevel = 2;
+			$releaseTag = ", releaseTag='Y' ";
+		}
+		$qryUpdate = "Update tblUsers set userLevel='".$userlevel."' $releaseTag where empNo='".$empno."' and compCode='".$_SESSION['company_code']."'";
 		$resUpdate = $this->execQry($qryUpdate);
 		if(!$resUpdate){
 			return 0;	
-		}	
+		}
 		else{
 			return 1;	
 		}

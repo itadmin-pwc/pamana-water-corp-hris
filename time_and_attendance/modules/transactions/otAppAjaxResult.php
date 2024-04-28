@@ -11,8 +11,6 @@ $OtAppObj->validateSessions('','MODULES');
 
 $pager = new AjaxPager(15,'../../../images/');
 
-$getOtApp = $OtAppObj->getOtAppDtl;
-
 $branch = $_SESSION['branchCode'];
 
 //08-09-2023 AUTO EMPLOYEE LOOKUP
@@ -59,20 +57,61 @@ if ($level > '70'){
 	$arrBrnches = $OtAppObj->getArrRes($resBrnches);
 	$arrBrnch = $OtAppObj->makeArr($arrBrnches,'brnCode','brnDesc','All');
 
+	//New Code for Approver 04-25-2024
+	$_SESSION['uType'] = "T"; // Time Keeper
+	$approverData = $OtAppObj->getTblData("tbltna_approver", " and approverEmpNo='".$_SESSION['employee_number']."' and status='A' AND dateValid >= NOW()", "", "sqlAssoc");
+	$forApproval = '';
+	$timeKeeperApprover = $approverData["approverEmpNo"] != "" && $_SESSION['user_level'] == 2 && $_SESSION['user_release']=="Y";
+	$managerApporver = $approverData["approverEmpNo"] != "" && $_SESSION['user_level'] == 2 && $_SESSION['user_release']!="Y";
+	$timeKeeper = $approverData["approverEmpNo"] == "" && $_SESSION['user_level'] == 2 && $_SESSION['user_release']=="Y";
+	if($timeKeeperApprover) { 
+		$_SESSION['uType'] = "TA"; //Timekeeper Approver
+		$forApproval = " AND (emp.empNo IN (Select subordinateEmpNo from tbltna_approver 
+											where approverEmpNo='{$_SESSION['employee_number']}' 
+											AND compCode='{$_SESSION['company_code']}') OR emp.empNo = '{$_SESSION['employee_number']}' OR mStat = 'A')";
+	}elseif($managerApporver){
+		$_SESSION['uType'] = "MA"; //Manager Approver
+		$forApproval = " AND (emp.empNo IN (Select subordinateEmpNo from tbltna_approver 
+											where approverEmpNo='{$_SESSION['employee_number']}' 
+											AND compCode='{$_SESSION['company_code']}') OR emp.empNo = '{$_SESSION['employee_number']}')";
+	}elseif($timeKeeper){
+		$forApproval = " AND (mStat = 'A' OR emp.empNo = '{$_SESSION['employee_number']}')";
+	}
+	//End New Code for Approver 04-25-2024
+
 	$qryIntMaxRec = "SELECT dtl.empNo
 					 FROM tblTK_otApp as dtl 
 					 INNER JOIN tblEmpMast as emp ON dtl.compCode = emp.CompCode AND dtl.empNo = emp.empNo 
 					 WHERE (dtl.compCode = '{$_SESSION['company_code']}')
-					 	AND (emp.compCode = '{$_SESSION["company_code"]}')
+					 	AND (emp.compCode = '{$_SESSION["company_code"]}') $forApproval
 					 	$brnCodelist";
 				 
         if($_GET['isSearch'] == 1){
-        	if($_GET['srchType'] == 0){
-        		$qryIntMaxRec .= "AND dtl.otStat='A'";
-        	}
-        	if($_GET['srchType'] == 1){
-        		$qryIntMaxRec .= "AND dtl.otStat='H'";
-        	}
+			if($timeKeeperApprover || $timeKeeper) { 
+				if($_GET['srchType'] == 0){
+					$qryIntMaxRec .= "AND dtl.otStat='A' ";
+				}
+				
+				if($_GET['srchType'] == 1){
+					$qryIntMaxRec .= "AND dtl.otStat='H' ";
+				}
+			}elseif($managerApporver){
+				if($_GET['srchType'] == 0){
+					$qryIntMaxRec .= "AND dtl.mStat='A' ";
+				}
+				
+				if($_GET['srchType'] == 1){
+					$qryIntMaxRec .= "AND dtl.mStat='H' ";
+				}
+			}else{
+				if($_GET['srchType'] == 0){
+					$qryIntMaxRec .= "AND dtl.mStat='A' ";
+				}
+
+				if($_GET['srchType'] == 1){
+					$qryIntMaxRec .= "AND dtl.mStat='H' ";
+				}
+			}
 			if($_GET['srchType'] == 2){
         		$qryIntMaxRec .= "AND dtl.refNo LIKE '".str_replace("'","''",trim($_GET['txtSrch']))."%' ";
         	}
@@ -100,32 +139,49 @@ if ($level > '70'){
 	
 	$qryGetOtAppDtl = "SELECT dtl.compCode, dtl.empNo, dtl.otDate, dtl.refNo, dtl.dateFiled, dtl.otReason, dtl.otIn,
 							dtl.otOut, dtl.otStat, dtl.crossTag, dtl.seqNo, dtl.userApproved, emp.empFirstName, emp.empMidName,
-							emp.empLastName
+							emp.empLastName, dtl.mStat
 					   FROM tblTK_otApp as dtl 
 					   INNER JOIN tblEmpMast as emp ON dtl.compCode = emp.CompCode AND dtl.empNo = emp.empNo
-					   WHERE dtl.compCode = '{$_SESSION['company_code']}' $brnCodelist ";
+					   WHERE dtl.compCode = '{$_SESSION['company_code']}' $forApproval $brnCodelist ";
 
 	if($_GET['isSearch'] == 1){
-	       	if($_GET['srchType'] == 0){
-	        	$qryGetOtAppDtl .= "AND otStat='A'";
-	        }
-	       	if($_GET['srchType'] == 1){
-	        	$qryGetOtAppDtl .= "AND otStat='H'";
-	        }
-	        if($_GET['srchType'] == 2){
-        		$qryGetOtAppDtl .= "AND dtl.refNo LIKE '".str_replace("'","''",trim($_GET['txtSrch']))."%' ";
-        	}
-			if($_GET['srchType'] == 3){
-        		$qryGetOtAppDtl .= "AND dtl.empNo LIKE '".str_replace("'","''",trim($_GET['txtSrch']))."%' ";
-        	}
-			if($_GET['srchType'] == 4){
-        		$qryGetOtAppDtl .= "AND emp.empLastName LIKE '".str_replace("'","''",trim($_GET['txtSrch']))."%' ";
-        	}
-	 		if ($_GET['brnCd']!=0){
-				$qryGetOtAppDtl.= " AND empbrnCode='".$_GET["brnCd"]."' ";
+		if($timeKeeperApprover || $timeKeeper) { 
+			if($_GET['srchType'] == 0){
+				$qryIntMaxRec .= "AND dtl.csStat='A' ";
 			}
-	 
-	 
+			
+			if($_GET['srchType'] == 1){
+				$qryIntMaxRec .= "AND dtl.csStat='H' ";
+			}
+		}elseif($managerApporver){
+			if($_GET['srchType'] == 0){
+				$qryIntMaxRec .= "AND dtl.mStat='A' ";
+			}
+			
+			if($_GET['srchType'] == 1){
+				$qryIntMaxRec .= "AND dtl.mStat='H' ";
+			}
+		}else{
+			if($_GET['srchType'] == 0){
+				$qryIntMaxRec .= "AND dtl.mStat='A' ";
+			}
+	
+			if($_GET['srchType'] == 1){
+				$qryIntMaxRec .= "AND dtl.mStat='H' ";
+			}
+		}
+		if($_GET['srchType'] == 2){
+			$qryGetOtAppDtl .= "AND dtl.refNo LIKE '".str_replace("'","''",trim($_GET['txtSrch']))."%' ";
+		}
+		if($_GET['srchType'] == 3){
+			$qryGetOtAppDtl .= "AND dtl.empNo LIKE '".str_replace("'","''",trim($_GET['txtSrch']))."%' ";
+		}
+		if($_GET['srchType'] == 4){
+			$qryGetOtAppDtl .= "AND emp.empLastName LIKE '".str_replace("'","''",trim($_GET['txtSrch']))."%' ";
+		}
+		if ($_GET['brnCd']!=0){
+			$qryGetOtAppDtl.= " AND empbrnCode='".$_GET["brnCd"]."' ";
+		}
 	 }
 	
 	$qryGetOtAppDtl .= "ORDER BY emp.empLastName, emp.empFirstName, dtl.otDate limit $intOffset,$intLimit";
@@ -162,7 +218,7 @@ if ($level > '70'){
 					
           		<td class="hdrInputsLvl" width="127">
 				  	<?php
-						if ($_SESSION['user_level'] == 3)  {
+						if ($_SESSION['user_level'] == 3 || $managerApporver)  {
 					?>
 						Employee No.
 					<?php
@@ -178,7 +234,7 @@ if ($level > '70'){
           		
          		<td width="203" class="gridDtlVal">
 					<?php
-						if ($_SESSION['user_level'] == 3)  {
+						if ($_SESSION['user_level'] == 3 || $managerApporver)  {
 					?>
 						<input tabindex="9" class="inputs" type="text" name="txtAddEmpNo" id="txtAddEmpNo" value="<?=$_SESSION['employeenumber'];?>" readonly>
 					<?php
@@ -281,7 +337,7 @@ if ($level > '70'){
          	<FONT class="ToolBarSeparator">|</font>
 			<a href="#"  id="btnEdit"onClick=""><img class="toolbarImg" id="btnUpdate"  src="../../../images/application_form_edit.png" title="Update OT Application" onclick="getSeqNo()"></a>  
 			<?
-            if($_SESSION['user_release']=="Y"){
+            if($_SESSION['user_release']=="Y" || $_SESSION['user_level'] == 2){
             ?>                                               	
 			<FONT class="ToolBarseparator">|</font>
             <a href="#" id="btnApp" tabindex="2"><img class="toolbarImg" src="../../../images/edit_prev_emp.png"  onclick="updateOtTran('updateOtTran','otAppAjaxResult.php','otAppCont',<?=$intOffset?>,'',<?=$_GET['isSearch']?>,'txtSrch','cmbSrch');" title="Approved OT Application" ></a>
@@ -318,12 +374,24 @@ if ($level > '70'){
 						$bgcolor = ($i++ % 2) ? "#FFFFFF" : "#F8F8FF";
 						$on_mouse = ' onmouseover="this.style.backgroundColor=\'' . '#F0F0F0' . '\';"'
 						. ' onmouseout="this.style.backgroundColor=\'' . $bgcolor  . '\';"';
-						$f_color = ($otAppDtlVal["otStat"]=='A'?"#CC3300":"");
+						if($timeKeeperApprover) {
+							$status = ($otAppDtlVal["otStat"]=='A'?"Approved":"Held");
+							$f_color = ($otAppDtlVal["otStat"]=='A'?"#CC3300":"");
+						}elseif($managerApporver) {
+							$status = ($otAppDtlVal["mStat"]=='A'?"Approved":"Held");
+							$f_color = ($otAppDtlVal["mStat"]=='A'?"#CC3300":"");
+						}elseif($timeKeeper) {
+							$status = ($otAppDtlVal["otStat"]=='A'?"Approved":"Held");
+							$f_color = ($otAppDtlVal["otStat"]=='A'?"#CC3300":"");
+						}elseif($_SESSION['user_level'] == 3){
+							$status = ($otAppDtlVal["mStat"]=='A'?"Approved":"Held");
+							$f_color = ($otAppDtlVal["mStat"]=='A'?"#CC3300":"");
+						}
 		?>
         	<tr bgcolor="<?php echo $bgcolor; ?>" <?php echo $on_mouse; ?>> 
           		<td class="gridDtlVal" align="center">
                 	<?php
-						if(($otAppDtlVal["otStat"]=='H') || (($otAppDtlVal["userApproved"]==$_SESSION['employee_number']) && ($otAppDtlVal["otStat"]=='A')))
+						if($timeKeeperApprover || $timeKeeper || $otAppDtlVal["mStat"]=='H')
 						{
 					?>
 							<input class="inputs" type="checkbox" name="chkseq[]" value="<?=$otAppDtlVal['seqNo']?>" id="chkseq[]" />
@@ -353,15 +421,7 @@ if ($level > '70'){
           		<td class="gridDtlVal" align="center"><font color="<?=$f_color?>"><?=$otAppDtlVal['otOut']?></td>
 		  		<td class="gridDtlVal" align="center"><font color="<?=$f_color?>"><?=$otAppDtlVal['crossTag']=="Y"?"Yes":""?></td>
           		<td class="gridDtlVal" align="center"><font color="<?=$f_color?>">
-				<?
-					if ($otAppDtlVal['otStat'] == 'H'){
-						echo ($otAppDtlVal['otStat'] =="H"? "Held":"Approved");
-					}else if($otAppDtlVal['otStat'] == 'A'){
-						echo ($otAppDtlVal['otStat'] =="A"? "Approved":"Held");
-					}else{
-						echo ($otAppDtlVal['otStat'] =="Posted");
-					}
-				?>
+				<?=$status?>
             	</td>
           
        	    </tr>

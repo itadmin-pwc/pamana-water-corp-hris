@@ -80,6 +80,28 @@
 	$resBrnches = $obObj->execQry($queryBrnches);
 	$arrBrnches = $obObj->getArrRes($resBrnches);
 	$arrBrnch = $obObj->makeArr($arrBrnches,'brnCode','brnDesc','Others');
+
+	//New Code for Approver 04-25-2024
+	$_SESSION['uType'] = "T"; // Time Keeper
+	$approverData = $obObj->getTblData("tbltna_approver", " and approverEmpNo='".$_SESSION['employee_number']."' and status='A' AND dateValid >= NOW()", "", "sqlAssoc");
+	$forApproval = '';
+	$timeKeeperApprover = $approverData["approverEmpNo"] != "" && $_SESSION['user_level'] == 2 && $_SESSION['user_release']=="Y";
+	$managerApporver = $approverData["approverEmpNo"] != "" && $_SESSION['user_level'] == 2 && $_SESSION['user_release']!="Y";
+	$timeKeeper = $approverData["approverEmpNo"] == "" && $_SESSION['user_level'] == 2 && $_SESSION['user_release']=="Y";
+	if($timeKeeperApprover) { 
+		$_SESSION['uType'] = "TA"; //Timekeeper Approver
+		$forApproval = " AND (empMast.empNo IN (Select subordinateEmpNo from tbltna_approver 
+											where approverEmpNo='{$_SESSION['employee_number']}' 
+											AND compCode='{$_SESSION['company_code']}') OR empMast.empNo = '{$_SESSION['employee_number']}' OR mStat = 'A')";
+	}elseif($managerApporver){
+		$_SESSION['uType'] = "MA"; //Manager Approver
+		$forApproval = " AND (empMast.empNo IN (Select subordinateEmpNo from tbltna_approver 
+											where approverEmpNo='{$_SESSION['employee_number']}' 
+											AND compCode='{$_SESSION['company_code']}') OR empMast.empNo = '{$_SESSION['employee_number']}')";
+	}elseif($timeKeeper){
+		$forApproval = " AND (mStat = 'A' OR empMast.empNo = '{$_SESSION['employee_number']}')";
+	}
+	//End New Code for Approver 04-25-2024
 	
 	$brnQry = "Select empNo,tblUB.brnCode as brnCode, brnDesc 
 					 From tblTK_UserBranch tblUB, tblBranch as tblbrn
@@ -97,16 +119,35 @@
 					 FROM tblTK_OBApp OBApp 
 					 INNER JOIN tblEmpMast empMast ON OBApp.empNo = empMast.empNo
 					 WHERE (OBApp.compCode = '".$_SESSION["company_code"]."') 
-							AND (empMast.compCode = '".$_SESSION["company_code"]."')
+							AND (empMast.compCode = '".$_SESSION["company_code"]."') $forApproval 
 							$brnCodelist";
 							
 							if($_GET['isSearch'] == 1){
 								if($_GET['srchType'] == 0){
 									$qryIntMaxRec .= "";
 								}
-								
-								if($_GET['srchType'] == 1){
-									$qryIntMaxRec .= "AND obStat='A'";
+
+								if($timeKeeperApprover || $timeKeeper) { 
+									if($_GET['srchType'] == 1){
+										$qryIntMaxRec .= "AND obStat='A'";
+									}
+									if($_GET['srchType'] == 2){
+										$qryIntMaxRec .= "AND obStat='H' ";
+									}
+								}elseif($managerApporver){
+									if($_GET['srchType'] == 1){
+										$qryIntMaxRec .= "AND mStat='A'";
+									}
+									if($_GET['srchType'] == 2){
+										$qryIntMaxRec .= "AND mStat='H' ";
+									}
+								}else{
+									if($_GET['srchType'] == 1){
+										$qryIntMaxRec .= "AND mStat='A'";
+									}
+									if($_GET['srchType'] == 2){
+										$qryIntMaxRec .= "AND mStat='H' ";
+									}
 								}
 								
 								if($_GET['srchType'] == 2){
@@ -141,44 +182,59 @@
 
 	$qryOBApp = "SELECT OBApp.compCode, OBApp.refNo, OBApp.obDate,OBApp.empNo, empMast.empLastName, 
 						empMast.empFirstName,obReason, obActualTimeOut, obActualTimeIn, seqNo, obStat, obDestination, userApproved, 
-						addedBy, hrs8Deduct, crossDay
+						addedBy, hrs8Deduct, crossDay, mStat
 				 FROM tblTK_OBApp OBApp 
 				 INNER JOIN tblEmpMast empMast ON OBApp.empNo = empMast.empNo AND OBApp.compCode=empMast.compCode
 				 WHERE (OBApp.compCode = '".$_SESSION["company_code"]."') 
-				 AND (empMast.compCode = '".$_SESSION["company_code"]."')
+				 AND (empMast.compCode = '".$_SESSION["company_code"]."') $forApproval
 				 $brnCodelist
 				 ";
 							
-							if($_GET['isSearch'] == 1){
-										if($_GET['srchType'] == 0){
-											$qryOBApp .= "";
-										}
-								
-										if($_GET['srchType'] == 1){
-											$qryOBApp .= "AND obStat='A'";
-										}
-										
-										if($_GET['srchType'] == 2){
-											$qryOBApp .= "AND obStat='H'";
-										}
-										
-										if($_GET['srchType'] == 3){
-											$qryOBApp .= "and refNo LIKE '".trim($_GET['txtSrch'])."%' ";
-										}
-										
-										if($_GET['srchType'] == 4){
-											$qryOBApp .= "AND OBApp.empNo LIKE '".trim($_GET['txtSrch'])."%' ";
-										}
-										
-										if($_GET['srchType'] == 5){
-											$qryOBApp .= "AND empLastName LIKE '".trim($_GET['txtSrch'])."%' ";
-										}
-										
-										if ($_GET['brnCd']!=0) 
-										{
-											$qryOBApp.= " AND empbrnCode='".$_GET["brnCd"]."' ";
-										}
-									}
+	if($_GET['isSearch'] == 1){
+		if($_GET['srchType'] == 0){
+			$qryIntMaxRec .= "";
+		}
+
+		if($timeKeeperApprover || $timeKeeper) { 
+			if($_GET['srchType'] == 1){
+				$qryOBApp .= "AND obStat='A'";
+			}
+			if($_GET['srchType'] == 2){
+				$qryOBApp .= "AND obStat='H' ";
+			}
+		}elseif($managerApporver){
+			if($_GET['srchType'] == 1){
+				$qryOBApp .= "AND mStat='A'";
+			}
+			if($_GET['srchType'] == 2){
+				$qryOBApp .= "AND mStat='H' ";
+			}
+		}else{
+			if($_GET['srchType'] == 1){
+				$qryOBApp .= "AND mStat='A'";
+			}
+			if($_GET['srchType'] == 2){
+				$qryOBApp .= "AND mStat='H' ";
+			}
+		}
+				
+		if($_GET['srchType'] == 3){
+			$qryOBApp .= "and refNo LIKE '".trim($_GET['txtSrch'])."%' ";
+		}
+				
+		if($_GET['srchType'] == 4){
+			$qryOBApp .= "AND OBApp.empNo LIKE '".trim($_GET['txtSrch'])."%' ";
+		}
+				
+		if($_GET['srchType'] == 5){
+			$qryOBApp .= "AND empLastName LIKE '".trim($_GET['txtSrch'])."%' ";
+		}
+				
+		if ($_GET['brnCd']!=0) 
+		{
+			$qryOBApp.= " AND empbrnCode='".$_GET["brnCd"]."' ";
+		}
+	}
 							
 	$qryOBApp.=	"ORDER BY  OBApp.obStat DESC, OBApp.refNo, OBApp.obDate, empMast.empLastName, empMast.empFirstName limit $intOffset,$intLimit;";
 	
@@ -217,18 +273,6 @@
 				</tr>
                 
 				<tr>
-					<!--<td class="hdrInputsLvl" width="10%">
-						Reference NO.
-					</td>
-                    
-					<td class="hdrInputsLvl" width="5">
-						:
-					</td>
-                    
-					<td class="gridDtlVal" width="18%">
-						<INPUT tabindex="5" class="inputs" type="text" name="refNo" id="refNo" size="10" value="<?=$refNo?>" readonly onkeyup="return editRefNo('editRef',this.value,event)">
-						<font id="refNoCont"></font>
-					</td>-->
                     
 					<td class="hdrInputsLvl" width="92">&nbsp;</td>
                     
@@ -259,7 +303,7 @@
                 <tr>
 					<td class="hdrInputsLvl">
 						<?php
-							if ($_SESSION['user_level'] == 3)  {
+							if ($_SESSION['user_level'] == 3 || $managerApporver)  {
 						?>
 							Employee No.
 						<?php
@@ -277,7 +321,7 @@
                     
 					<td width="132" class="gridDtlVal">
 						<?php
-							if ($_SESSION['user_level'] == 3)  {
+							if ($_SESSION['user_level'] == 3 || $managerApporver)  {
 						?>
 							<INPUT tabindex="11" class="inputs" type="text" name="txtAddEmpNo" size="15" id="txtAddEmpNo" value="<?=$_SESSION['employeenumber'];?>" readonly>
 						<?php
@@ -395,7 +439,7 @@
                         <FONT class="ToolBarseparator">|</font>	
 						<a href="#"  id="btnEdit"onClick=""><img class="toolbarImg" id="btnUpdate"  src="../../../images/application_form_edit.png" title="Update OB Application" onclick="getSeqNo()"></a> 
 						<?
-                        if($_SESSION['user_release']=="Y"){
+                        if($_SESSION['user_release']=="Y" || $_SESSION['user_level'] == 2){
                         ?>
                         <FONT class="ToolBarseparator">|</font>
                         <a href="#" id="editEarn" tabindex="2"><img class="toolbarImg" id="btnApp" src="../../../images/edit_prev_emp.png"  onclick="upObTran('Approve','obAjaxResult.php','obCont',<?=$intOffset?>,'',<?=$_GET['isSearch']?>,'txtSrch','cmbSrch');" title="Approved OB Application" ></a>	
@@ -433,7 +477,15 @@
 						{
 							$bgcolor = ($i++ % 2) ? "#FFFFFF" : "#F8F8FF";
 							$on_mouse = ' onmouseover="this.style.backgroundColor=\'' . '#F0F0F0' . '\';"'. ' onmouseout="this.style.backgroundColor=\'' . $bgcolor  . '\';"';						
-							$f_color = ($arrOBAppList_val["obStat"]=='A'?"#CC3300":"");
+							if($timeKeeperApprover) {
+								$f_color = ($arrOBAppList_val["obStat"]=='A'?"#CC3300":"");
+							}elseif($managerApporver) {
+								$f_color = ($arrOBAppList_val["mStat"]=='A'?"#CC3300":"");
+							}elseif($timeKeeper) {
+								$f_color = ($arrOBAppList_val["obStat"]=='A'?"#CC3300":"");
+							}elseif($_SESSION['user_level'] == 3){
+								$f_color = ($arrOBAppList_val["mStat"]=='A'?"#CC3300":"");
+							}
 							
 							$obDestination = $obObj->getEmpBranchArt($arrOBAppList_val["compCode"],$arrOBAppList_val["obDestination"]);
 							$obDestination = ($obDestination==""?"OTHERS":$obDestination["brnDesc"]);
@@ -441,7 +493,7 @@
                 			<tr style="height:20px;" title="<?=($arrOBAppList_val["obStat"]=='A'?"APPROVED":"HELD");?>"  bgcolor="<?php echo $bgcolor; ?>" <?php echo $on_mouse; ?>>
                             	<td class="gridDtlVal" align="center">
                             	<?php 
-									if(($arrOBAppList_val["obStat"]=='H') || ($arrOBAppList_val["userApproved"]==$_SESSION['employee_number']))
+									if($timeKeeperApprover || $timeKeeper || $arrOBAppList_val["mStat"]=='H')
 									{
 								?>
                             			<input class="inputs" type="checkbox" name="chkseq[]" value="<?=$arrOBAppList_val['seqNo']?>" id="chkseq[]" />

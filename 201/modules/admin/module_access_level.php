@@ -17,31 +17,28 @@
 	
 	$arr_empInfo = $moduleAccssRghts->getUserInfo($_SESSION["company_code"],$_GET["empNo"],'');
 	
-	
 	$rsChkUsers = $moduleAccssRghts->chkUser($_GET["compCode"],$_GET["empNo"]);
 	if($moduleAccssRghts->getRecCount($rsChkUsers)>=1)
 	{
 		$arrChkUsers = $moduleAccssRghts->getSqlAssoc($rsChkUsers);
 		$usrPayCat = $arrChkUsers['userLevel'];
+		if($arrChkUsers['releaseTag'] == 'Y') {
+			$usrPayCat = 4;
+		}
 	}
 	else
 	{
 		$usrPayCat = "";
 	}
 	
-	
 	if($_GET["btnUserDef"]!="")
 	{
 		$usrAccLevel = $_GET["accesslevel"];
-		
-			$updateAccessLevel = $moduleAccssRghts->updateUserLevel($usrAccLevel,$_GET["empNo"]);
-			if($updateAccessLevel==1)
-				echo "<script>alert('User Access Level Already Updated.');</script>";
-			else
-				echo "<script>alert('User Access Level Failed To Update.');</script>";
-		
-		
-		
+		$updateAccessLevel = $moduleAccssRghts->updateUserLevel($usrAccLevel, $_GET["empNo"]);
+		if($updateAccessLevel==1)
+			echo "<script>alert('User Access Level Already Updated.');</script>";
+		else
+			echo "<script>alert('User Access Level Failed To Update.');</script>";
 	}
 		
 ?>
@@ -65,58 +62,57 @@
     	<form name="moduleAccess" id="moduleAccess" action="<?=$_SERVER['PHP_SELF']?>" method="get">
         <input type="hidden" name="empNo" value="<?php echo $_GET["empNo"]; ?>">
         
-    	<?php
-			echo "<table border='0' width='100%' cellpadding='1' cellspacing='1' class='childGrid'>\n";
-					echo "<tr>";
-						echo "<td align='center' colspan='3' class='prevEmpHeader'>".$_GET["empNo"]." - ".$arr_empInfo["empLastName"].", ".$arr_empInfo["empFirstName"]." ".$arr_empInfo["empMidName"][0]."."."</td>";
-					echo "</tr>";
-					
-					echo "<tr>";
-						echo "<td class='gridDtlLbl'>User Access Level</td>";								
-					echo "</tr>";
-					
-                        //Check if the Employee Already Exists in the User Table
-                        $rsUsrExists = $moduleAccssRghts->chkUser($_SESSION["company_code"],$_SESSION['employee_number']);
-	    				$chkUsrExists = $moduleAccssRghts->getSqlAssoc($rsUsrExists);
-
-						if($chkUsrExists['userLevel']==1){
-						echo "<tr>";	
-							echo "<td  class='gridDtlVal'><input type='radio' name='accesslevel' id='accesslevel' value='1'";
-									if($usrPayCat==1)
-										 echo "checked";
-									else
-										 echo "Unchecked";
-							echo ">"."Super User"."</td>";
-						}
-						echo "</tr>";	
-						echo "<tr>";	
-							echo "<td  class='gridDtlVal'><input type='radio' name='accesslevel' id='accesslevel' value='2'";
-									if($usrPayCat==2)
-										 echo "checked";
-									else
-										 echo "Unchecked";
-							echo ">"."User (Add / Edit / Delete Record)"."</td>";
-						echo "</tr>";
-						echo "<tr>";	
-							echo "<td  class='gridDtlVal'><input type='radio' name='accesslevel' id='accesslevel' value='3'";
-									if($usrPayCat==3)
-										 echo "checked";
-									else
-										 echo "Unchecked";
-							echo ">"."User (View Only)"."</td>";
-						echo "</tr>";
-//					}
-					
+    	<?php if(isset($_GET["empNo"])): ?>
+			<table border='0' width='100%' cellpadding='1' cellspacing='1' class='childGrid'>
+				<tr>
+					<td align='center' colspan='3' class='prevEmpHeader'>
+						<?php echo $_GET["empNo"]; ?> - <?php echo $arr_empInfo["empLastName"]; ?>, <?php echo $arr_empInfo["empFirstName"]; ?> <?php echo $arr_empInfo["empMidName"][0] . "."; ?>
+					</td>
+				</tr>
 				
-					echo "<tr>";
-						echo "<td align='center' class='childGridFooter' colspan='3'>";
-							echo "<input type='submit' class= 'inputs' name='btnUserDef' value='Save' >";
-						echo "</td>";
-					echo "</tr>";
-					
-				echo "</table>\n";
-	
-		?>
+				<tr>
+					<td class='gridDtlLbl'>User Access Level</td>
+				</tr>
+				
+				<?php
+				$rsUsrExists = $moduleAccssRghts->chkUser($_SESSION["company_code"], $_SESSION['employee_number']);
+				$chkUsrExists = $moduleAccssRghts->getSqlAssoc($rsUsrExists);
+
+				if($chkUsrExists['userLevel'] == 1): ?>
+					<tr>
+						<td class='gridDtlVal'>
+							<input type='radio' name='accesslevel' id='accesslevel' value='1' <?php echo ($usrPayCat == 1) ? 'checked' : ''; ?>>
+							Super User
+						</td>
+					</tr>
+				<?php endif; ?>
+
+				<tr>
+					<td class='gridDtlVal'>
+						<input type='radio' name='accesslevel' id='accesslevel' value='2' <?php echo ($usrPayCat == 2) ? 'checked' : ''; ?>>
+						User (Create / Update / Delete Record) Approver
+					</td>
+				</tr>
+				<tr>
+					<td class='gridDtlVal'>
+						<input type='radio' name='accesslevel' id='accesslevel' value='4' <?php echo ($usrPayCat == 4) ? 'checked' : ''; ?>>
+						User (Create / Update / Delete Record) Timekeeper
+					</td>
+				</tr>
+				<tr>
+					<td class='gridDtlVal'>
+						<input type='radio' name='accesslevel' id='accesslevel' value='3' <?php echo ($usrPayCat == 3) ? 'checked' : ''; ?>>
+						User (Create / Update / Delete Record) Own Record
+					</td>
+				</tr>
+				
+				<tr>
+					<td align='center' class='childGridFooter' colspan='3'>
+						<input type='submit' class= 'inputs' name='btnUserDef' value='Save' >
+					</td>
+				</tr>
+			</table>
+		<?php endif; ?>
     	</form>
     </BODY>
 </HTML>

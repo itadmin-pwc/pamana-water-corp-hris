@@ -11,6 +11,9 @@ $csObj->validateSessions('','MODULES');
 unset($_SESSION['employeenumber']);
 $_SESSION['employeenumber']=$_SESSION['employee_number'];
 
+$approverData = $csObj->getTblData("tbltna_approver", " and approverEmpNo='".$_SESSION['employee_number']."' and subordinateEmpNo='".$_SESSION['employee_number']."' and status='A' AND dateValid >= now()", "", "sqlAssoc");
+$selfApprove = $approverData["approverEmpNo"] == $_SESSION['employee_number'];
+
 switch($_GET["action"])
 {
 	case 'addNewCSApp':
@@ -24,10 +27,6 @@ switch($_GET["action"])
 	break;
 	
 	case "NEWREFNO":
-		//$arr_lastRefNo = $csObj->getLastRefNo("tblTK_CSApp");
-		//$lastRefNo = $arr_lastRefNo["lastRefNo"] + 1;
-		
-		//echo "$('refNo').value=$lastRefNo;";
 		echo "$('csreason').value='';";
 		
 		echo "$('txtAddEmpNo').value='';";
@@ -47,10 +46,6 @@ switch($_GET["action"])
 		
 		$empInfo = $csObj->getEmployee($_SESSION['company_code'],$_GET['empNo'],'');
 		
-		/*if($_GET["txtRefNo"]=="")
-			echo "alert('Reference No. is required.');";
-		else
-		{*/
 			$midName = (!empty($empInfo['empMidName'])) ? substr($empInfo['empMidName'],0,1)."." : '';
 			echo "$('txtEmpName').value='$empInfo[empLastName], ".htmlspecialchars(addslashes($empInfo['empFirstName']))." $midName ';";
 			$cwwTag = $csObj->getTblData("tblTK_EmpShift", " and empNo='".$_GET['empNo']."'", "", "sqlAssoc");
@@ -66,11 +61,6 @@ switch($_GET["action"])
 			$openPeriod = $csObj->getOpenPeriod($_SESSION["company_code"],$empInfo["empPayGrp"],$empInfo['empPayCat']); 
 			$payPayable = $openPeriod['pdPayable'];
 			
-			/*$shiftCode = $csObj->getTblData("tblTk_EmpShift", " and empNo='".$_GET["empNo"]."'", "", "sqlAssoc");
-			$array_day = array('Mon'=>1 , 'Tue' => 2, 'Wed'=>3, 'Thu'=>4, 'Fri'=>5, 'Sat'=>6, 'Sun'=>7);
-			
-			$shiftCodeDtl = $csObj->getTblData("tblTk_ShiftDtl", " and shftCode='".$shiftCode["shiftCode"]."' and dayCode='".$array_day[date("D", strtotime($_GET["csDateFrom"]))]."'", "", "sqlAssoc");
-			*/
 			$shiftCodeDtl = $csObj->getTblData("tblTk_TimeSheet", " and empNo='".$_GET['empNo']."' and tsDate='".date("Y-m-d", strtotime($_GET["csDateFrom"]))."'", "", "sqlAssoc");
 			
 			if($shiftCodeDtl["shftTimeIn"]=="")
@@ -81,18 +71,11 @@ switch($_GET["action"])
 			{
 				echo "$('schedTimeIn').value='".$shiftCodeDtl["shftTimeIn"]."'; $('schedTimeOut').value='".$shiftCodeDtl["shftTimeOut"]."'; $('shiftDayType').value='".$shiftCodeDtl["dayType"]."'; $('empPayGrp').value='".$empInfo['empPayGrp']."'; $('empPayCat').value='".$empInfo['empPayCat']."';  $('empbrnCode').value='".$empInfo['empBrnCode']."'; document.frmCS.csTimeIn.disabled=false; document.frmCS.csTimeOut.disabled=false; document.frmCS.chkCrossDay.disabled=false; document.frmCS.cmbReasons.disabled=false;  document.frmCS.btnSave.disabled=false;  document.frmCS.chkStat.disabled=false; ";
 			}
-		//}
 		exit();			
 	break;
 	
 	case "getEmpShiftCode":
-		/*$shiftCode = $csObj->getTblData("tblTk_EmpShift", " and empNo='".$_GET["empNo"]."'", "", "sqlAssoc");
-		$array_day = array('Mon'=>1 , 'Tue' => 2, 'Wed'=>3, 'Thu'=>4, 'Fri'=>5, 'Sat'=>6, 'Sun'=>7);
-		
-		$shiftCodeDtl = $csObj->getTblData("tblTk_ShiftDtl", " and shftCode='".$shiftCode["shiftCode"]."' and dayCode='".$array_day[date("D", strtotime($_GET["csDateFrom"]))]."'", "", "sqlAssoc");
-		*/
 		$shiftCodeDtl = $csObj->getTblData("tblTk_TimeSheet", " and empNo='".$_GET['empNo']."' and tsDate='".date("Y-m-d", strtotime($_GET["csDateFrom"]))."'", "", "sqlAssoc");
-			
 		
 		if($shiftCodeDtl["shftTimeIn"]=="")
 		{
@@ -101,7 +84,6 @@ switch($_GET["action"])
 		else
 		{
 			echo "$('schedTimeIn').value='".$shiftCodeDtl["shftTimeIn"]."'; $('schedTimeOut').value='".$shiftCodeDtl["shftTimeOut"]."'; $('shiftDayType').value='".$shiftCodeDtl["dayType"]."'; document.frmCS.csTimeIn.disabled=false; document.frmCS.csTimeOut.disabled=false; document.frmCS.chkCrossDay.disabled=false; document.frmCS.cmbReasons.disabled=false; document.frmCS.btnSave.disabled=false;  document.frmCS.csDateTo.value=document.frmCS.csDateFrom.value; document.frmCS.chkStat.disabled=false;";
-//			echo "document.frmCS.csDateTo.value=document.frmCS.csDateFrom.value;";
 	
 		}
 		exit();
@@ -191,28 +173,6 @@ switch($_GET["action"])
 		exit();	
 	break;
 	
-//	case "saveCsSched":
-//		$arrvalidateEncodedTimeIn  = $csObj->validateEncodedTime($_GET["csTimeIn"], "shftTimeIn");
-//		print_r ($arrvalidateEncodedTimeIn);
-//		if(sizeof($arrvalidateEncodedTimeIn)>=1)
-//		{
-//			$arrvalidateEncodedTimeOut  = $csObj->validateEncodedTime($_GET["csTimeOut"], "shftTimeOut");
-//			if(sizeof($arrvalidateEncodedTimeOut)>=1)
-//			{
-//				$ret_saveCsSched = $csObj->validateTran_Cd($_GET, "Add");
-//				echo "saveMessage('$ret_saveCsSched')";
-//			}
-//			else{	
-//				echo "saveMessage('Encoded Shift Time Out is not available in the Shift Codes Table.')";
-//			}
-//		}
-//		else{
-//			echo "saveMessage('Encoded Shift Time In is not available in the Shift Codes Table.')";
-//		}
-//		exit();	
-//		
-//	break;
-	
 	case "Delete":
 		$chkSeqNo = $_GET["chkseq"];
 		if(sizeof($chkSeqNo)>=1)
@@ -240,10 +200,33 @@ switch($_GET["action"])
 		{
 			foreach($chkSeqNo as $indchkSeqNo => $chkSeqNo_val)
 			{
-				$qryApp = "Update  tblTk_CSApp set dateApproved='".date("Y-m-d")."',userApproved='".$_SESSION["employee_number"]."',csStat='A' where seqNo='".$chkSeqNo_val."';";
-				$resApp = $csObj->execQry($qryApp);
+				$tkData = $csObj->getTblData("tblTk_CSApp", " and seqNo='".$chkSeqNo_val."'", "", "sqlAssoc");
+				if($tkData['empNo'] == $_SESSION['employee_number']) {
+					if($selfApprove) {
+						if($_SESSION['uType'] == "T") {
+							$qryApp = "Update  tblTk_CSApp set dateApproved='".date("Y-m-d")."',userApproved='".$_SESSION["employee_number"]."',csStat='A' where seqNo='".$chkSeqNo_val."';";
+							$resApp = $csObj->execQry($qryApp);
+						}elseif($_SESSION['uType'] == "TA") {
+							$qryApp = "Update  tblTk_CSApp set dateApproved='".date("Y-m-d")."',userApproved='".$_SESSION["employee_number"]."',csStat='A',mApproverdBy='" . $_SESSION["employee_number"] . "',mStat='A',mDateApproved='".date("Y-m-d")."' where seqNo='".$chkSeqNo_val."';";
+							$resApp = $csObj->execQry($qryApp);
+						}else{
+							$qryApp = "Update  tblTk_CSApp set mApproverdBy='" . $_SESSION["employee_number"] . "',mStat='A',mDateApproved='".date("Y-m-d")."' where seqNo='".$chkSeqNo_val."';";
+							$resApp = $csObj->execQry($qryApp);
+						}
+					}
+				}else{
+					if($_SESSION['uType'] == "T") {
+						$qryApp = "Update  tblTk_CSApp set dateApproved='".date("Y-m-d")."',userApproved='".$_SESSION["employee_number"]."',csStat='A' where seqNo='".$chkSeqNo_val."';";
+						$resApp = $csObj->execQry($qryApp);
+					}elseif($_SESSION['uType'] == "TA") {
+						$qryApp = "Update  tblTk_CSApp set dateApproved='".date("Y-m-d")."',userApproved='".$_SESSION["employee_number"]."',csStat='A',mApproverdBy='" . $_SESSION["employee_number"] . "',mStat='A',mDateApproved='".date("Y-m-d")."' where seqNo='".$chkSeqNo_val."';";
+						$resApp = $csObj->execQry($qryApp);
+					}else{
+						$qryApp = "Update  tblTk_CSApp set mApproverdBy='" . $_SESSION["employee_number"] . "',mStat='A',mDateApproved='".date("Y-m-d")."' where seqNo='".$chkSeqNo_val."';";
+						$resApp = $csObj->execQry($qryApp);
+					}
+				}
 			}
-			
 			echo "alert('Selected CS Application already Approved.')";
 		}
 		else
@@ -610,14 +593,10 @@ switch($_GET["action"])
 				onCreate : function (){
 					$('indicator2').src="../../../images/wait.gif";
 					document.frmCS.btnSave.disabled = true;
-					//document.frmCS.btnApp.style.visibility = 'hidden';
-					//document.frmCS.btnDel.style.visibility = 'hidden';
 				},
 				onSuccess : function (){
 					$('indicator2').innerHTML="";
 					document.frmCS.btnSave.disabled = false;
-					//document.frmCS.btnApp.style.visibility = 'visible';
-					//document.frmCS.btnDel.style.visibility = 'visible';
 				}	
 			});	
 			
@@ -642,7 +621,7 @@ switch($_GET["action"])
 		if(inputTypeSeqNo==""){
 			alert('Please select leave application to modify.');
 		}
-		else{		
+		else{
 			var editAllw = new Window({
 			id: "editAllw",
 			className : 'mac_os_x',
@@ -678,7 +657,6 @@ switch($_GET["action"])
 	function checkAll(field)
 	{
 		var chkob = document.frmCS.elements['chkseq[]'];
-		//alert(field);
 		if (field=="1") 
 		{ 
    			for (var i=0; i<chkob.length; i++)

@@ -7,6 +7,8 @@ include("utApp.obj.php");
 
 $utAppObj = new utAppObj($_GET, $_SESSION);
 $utAppObj->validateSessions($_GET, $_SESSION);
+$approverData = $utAppObj->getTblData("tbltna_approver", " and approverEmpNo='".$_SESSION['employee_number']."' and subordinateEmpNo='".$_SESSION['employee_number']."' and status='A' AND dateValid >= now()", "", "sqlAssoc");
+$selfApprove = $approverData["approverEmpNo"] == $_SESSION['employee_number'];
 
 $_SESSION['employeenumber']=$_SESSION['employee_number'];
 if (isset($_GET['action'])) {
@@ -100,8 +102,8 @@ if (isset($_GET['action'])) {
 
 			foreach($chkSeqNo as $indchkSeqNo => $chkSeqNo_val)
 			{
-			$qryDel = "DELETE FROM tblTK_UTApp WHERE seqNo='".$chkSeqNo_val."'";
-			$resDel = $utAppObj->execQry($qryDel);
+				$qryDel = "DELETE FROM tblTK_UTApp WHERE seqNo='".$chkSeqNo_val."'";
+				$resDel = $utAppObj->execQry($qryDel);
 			}
 
 			echo "alert('Selected Leave Application already deleted.')";
@@ -114,11 +116,33 @@ if (isset($_GET['action'])) {
 			$chkSeqNo = $_GET["chkseq"];
 			
 			foreach($chkSeqNo as $indchkSeqNo => $chkSeqNo_val)
-			
 			{
-				$qryApprove = "UPDATE tblTK_UTApp SET dateApproved='".date("Y-m-d")."',userApproved='".$_SESSION["employee_number"]."', 
-							   utStat='A' WHERE seqNo='".$chkSeqNo_val."';";
-				$resApprove = $utAppObj->execQry($qryApprove);
+				$tkData = $utAppObj->getTblData("tblTK_UTApp", " and seqNo='".$chkSeqNo_val."'", "", "sqlAssoc");
+				if($tkData['empNo'] == $_SESSION['employee_number']) {
+					if($selfApprove) {
+						if($_SESSION['uType'] == "T") {
+							$qryApp = "Update  tblTK_UTApp set dateApproved='".date("Y-m-d")."',userApproved='".$_SESSION["employee_number"]."',utStat='A' where seqNo='".$chkSeqNo_val."';";
+							$resApp = $utAppObj->execQry($qryApp);
+						}elseif($_SESSION['uType'] == "TA") {
+							$qryApp = "Update  tblTK_UTApp set dateApproved='".date("Y-m-d")."',userApproved='".$_SESSION["employee_number"]."',utStat='A',mApproverdBy='" . $_SESSION["employee_number"] . "',mStat='A',mDateApproved='".date("Y-m-d")."' where seqNo='".$chkSeqNo_val."';";
+							$resApp = $utAppObj->execQry($qryApp);
+						}else{
+							$qryApp = "Update  tblTK_UTApp set mApproverdBy='" . $_SESSION["employee_number"] . "',mStat='A',mDateApproved='".date("Y-m-d")."' where seqNo='".$chkSeqNo_val."';";
+							$resApp = $utAppObj->execQry($qryApp);
+						}
+					}
+				}else{
+					if($_SESSION['uType'] == "T") {
+						$qryApp = "Update  tblTK_UTApp set dateApproved='".date("Y-m-d")."',userApproved='".$_SESSION["employee_number"]."',utStat='A' where seqNo='".$chkSeqNo_val."';";
+						$resApp = $utAppObj->execQry($qryApp);
+					}elseif($_SESSION['uType'] == "TA") {
+						$qryApp = "Update  tblTK_UTApp set dateApproved='".date("Y-m-d")."',userApproved='".$_SESSION["employee_number"]."',utStat='A',mApproverdBy='" . $_SESSION["employee_number"] . "',mStat='A',mDateApproved='".date("Y-m-d")."' where seqNo='".$chkSeqNo_val."';";
+						$resApp = $utAppObj->execQry($qryApp);
+					}else{
+						$qryApp = "Update  tblTK_UTApp set mApproverdBy='" . $_SESSION["employee_number"] . "',mStat='A',mDateApproved='".date("Y-m-d")."' where seqNo='".$chkSeqNo_val."';";
+						$resApp = $utAppObj->execQry($qryApp);
+					}
+				}
 			}
 
 			echo "alert('Selected Undertime Application already approved.')";
