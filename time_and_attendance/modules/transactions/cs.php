@@ -84,7 +84,6 @@ switch($_GET["action"])
 		else
 		{
 			echo "$('schedTimeIn').value='".$shiftCodeDtl["shftTimeIn"]."'; $('schedTimeOut').value='".$shiftCodeDtl["shftTimeOut"]."'; $('shiftDayType').value='".$shiftCodeDtl["dayType"]."'; document.frmCS.csTimeIn.disabled=false; document.frmCS.csTimeOut.disabled=false; document.frmCS.chkCrossDay.disabled=false; document.frmCS.cmbReasons.disabled=false; document.frmCS.btnSave.disabled=false;  document.frmCS.csDateTo.value=document.frmCS.csDateFrom.value; document.frmCS.chkStat.disabled=false;";
-	
 		}
 		exit();
 	break;

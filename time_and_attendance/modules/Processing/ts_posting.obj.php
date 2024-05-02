@@ -341,10 +341,7 @@ class TSPostingObj extends dateDiff {
 			// }	
 
 			$hrsND 		= ($hrsND>8) ? 8:$hrsND;
-
 			$hrsND 		= ($hrsND<$hrsregND)? $hrsND:$hrsND-$hrsregND;
-
-			
 
 			//orig code 08/06/2023
 			//$hrsLunch = round($this->calDiff("{$valTSList['tsDate']} {$valTSList['lunchOut']}","{$valTSList['tsDate']} {$valTSList['lunchIn']}",'m')/60,2);
@@ -518,7 +515,7 @@ class TSPostingObj extends dateDiff {
 						}
 
 						//04-02-2024
-						if($first <= 0 || $second) {
+						if($first < 0 || $second < 0) {
 							$sqlDeductions = "Insert into tblTK_Deductions (compCode, empNo, tsDate, hrsTardy, hrsUT, minTardy, minUT) values ('{$_SESSION['company_code']}','{$valTSList['empNo']}','{$valTSList['tsDate']}','$hrsTardy','$hrsUT', '$minTardy', '$minUT');";
 							$Trns = $this->execQryI($sqlDeductions);
 						}
@@ -538,7 +535,7 @@ class TSPostingObj extends dateDiff {
 							$sqlManagerAtt = "INSERT INTO tbltk_managersattendanceLateRecord (empNo, firstPeriodLate, secondPeriodLate, period) VALUES ('{$valTSList['empNo']}', {$first}, {$second}, '{$current["pdNumber"]}')";
 							$Trns = $this->execQryI($sqlManagerAtt);
 						}
-					}else {
+					} else {
 						$sqlDeductions = "Insert into tblTK_Deductions (compCode, empNo, tsDate, hrsTardy, hrsUT, minTardy, minUT) values ('{$_SESSION['company_code']}','{$valTSList['empNo']}','{$valTSList['tsDate']}','$hrsTardy','$hrsUT', '$minTardy', '$minUT');";
 						$Trns = $this->execQryI($sqlDeductions);
 					}

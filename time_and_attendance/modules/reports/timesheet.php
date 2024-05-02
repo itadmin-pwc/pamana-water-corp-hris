@@ -58,10 +58,11 @@ if ($_GET['code']=="") {
             <td width="18%" class="gridDtlLbl">Branch</td>
             <td width="1%" class="gridDtlLbl">:</td>
             <td width="158" colspan="3" class="gridDtlVal"><? 	
-			$sqlBranch = "Select * from tblBranch where compCode='{$_SESSION['company_code']}' and brnCode IN (Select brnCode from tblTK_UserBranch where compCode='{$_SESSION['company_code']}' and empNo='{$_SESSION['employee_number']}') order by brnDesc";				
-			$arrBranch = $inqTSObj->getArrRes($inqTSObj->execQry($sqlBranch));
+			        $filterBranch = ($_SESSION['user_level'] == 3 || $_SESSION['user_level'] == 2 && $_SESSION['user_release']!="Y") ? " and brnCode IN (Select brnCode from tblTK_UserBranch where compCode='{$_SESSION['company_code']}' and empNo='{$_SESSION['employee_number']}')":"";
+			        $sqlBranch = "Select * from tblBranch where brnstat='A' $filterBranch and compCode='{$_SESSION['company_code']}' order by brnDesc";				
+			          $arrBranch = $inqTSObj->getArrRes($inqTSObj->execQry($sqlBranch));
 								$arrBranch = $inqTSObj->makeArr($arrBranch,'brnCode','brnDesc','');
-								$inqTSObj->DropDownMenu($arrBranch,'branch',$empDiv,$cmbtable_dis .' onChange="Checkgroup(this.value)"');
+								$inqTSObj->DropDownMenu($arrBranch,'branch',$brnCode,$cmbtable_dis .' onChange="Checkgroup(this.value)"');
 							?>            </td>
             </tr>
           <tr>
@@ -102,7 +103,7 @@ if ($_GET['code']=="") {
 				'3'=>'Non Confidential',
 				'9'=>'Resigned'
 				)
-				,'cmbCategory',0,'class="inputs" $empNo_dis style="width:100px;"'); ?>
+				,'cmbCategory',$catType,'class="inputs" $empNo_dis style="width:100px;"'); ?>
             </span></td>
           </tr>
           <tr>
@@ -111,7 +112,7 @@ if ($_GET['code']=="") {
             <td colspan="2" class="gridDtlVal"><div id='divpayPd' name='divpayPd'>
               <? $inqTSObj->DropDownMenu(
 				array('')
-				,'cmbpayPd',0,'class="inputs" style="width:100px;" disabled'); ?>
+				,'cmbpayPd',0,'class="inputs" style="width:100px;"'); ?>
             </div></td>
           </tr>
           <tr> 
@@ -165,6 +166,23 @@ if ($_GET['code']=="") {
 				return false;
 			}
 	}*/
+
+   // Function to trigger the onchange event
+  function triggerOnChange(element) {
+      if ("createEvent" in document) {
+          var evt = document.createEvent("HTMLEvents");
+          evt.initEvent("change", false, true);
+          element.dispatchEvent(evt);
+      } else {
+          element.fireEvent("onchange");
+      }
+  }
+
+  // Trigger onchange event when the page loads
+  window.onload = function() {
+      var selectElement = document.getElementById("branch");
+      triggerOnChange(selectElement);
+  };
 	
 	Calendar.setup({
 			  inputField  : "txtfrDate",      // ID of the input field

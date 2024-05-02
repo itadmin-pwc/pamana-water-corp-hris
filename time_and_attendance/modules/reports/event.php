@@ -15,7 +15,6 @@ if ($_GET['code']=="") {
 } else {
 	$code = $_GET['code'];
 }
-
 ?>
 <HTML>
 	<HEAD>
@@ -54,9 +53,9 @@ if ($_GET['code']=="") {
             <td width="18%" class="gridDtlLbl">Branch</td>
             <td width="1%" class="gridDtlLbl">:</td>
             <td width="158" colspan="3" class="gridDtlVal"><? 	
-			$filterBranch = ($_SESSION['user_level']==3)? " and brnCode IN (Select brnCode from tblTK_UserBranch where compCode='{$_SESSION['company_code']}' and empNo='{$_SESSION['employee_number']}')":"";
-			$sqlBranch = "Select * from tblBranch where brnstat='A' and compCode='{$_SESSION['company_code']}' order by brnDesc";				
-			$arrBranch = $inqTSObj->getArrRes($inqTSObj->execQry($sqlBranch));
+			        $filterBranch = ($_SESSION['user_level'] == 3 || $_SESSION['user_level'] == 2 && $_SESSION['user_release']!="Y") ? " and brnCode IN (Select brnCode from tblTK_UserBranch where compCode='{$_SESSION['company_code']}' and empNo='{$_SESSION['employee_number']}')":"";
+			        $sqlBranch = "Select * from tblBranch where brnstat='A' $filterBranch and compCode='{$_SESSION['company_code']}' order by brnDesc";				
+			          $arrBranch = $inqTSObj->getArrRes($inqTSObj->execQry($sqlBranch));
 								$arrBranch = $inqTSObj->makeArr($arrBranch,'brnCode','brnDesc','');
 								$inqTSObj->DropDownMenu($arrBranch,'branch',$brnCode,$cmbtable_dis .' onChange="Checkgroup(this.value)"');
 							?>            </td>

@@ -10,6 +10,12 @@ $payPd = $_POST["payPd"];
 $option_menu = $_REQUEST["hide_option"];
 $orderBy = $_POST["orderBy"];
 
+$branchCode = '';
+if ($_SESSION['user_level'] == 3 || $_SESSION['user_level'] == 2 && $_SESSION['user_release']!="Y") 
+{
+	$empNo = $_SESSION['employee_number'];
+}
+
 if ($option_menu=="") { $option_menu="refresh_"; } 
 if ($groupType=="" || $groupType==0 || $groupType=="0") { $groupType=3; }
 switch ($option_menu) {
@@ -102,6 +108,17 @@ switch ($option_menu) {
 		$payPd_dis = "class=\"inputs\" disabled=\"true\"";
 		$searchEmp_dis = "class=\"inputs\" disabled=\"true\"";
 		$orderBy_dis = "class=\"inputs\" disabled=\"true\"";
+		###################### get employee data ##########
+		$dispEmp = $inqTSObj->getUserInfo($compCode , $empNo, ""); 
+		$empNo = $dispEmp['empNo'];
+		$empName = $dispEmp['empLastName']." ".$dispEmp['empFirstName']." ".$dispEmp['empMidName'];
+		$empDiv = $dispEmp['empDiv'];
+		$empDept = $dispEmp['empDepCode'];
+		$empSect = $dispEmp['empSecCode'];
+		$groupType = $dispEmp['empPayGrp'];
+		$catType = $dispEmp['empPayCat'];
+		$brnCode = $dispEmp['empBrnCode'];
+		#####################################################
 		$msg="";
 		break;
 				

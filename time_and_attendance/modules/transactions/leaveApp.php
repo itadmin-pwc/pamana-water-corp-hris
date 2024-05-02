@@ -72,19 +72,17 @@ if (isset($_GET['action'])) {
 				echo "'".$shiftCodeDtl["empNo"]."';";
 				echo "alert('Duplicate Entry of Leave Application.');";
 			}else{
-
-					if($leaveAppObj->addLeaveApp() == true) {
-						echo "
-							var ans = confirm('Leave Application has been saved! Would you like to add new Leave Application?');
-							if(ans==true){
-								location.href='leaveApp.php?action=addNewLeaveApp&empno=$empno';
+				if($leaveAppObj->addLeaveApp() == true) {
+					echo "
+						var ans = confirm('Leave Application has been saved! Would you like to add new Leave Application?');
+						if(ans==true){
+							location.href='leaveApp.php?action=addNewLeaveApp&empno=$empno';
 							}else{
-								location.href='leaveApp.php';
-							}";
-					}else{
-						echo "alert('Saving of Leave Application failed.');";
-					}
-				
+							location.href='leaveApp.php';
+						}";
+				}else{
+					echo "alert('Saving of Leave Application failed.');";
+				}
 			}
 
 			exit();
