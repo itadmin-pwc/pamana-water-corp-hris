@@ -469,7 +469,7 @@ FROM         tblTK_CSApp where compCode='{$_SESSION['company_code']}' AND csStat
 	}
 	
 	function CloseTK_Leaves() {
-		$sqlLeaves = "Insert into tblTK_LeaveApphist (compCode, empNo, refNo, dateFiled, lvDateFrom, lvFromAMPM, lvDateTo, lvToAMPM, tsAppTypeCd, lvDateReturn, lvReturnAMPM, lvReason, lvReliever, lvAuthorized, lvStat, dateApproved, userApproved, dateAdded, userAdded) SELECT     compCode, empNo, refNo, dateFiled, lvDateFrom, lvFromAMPM, lvDateTo, lvToAMPM, tsAppTypeCd, lvDateReturn, lvReturnAMPM, lvReason, lvReliever, lvAuthorized, lvStat, dateApproved, userApproved, dateAdded, userAdded FROM tblTK_LeaveApp where compCode='{$_SESSION['company_code']}' AND  lvDateTo<='{$this->pdToDate}' AND lvStat='A' AND empNo IN ({$this->Emplist}) ";
+		$sqlLeaves = "Insert into tblTK_LeaveApphist (compCode, empNo, refNo, dateFiled, lvDateFrom, lvFromAMPM, lvDateTo, lvToAMPM, tsAppTypeCd, lvDateReturn, lvReturnAMPM, lvReason, lvReliever, lvAuthorized, lvStat, dateApproved, userApproved, dateAdded, userAdded, mApproverdBy, mStat, mDateApproved) SELECT     compCode, empNo, refNo, dateFiled, lvDateFrom, lvFromAMPM, lvDateTo, lvToAMPM, tsAppTypeCd, lvDateReturn, lvReturnAMPM, lvReason, lvReliever, lvAuthorized, lvStat, dateApproved, userApproved, dateAdded, userAdded, mApproverdBy, mStat, mDateApproved FROM tblTK_LeaveApp where compCode='{$_SESSION['company_code']}' AND  lvDateTo<='{$this->pdToDate}' AND lvStat='A' AND empNo IN ({$this->Emplist}) ";
 		return $this->execQryI($sqlLeaves);	
 	}
 	
@@ -480,7 +480,7 @@ FROM         tblTK_CSApp where compCode='{$_SESSION['company_code']}' AND csStat
 	}
 	
 	function CloseTK_OB() {
-		$sqlOB = "Insert into tblTK_OBApphist (compCode, empNo, refNo, obDate, obDestination, dateFiled, obSchedIn, obSchedOut, obActualTimeIn, obActualTimeOut, obReason, hrs8Deduct, dateApproved, userApproved, dateAdded, addedBy, obStat)  SELECT compCode, empNo, refNo, obDate, obDestination, dateFiled, obSchedIn, obSchedOut, obActualTimeIn, obActualTimeOut, obReason, hrs8Deduct, dateApproved, userApproved, dateAdded, addedBy, obStat FROM tblTK_OBApp where compCode='{$_SESSION['company_code']}'  AND obStat='A' AND empNo IN ({$this->Emplist}) AND obDate between '{$this->pdFrmDate}' AND '{$this->pdToDate}'";
+		$sqlOB = "Insert into tblTK_OBApphist (compCode, empNo, refNo, obDate, obDestination, dateFiled, obSchedIn, obSchedOut, obActualTimeIn, obActualTimeOut, obReason, hrs8Deduct, dateApproved, userApproved, dateAdded, addedBy, obStat, mApproverdBy, mStat, mDateApproved)  SELECT compCode, empNo, refNo, obDate, obDestination, dateFiled, obSchedIn, obSchedOut, obActualTimeIn, obActualTimeOut, obReason, hrs8Deduct, dateApproved, userApproved, dateAdded, addedBy, obStat, mApproverdBy, mStat, mDateApproved FROM tblTK_OBApp where compCode='{$_SESSION['company_code']}'  AND obStat='A' AND empNo IN ({$this->Emplist}) AND obDate between '{$this->pdFrmDate}' AND '{$this->pdToDate}'";
 		return $this->execQryI($sqlOB);	
 	}
 	
@@ -491,7 +491,7 @@ FROM         tblTK_CSApp where compCode='{$_SESSION['company_code']}' AND csStat
 	}
 	
 	function CloseTK_OTApp() {
-		$sqlOTApp = "Insert into tblTK_OTApphist (compCode, empNo, otDate, refNo, dateFiled, otReason, otIn, otOut, dateApproved, userApproved, dateAdded, userAdded, otStat, crossTag)  SELECT compCode, empNo, otDate, refNo, dateFiled, otReason, otIn, otOut, dateApproved, userApproved, dateAdded, userAdded, otStat, crossTag FROM tblTK_OTApp where compCode='{$_SESSION['company_code']}'  AND otStat='A' AND empNo IN ({$this->Emplist}) AND otDate between '{$this->pdFrmDate}' AND '{$this->pdToDate}'";
+		$sqlOTApp = "Insert into tblTK_OTApphist (compCode, empNo, otDate, refNo, dateFiled, otReason, otIn, otOut, dateApproved, userApproved, dateAdded, userAdded, otStat, crossTag, mApproverdBy, mStat, mDateApproved)  SELECT compCode, empNo, otDate, refNo, dateFiled, otReason, otIn, otOut, dateApproved, userApproved, dateAdded, userAdded, otStat, crossTag, mApproverdBy, mStat, mDateApproved FROM tblTK_OTApp where compCode='{$_SESSION['company_code']}'  AND otStat='A' AND empNo IN ({$this->Emplist}) AND otDate between '{$this->pdFrmDate}' AND '{$this->pdToDate}'";
 		return $this->execQryI($sqlOTApp);	
 	}
 	
