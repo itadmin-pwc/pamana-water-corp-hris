@@ -246,7 +246,6 @@ class TSProcessingObj extends dateDiff {
 			$desired_length = 9;
 			$padding_character = '0';
 			$_empBio = str_pad($string, $desired_length, $padding_character, STR_PAD_LEFT);
-			
 			//end add zero
     		//var_dump($t['EDATE']);
 			
