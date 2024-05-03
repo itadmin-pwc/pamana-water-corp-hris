@@ -241,11 +241,18 @@ class TSProcessingObj extends dateDiff {
 		$timeArray = $this->processGracePeriod();
 		//die(var_dump($timeArray));
 		foreach($timeArray as $t) {
+			//add zero 05032024
+			$string = $t['ETAG'];
+			$desired_length = 9;
+			$padding_character = '0';
+			$_empBio = str_pad($string, $desired_length, $padding_character, STR_PAD_LEFT);
+			
+			//end add zero
     		//var_dump($t['EDATE']);
 			
 				//employee no           //bio no
 			if(!empty($t['ETAG'])) {
-				$queryGP = "Select gracePeriod from tbltk_empshift where bioNo like '%" . $t['ETAG'] . "%'";
+				$queryGP = "Select gracePeriod from tbltk_empshift where bioNo = '" . $_empBio . "'";
 				$gpRes = $this->getSqlAssocI($this->execQryI($queryGP));
 				$gracePeriod = $gpRes['gracePeriod'];
 
@@ -253,7 +260,7 @@ class TSProcessingObj extends dateDiff {
 				$date = date('Y-m-d', strtotime($t['EDATE']));
 				//echo(var_dump($t['EDATE']));
 
-				$queryTS = "Select shftTimeIn from tbltk_timesheet where bioNo like '%" . $t['ETAG'] . "%' and tsDate='" . $date . "'";
+				$queryTS = "Select shftTimeIn from tbltk_timesheet where bioNo = '" . $_empBio . "' and tsDate='" . $date . "'";
 				$tsRes = $this->getSqlAssocI($this->execQryI($queryTS));
 				$shiftTimeIn = $tsRes['shftTimeIn'];
 				//echo($queryTS . "<br>");
@@ -275,7 +282,7 @@ class TSProcessingObj extends dateDiff {
 				if ($timeIn >= $timestampShiftTimeIn && $timeIn <= $timestampEndTime) {
 					//die($timestampEndTime);
 					if ($Trns) {
-						$Trns = $this->execQryI("UPDATE tbltk_timesheet SET timeIn='" . $shiftTimeIn . "' WHERE tsDate='" . $date . "' AND bioNo like '%" . $t['ETAG'] . "%';");
+						$Trns = $this->execQryI("UPDATE tbltk_timesheet SET timeIn='" . $shiftTimeIn . "' WHERE tsDate='" . $date . "' AND bioNo = '" . $_empBio . "';");
 					} else {
 						break; 	
 					}
