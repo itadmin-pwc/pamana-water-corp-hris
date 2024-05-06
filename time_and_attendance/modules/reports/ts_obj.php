@@ -69,7 +69,7 @@ class inqTSObj extends commonObj {
 
 	function getDates($empNo,$fr,$to,$brnCode) {	
 		if ($empNo != '')
-			$emp = " and ESABUN='$empNo'";
+			$emp = " and LPAD(ETAG, 9, '0')='$empNo'";
 		if ($fr != '' && $to != '')
 			$date = " AND EDATE BETWEEN '".date('Ymd',strtotime($fr))."' AND '".date('Ymd',strtotime($to))."'";
 			
