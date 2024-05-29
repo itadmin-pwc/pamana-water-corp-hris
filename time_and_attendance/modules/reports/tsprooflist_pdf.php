@@ -226,12 +226,14 @@ class PDF extends FPDF
 
 	
 	}
-function checkcorrlogs($empNo,$tsDate) {
-$qrycorrlogs="SELECT empNo,tsdate FROM tbltk_timesheetcorrlogs WHERE cat ='1' and empNo = '".$empNo."' AND tsDate='".$tsDate."'";
-$res=$this->execQryI($qrycorrlogs);
-$count=mysqli_num_rows($res);
-return $count;
+	
+	function checkcorrlogs($empNo,$tsDate) {
+		$qrycorrlogs="SELECT empNo,tsdate FROM tbltk_timesheetcorrlogs WHERE cat ='1' and empNo = '".$empNo."' AND tsDate='".$tsDate."'";
+		$res=$this->execQryI($qrycorrlogs);
+		$count=mysqli_num_rows($res);
+		return $count;
 	}
+
 	function getempOTsDeds($empNo,$tsDate,$cat) {
 		//$res = array();
 		switch($cat) {

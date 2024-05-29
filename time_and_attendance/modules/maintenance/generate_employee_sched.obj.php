@@ -7,6 +7,11 @@ class genSchedObj extends commonObj {
 	var $arrpayPd;
 	function GenerateSched() {
 		$Trns = $this->beginTran();//begin transaction
+		//5-29-2024 [Re-generate employee sched] start
+		$this->execQry("DELETE FROM tblTK_Timesheet WHERE compCode = '".$_SESSION['company_code']."' 
+						AND tsDate BETWEEN '".date('Y-m-d',strtotime($this->arrpayPd['pdFrmDate']))."'
+						AND '".date('Y-m-d',strtotime($this->arrpayPd['pdToDate']))."'");	
+		//5-29-2024 [Re-generate employee sched] end
 		$this->EmpShiftCode();
 		$this->getholiday();
 		$stat = "";		
@@ -96,8 +101,6 @@ class genSchedObj extends commonObj {
 						} 
 					}
 				}
-			
-			
 		}
 
 		if(!$Trns){
@@ -190,7 +193,7 @@ class genSchedObj extends commonObj {
 	}
 	
 	function getPayPeriod() {
-		$sqlpayPd = "Select *,DATEDIFF(pdToDate,pdFrmDate) as NoDays from tblPayPeriod where compCode='{$_SESSION['company_code']}' and payGrp='{$this->Group}' AND payCat=3 AND pdTSStat='O'";
+		$sqlpayPd = "Select *, DATEDIFF(pdToDate,pdFrmDate) as NoDays from tblPayPeriod where compCode='{$_SESSION['company_code']}' and payGrp='{$this->Group}' AND payCat=3 AND pdTSStat='O'";
 		$this->arrpayPd = $arrpayPd = $this->getSqlAssoc($this->execQry($sqlpayPd));
 		$endDate = date('m/d/Y',strtotime($arrpayPd['pdFrmDate']));
 		$arrDate =  array();
