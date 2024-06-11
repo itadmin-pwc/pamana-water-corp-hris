@@ -484,62 +484,68 @@ class TSPostingObj extends dateDiff {
 			}
 			
 
-			if ($hrsTardy !=0 || $hrsUT != 0) {
+			if ($hrsTardy !=0) {
 				$cwwhrstardy =$hrsTardy;
-				$cwwhrsut = $hrsUT;
 				$fieldDed=",dedTag='Y'";
-				$hrsUT = round($hrsUT, 2);
-				$minUT = round($hrsUT * 60, 0);
 				
 				$hrsTardy = round($hrsTardy, 2);
 				$minTardy = round($hrsTardy * 60, 0);
 				//echo $hrsTardy . ' == ' . $minTardy . '<br><br>';
-				//echo $hrsUT . ' == ' . $minUT . '<br><br>';
 				if ($Trns) {
-					// $sqlDeductions = "Insert into tblTK_Deductions (compCode, empNo, tsDate, hrsTardy, hrsUT, minTardy, minUT) values ('{$_SESSION['company_code']}','{$valTSList['empNo']}','{$valTSList['tsDate']}','$hrsTardy','$hrsUT', '$minTardy', '$minUT');";
-					// $Trns = $this->execQryI($sqlDeductions);
-
 					//12-08-2023 Add Managers remaining late time here
 					$isManager = $this->getRecCount("SELECT * FROM tbltk_managersattendance WHERE empNo='{$valTSList['empNo']}'");
 					if($isManager > 0) {
-						$first = 300;
-						$second = 300;
-						$field = 'firstPeriodLate';
+						$LateInImins = 300;
 						$current = $this->getTblData("tblPayPeriod", " payGrp='1' and payCat = '3' and pdStat IN ('O','')");
-						if ($current["pdNumber"] % 2 == 0) {
-							// Even number
-							$field = 'secondPeriodLate';
-							$second = $second - $hrsTardy;
+						if ($current["pdNumber"] % 2 != 0) {
+							// Odd number
+							$LateInImins = $LateInImins - $hrsTardy;
 						}else{
-							$first = $first - $hrsTardy;
+							
+							
 						}
 
 						//04-02-2024
-						if($first < 0 || $second < 0) {
-							$sqlDeductions = "Insert into tblTK_Deductions (compCode, empNo, tsDate, hrsTardy, hrsUT, minTardy, minUT) values ('{$_SESSION['company_code']}','{$valTSList['empNo']}','{$valTSList['tsDate']}','$hrsTardy','$hrsUT', '$minTardy', '$minUT');";
+						if($LateInImins < 0) {
+							$sqlDeductions = "Insert into tblTK_Deductions (compCode, empNo, tsDate, hrsTardy, minTardy) values ('{$_SESSION['company_code']}','{$valTSList['empNo']}','{$valTSList['tsDate']}','$hrsTardy', '$minTardy');";
 							$Trns = $this->execQryI($sqlDeductions);
 						}
 						//04-02-2024
 
-						$sqlManagerAtt = "Update tbltk_managersattendance SET $field=$field-$hrsTardy WHERE empNo='{$valTSList['empNo']}'";
+						$sqlManagerAtt = "Update tbltk_managersattendance SET LateInImins=LateInImins-$hrsTardy WHERE empNo='{$valTSList['empNo']}'";
 						$Trns = $this->execQryI($sqlManagerAtt);
 
 						$lateRecord = $this->getRecCount("SELECT * FROM tbltk_managersattendanceLateRecord WHERE empNo='{$valTSList['empNo']}' and period='{$current["pdNumber"]}'");
 						if($lateRecord > 0) {
-							$sqlManagerAtt = "Update tbltk_managersattendanceLateRecord SET $field=$field-$hrsTardy WHERE empNo='{$valTSList['empNo']}' and period='{$current["pdNumber"]}'";
+							$sqlManagerAtt = "Update tbltk_managersattendanceLateRecord SET LateInImins=LateInImins-$hrsTardy WHERE empNo='{$valTSList['empNo']}' and period='{$current["pdNumber"]}'";
 							$Trns = $this->execQryI($sqlManagerAtt);
-
-							// $sqlDeductions = "Insert into tblTK_Deductions (compCode, empNo, tsDate, hrsTardy, hrsUT, minTardy, minUT) values ('{$_SESSION['company_code']}','{$valTSList['empNo']}','{$valTSList['tsDate']}','$hrsTardy','$hrsUT', '$minTardy', '$minUT');";
-							// $Trns = $this->execQryI($sqlDeductions);
 						}else{
-							$sqlManagerAtt = "INSERT INTO tbltk_managersattendanceLateRecord (empNo, firstPeriodLate, secondPeriodLate, period) VALUES ('{$valTSList['empNo']}', {$first}, {$second}, '{$current["pdNumber"]}')";
+							$sqlManagerAtt = "INSERT INTO tbltk_managersattendanceLateRecord (empNo, LateInImins, period) VALUES ('{$valTSList['empNo']}', {$LateInImins}, '{$current["pdNumber"]}')";
 							$Trns = $this->execQryI($sqlManagerAtt);
 						}
 					} else {
-						$sqlDeductions = "Insert into tblTK_Deductions (compCode, empNo, tsDate, hrsTardy, hrsUT, minTardy, minUT) values ('{$_SESSION['company_code']}','{$valTSList['empNo']}','{$valTSList['tsDate']}','$hrsTardy','$hrsUT', '$minTardy', '$minUT');";
+						$sqlDeductions = "Insert into tblTK_Deductions (compCode, empNo, tsDate, hrsTardy, minTardy) values ('{$_SESSION['company_code']}','{$valTSList['empNo']}','{$valTSList['tsDate']}','$hrsTardy', '$minTardy');";
 						$Trns = $this->execQryI($sqlDeductions);
 					}
 					//12-08-2023
+				}
+			}
+
+			if($hrsUT != 0) {
+				$cwwhrsut = $hrsUT;
+				$fieldDed=",dedTag='Y'";
+				$hrsUT = round($hrsUT, 2);
+				$minUT = round($hrsUT * 60, 0);
+
+				if ($Trns) {
+					$recordCount = $this->getRecCount("SELECT * FROM tblTK_Deductions WHERE empNo='{$valTSList['empNo']}' AND tsDate='{$valTSList['tsDate']}'");
+					if($recordCount > 0) {
+						$sqlDeductions = "UPDATE tblTK_Deductions SET hrsUT = '{$hrsUT}', minUT = '{$minUT}' WHERE empNo='{$valTSList['empNo']}' AND tsDate='{$valTSList['tsDate']}'";
+						$Trns = $this->execQryI($sqlDeductions);
+					}else{
+						$sqlDeductions = "Insert into tblTK_Deductions (compCode, empNo, tsDate, hrsUT, minUT) values ('{$_SESSION['company_code']}','{$valTSList['empNo']}','{$valTSList['tsDate']}','$hrsUT','$minUT');";
+						$Trns = $this->execQryI($sqlDeductions);
+					}
 				}
 			}
 

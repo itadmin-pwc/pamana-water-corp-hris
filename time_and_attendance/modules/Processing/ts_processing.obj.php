@@ -139,20 +139,19 @@ class TSProcessingObj extends dateDiff {
 			//$arrPlotLogs = $this->PlotLogs();
 			$arrPlotLogs = $this->ProcessLogs();
 			foreach($arrPlotLogs as $valTSList) {
-					
-					 $arrQry = $this->SetEventLog($valTSList);
-					if (count($arrQry)>0) {
-						$i=0;
-						while($i<count($arrQry)) {
-							if ($Trns) {
-								//echo $arrQry[$i]."\n";
-								$Trns = $this->execQryI($arrQry[$i]);
-							} else {
-								break; 	
-							}
-							$i++;
+				$arrQry = $this->SetEventLog($valTSList);
+				if (count($arrQry)>0) {
+					$i=0;
+					while($i<count($arrQry)) {
+						if ($Trns) {
+							//echo $arrQry[$i]."\n";
+							$Trns = $this->execQryI($arrQry[$i]);
+						} else {
+							break; 	
 						}
+						$i++;
 					}
+				}
 			}
 		}
 		
