@@ -1039,7 +1039,7 @@ class transactionObj extends commonObj {
 		$period = $this->getTblData("tblPayPeriod", " and payGrp='1' and payCat = '3' and pdStat IN ('O','')", " ", "sqlAssoc");
 
 		$insertQry = "Insert into tblTK_ManagersAttendance
-		 			  	(compcode, empNo, brnCode, userAdded, dateAdded, maxLateTime, LateInImins, LateRemaining, Period)
+		 			  	(compcode, empNo, brnCode, userAdded, dateAdded, maxLateTime, LateUsedInMins, LateRemainingInMins, Period)
 					  Values('".$_SESSION['company_code']."','".$arr['txtAddEmpNo']."',
 					  	'".$arr['hdnBranch']."',
 					  	'".$_SESSION['employee_number']."',
