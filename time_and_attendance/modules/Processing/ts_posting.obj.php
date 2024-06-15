@@ -494,35 +494,49 @@ class TSPostingObj extends dateDiff {
 				if ($Trns) {
 					//12-08-2023 Add Managers remaining late time here
 					$isManager = $this->getRecCount("SELECT * FROM tbltk_managersattendance WHERE empNo='{$valTSList['empNo']}'");
-					if($isManager > 0) {
-						$LateInImins = 300;
-						$current = $this->getTblData("tblPayPeriod", " payGrp='1' and payCat = '3' and pdStat IN ('O','')");
+					if ($isManager > 0) {
+						// Retrieve the current payroll period
+						$current = $this->getTblData("tblPayPeriod", "payGrp='1' and payCat = '3' and pdStat IN ('O','')");
+					
+						// Determine if we need to reset the immunity
 						if ($current["pdNumber"] % 2 != 0) {
-							// Odd number
-							$LateInImins = $LateInImins - $hrsTardy;
-						}else{
-							
-							
+							// If it's an odd period number (i.e., 1, 3, 5, ...), reset immunity
+							$LateRemainingInMins = 300;
+						} else {
+							// Fetch the remaining immunity from the previous period
+							$previousPeriod = $current["pdNumber"] - 1;
+							$lateRecord = $this->getTblData("tbltk_managersattendanceLateRecord", "empNo='{$valTSList['empNo']}' and period='{$previousPeriod}'");
+							if ($lateRecord) {
+								$LateRemainingInMins = $lateRecord['LateRemainingInMins'];
+							} else {
+								$LateRemainingInMins = 300;
+							}
 						}
-
-						//04-02-2024
-						if($LateInImins < 0) {
-							$sqlDeductions = "Insert into tblTK_Deductions (compCode, empNo, tsDate, hrsTardy, minTardy) values ('{$_SESSION['company_code']}','{$valTSList['empNo']}','{$valTSList['tsDate']}','$hrsTardy', '$minTardy');";
-							$Trns = $this->execQryI($sqlDeductions);
+					
+						// Compute late minutes after immunity
+						$LateUsedInMins = min($hrsTardy, $LateRemainingInMins);
+						$remainingLate = max(0, $hrsTardy - $LateRemainingInMins);
+						$LateRemainingInMins = max(0, $LateRemainingInMins - $hrsTardy);
+					
+						// Insert or update the late immunity record for the current period
+						$lateRecordCurrent = $this->getRecCount("SELECT * FROM tbltk_managersattendanceLateRecord WHERE empNo='{$valTSList['empNo']}' and period='{$current["pdNumber"]}'");
+						if ($lateRecordCurrent > 0) {
+							$sqlUpdateLateRecord = "UPDATE tbltk_managersattendanceLateRecord SET LateRemainingInMins={$LateRemainingInMins}, LateUsedInMins=LateUsedInMins+{$LateUsedInMins} WHERE empNo='{$valTSList['empNo']}' and period='{$current["pdNumber"]}'";
+							$this->execQryI($sqlUpdateLateRecord);
+						} else {
+							$sqlInsertLateRecord = "INSERT INTO tbltk_managersattendanceLateRecord (empNo, LateRemainingInMins, LateUsedInMins, period) VALUES ('{$valTSList['empNo']}', {$LateRemainingInMins}, {$LateUsedInMins}, '{$current["pdNumber"]}')";
+							$this->execQryI($sqlInsertLateRecord);
 						}
-						//04-02-2024
-
-						$sqlManagerAtt = "Update tbltk_managersattendance SET LateInImins=LateInImins-$hrsTardy WHERE empNo='{$valTSList['empNo']}'";
-						$Trns = $this->execQryI($sqlManagerAtt);
-
-						$lateRecord = $this->getRecCount("SELECT * FROM tbltk_managersattendanceLateRecord WHERE empNo='{$valTSList['empNo']}' and period='{$current["pdNumber"]}'");
-						if($lateRecord > 0) {
-							$sqlManagerAtt = "Update tbltk_managersattendanceLateRecord SET LateInImins=LateInImins-$hrsTardy WHERE empNo='{$valTSList['empNo']}' and period='{$current["pdNumber"]}'";
-							$Trns = $this->execQryI($sqlManagerAtt);
-						}else{
-							$sqlManagerAtt = "INSERT INTO tbltk_managersattendanceLateRecord (empNo, LateInImins, period) VALUES ('{$valTSList['empNo']}', {$LateInImins}, '{$current["pdNumber"]}')";
-							$Trns = $this->execQryI($sqlManagerAtt);
+					
+						// Insert deduction if there are remaining late minutes
+						if ($remainingLate > 0) {
+							$sqlDeductions = "INSERT INTO tblTK_Deductions (compCode, empNo, tsDate, hrsTardy, minTardy) VALUES ('{$_SESSION['company_code']}','{$valTSList['empNo']}','{$valTSList['tsDate']}','$remainingLate', '$minTardy')";
+							$this->execQryI($sqlDeductions);
 						}
+					
+						// Update the manager's attendance
+						$sqlManagerAtt = "UPDATE tbltk_managersattendance SET LateRemainingInMins=LateRemainingInMins-{$hrsTardy}, LateUsedInMins=LateUsedInMins+{$LateUsedInMins} WHERE empNo='{$valTSList['empNo']}'";
+						$this->execQryI($sqlManagerAtt);
 					} else {
 						$sqlDeductions = "Insert into tblTK_Deductions (compCode, empNo, tsDate, hrsTardy, minTardy) values ('{$_SESSION['company_code']}','{$valTSList['empNo']}','{$valTSList['tsDate']}','$hrsTardy', '$minTardy');";
 						$Trns = $this->execQryI($sqlDeductions);
