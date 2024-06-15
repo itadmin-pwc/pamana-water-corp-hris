@@ -487,8 +487,7 @@
 								$f_color = ($arrOBAppList_val["mStat"]=='A'?"#CC3300":"");
 							}
 							
-							$obDestination = $obObj->getEmpBranchArt($arrOBAppList_val["compCode"],$arrOBAppList_val["obDestination"]);
-							$obDestination = ($obDestination==""?"OTHERS":$obDestination["brnDesc"]);
+							$obDestination = $obObj->getBranchesString($arrOBAppList_val["compCode"],explode(',', $arrOBAppList_val["obDestination"]));
 				?>
                 			<tr style="height:20px;" title="<?=($arrOBAppList_val["obStat"]=='A'?"APPROVED":"HELD");?>"  bgcolor="<?php echo $bgcolor; ?>" <?php echo $on_mouse; ?>>
                             	<td class="gridDtlVal" align="center">

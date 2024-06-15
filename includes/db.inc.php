@@ -22,14 +22,14 @@ class dbHandler {
 	
 	function __construct(){
 		$this->conn_id = mysql_connect(self::HOST,self::USER,self::PASS,false,65536);
-		$this->dbConn = mysql_select_db('hris_office_warehouse');
-		//$this->conn_id = mysqli_connect(self::HOST,self::USER,self::PASS,'hris_office_warehouse');
+		$this->dbConn = mysql_select_db('hris_office_warehouse_testdb');
+		//$this->conn_id = mysqli_connect(self::HOST,self::USER,self::PASS,'hris_office_warehouse_testdb');
 		return $this->conn_id;
 	}
 
 	function mysqliconnect(){
 		if (!$this->connID)
-			 $this->connID = mysqli_connect(self::HOST,self::USER,self::PASS,'hris_office_warehouse');
+			 $this->connID = mysqli_connect(self::HOST,self::USER,self::PASS,'hris_office_warehouse_testdb');
 	
 		return $this->connID;
 	}

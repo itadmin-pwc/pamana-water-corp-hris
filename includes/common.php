@@ -795,6 +795,7 @@ class commonObj extends dbHandler {
 		$res = $this->execQry($qry);
 		return $this->getSqlAssoc($res);
 	}
+
 	function getEmpBranchArt($compCode,$branch){
 		$qry = "SELECT * FROM tblBranch
 					     WHERE compCode = '{$compCode}' 
@@ -803,6 +804,37 @@ class commonObj extends dbHandler {
 		$res = $this->execQry($qry);
 		return $this->getSqlAssoc($res);
 	}
+
+	function getBranchesString($compCode, $branchCodes) {
+		$othersIncluded = in_array(0, $branchCodes);
+
+		// Check if '0' is in the branchCodes array
+		for ($i = 0; $i < count($branchCodes); $i++) {
+			if ($branchCodes[$i] == 0) {
+				$othersIncluded = true;
+				// Remove '0' from branchCodes array
+				array_splice($branchCodes, $i, 1);
+				break; // Exit loop after removing '0'
+			}
+		}
+
+		$branchCodesString = implode(',', $branchCodes);
+		$qry = "SELECT * FROM tblBranch
+					     WHERE compCode = '{$compCode}' 
+						 AND brnCode IN ({$branchCodesString})
+						 AND brnStat = 'A'";
+		$res = $this->execQry($qry);
+		$branches = array();
+		while ($row = $this->getSqlAssoc($res)) {
+            $branches[] = $row['brnShortDesc'];
+        }
+		if ($othersIncluded) {
+            $branches[] = 'OTHERS';
+        }
+
+        return implode(', ', $branches);
+	}
+
 	function getEmpTeuArt($taxCode){
 		$qry = "SELECT * FROM tblTeu
 					     WHERE teuCode = '{$taxCode}'";
