@@ -271,10 +271,10 @@ switch($_GET["action"])
 					$userId = $_SESSION["employee_number"];
 					$qryTransData = "Insert into tblTK_ObApphist (compCode, empNo, refNo, obDate, obDestination, dateFiled, obSchedIn, 
 									obSchedOut, obActualTimeIn, obActualTimeOut, obReason, hrs8Deduct, dateApproved, userApproved, dateAdded, 
-									addedBy, dateUpdated, updatedBy, obStat, remarks, userCancelled) 
+									addedBy, dateUpdated, updatedBy, obStat, remarks, userCancelled, otherDetails) 
 									Select compCode, empNo, refNo, obDate, obDestination, dateFiled, obSchedIn, obSchedOut, obActualTimeIn, 
 									obActualTimeOut, obReason, hrs8Deduct, dateApproved, userApproved, dateAdded, addedBy, dateUpdated, 
-									updatedBy, obStat, '$remarks', '$userId' from tblTK_ObApp where seqNo='{$id}'";
+									updatedBy, obStat, '$remarks', '$userId', otherDetails from tblTK_ObApp where seqNo='{$id}'";
 					$resTransData = $obObj->execQry($qryTransData);				
 					echo "alert('Selected OB Application has been disapproved.')";	
 				}

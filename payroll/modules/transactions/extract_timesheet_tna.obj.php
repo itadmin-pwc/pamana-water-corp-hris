@@ -423,8 +423,8 @@ class extractTNATSObj extends commonObj {
 	
 	function CloseTK_RestDay() {
 		$sqlRD = "Insert into tblTK_ChangeRDApphist (compCode, empNo, refNo, dateFiled, tsAppTypeCd, cRDDateFrom, cRDDateTo, cRDReason, dateApproved, userApproved, dateAdded, addedBy, 
-                      cRDStat, completeTag, mApproverdBy, mStat, mDateApproved) Select compCode, empNo, refNo, dateFiled, tsAppTypeCd, cRDDateFrom, cRDDateTo, cRDReason, dateApproved, userApproved, dateAdded, addedBy, 
-                      cRDStat, completeTag, mApproverdBy, mStat, mDateApproved from tblTK_ChangeRDApp where compCode='{$_SESSION['company_code']}' AND cRDStat='A' AND completeTag='C' AND empNo IN ({$this->Emplist}) ";
+                      cRDStat, completeTag, mApproverdBy, mStat, mDateApproved, otherDetails) Select compCode, empNo, refNo, dateFiled, tsAppTypeCd, cRDDateFrom, cRDDateTo, cRDReason, dateApproved, userApproved, dateAdded, addedBy, 
+                      cRDStat, completeTag, mApproverdBy, mStat, mDateApproved, otherDetails from tblTK_ChangeRDApp where compCode='{$_SESSION['company_code']}' AND cRDStat='A' AND completeTag='C' AND empNo IN ({$this->Emplist}) ";
 		return $this->execQryI($sqlRD);
 	}
 
@@ -436,8 +436,8 @@ class extractTNATSObj extends commonObj {
 	
 	function CloseTK_ChangeShift() {
 		$sqlCS = "Insert into tblTK_CSApphist (compcode, empNo, refNo, dateFiled, csDateTo, csDateFrom, csShiftFromIn, csShiftFromOut, csShiftToIn, csHiftToOut, csReason, dateApproved, 
-                      userApproved, dateAdded, addedBy, csStat, crossDay, mApproverdBy, mStat, mDateApproved)  SELECT     compcode, empNo, refNo, dateFiled, csDateTo, csDateFrom, csShiftFromIn, csShiftFromOut, csShiftToIn, csHiftToOut, csReason, dateApproved, 
-                      userApproved, dateAdded, addedBy, csStat, crossDay, mApproverdBy, mStat, mDateApproved
+                      userApproved, dateAdded, addedBy, csStat, crossDay, mApproverdBy, mStat, mDateApproved, otherDetails)  SELECT     compcode, empNo, refNo, dateFiled, csDateTo, csDateFrom, csShiftFromIn, csShiftFromOut, csShiftToIn, csHiftToOut, csReason, dateApproved, 
+                      userApproved, dateAdded, addedBy, csStat, crossDay, mApproverdBy, mStat, mDateApproved, otherDetails
 FROM         tblTK_CSApp where compCode='{$_SESSION['company_code']}' AND csStat='A' AND empNo IN ({$this->Emplist}) ";
 		return $this->execQryI($sqlCS);
 	}
@@ -480,7 +480,7 @@ FROM         tblTK_CSApp where compCode='{$_SESSION['company_code']}' AND csStat
 	}
 	
 	function CloseTK_OB() {
-		$sqlOB = "Insert into tblTK_OBApphist (compCode, empNo, refNo, obDate, obDestination, dateFiled, obSchedIn, obSchedOut, obActualTimeIn, obActualTimeOut, obReason, hrs8Deduct, dateApproved, userApproved, dateAdded, addedBy, obStat, mApproverdBy, mStat, mDateApproved)  SELECT compCode, empNo, refNo, obDate, obDestination, dateFiled, obSchedIn, obSchedOut, obActualTimeIn, obActualTimeOut, obReason, hrs8Deduct, dateApproved, userApproved, dateAdded, addedBy, obStat, mApproverdBy, mStat, mDateApproved FROM tblTK_OBApp where compCode='{$_SESSION['company_code']}'  AND obStat='A' AND empNo IN ({$this->Emplist}) AND obDate between '{$this->pdFrmDate}' AND '{$this->pdToDate}'";
+		$sqlOB = "Insert into tblTK_OBApphist (compCode, empNo, refNo, obDate, obDestination, dateFiled, obSchedIn, obSchedOut, obActualTimeIn, obActualTimeOut, obReason, hrs8Deduct, dateApproved, userApproved, dateAdded, addedBy, obStat, mApproverdBy, mStat, mDateApproved, otherDetails)  SELECT compCode, empNo, refNo, obDate, obDestination, dateFiled, obSchedIn, obSchedOut, obActualTimeIn, obActualTimeOut, obReason, hrs8Deduct, dateApproved, userApproved, dateAdded, addedBy, obStat, mApproverdBy, mStat, mDateApproved, otherDetails FROM tblTK_OBApp where compCode='{$_SESSION['company_code']}'  AND obStat='A' AND empNo IN ({$this->Emplist}) AND obDate between '{$this->pdFrmDate}' AND '{$this->pdToDate}'";
 		return $this->execQryI($sqlOB);	
 	}
 	
@@ -491,7 +491,7 @@ FROM         tblTK_CSApp where compCode='{$_SESSION['company_code']}' AND csStat
 	}
 	
 	function CloseTK_OTApp() {
-		$sqlOTApp = "Insert into tblTK_OTApphist (compCode, empNo, otDate, refNo, dateFiled, otReason, otIn, otOut, dateApproved, userApproved, dateAdded, userAdded, otStat, crossTag, mApproverdBy, mStat, mDateApproved)  SELECT compCode, empNo, otDate, refNo, dateFiled, otReason, otIn, otOut, dateApproved, userApproved, dateAdded, userAdded, otStat, crossTag, mApproverdBy, mStat, mDateApproved FROM tblTK_OTApp where compCode='{$_SESSION['company_code']}'  AND otStat='A' AND empNo IN ({$this->Emplist}) AND otDate between '{$this->pdFrmDate}' AND '{$this->pdToDate}'";
+		$sqlOTApp = "Insert into tblTK_OTApphist (compCode, empNo, otDate, refNo, dateFiled, otReason, otIn, otOut, dateApproved, userApproved, dateAdded, userAdded, otStat, crossTag, mApproverdBy, mStat, mDateApproved, location, otherDetails)  SELECT compCode, empNo, otDate, refNo, dateFiled, otReason, otIn, otOut, dateApproved, userApproved, dateAdded, userAdded, otStat, crossTag, mApproverdBy, mStat, mDateApproved, location, otherDetails FROM tblTK_OTApp where compCode='{$_SESSION['company_code']}'  AND otStat='A' AND empNo IN ({$this->Emplist}) AND otDate between '{$this->pdFrmDate}' AND '{$this->pdToDate}'";
 		return $this->execQryI($sqlOTApp);	
 	}
 	
@@ -518,10 +518,12 @@ FROM         tblTK_CSApp where compCode='{$_SESSION['company_code']}' AND csStat
 		Delete from tblTK_wOvertime where compCode='{$_SESSION['company_code']}' AND empNo IN ({$this->Emplist});";
 		return $this->execQryI($sqlMoveOvertime);	
 	}
+	
 	function populate_wOvertime() {
 		$sqlPopulate_wovertime = "Insert into tblTK_wOvertime (compCode, empNo, tsDate, dayType, hrsOTLe8, hrsOTGt8, hrsNDLe8, hrsNDGt8, amtOTLe8, amtOTGt8, amtNDLe8, amtNDGt8, tsStatus,hrsRegNDLe8, amtRegNDLe8) SELECT compCode, empNo, tsDate, dayType, hrsOTLe8, hrsOTGt8, hrsNDLe8, hrsNDGt8, amtOTLe8, amtOTGt8, amtNDLe8, amtNDGt8, tsStatus,hrsRegNDLe8, amtRegNDLe8 FROM tblTK_Overtime where compCode='{$_SESSION['company_code']}' AND empNo IN ({$this->Emplist});";	
 		return $this->execQryI($sqlPopulate_wovertime);	
 	}
+
 	function ClearTK_Overtime() {
 		$sqlOvertime = "Delete FROM tblTK_Overtime where compCode='{$_SESSION['company_code']}' AND empNo IN ({$this->Emplist});";
 		return $this->execQryI($sqlOvertime);	
