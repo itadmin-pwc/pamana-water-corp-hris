@@ -18,8 +18,6 @@ $emptimesheetObj->validateSessions('','MODULES');
 $arr_empInfo = $emptimesheetObj->getEmployee($_SESSION["company_code"],$_GET["empNo"],'');
 $arr_EmpTsInfo =  $emptimesheetObj->getTblData("tblTK_Timesheet", " and empNo='".$arr_empInfo["empNo"]."' and tsDate = '".date("Y-m-d", strtotime($_GET["tsDate"]))."'", " ", "sqlAssoc");
 
-
-	
 switch($_GET["action"])
 {
 	case "Update":
