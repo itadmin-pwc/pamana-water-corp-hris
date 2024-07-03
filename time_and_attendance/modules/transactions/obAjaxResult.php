@@ -411,13 +411,16 @@
                   </span></td>
                     <td align="center"><input name='txtobTimeIn' type='text' <?=$disabled?> class='inputs' id='txtobTimeIn'  onKeyDown="javascript:return dFilter (event.keyCode, this, '##:##');" value='' size="5">
                       <span class="gridDtlVal">  
-                    </span></td>
+                    	</span>
+					</td>
                 	<td align="center"><input name='txtobTimeOut' type='text' <?=$disabled?> class='inputs' id='txtobTimeOut' onKeyDown="javascript:return dFilter (event.keyCode, this, '##:##');" value='' size="5">
                 	  <span class="gridDtlVal">
                 	  
        	        </span></td>
  					<td align="center"><input type="checkbox" name="rdnDeduct8" id="rdnDeduct8" <?=$disabled?>/></td>
-                    <td align="center"><input type='button' class= 'inputs' name='btnSave' id="btnSave" value='SAVE' <?=$disabled?> onClick="saveObDetail();" ></td>
+                    <td align="center">
+						<input type='button' class= 'inputs' name='btnSave' id="btnSave" value='SAVE' <?=$disabled?> onClick="saveObDetail();" >
+					</td>
                 </tr>
                 
                 
