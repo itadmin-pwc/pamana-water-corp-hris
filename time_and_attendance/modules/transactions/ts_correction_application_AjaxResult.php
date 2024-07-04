@@ -18,7 +18,14 @@
 	$branch = $_SESSION['branchCode'];
 
 	//08-09-2023 AUTO EMPLOYEE LOOKUP
-	$empInfo = $Obj->getEmployee($_SESSION['company_code'],$_SESSION['employeenumber'],'');
+	$empInfo = $Obj->getEmployee($_SESSION['company_code'], $_SESSION['employeenumber'],'');
+	$midName = (!empty($empInfo['empMidName'])) ? substr($empInfo['empMidName'],0,1)."." : '';
+	$fullname = $empInfo['empLastName'] . ", " . htmlspecialchars(addslashes($empInfo['empFirstName'])) . " " . $midName;
+	$paygroup = $empInfo['empPayGrp'];
+	$paycat = $empInfo['empPayCat'];
+	$deptName = $Obj->getDeptDescGen($_SESSION["company_code"],$empInfo["empDiv"], $empInfo["empDepCode"]);
+	$posName = $Obj->getpositionwil("where compCode='".$_SESSION["company_code"]."' and posCode='".$empInfo["empPosId"]."'",'2');
+	$position = htmlspecialchars(addslashes($deptName['deptDesc']))." - ".$posName['posDesc'];
 	$arr_ViolationDesc = $Obj->makeArr($Obj->getTblData("tblTK_ViolationType", "", " order by violationDesc", ""), 'violationCd','violationDesc','');
 	$allowSave = true;
 	$disabled = $allowSave ? '' : 'disabled';
@@ -118,8 +125,7 @@
 
 					<td class="gridDtlVal" colspan="4">
 						<INPUT class="inputs" readonly="readonly" type="text" name="txtEmpName" id="txtEmpName" size="40" value="<?=$fullname?>">
-			    </td>
-                    
+			    	</td>
 					<td class="hdrInputsLvl" width="98">
 						Dept. / Position
 					</td>
@@ -147,13 +153,13 @@
 				</tr>
 				<tr>
 					<td class="gridDtlVal" align="center">
-						<input tabindex="10" class="inputs" type="text" name="obDate" readonly="readonly" id="obDate" size="10" onfocus="getEmpShift(<?=$_GET['empNo']?>);" 
+						<input tabindex="10" class="inputs" type="text" name="tsaDate" readonly="readonly" id="tsaDate" size="10" onfocus="getEmpShift(<?=$_GET['empNo']?>);" 
 						value="<? 	
 							 	$format="Y-m-d";
 								$strf=date($format);
 								echo("$strf"); 
 						?>" >
-						<img src="../../../images/cal_new.png" onClick="displayDatePicker('obDate', this);" style="cursor:pointer;" width="20" height="14">
+						<img src="../../../images/cal_new.png" onClick="displayDatePicker('tsaDate', this);" style="cursor:pointer;" width="20" height="14">
 						</td>
 					<td class="gridDtlVal" align="center">
 						<input name='timeIn' type='text' style="text-align:center;" <?=$disabled?> class='inputs' id='timeIn'  onKeyDown="javascript:return dFilter (event.keyCode, this, '##:##');" value='' size="5">
@@ -182,7 +188,6 @@
 			<br>
             <TABLE width="100%" cellpadding="0" cellspacing="1" border="1px solid black" class="" align="center">
 				<tr>
-                	<td class="gridDtlLbl" align="center" rowspan="2">TS DATE</td>
                     <td height="20px" class="gridDtlLbl" align="center" colspan="4">Schedule</td>
                     <td height="20px" class="gridDtlLbl" align="center" colspan="4" style="background-color:mistyrose;">Actual</td>
 				</tr>
@@ -198,15 +203,38 @@
                     <td height="20px width="13%" class="gridDtlLbl" align="center" style="background-color:mistyrose;">Time Out</td>
 				</tr>
 				<tr>
-					<td class="gridDtlVal" align="center">00/00/0000</td>
-					<td class="gridDtlVal" align="center">00:00</td>
-					<td class="gridDtlVal" align="center">00:00</td>
-					<td class="gridDtlVal" align="center">00:00</td>
-					<td class="gridDtlVal" align="center">00:00</td>
-					<td class="gridDtlVal" align="center">00:00</td>
-					<td class="gridDtlVal" align="center">00:00</td>
-					<td class="gridDtlVal" align="center">00:00</td>
-					<td class="gridDtlVal" align="center">00:00</td>
+					<td class="gridDtlVal" align="center">
+						<input name='sched_timeIn' type='text' style="text-align:center;" readonly class='inputs' id='sched_timeIn' value='00:00' size="5">
+						<span class="gridDtlVal"></span>
+					</td>
+					<td class="gridDtlVal" align="center">
+						<input name='sched_lunchOut' type='text' style="text-align:center;" readonly class='inputs' id='sched_lunchOut' value='00:00' size="5">
+						<span class="gridDtlVal"></span>
+					</td>
+					<td class="gridDtlVal" align="center">
+						<input name='sched_lunchIn' type='text' style="text-align:center;" readonly class='inputs' id='sched_lunchIn' value='00:00' size="5">
+						<span class="gridDtlVal"></span>
+					</td>
+					<td class="gridDtlVal" align="center">
+						<input name='sched_timeOut' type='text' style="text-align:center;" readonly class='inputs' id='sched_timeOut' value='00:00' size="5">
+						<span class="gridDtlVal"></span>
+					</td>
+					<td class="gridDtlVal" align="center">
+						<input name='actual_timeIn' type='text' style="text-align:center;" readonly class='inputs' id='actual_timeIn' value='00:00' size="5">
+						<span class="gridDtlVal"></span>
+					</td>
+					<td class="gridDtlVal" align="center">
+						<input name='actual_lunchOut' type='text' style="text-align:center;" readonly class='inputs' id='actual_lunchOut' value='00:00' size="5">
+						<span class="gridDtlVal"></span>
+					</td>
+					<td class="gridDtlVal" align="center">
+						<input name='actual_lunchIn' type='text' style="text-align:center;" readonly class='inputs' id='actual_lunchIn' value='00:00' size="5">
+						<span class="gridDtlVal"></span>
+					</td>
+					<td class="gridDtlVal" align="center">
+						<input name='actual_timeOut' type='text' style="text-align:center;" readonly class='inputs' id='actual_timeOut' value='00:00' size="5">
+						<span class="gridDtlVal"></span>
+					</td>
 				</tr>
 			</TABLE>
       <BR />

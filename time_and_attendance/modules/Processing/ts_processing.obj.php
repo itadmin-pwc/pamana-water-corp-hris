@@ -627,7 +627,7 @@ $arrPrev = $this->checkifPrevDateisCrossDay($arrTS['empNo'],date('Y-m-d',strtoti
 							  	AND empBrnCode IN (Select brnCode from tblTK_UserBranch where empNo='{$_SESSION['employee_number']}' AND compCode='{$_SESSION['company_code']}' AND processTag='Y')
 						  )) AND (tblTK_LeaveApp.lvStat = 'A')\n\n";
 		return $this->getArrResI($this->execQryI($sqlLeaves));
-	}	
+	}
 
 	function getEmpList() {
 		$sqlEmpList = "SELECT     tblTK_Timesheet.empNo, tblTK_Timesheet.tsDate, tblTK_Timesheet.bioNo, tblTK_Timesheet.dayType, tblTK_Timesheet.shftTimeIn, 

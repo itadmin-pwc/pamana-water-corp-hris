@@ -536,8 +536,6 @@ class transactionObj extends commonObj {
 			//return "CS Application failed.";
 			break;
 		}
-		
-		
 	}
 	
 	
@@ -1033,6 +1031,53 @@ class transactionObj extends commonObj {
 			$Trns = $this->commitTran();
 			return true;
 		}	
+	}
+
+	function tran_tsa($array,$action)
+	{
+		$arr_lastRefNo = $this->getLastRefNo("csrefNo");
+		$lastRefNo = $arr_lastRefNo["lastRefNo"] + 1;
+		
+		switch($action)
+		{
+			case "Add":
+				$qryIns = "Insert into tblTk_CsApp(compcode,empNo,refNo,dateFiled,csDateFrom,csShiftFromIn,csShiftFromOut,
+												  csDateTo,csShiftToIn,csHiftToOut,csReason,dateAdded,addedBy,csStat,crossDay)
+						   values('".$_SESSION["company_code"]."','".$array["txtAddEmpNo"]."','".$lastRefNo."',
+						   		'".date("Y-m-d", strtotime($array["dateFiled"]))."',
+								'".date("Y-m-d", strtotime($array["csDateFrom"]))."','".$array["schedTimeIn"]."',
+								'".$array["schedTimeOut"]."','".date("Y-m-d", strtotime($array["csDateTo"]))."',
+						   		'".$array["csTimeIn"]."','".$array["csTimeOut"]."',
+								'".strtoupper(htmlspecialchars(addslashes($array["cmbReasons"])))."','".date("Y-m-d")."',
+								'".$_SESSION["employee_number"]."','H',".($array["chkCrossDay"]!=""?"'Y'":"NULL").")";
+			
+			if($this->execQry($qryIns))
+			//return "CS Application successfully saved.";
+			if($this->updateLastRefNo($lastRefNo,"csrefNo")){
+				return true;
+			}
+			else
+			return false;
+			//return "CS Application failed.";
+
+			break;
+			
+			case "Update":
+				$qryIns = "Update tblTk_CsApp set dateFiled='".date("Y-m-d", strtotime($array["dateFiled"]))."', 
+							csDateTo='".date("Y-m-d", strtotime($array["csDateTo"]))."', 
+							csShiftToIn='".$array["csTimeIn"]."',csHiftToOut='".$array["csTimeOut"]."',
+							csReason='".strtoupper(htmlspecialchars(addslashes($array["cmbReasons"])))."', 
+							dateUpdated='".date("Y-m-d")."',updatedBy='".$_SESSION["employee_number"]."', 
+							crossDay=".($array["chkCrossDay"]!=""?"'Y'":"NULL")." where seqNo='".$array["inputTypeSeqNo"]."'
+							";
+			if($this->execQry($qryIns))
+			//return "CS Application successfully saved.";
+			return true;
+		else
+			return false;
+			//return "CS Application failed.";
+			break;
+		}
 	}
 	
 	function saveManagersAttendance($arr){
