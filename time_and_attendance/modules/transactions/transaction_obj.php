@@ -1033,32 +1033,66 @@ class transactionObj extends commonObj {
 		}	
 	}
 
-	function tran_tsa($array,$action)
+	function tran_tsa($array, $action)
 	{
-		$arr_lastRefNo = $this->getLastRefNo("csrefNo");
-		$lastRefNo = $arr_lastRefNo["lastRefNo"] + 1;
-		
 		switch($action)
 		{
 			case "Add":
-				$qryIns = "Insert into tblTk_CsApp(compcode,empNo,refNo,dateFiled,csDateFrom,csShiftFromIn,csShiftFromOut,
-												  csDateTo,csShiftToIn,csHiftToOut,csReason,dateAdded,addedBy,csStat,crossDay)
-						   values('".$_SESSION["company_code"]."','".$array["txtAddEmpNo"]."','".$lastRefNo."',
-						   		'".date("Y-m-d", strtotime($array["dateFiled"]))."',
-								'".date("Y-m-d", strtotime($array["csDateFrom"]))."','".$array["schedTimeIn"]."',
-								'".$array["schedTimeOut"]."','".date("Y-m-d", strtotime($array["csDateTo"]))."',
-						   		'".$array["csTimeIn"]."','".$array["csTimeOut"]."',
-								'".strtoupper(htmlspecialchars(addslashes($array["cmbReasons"])))."','".date("Y-m-d")."',
-								'".$_SESSION["employee_number"]."','H',".($array["chkCrossDay"]!=""?"'Y'":"NULL").")";
+				$sheets = $this->getTblData("tblTk_TimeSheet", " and empNo='".$array['empNo']."' and tsDate='".date("Y-m-d", strtotime($array["tsaDate"]))."'", "", "sqlAssoc");
+				$crossDay = '';
+				$timeIn = strtotime($array["timeIn"]);
+				$timeOut = strtotime($array["timeOut"]);
+
+				if ($timeOut < $timeIn) {
+					$crossDay = 'Y';
+				}
+
+				$qryIns = "Insert into tbltk_ts_corr_app(compcode,
+														dateFiled,
+														empNo,
+														tsDate,
+														sched_timeIn,
+														sched_lunchOut,
+														sched_lunchIn,
+														sched_timeOut,
+														actual_timeIn,
+														actual_lunchOut,
+														actual_lunchIn,
+														actual_timeOut,
+														timeIn,
+														lunchOut,
+														lunchIn,
+														timeOut,
+														editReason,
+														otherDetails,
+														crossTag,
+														logsExceed,
+														stat,
+														mStat)
+						   						values('".$_SESSION["company_code"]."',
+													    '".date('Y-m-d')."',
+														'".$array['empNo']."',
+														'".date("Y-m-d", strtotime($array["tsaDate"]))."',
+														'".$sheets['shftTimeIn']."',
+														'".$sheets['shftLunchOut']."',
+														'".$sheets['shftLunchIn']."',
+														'".$sheets['shftTimeOut']."',
+														'".$sheets['timeIn']."',
+														'".$sheets['lunchOut']."',
+														'".$sheets['lunchIn']."',
+														'".$sheets['timeOut']."',
+														'".$array['timeIn']."',
+														'".$array['lunchOut']."',
+														'".$array['lunchIn']."',
+														'".$array['timeOut']."',
+														'".$array['violationCd']."',
+														'',
+														'".$sheets['logsExceeded']."',
+														'H',
+														'H')";
 			
 			if($this->execQry($qryIns))
-			//return "CS Application successfully saved.";
-			if($this->updateLastRefNo($lastRefNo,"csrefNo")){
-				return true;
-			}
-			else
-			return false;
-			//return "CS Application failed.";
+				return false;
 
 			break;
 			
@@ -1071,11 +1105,10 @@ class transactionObj extends commonObj {
 							crossDay=".($array["chkCrossDay"]!=""?"'Y'":"NULL")." where seqNo='".$array["inputTypeSeqNo"]."'
 							";
 			if($this->execQry($qryIns))
-			//return "CS Application successfully saved.";
-			return true;
-		else
-			return false;
-			//return "CS Application failed.";
+				return true;
+			else
+				return false;
+
 			break;
 		}
 	}

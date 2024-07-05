@@ -14,7 +14,7 @@ $approverData = $Obj->getTblData("tbltna_approver", " and approverEmpNo='".$_SES
 $selfApprove = $approverData["approverEmpNo"] == $_SESSION['employee_number'];
 
 switch($_GET["action"]) {
-	case 'addNewOBApp':
+	case 'addNewApp':
 		$empno=$_GET['empno'];
 		if($empno!=''){
 			$_SESSION['employeenumber']=$empno;
@@ -153,14 +153,12 @@ switch($_GET["action"]) {
 					$insRecObTran = $Obj->tran_tsa($_GET,"Add");
 					if($insRecObTran){
 						echo "
-							var ans = confirm('OB Application has been saved! Would you like to add new OB Application?');
+							var ans = confirm('TS Correction Application has been saved! Would you like to add new Application?');
 							if(ans==true){
-									
-									location.href='ts_correction_application.php?action=addNewOBApp&empno=$empno';
-						}
+								location.href='ts_correction_application.php?action=addNewApp&empno=$empno';
+							}
 							else{
-									
-									location.href='ts_correction_application.php';
+								location.href='ts_correction_application.php';	
 						}";
 					}
 					else{
