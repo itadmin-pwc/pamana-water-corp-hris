@@ -29,10 +29,188 @@
 	$arr_ViolationDesc = $Obj->makeArr($Obj->getTblData("tblTK_ViolationType", "", " order by violationDesc", ""), 'violationCd','violationDesc','');
 	$allowSave = true;
 	$disabled = $allowSave ? '' : 'disabled';
+
+	//get users branch access
+	if ($_SESSION['user_level'] == 3) 
+	{
+		$userinfo = $Obj->getUserHeaderInfo($_SESSION['employee_number'],$_SESSION['employee_id']);
+		$and = ($_GET['isSearch'] == 1) ? 'AND' : 'Where';
+		$brnCodelist = " AND empMast.empNo='".$_SESSION['employee_number']."'
+						and empbrnCode ='".$branch."'";
+											
+	}
+	elseif ($_SESSION['user_level'] == 2) 
+	{
+		$brnCodelist = " AND empbrnCode IN (Select brnCode from tblTK_UserBranch 
+											where empNo='{$_SESSION['employee_number']}' 
+											AND compCode='{$_SESSION['company_code']}')";
+	}
+	
+	$queryBrnches = "Select * from tblBranch as tblbrn where compCode='".$_SESSION["company_code"]."' and brnStat='A'
+					order by brnDesc";	
+	$resBrnches = $Obj->execQry($queryBrnches);
+	$arrBrnches = $Obj->getArrRes($resBrnches);
+	$arrBrnch = $Obj->makeArr($arrBrnches,'brnCode','brnDesc','Others');
+
+	//New Code for Approver 04-25-2024
+	$_SESSION['uType'] = "T"; // Time Keeper
+	$approverData = $Obj->getTblData("tbltna_approver", " and approverEmpNo='".$_SESSION['employee_number']."' and status='A' AND dateValid >= NOW()", "", "sqlAssoc");
+	$forApproval = '';
+	$timeKeeperApprover = $approverData["approverEmpNo"] != "" && $_SESSION['user_level'] == 2 && $_SESSION['user_release']=="Y";
+	$managerApporver = $approverData["approverEmpNo"] != "" && $_SESSION['user_level'] == 2 && $_SESSION['user_release']!="Y";
+	$timeKeeper = $approverData["approverEmpNo"] == "" && $_SESSION['user_level'] == 2 && $_SESSION['user_release']=="Y";
+	if($timeKeeperApprover) { 
+		$_SESSION['uType'] = "TA"; //Timekeeper Approver
+		$forApproval = " AND (empMast.empNo IN (Select subordinateEmpNo from tbltna_approver 
+											where approverEmpNo='{$_SESSION['employee_number']}' 
+											AND compCode='{$_SESSION['company_code']}') OR empMast.empNo = '{$_SESSION['employee_number']}' OR mStat = 'A')";
+	}elseif($managerApporver){
+		$_SESSION['uType'] = "MA"; //Manager Approver
+		$forApproval = " AND (empMast.empNo IN (Select subordinateEmpNo from tbltna_approver 
+											where approverEmpNo='{$_SESSION['employee_number']}' 
+											AND compCode='{$_SESSION['company_code']}') OR empMast.empNo = '{$_SESSION['employee_number']}')";
+	}elseif($timeKeeper){
+		$forApproval = " AND (mStat = 'A' OR empMast.empNo = '{$_SESSION['employee_number']}')";
+	}
+	//End New Code for Approver 04-25-2024
+	
+	$brnQry = "Select empNo,tblUB.brnCode as brnCode, brnDesc 
+						From tblTK_UserBranch tblUB, tblBranch as tblbrn
+						Where tblUB.brnCode=tblbrn.brnCode and tblUB.compCode='".$_SESSION["company_code"]."' 
+								and tblbrn.compCode='".$_SESSION["company_code"]."'
+							and empNo='".$_SESSION['employee_number']."'
+						Order by brnDesc";
+	
+	$resBrn = $Obj->execQry($brnQry);
+	$arrBrn = $Obj->getArrRes($resBrn);
+	$brn = $Obj->makeArr($arrBrn,'brnCode','brnDesc','All');
+	
+	$qryIntMaxRec = "SELECT seqNo, corr.compcode, dateFiled, corr.empNo, tsDate, sched_timeIn, sched_lunchOut,
+							sched_lunchIn, sched_timeOut, actual_timeIn, actual_lunchOut, actual_lunchIn,
+							actual_timeOut, timeIn, lunchOut, lunchIn, timeOut, editReason, otherDetails,
+							crossTag, logsExceed, stat, mApproverdBy, mStat, mDateApproved, added_by,
+							updated_by, updated_at, empMast.empLastName, empMast.empFirstName
+						FROM tbltk_ts_corr_app corr 
+						INNER JOIN tblEmpMast empMast ON corr.empNo = empMast.empNo
+						WHERE (corr.compCode = '".$_SESSION["company_code"]."') 
+							AND (empMast.compCode = '".$_SESSION["company_code"]."') $forApproval 
+							$brnCodelist";
+							
+							if($_GET['isSearch'] == 1){
+								if($_GET['srchType'] == 0){
+									$qryIntMaxRec .= "";
+								}
+
+								if($timeKeeperApprover || $timeKeeper) { 
+									if($_GET['srchType'] == 1){
+										$qryIntMaxRec .= "AND stat='A'";
+									}
+									if($_GET['srchType'] == 2){
+										$qryIntMaxRec .= "AND stat='H' ";
+									}
+								}elseif($managerApporver){
+									if($_GET['srchType'] == 1){
+										$qryIntMaxRec .= "AND mStat='A'";
+									}
+									if($_GET['srchType'] == 2){
+										$qryIntMaxRec .= "AND mStat='H' ";
+									}
+								}else{
+									if($_GET['srchType'] == 1){
+										$qryIntMaxRec .= "AND mStat='A'";
+									}
+									if($_GET['srchType'] == 2){
+										$qryIntMaxRec .= "AND mStat='H' ";
+									}
+								}
+								
+								if($_GET['srchType'] == 2){
+									$qryIntMaxRec .= "AND stat='H'";
+								}
+								
+								if($_GET['srchType'] == 3){
+									$qryIntMaxRec .= "AND corr.empNo LIKE '".trim($_GET['txtSrch'])."%' ";
+								}
+								
+								if($_GET['srchType'] == 4){
+									$qryIntMaxRec .= "AND empLastName LIKE '".trim($_GET['txtSrch'])."%' ";
+								}
+
+								if ($_GET['brnCd']!=0) 
+								{
+									$qryIntMaxRec.= " AND empbrnCode='".$_GET["brnCd"]."' ";
+								}
+							}
+							
+	$qryIntMaxRec.=	"ORDER BY corr.stat DESC, corr.seqNo, corr.tsDate, empMast.empLastName, empMast.empFirstName";
+	$resIntMaxRec = $Obj->execQry($qryIntMaxRec);
+	$intMaxRec = $pager->_getMaxRec($resIntMaxRec);
+	
+	$intLimit = $pager->_limit;
+	$intOffset = $pager->_watToDo($_GET['action'],$_GET['offSet'],$_GET['isSearch']);
+
+	$qryApp = "SELECT seqNo, corr.compcode, dateFiled, corr.empNo, tsDate, sched_timeIn, sched_lunchOut,
+							sched_lunchIn, sched_timeOut, actual_timeIn, actual_lunchOut, actual_lunchIn,
+							actual_timeOut, timeIn, lunchOut, lunchIn, timeOut, editReason, otherDetails,
+							crossTag, logsExceed, stat, mApproverdBy, mStat, mDateApproved, added_by,
+							updated_by, updated_at, empMast.empLastName, empMast.empFirstName
+						FROM tbltk_ts_corr_app corr 
+						INNER JOIN tblEmpMast empMast ON corr.empNo = empMast.empNo
+						WHERE (corr.compCode = '".$_SESSION["company_code"]."') 
+							AND (empMast.compCode = '".$_SESSION["company_code"]."') $forApproval 
+							$brnCodelist";
+							
+	if($_GET['isSearch'] == 1){
+		if($_GET['srchType'] == 0){
+			$qryIntMaxRec .= "";
+		}
+
+		if($timeKeeperApprover || $timeKeeper) { 
+			if($_GET['srchType'] == 1){
+				$qryApp .= "AND stat='A'";
+			}
+			if($_GET['srchType'] == 2){
+				$qryApp .= "AND stat='H' ";
+			}
+		}elseif($managerApporver){
+			if($_GET['srchType'] == 1){
+				$qryApp .= "AND mStat='A'";
+			}
+			if($_GET['srchType'] == 2){
+				$qryApp .= "AND mStat='H' ";
+			}
+		}else{
+			if($_GET['srchType'] == 1){
+				$qryApp .= "AND mStat='A'";
+			}
+			if($_GET['srchType'] == 2){
+				$qryApp .= "AND mStat='H' ";
+			}
+		}
+				
+		if($_GET['srchType'] == 3){
+			$qryApp .= "AND corr.empNo LIKE '".trim($_GET['txtSrch'])."%' ";
+		}
+				
+		if($_GET['srchType'] == 4){
+			$qryApp .= "AND empLastName LIKE '".trim($_GET['txtSrch'])."%' ";
+		}
+				
+		if ($_GET['brnCd']!=0) 
+		{
+			$qryApp.= " AND empbrnCode='".$_GET["brnCd"]."' ";
+		}
+	}
+							
+	$qryApp.=	"ORDER BY corr.stat DESC, corr.seqNo, corr.tsDate, empMast.empLastName, empMast.empFirstName limit $intOffset,$intLimit;";
+	
+	$resAppList = $Obj->execQry($qryApp);
+	$arrAppList = $Obj->getArrRes($resAppList);
 ?>
 
 <input type="hidden" name="empPayGrp" id="empPayGrp" value="<?=$paygroup?>" />
 <input type="hidden" name="empPayCat" id="empPayCat" value="<?=$paycat?>" />
+<input type="hidden" name="Edited" id="Edited" value="" />
 <TABLE border="0" width="100%" cellpadding="1" cellspacing="0" class="parentGrid">
 	<tr>
 		<td colspan="4" class="parentGridHdr">
@@ -204,35 +382,35 @@
 				</tr>
 				<tr>
 					<td class="gridDtlVal" align="center">
-						<input name='sched_timeIn' type='text' style="text-align:center;" readonly class='inputs' id='sched_timeIn' value='00:00' size="5">
+						<input name='sched_timeIn' type='text' style="text-align:center;" readonly class='inputs' id='sched_timeIn' value='' size="5">
 						<span class="gridDtlVal"></span>
 					</td>
 					<td class="gridDtlVal" align="center">
-						<input name='sched_lunchOut' type='text' style="text-align:center;" readonly class='inputs' id='sched_lunchOut' value='00:00' size="5">
+						<input name='sched_lunchOut' type='text' style="text-align:center;" readonly class='inputs' id='sched_lunchOut' value='' size="5">
 						<span class="gridDtlVal"></span>
 					</td>
 					<td class="gridDtlVal" align="center">
-						<input name='sched_lunchIn' type='text' style="text-align:center;" readonly class='inputs' id='sched_lunchIn' value='00:00' size="5">
+						<input name='sched_lunchIn' type='text' style="text-align:center;" readonly class='inputs' id='sched_lunchIn' value='' size="5">
 						<span class="gridDtlVal"></span>
 					</td>
 					<td class="gridDtlVal" align="center">
-						<input name='sched_timeOut' type='text' style="text-align:center;" readonly class='inputs' id='sched_timeOut' value='00:00' size="5">
+						<input name='sched_timeOut' type='text' style="text-align:center;" readonly class='inputs' id='sched_timeOut' value='' size="5">
 						<span class="gridDtlVal"></span>
 					</td>
 					<td class="gridDtlVal" align="center">
-						<input name='actual_timeIn' type='text' style="text-align:center;" readonly class='inputs' id='actual_timeIn' value='00:00' size="5">
+						<input name='actual_timeIn' type='text' style="text-align:center;" readonly class='inputs' id='actual_timeIn' value='' size="5">
 						<span class="gridDtlVal"></span>
 					</td>
 					<td class="gridDtlVal" align="center">
-						<input name='actual_lunchOut' type='text' style="text-align:center;" readonly class='inputs' id='actual_lunchOut' value='00:00' size="5">
+						<input name='actual_lunchOut' type='text' style="text-align:center;" readonly class='inputs' id='actual_lunchOut' value='' size="5">
 						<span class="gridDtlVal"></span>
 					</td>
 					<td class="gridDtlVal" align="center">
-						<input name='actual_lunchIn' type='text' style="text-align:center;" readonly class='inputs' id='actual_lunchIn' value='00:00' size="5">
+						<input name='actual_lunchIn' type='text' style="text-align:center;" readonly class='inputs' id='actual_lunchIn' value='' size="5">
 						<span class="gridDtlVal"></span>
 					</td>
 					<td class="gridDtlVal" align="center">
-						<input name='actual_timeOut' type='text' style="text-align:center;" readonly class='inputs' id='actual_timeOut' value='00:00' size="5">
+						<input name='actual_timeOut' type='text' style="text-align:center;" readonly class='inputs' id='actual_timeOut' value='' size="5">
 						<span class="gridDtlVal"></span>
 					</td>
 				</tr>
@@ -249,20 +427,20 @@
                     <td colspan="21" class="gridToolbar">
                                 Search<INPUT tabindex="15" type="text" name="txtSrch" id="txtSrch" value="<?=$_GET['txtSrch']?>" class="inputs">
                         In 
-                        <?=$Obj->DropDownMenu(array('','Approved', 'Held', 'Ref. No.','Employee No.','Last Name'),'cmbSrch',$_GET['srchType'],'class="inputs" tabindex="16"');?>
+                        <?=$Obj->DropDownMenu(array('','Approved', 'Held','Employee No.','Last Name'),'cmbSrch',$_GET['srchType'],'class="inputs" tabindex="16"');?>
                         <input tabindex="17" class="inputs" type="button" name="btnSrch" id="btnSrch" value="SEARCH" onClick="pager('ts_correction_application_AjaxResult.php','frmTSA','Search',0,1,'txtSrch','cmbSrch','&refNo=<?=$_GET['refNo']?>&brnCd='+document.getElementById('brnCd').value,'../../../images/')"> 
                         <FONT class="ToolBarseparator">|</font>	
-						<a href="#"  id="btnEdit"onClick=""><img class="toolbarImg" id="btnUpdate"  src="../../../images/application_form_edit.png" title="Update OB Application" onclick="getSeqNo()"></a> 
+						<a href="#"  id="btnEdit"onClick=""><img class="toolbarImg" id="btnUpdate"  src="../../../images/application_form_edit.png" title="Update TS Correction Application" onclick="getSeqNo()"></a> 
 						<?
                         if($_SESSION['user_release']=="Y" || $_SESSION['user_level'] == 2){
                         ?>
                         <FONT class="ToolBarseparator">|</font>
-                        <a href="#" id="editEarn" tabindex="2"><img class="toolbarImg" id="btnApp" src="../../../images/edit_prev_emp.png"  onclick="upObTran('Approve','ts_correction_application_AjaxResult.php','frmTSA',<?=$intOffset?>,'',<?=$_GET['isSearch']?>,'txtSrch','cmbSrch');" title="Approved OB Application" ></a>	
+                        <a href="#" id="editEarn" tabindex="2"><img class="toolbarImg" id="btnApp" src="../../../images/edit_prev_emp.png"  onclick="upTSATran('Approve','ts_correction_application_AjaxResult.php','frmTSA',<?=$intOffset?>,'',<?=$_GET['isSearch']?>,'txtSrch','cmbSrch');" title="Approved TS Correction Application" ></a>	
                         <?
 						}
 						?>						                   
                         <FONT class="ToolBarseparator">|</font>    
-                            <a href="#" id="deleEarn" tabindex="3"><img class="toolbarImg" id="btnDel" src="../../../images/application_form_delete.png" title="Delete OB Application" onclick="delObTran('Delete','ts_correction_application_AjaxResult.php','frmTSA',<?=$intOffset?>,'',<?=$_GET['isSearch']?>,'txtSrch','cmbSrch')"></a> <font class="ToolBarseparator">|</font>
+                            <a href="#" id="deleEarn" tabindex="3"><img class="toolbarImg" id="btnDel" src="../../../images/application_form_delete.png" title="Delete TS Correction Application" onclick="delTsaTran('Delete','ts_correction_application_AjaxResult.php','frmTSA',<?=$intOffset?>,'',<?=$_GET['isSearch']?>,'txtSrch','cmbSrch')"></a> <font class="ToolBarseparator">|</font>
                 <?=$Obj->DropDownMenu($brn,'brnCd',$_GET['brnCd'],'class="inputs"');?>
                     </td>
          		</tr>
@@ -296,62 +474,58 @@
 				</tr>
                 
                 <?php
-					if($Obj->getRecCount($resOBAppList) > 0)
+					if($Obj->getRecCount($resAppList) > 0)
 					{
 						$i=0;
 						$ctr=1;
 							
-						foreach ($arrOBAppList as $arrOBAppList_val)
+						foreach ($arrAppList as $arrAppList_val)
 						{
 							$bgcolor = ($i++ % 2) ? "#FFFFFF" : "#F8F8FF";
 							$on_mouse = ' onmouseover="this.style.backgroundColor=\'' . '#F0F0F0' . '\';"'. ' onmouseout="this.style.backgroundColor=\'' . $bgcolor  . '\';"';						
 							if($timeKeeperApprover) {
-								$f_color = ($arrOBAppList_val["obStat"]=='A'?"#CC3300":"");
+								$f_color = ($arrAppList_val["stat"]=='A'?"#CC3300":"");
 							}elseif($managerApporver) {
-								$f_color = ($arrOBAppList_val["mStat"]=='A'?"#CC3300":"");
+								$f_color = ($arrAppList_val["mStat"]=='A'?"#CC3300":"");
 							}elseif($timeKeeper) {
-								$f_color = ($arrOBAppList_val["obStat"]=='A'?"#CC3300":"");
+								$f_color = ($arrAppList_val["stat"]=='A'?"#CC3300":"");
 							}elseif($_SESSION['user_level'] == 3){
-								$f_color = ($arrOBAppList_val["mStat"]=='A'?"#CC3300":"");
+								$f_color = ($arrAppList_val["mStat"]=='A'?"#CC3300":"");
 							}
-							
-							$obDestination = $Obj->getBranchesString($arrOBAppList_val["compCode"],explode(',', $arrOBAppList_val["obDestination"]));
 				?>
-                			<tr style="height:20px;" title="<?=($arrOBAppList_val["obStat"]=='A'?"APPROVED":"HELD");?>"  bgcolor="<?php echo $bgcolor; ?>" <?php echo $on_mouse; ?>>
+                			<tr style="height:20px;" title="<?=($arrAppList_val["stat"]=='A'?"APPROVED":"HELD");?>"  bgcolor="<?php echo $bgcolor; ?>" <?php echo $on_mouse; ?>>
                             	<td class="gridDtlVal" align="center">
                             	<?php 
-									if($timeKeeperApprover || $timeKeeper || $arrOBAppList_val["mStat"]=='H')
+									if($timeKeeperApprover || $timeKeeper || $arrAppList_val["mStat"]=='H')
 									{
 								?>
-                            			<input class="inputs" type="checkbox" name="chkseq[]" value="<?=$arrOBAppList_val['seqNo']?>" id="chkseq[]" />
+                            			<input class="inputs" type="checkbox" name="chkseq[]" value="<?=$arrAppList_val['seqNo']?>" id="chkseq[]" />
                                 <?php
 									}
 								?>	
                                 </td>
-                                <td class="gridDtlVal" align="center"><font color="<?=$f_color?>"><?=$arrOBAppList_val["empNo"]?></td>
-                                <td class="gridDtlVal" align="left"><font color="<?=$f_color?>"><?=strtoupper($arrOBAppList_val["empLastName"].", ".$arrOBAppList_val["empFirstName"]." ")?></td>
-                                <td class="gridDtlVal" align="center"><font color="<?=$f_color?>"><?=date("Y-m-d", strtotime($arrOBAppList_val["obDate"]))?></td>
-                                 <td class="gridDtlVal" align="left"><font color="<?=$f_color?>"><?=strtoupper($obDestination)?></td>
-                                 <td class="gridDtlVal" align="center"><font color="<?=$f_color?>"><?=($arrOBAppList_val["crossDay"]=="Y"?"YES":"");?></td>
-                                 <td class="gridDtlVal" align="center"><font color="<?=$f_color?>"><?=($arrOBAppList_val["hrs8Deduct"]=="Y"?"YES":"");?></td>
+                                <td class="gridDtlVal" align="center"><font color="<?=$f_color?>"><?=$arrAppList_val["empNo"]?></td>
+                                <td class="gridDtlVal" align="left"><font color="<?=$f_color?>"><?=strtoupper($arrAppList_val["empLastName"].", ".$arrAppList_val["empFirstName"]." ")?></td>
+                                <td class="gridDtlVal" align="center"><font color="<?=$f_color?>"><?=date("Y-m-d", strtotime($arrAppList_val["tsDate"]))?></td>
+                                <td class="gridDtlVal" align="center"><font color="<?=$f_color?>"><?=$arrAppList_val["actual_timeIn"]?></td>
+                                <td class="gridDtlVal" align="center"><font color="<?=$f_color?>"><?=$arrAppList_val["actual_lunchOut"]?></td>
+                                <td class="gridDtlVal" align="center"><font color="<?=$f_color?>"><?=$arrAppList_val["actual_lunchIn"]?></td>
+                                <td class="gridDtlVal" align="center"><font color="<?=$f_color?>"><?=$arrAppList_val["actual_timeOut"]?></td>
+								<td class="gridDtlVal" align="center"><font color="<?=$f_color?>"><?=$arrAppList_val["timeIn"]?></td>
+                                <td class="gridDtlVal" align="center"><font color="<?=$f_color?>"><?=$arrAppList_val["lunchOut"]?></td>
+                                <td class="gridDtlVal" align="center"><font color="<?=$f_color?>"><?=$arrAppList_val["lunchIn"]?></td>
+                                <td class="gridDtlVal" align="center"><font color="<?=$f_color?>"><?=$arrAppList_val["timeOut"]?></td>
                                 <td class="gridDtlVal" align="left"><font color="<?=$f_color?>">
 								 <?
-								if(is_numeric($arrOBAppList_val["obReason"])){
-									$OBRes=$Obj->getTblData("tblTK_Reasons "," and stat='A' and reason_id='".$arrOBAppList_val["obReason"]."'"," order by reason","sqlAssoc");
-									echo $OBRes['reason'];	
-								}
-								else{
-									echo strtoupper($arrOBAppList_val["obReason"]);	
-								}
+									$vioTypeDesc = $Obj->getTblData("tblTK_ViolationType", " and violationCd='".$arrAppList_val["editReason"]."'", "", "sqlAssoc");
+									echo strtoupper($vioTypeDesc["violationDesc"]);
 								 ?></td>
-                                 <td class="gridDtlVal" align="center"><font color="<?=$f_color?>"><?=$arrOBAppList_val["obActualTimeIn"]?></td>
-                                 <td class="gridDtlVal" align="center"><font color="<?=$f_color?>"><?=$arrOBAppList_val["obActualTimeOut"]?></td>
                                  <td class="gridDtlVal" align="center">
 								 <?
-									if($arrOBAppList_val["obStat"]=="A")
+									if($arrAppList_val["stat"]=="A")
 									{
 								 ?>
-                                	<a href="#" id="editEarn" tabindex="2"><img class="toolbarImg" id="btnApp" src="../../../images/edit_prev_emp.png"  onclick="disObTran('<?=$arrOBAppList_val['seqNo']?>','ts_correction_application_AjaxResult.php','frmTSA',<?=$intOffset?>,'',<?=$_GET['isSearch']?>,'txtSrch','cmbSrch');" title="Set to Active OB Application" ></a>     	
+                                	<a href="#" id="editEarn" tabindex="2"><img class="toolbarImg" id="btnApp" src="../../../images/edit_prev_emp.png"  onclick="disObTran('<?=$arrAppList_val['seqNo']?>','ts_correction_application_AjaxResult.php','frmTSA',<?=$intOffset?>,'',<?=$_GET['isSearch']?>,'txtSrch','cmbSrch');" title="Set to Active TS Correction Application" ></a>     	
                                  <?
 									}
 								 ?>

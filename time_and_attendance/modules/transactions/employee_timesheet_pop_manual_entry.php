@@ -52,7 +52,6 @@ switch($_GET["action"])
 	break;
 		
 }
-echo $hdrTitle;
 
 $DayTypeDesc = $emptimesheetObj->getDayTypeDescArt($arr_EmpTsInfo["dayType"]);
 $appTypeDesc = $emptimesheetObj->getTblData("tblTK_AppTypes", " and tsAppTypeCd='".$arr_EmpTsInfo["tsAppTypeCd"]."'", "", "sqlAssoc");
@@ -291,7 +290,7 @@ $font_editedTs = "993300";
 					parameters : $('frmEmpTimeSheet').serialize(),
 					onComplete : function (req){
 						eval(req.responseText);
-					}	
+					}
 				});
 			}
 		}

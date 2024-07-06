@@ -70,11 +70,15 @@ switch($_GET["action"]) {
 		echo "$('actual_lunchOut').value='';";
 		echo "$('actual_lunchIn').value='';";
 		echo "$('actual_timeOut').value='';";
+		echo "$('empPayGrp').value='{$empInfo['empPayGrp']}';"; 
+		echo "$('empPayCat').value='{$empInfo['empPayCat']}';";
+		echo "$('Edited').value='';";
 
 		$shiftCodeDtl = $Obj->getTblData("tblTk_TimeSheet", " and empNo='".$_GET['empNo']."' and tsDate='".date("Y-m-d", strtotime($_GET["tsaDate"]))."'", "", "sqlAssoc");
 	
 		if($shiftCodeDtl["shftTimeIn"]=="") {
 			echo "document.frmTSA.violationCd.disabled=true;document.frmTSA.btnSave.disabled=true;";
+			echo "$('Edited').value='';";
 		}
 		else
 		{
@@ -91,6 +95,7 @@ switch($_GET["action"]) {
 			echo "$('actual_lunchOut').value='{$shiftCodeDtl["lunchOut"]}';";
 			echo "$('actual_lunchIn').value='{$shiftCodeDtl["lunchIn"]}';";
 			echo "$('actual_timeOut').value='{$shiftCodeDtl["timeOut"]}';";
+			echo "$('Edited').value='';";
 		}
 
 		exit();			
@@ -114,6 +119,7 @@ switch($_GET["action"]) {
 			echo "$('actual_lunchOut').value='';";
 			echo "$('actual_lunchIn').value='';";
 			echo "$('actual_timeOut').value='';";
+			echo "$('Edited').value='';";
 		}
 		else
 		{
@@ -130,6 +136,7 @@ switch($_GET["action"]) {
 			echo "$('actual_lunchOut').value='{$shiftCodeDtl["lunchOut"]}';";
 			echo "$('actual_lunchIn').value='{$shiftCodeDtl["lunchIn"]}';";
 			echo "$('actual_timeOut').value='{$shiftCodeDtl["timeOut"]}';";
+			echo "$('Edited').value='';";
 		}
 
 		exit();
@@ -137,7 +144,6 @@ switch($_GET["action"]) {
 	
 	
 	case "saveTSASched":
-		//$shiftOut = $_GET["dateFiled"]." ".$_GET["schedTimeOut"];
 		$chkPayPeriod =  $Obj->getTblData("tblPayPeriod", " and payGrp='".$_GET["empPayGrp"]."' and payCat='".$_GET["empPayCat"]."' and '".$_GET["tsaDate"]."' between pdFrmDate and pdToDate and pdTSStat='O' ", "", "sqlAssoc");
 		
 		if($chkPayPeriod["pdSeries"]!="")
@@ -146,9 +152,8 @@ switch($_GET["action"]) {
 			if($_GET["Edited"]=="")
 			{
 				//Check no. of Records
-				$arr_Rec = $Obj->getTblData("tbltk_ts_corr_app", " and empNo='".$_GET["txtAddEmpNo"]."' and obDate='".date("Y-m-d", strtotime($_GET["obDate"]))."'", "", "sqlAssoc");
-			
-				if($arr_Rec["empNo"]!="")
+				$arr_Rec = $Obj->getTblData("tbltk_ts_corr_app", " and empNo='".$_GET["txtAddEmpNo"]."' and tsDate='".date("Y-m-d", strtotime($_GET["tsaDate"]))."'", "", "sqlAssoc");
+				if(!$arr_Rec)
 				{
 					$insRecObTran = $Obj->tran_tsa($_GET,"Add");
 					if($insRecObTran){
@@ -162,7 +167,7 @@ switch($_GET["action"]) {
 						}";
 					}
 					else{
-						echo "alert('OB Application failed!');";	
+						echo "alert('TS Correction Application failed!');";	
 					}
 				}
 				else
@@ -172,13 +177,13 @@ switch($_GET["action"]) {
 			}
 			else{
 				$insRecObTran = $Obj->tran_tsa($_GET,"Update");
-//						  echo "alert('".$insRecObTran."')";	
+//				
 				if($insRecObTran){
-					echo "alert('Selected OB application has been updated!');";
+					echo "alert('Selected TS Correction Application has been updated!');";
 					echo "location.href='ts_correction_application.php';";
 				}
 				else{
-					echo "alert('OB Application failed!');";	
+					echo "alert('TS Correction Application failed!');";	
 				}
 			}
 		}
@@ -196,15 +201,15 @@ switch($_GET["action"]) {
 		{
 			foreach($chkSeqNo as $indchkSeqNo => $chkSeqNo_val)
 			{
-				$qryDel = "Delete from tblTk_ObApp where seqNo='".$chkSeqNo_val."'";
+				$qryDel = "Delete from tbltk_ts_corr_app where seqNo='".$chkSeqNo_val."'";
 				$resDel = $Obj->execQry($qryDel);
 			}
 			
-			echo "alert('Selected OB Application already deleted.')";
+			echo "alert('Selected TS Correction Application successfully deleted.')";
 		}
 		else
 		{
-			echo "alert('Select OB Application to be deleted.')";
+			echo "alert('Select TS Correction Application to be deleted.')";
 		}
 		exit();
 	break;
@@ -215,29 +220,29 @@ switch($_GET["action"]) {
 		{
 			foreach($chkSeqNo as $indchkSeqNo => $chkSeqNo_val)
 			{
-				$tkData = $Obj->getTblData("tblTk_ObApp", " and seqNo='".$chkSeqNo_val."'", "", "sqlAssoc");
+				$tkData = $Obj->getTblData("tbltk_ts_corr_app", " and seqNo='".$chkSeqNo_val."'", "", "sqlAssoc");
 				if($tkData['empNo'] == $_SESSION['employee_number']) {
 					if($selfApprove) {
 						if($_SESSION['uType'] == "T") {
-							$qryApp = "Update  tblTk_ObApp set dateApproved='".date("Y-m-d")."',userApproved='".$_SESSION["employee_number"]."',obStat='A' where seqNo='".$chkSeqNo_val."';";
+							$qryApp = "Update  tbltk_ts_corr_app set dateApproved='".date("Y-m-d")."',userApproved='".$_SESSION["employee_number"]."',obStat='A' where seqNo='".$chkSeqNo_val."';";
 							$resApp = $Obj->execQry($qryApp);
 						}elseif($_SESSION['uType'] == "TA") {
-							$qryApp = "Update  tblTk_ObApp set dateApproved='".date("Y-m-d")."',userApproved='".$_SESSION["employee_number"]."',obStat='A',mApproverdBy='" . $_SESSION["employee_number"] . "',mStat='A',mDateApproved='".date("Y-m-d")."' where seqNo='".$chkSeqNo_val."';";
+							$qryApp = "Update  tbltk_ts_corr_app set dateApproved='".date("Y-m-d")."',userApproved='".$_SESSION["employee_number"]."',obStat='A',mApproverdBy='" . $_SESSION["employee_number"] . "',mStat='A',mDateApproved='".date("Y-m-d")."' where seqNo='".$chkSeqNo_val."';";
 							$resApp = $Obj->execQry($qryApp);
 						}else{
-							$qryApp = "Update  tblTk_ObApp set mApproverdBy='" . $_SESSION["employee_number"] . "',mStat='A',mDateApproved='".date("Y-m-d")."' where seqNo='".$chkSeqNo_val."';";
+							$qryApp = "Update  tbltk_ts_corr_app set mApproverdBy='" . $_SESSION["employee_number"] . "',mStat='A',mDateApproved='".date("Y-m-d")."' where seqNo='".$chkSeqNo_val."';";
 							$resApp = $Obj->execQry($qryApp);
 						}
 					}
 				}else{
 					if($_SESSION['uType'] == "T") {
-						$qryApp = "Update  tblTk_ObApp set dateApproved='".date("Y-m-d")."',userApproved='".$_SESSION["employee_number"]."',obStat='A' where seqNo='".$chkSeqNo_val."';";
+						$qryApp = "Update  tbltk_ts_corr_app set dateApproved='".date("Y-m-d")."',userApproved='".$_SESSION["employee_number"]."',obStat='A' where seqNo='".$chkSeqNo_val."';";
 						$resApp = $Obj->execQry($qryApp);
 					}elseif($_SESSION['uType'] == "TA") {
-						$qryApp = "Update  tblTk_ObApp set dateApproved='".date("Y-m-d")."',userApproved='".$_SESSION["employee_number"]."',obStat='A',mApproverdBy='" . $_SESSION["employee_number"] . "',mStat='A',mDateApproved='".date("Y-m-d")."' where seqNo='".$chkSeqNo_val."';";
+						$qryApp = "Update  tbltk_ts_corr_app set dateApproved='".date("Y-m-d")."',userApproved='".$_SESSION["employee_number"]."',obStat='A',mApproverdBy='" . $_SESSION["employee_number"] . "',mStat='A',mDateApproved='".date("Y-m-d")."' where seqNo='".$chkSeqNo_val."';";
 						$resApp = $Obj->execQry($qryApp);
 					}else{
-						$qryApp = "Update  tblTk_ObApp set mApproverdBy='" . $_SESSION["employee_number"] . "',mStat='A',mDateApproved='".date("Y-m-d")."' where seqNo='".$chkSeqNo_val."';";
+						$qryApp = "Update  tbltk_ts_corr_app set mApproverdBy='" . $_SESSION["employee_number"] . "',mStat='A',mDateApproved='".date("Y-m-d")."' where seqNo='".$chkSeqNo_val."';";
 						$resApp = $Obj->execQry($qryApp);
 					}
 				}
@@ -254,19 +259,74 @@ switch($_GET["action"]) {
 	
 	case "disapprove":
 			$id = $_GET["id"];
-				$qryDis = "Update  tblTk_ObApp set obStat='H', dateApproved = Null, userApproved = Null where seqNo='".$id."';";
+				$qryDis = "Update tbltk_ts_corr_app set stat='H', dateApproved = Null, userApproved = Null where seqNo='".$id."';";
 				$resDis = $Obj->execQry($qryDis);
 				if($resDis){
 					$remarks = 'Cancelled approved application';	
 					$userId = $_SESSION["employee_number"];
-					$qryTransData = "Insert into tblTK_ObApphist (compCode, empNo, refNo, obDate, obDestination, dateFiled, obSchedIn, 
-									obSchedOut, obActualTimeIn, obActualTimeOut, obReason, hrs8Deduct, dateApproved, userApproved, dateAdded, 
-									addedBy, dateUpdated, updatedBy, obStat, remarks, userCancelled, otherDetails) 
-									Select compCode, empNo, refNo, obDate, obDestination, dateFiled, obSchedIn, obSchedOut, obActualTimeIn, 
-									obActualTimeOut, obReason, hrs8Deduct, dateApproved, userApproved, dateAdded, addedBy, dateUpdated, 
-									updatedBy, obStat, '$remarks', '$userId', otherDetails from tblTK_ObApp where seqNo='{$id}'";
+					$qryTransData = "Insert into tbltk_ts_corr_apphist (seqNo,
+																		compcode,
+																		dateFiled,
+																		empNo,
+																		tsDate,
+																		sched_timeIn,
+																		sched_lunchOut,
+																		sched_lunchIn,
+																		sched_timeOut,
+																		actual_timeIn,
+																		actual_lunchOut,
+																		actual_lunchIn,
+																		actual_timeOut,
+																		timeIn,
+																		lunchOut,
+																		lunchIn,
+																		timeOut,
+																		editReason,
+																		otherDetails,
+																		crossTag,
+																		logsExceed,
+																		stat,
+																		mApproverdBy,
+																		mStat,
+																		mDateApproved,
+																		added_by,
+																		updated_by,
+																		updated_at,
+																		userApproved,
+																		dateApproved) 
+																 Select seqNo,
+																		compcode,
+																		dateFiled,
+																		empNo,
+																		tsDate,
+																		sched_timeIn,
+																		sched_lunchOut,
+																		sched_lunchIn,
+																		sched_timeOut,
+																		actual_timeIn,
+																		actual_lunchOut,
+																		actual_lunchIn,
+																		actual_timeOut,
+																		timeIn,
+																		lunchOut,
+																		lunchIn,
+																		timeOut,
+																		'".$remarks."',
+																		otherDetails,
+																		crossTag,
+																		logsExceed,
+																		stat,
+																		mApproverdBy,
+																		mStat,
+																		mDateApproved,
+																		added_by,
+																		'".$userId."',
+																		'".date('Y-m-d H:i:s')."',
+																		userApproved,
+																		dateApproved
+									from tbltk_ts_corr_app where seqNo='{$id}'";
 					$resTransData = $Obj->execQry($qryTransData);				
-					echo "alert('Selected OB Application has been disapproved.')";	
+					echo "alert('Selected TS Correction Application has been disapproved.')";	
 				}
 				else{
 					echo "alert('Error occured! Cannot continue process.')";
@@ -276,18 +336,41 @@ switch($_GET["action"]) {
 	
 	case "getSeqNo":
 		$chkSeqNo = $_GET["chkseq"];
-		
-		if(sizeof($chkSeqNo)==0)
+		$selectedCount = sizeof($chkSeqNo);
+
+    	if ($selectedCount == 0 || $selectedCount > 1) 
 		{
-			echo "alert('Select 1 OB Application to be Modified.')";
+			echo "alert('Select 1 TS Correction Application to be Modified.')";
 		}
 		else
 		{
-			foreach($chkSeqNo as $indchkSeqNo => $chkSeqNo_val)
-			{
-				$inputTypeSeqNo = $chkSeqNo_val;
-			}
-			echo "UpdateOBTran('".$inputTypeSeqNo."');";
+			$rec = $Obj->getTblData("tbltk_ts_corr_app", " and seqNo=".$chkSeqNo[0]."", "", "sqlAssoc");
+			echo "document.frmTSA.violationCd.disabled=false;document.frmTSA.btnSave.disabled=false;";
+			echo "$('tsaDate').value='{$rec["tsDate"]}';";
+			echo "$('timeIn').value='{$rec["timeIn"]}';";
+			echo "$('lunchOut').value='{$rec["lunchOut"]}';";
+			echo "$('lunchIn').value='{$rec["lunchIn"]}';";
+			echo "$('timeOut').value='{$rec["timeOut"]}';";
+			echo "$('sched_timeIn').value='{$rec["sched_timeIn"]}';";
+			echo "$('sched_lunchOut').value='{$rec["sched_lunchOut"]}';";
+			echo "$('sched_lunchIn').value='{$rec["sched_lunchIn"]}';";
+			echo "$('sched_timeOut').value='{$rec["sched_timeOut"]}';";
+			echo "$('actual_timeIn').value='{$rec["actual_timeIn"]}';";
+			echo "$('actual_lunchOut').value='{$rec["actual_lunchOut"]}';";
+			echo "$('actual_lunchIn').value='{$rec["actual_lunchIn"]}';";
+			echo "$('actual_timeOut').value='{$rec["actual_timeOut"]}';";
+			echo "$('violationCd').value='{$rec["editReason"]}';";
+
+			$empInfo = $Obj->getEmployee($rec['compcode'], $rec['empNo'],'');
+			echo "$('txtAddEmpNo').value='{$rec['empNo']}';";
+			$midName = (!empty($empInfo['empMidName'])) ? substr($empInfo['empMidName'],0,1)."." : '';
+			echo "$('txtEmpName').value='$empInfo[empLastName], ".htmlspecialchars(addslashes($empInfo['empFirstName']))." $midName ';";
+			$deptName = $Obj->getDeptDescGen($_SESSION["company_code"],$empInfo["empDiv"], $empInfo["empDepCode"]);
+			$posName = $Obj->getpositionwil("where compCode='".$_SESSION["company_code"]."' and posCode='".$empInfo["empPosId"]."'",'2');
+			echo "$('txtDeptPost').value='".htmlspecialchars(addslashes($deptName["deptDesc"]))." - ".$posName["posDesc"]."';";
+			echo "$('empPayGrp').value='{$empInfo['empPayGrp']}';"; 
+			echo "$('empPayCat').value='{$empInfo['empPayCat']}';";
+			echo "$('Edited').value='1';";
 		}
 		exit();
 	break;
@@ -296,11 +379,6 @@ switch($_GET["action"]) {
 		
 	break;
 }
-
-//if($_GET['action']=="saveObSched"){
-//	echo "nhomer";	
-//	exit();
-//}
 ?>
 <HTML>
 	<HEAD>
@@ -445,6 +523,7 @@ switch($_GET["action"]) {
 	function saveTSADetail()
 	{
 		var tsaFields = $('frmTSA').serialize(true);
+		var edited = document.frmTSA.Edited.value;
 		
 		if(tsaFields["txtAddEmpNo"]=="")
 		{
@@ -453,7 +532,7 @@ switch($_GET["action"]) {
 			return false;
 		}
 		
-		var params = "ts_correction_application.php?action=saveTSASched&Edited";	
+		var params = "ts_correction_application.php?action=saveTSASched&Edited="+edited;	
 		
 		new Ajax.Request(params,
 		{
@@ -575,22 +654,22 @@ switch($_GET["action"]) {
 	
 	function checkAll(field)
 	{
-		var chktsa = document.frmTSA.elements['chkseq[]'];
+		var chkseq = document.frmTSA.elements['chkseq[]'];
 		//alert(field);
 		if (field=="1") 
 		{ 
-   			for (var i=0; i<chktsa.length; i++)
+   			for (var i=0; i<chkseq.length; i++)
 			{
-				chktsa[i].checked = true;
+				chkseq[i].checked = true;
     		}
 				return "0";  
   		} 
 		else 
 		{
 			
-    		for (var i=0; i<chktsa.length; i++)
+    		for (var i=0; i<chkseq.length; i++)
 			{
-				chktsa[i].checked = false;
+				chkseq[i].checked = false;
     		}
 				return "1";  
  		}

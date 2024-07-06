@@ -19,12 +19,6 @@ $emptimesheetObj->validateSessions('','MODULES');
 switch($_GET["action"])
 {
 	case "Update":
-		
-//		$error = explode("-",$emptimesheetObj->chkImpFields($_GET));
-//		if($error[1]!="")
-//			echo "alert('".$error[1]."')";
-//		else
-//		{	
 			
 			$checkCorrDataExists =  $emptimesheetObj->getTblData("tblTK_TimeSheetCorr", " and empNo='".$_GET["empNo"]."' and tsDate='".date("Y-m-d", strtotime($_GET["txttsDate"]))."'", '', 'sqlAssoc');
 			if($checkCorrDataExists["empNo"]=="")
