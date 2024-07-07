@@ -525,7 +525,7 @@
 									if($arrAppList_val["stat"]=="A")
 									{
 								 ?>
-                                	<a href="#" id="editEarn" tabindex="2"><img class="toolbarImg" id="btnApp" src="../../../images/edit_prev_emp.png"  onclick="disObTran('<?=$arrAppList_val['seqNo']?>','ts_correction_application_AjaxResult.php','frmTSA',<?=$intOffset?>,'',<?=$_GET['isSearch']?>,'txtSrch','cmbSrch');" title="Set to Active TS Correction Application" ></a>     	
+                                	<a href="#" id="editEarn" tabindex="2"><img class="toolbarImg" id="btnApp" src="../../../images/edit_prev_emp.png"  onclick="disTsaTran('<?=$arrAppList_val['seqNo']?>','ts_correction_application_AjaxResult.php','frmTSA',<?=$intOffset?>,'',<?=$_GET['isSearch']?>,'txtSrch','cmbSrch');" title="Set to Active TS Correction Application" ></a>     	
                                  <?
 									}
 								 ?>

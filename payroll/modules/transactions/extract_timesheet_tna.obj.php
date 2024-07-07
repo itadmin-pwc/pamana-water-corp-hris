@@ -363,7 +363,11 @@ class extractTNATSObj extends commonObj {
 		if($Trns){
 			$Trns = $this->ClearTK_TSCorr();
 		}
-		
+		//07/07/2024 - start close timesheet correction application 
+		if($Trns){
+			$Trns = $this->CloseTK_TSCorrApplication();
+		}
+		//07/07/2024 - end close timesheet correction application 
 		if($Trns){
 			$Trns = $this->CloseTK_UT();
 		}
@@ -550,6 +554,11 @@ FROM         tblTK_CSApp where compCode='{$_SESSION['company_code']}' AND csStat
 
 	function CloseTK_TSCorr() {
 		$sqlTSCorr= "Insert into tblTK_TimeSheetCorrhist (compCode, empNo, tsDate, timeIn, lunchOut, lunchIn, breakIn, breakOut, timeOut, otIn, otOut, editReason, encodeDate, encodedBy, stat) SELECT compCode, empNo, tsDate, timeIn, lunchOut, lunchIn, breakIn, breakOut, timeOut, otIn, otOut, editReason, encodeDate, encodedBy, stat FROM tblTK_TimeSheetCorr where compCode='{$_SESSION['company_code']}' AND stat='A' AND tsDate between '{$this->pdFrmDate}' AND '{$this->pdToDate}' AND empNo IN ({$this->Emplist})";
+		return $this->execQryI($sqlTSCorr);
+	}
+
+	function CloseTK_TSCorrApplication() {
+		$sqlTSCorr= "Insert into tbltk_ts_corr_apphist SELECT * FROM tbltk_ts_corr_app where compCode='{$_SESSION['company_code']}' AND stat='A' AND tsDate between '{$this->pdFrmDate}' AND '{$this->pdToDate}' AND empNo IN ({$this->Emplist})";
 		return $this->execQryI($sqlTSCorr);
 	}
 

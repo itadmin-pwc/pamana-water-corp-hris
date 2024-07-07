@@ -201,7 +201,7 @@ switch($_GET["action"]) {
 		{
 			foreach($chkSeqNo as $indchkSeqNo => $chkSeqNo_val)
 			{
-				$qryDel = "Delete from tbltk_ts_corr_app where seqNo='".$chkSeqNo_val."'";
+				$qryDel = "Delete from tbltk_ts_corr_app where seqNo='".$chkSeqNo_val."' AND stat='H'";
 				$resDel = $Obj->execQry($qryDel);
 			}
 			
@@ -220,117 +220,176 @@ switch($_GET["action"]) {
 		{
 			foreach($chkSeqNo as $indchkSeqNo => $chkSeqNo_val)
 			{
-				$tkData = $Obj->getTblData("tbltk_ts_corr_app", " and seqNo='".$chkSeqNo_val."'", "", "sqlAssoc");
+				$tkData = $Obj->getTblData("tbltk_ts_corr_app", " and seqNo=".$chkSeqNo_val, "", "sqlAssoc");
 				if($tkData['empNo'] == $_SESSION['employee_number']) {
 					if($selfApprove) {
 						if($_SESSION['uType'] == "T") {
-							$qryApp = "Update  tbltk_ts_corr_app set dateApproved='".date("Y-m-d")."',userApproved='".$_SESSION["employee_number"]."',obStat='A' where seqNo='".$chkSeqNo_val."';";
+							$qryApp = "Update  tbltk_ts_corr_app set dateApproved='".date("Y-m-d")."',userApproved='".$_SESSION["employee_number"]."',stat='A' where seqNo=".$chkSeqNo_val.";";
 							$resApp = $Obj->execQry($qryApp);
+							$array = array(
+								"empNo" => $tkData['empNo'],
+								"txttsDate" => $tkData['tsDate'],
+								"txtCheckTag" => $tkData['crossTag'],
+								"violationCd" => $tkData['editReason'],
+								"txtlogsExceeded" => $tkData['logsExceed'],
+								"txtEtimeIn" => $tkData['timeIn'],
+								"txtElunchOut" => $tkData['lunchOut'],
+								"txtElunchIn" => $tkData['lunchIn'],
+								"txtEbrkOut" => "",
+								"txtEbrkIn" => "",
+								"txtEtimeOut" => $tkData['timeOut']
+							);
+							$Obj->manualEntryTimeSheet('Add', $array);
 						}elseif($_SESSION['uType'] == "TA") {
-							$qryApp = "Update  tbltk_ts_corr_app set dateApproved='".date("Y-m-d")."',userApproved='".$_SESSION["employee_number"]."',obStat='A',mApproverdBy='" . $_SESSION["employee_number"] . "',mStat='A',mDateApproved='".date("Y-m-d")."' where seqNo='".$chkSeqNo_val."';";
+							$qryApp = "Update  tbltk_ts_corr_app set dateApproved='".date("Y-m-d")."',userApproved='".$_SESSION["employee_number"]."',stat='A',mApproverdBy='" . $_SESSION["employee_number"] . "',mStat='A',mDateApproved='".date("Y-m-d")."' where seqNo=".$chkSeqNo_val.";";
 							$resApp = $Obj->execQry($qryApp);
+							$array = array(
+								"empNo" => $tkData['empNo'],
+								"txttsDate" => $tkData['tsDate'],
+								"txtCheckTag" => $tkData['crossTag'],
+								"violationCd" => $tkData['editReason'],
+								"txtlogsExceeded" => $tkData['logsExceed'],
+								"txtEtimeIn" => $tkData['timeIn'],
+								"txtElunchOut" => $tkData['lunchOut'],
+								"txtElunchIn" => $tkData['lunchIn'],
+								"txtEbrkOut" => "",
+								"txtEbrkIn" => "",
+								"txtEtimeOut" => $tkData['timeOut']
+							);
+							$Obj->manualEntryTimeSheet('Add', $array);
 						}else{
-							$qryApp = "Update  tbltk_ts_corr_app set mApproverdBy='" . $_SESSION["employee_number"] . "',mStat='A',mDateApproved='".date("Y-m-d")."' where seqNo='".$chkSeqNo_val."';";
+							$qryApp = "Update  tbltk_ts_corr_app set mApproverdBy='" . $_SESSION["employee_number"] . "',mStat='A',mDateApproved='".date("Y-m-d")."' where seqNo=".$chkSeqNo_val.";";
 							$resApp = $Obj->execQry($qryApp);
 						}
 					}
 				}else{
 					if($_SESSION['uType'] == "T") {
-						$qryApp = "Update  tbltk_ts_corr_app set dateApproved='".date("Y-m-d")."',userApproved='".$_SESSION["employee_number"]."',obStat='A' where seqNo='".$chkSeqNo_val."';";
+						$qryApp = "Update  tbltk_ts_corr_app set dateApproved='".date("Y-m-d")."',userApproved='".$_SESSION["employee_number"]."',stat='A' where seqNo=".$chkSeqNo_val.";";
 						$resApp = $Obj->execQry($qryApp);
+						$array = array(
+							"empNo" => $tkData['empNo'],
+							"txttsDate" => $tkData['tsDate'],
+							"txtCheckTag" => $tkData['crossTag'],
+							"violationCd" => $tkData['editReason'],
+							"txtlogsExceeded" => $tkData['logsExceed'],
+							"txtEtimeIn" => $tkData['timeIn'],
+							"txtElunchOut" => $tkData['lunchOut'],
+							"txtElunchIn" => $tkData['lunchIn'],
+							"txtEbrkOut" => "",
+							"txtEbrkIn" => "",
+							"txtEtimeOut" => $tkData['timeOut']
+						);
+						$Obj->manualEntryTimeSheet('Add', $array);
 					}elseif($_SESSION['uType'] == "TA") {
-						$qryApp = "Update  tbltk_ts_corr_app set dateApproved='".date("Y-m-d")."',userApproved='".$_SESSION["employee_number"]."',obStat='A',mApproverdBy='" . $_SESSION["employee_number"] . "',mStat='A',mDateApproved='".date("Y-m-d")."' where seqNo='".$chkSeqNo_val."';";
+						$qryApp = "Update  tbltk_ts_corr_app set dateApproved='".date("Y-m-d")."',userApproved='".$_SESSION["employee_number"]."',stat='A',mApproverdBy='" . $_SESSION["employee_number"] . "',mStat='A',mDateApproved='".date("Y-m-d")."' where seqNo=".$chkSeqNo_val.";";
 						$resApp = $Obj->execQry($qryApp);
+						$array = array(
+							"empNo" => $tkData['empNo'],
+							"txttsDate" => $tkData['tsDate'],
+							"txtCheckTag" => $tkData['crossTag'],
+							"violationCd" => $tkData['editReason'],
+							"txtlogsExceeded" => $tkData['logsExceed'],
+							"txtEtimeIn" => $tkData['timeIn'],
+							"txtElunchOut" => $tkData['lunchOut'],
+							"txtElunchIn" => $tkData['lunchIn'],
+							"txtEbrkOut" => "",
+							"txtEbrkIn" => "",
+							"txtEtimeOut" => $tkData['timeOut']
+						);
+						$Obj->manualEntryTimeSheet('Add', $array);
 					}else{
-						$qryApp = "Update  tbltk_ts_corr_app set mApproverdBy='" . $_SESSION["employee_number"] . "',mStat='A',mDateApproved='".date("Y-m-d")."' where seqNo='".$chkSeqNo_val."';";
+						$qryApp = "Update  tbltk_ts_corr_app set mApproverdBy='" . $_SESSION["employee_number"] . "',mStat='A',mDateApproved='".date("Y-m-d")."' where seqNo=".$chkSeqNo_val.";";
 						$resApp = $Obj->execQry($qryApp);
 					}
 				}
 			}
 			
-			echo "alert('Selected OB Application already Approved.')";
+			echo "alert('Selected TS Correction Application successfully Approved.')";
 		}
 		else
 		{
-			echo "alert('Select OB Application to be Approved.')";
+			echo "alert('Select TS Correction Application to be Approved.')";
 		}
 		exit();
 	break;
 	
 	case "disapprove":
-			$id = $_GET["id"];
-				$qryDis = "Update tbltk_ts_corr_app set stat='H', dateApproved = Null, userApproved = Null where seqNo='".$id."';";
-				$resDis = $Obj->execQry($qryDis);
-				if($resDis){
-					$remarks = 'Cancelled approved application';	
-					$userId = $_SESSION["employee_number"];
-					$qryTransData = "Insert into tbltk_ts_corr_apphist (seqNo,
-																		compcode,
-																		dateFiled,
-																		empNo,
-																		tsDate,
-																		sched_timeIn,
-																		sched_lunchOut,
-																		sched_lunchIn,
-																		sched_timeOut,
-																		actual_timeIn,
-																		actual_lunchOut,
-																		actual_lunchIn,
-																		actual_timeOut,
-																		timeIn,
-																		lunchOut,
-																		lunchIn,
-																		timeOut,
-																		editReason,
-																		otherDetails,
-																		crossTag,
-																		logsExceed,
-																		stat,
-																		mApproverdBy,
-																		mStat,
-																		mDateApproved,
-																		added_by,
-																		updated_by,
-																		updated_at,
-																		userApproved,
-																		dateApproved) 
-																 Select seqNo,
-																		compcode,
-																		dateFiled,
-																		empNo,
-																		tsDate,
-																		sched_timeIn,
-																		sched_lunchOut,
-																		sched_lunchIn,
-																		sched_timeOut,
-																		actual_timeIn,
-																		actual_lunchOut,
-																		actual_lunchIn,
-																		actual_timeOut,
-																		timeIn,
-																		lunchOut,
-																		lunchIn,
-																		timeOut,
-																		'".$remarks."',
-																		otherDetails,
-																		crossTag,
-																		logsExceed,
-																		stat,
-																		mApproverdBy,
-																		mStat,
-																		mDateApproved,
-																		added_by,
-																		'".$userId."',
-																		'".date('Y-m-d H:i:s')."',
-																		userApproved,
-																		dateApproved
-									from tbltk_ts_corr_app where seqNo='{$id}'";
-					$resTransData = $Obj->execQry($qryTransData);				
-					echo "alert('Selected TS Correction Application has been disapproved.')";	
-				}
-				else{
-					echo "alert('Error occured! Cannot continue process.')";
-				}
+		$id = $_GET["id"];
+		$tkData = $Obj->getTblData("tbltk_ts_corr_app", " and seqNo=".$id, "", "sqlAssoc");
+		$qryDis = "Update tbltk_ts_corr_app set stat='H', dateApproved = Null, userApproved = Null where seqNo='".$id."';";
+		$resDis = $Obj->execQry($qryDis);
+		if($resDis){
+			$remarks = 'Cancelled approved application';	
+			$userId = $_SESSION["employee_number"];
+			$qryTransData = "Insert into tbltk_ts_corr_apphist (seqNo,
+																compcode,
+																dateFiled,
+																empNo,
+																tsDate,
+																sched_timeIn,
+																sched_lunchOut,
+																sched_lunchIn,
+																sched_timeOut,
+																actual_timeIn,
+																actual_lunchOut,
+																actual_lunchIn,
+																actual_timeOut,
+																timeIn,
+																lunchOut,
+																lunchIn,
+																timeOut,
+																editReason,
+																otherDetails,
+																crossTag,
+																logsExceed,
+																stat,
+																mApproverdBy,
+																mStat,
+																mDateApproved,
+																added_by,
+																updated_by,
+																updated_at,
+																userApproved,
+																dateApproved) 
+															Select seqNo,
+																compcode,
+																dateFiled,
+																empNo,
+																tsDate,
+																sched_timeIn,
+																sched_lunchOut,
+																sched_lunchIn,
+																sched_timeOut,
+																actual_timeIn,
+																actual_lunchOut,
+																actual_lunchIn,
+																actual_timeOut,
+																timeIn,
+																lunchOut,
+																lunchIn,
+																timeOut,
+																'".$remarks."',
+																otherDetails,
+																crossTag,
+																logsExceed,
+																stat,
+																mApproverdBy,
+																mStat,
+																mDateApproved,
+																added_by,
+																'".$userId."',
+																'".date('Y-m-d H:i:s')."',
+																userApproved,
+																dateApproved
+							from tbltk_ts_corr_app where seqNo='{$id}'";
+			$resTransData = $Obj->execQry($qryTransData);
+			$Obj->execQry("DELETE FROM tbltk_timesheetcorr WHERE empNo = '".$tkData["empNo"]."' AND tsDate = '".$tkData["tsDate"]."'");
+			$Obj->execQry("DELETE FROM tbltk_ts_corr_app WHERE seqNo=".$id);
+			echo "alert('Selected TS Correction Application has been disapproved.')";	
+		}
+		else{
+			echo "alert('Error occured! Cannot continue process.')";
+		}
 		exit();
 	break;
 	
@@ -629,11 +688,11 @@ switch($_GET["action"]) {
 		if(deleShiftCode == true){
 			var param = '?action=disapprove&id='+id;
 			
-			new Ajax.Request('<?=$_SERVER['PHP_SELF']?>'+param,{
+			new Ajax.Request('<?=$_SERVER['PHP_SELF']?>'+param, {
 				method : 'get',
 				parameters : $('frmTSA').serialize(),
 				onComplete : function (req){
-					eval(req.responseText);	
+					eval(req.responseText);
 					pager('ts_correction_application_AjaxResult.php','tsaCont','load',0,0,'','','','../../../images/');  
 				},
 				onCreate : function (){
