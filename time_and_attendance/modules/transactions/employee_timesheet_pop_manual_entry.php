@@ -146,7 +146,7 @@ $font_editedTs = "993300";
                                 <input type="hidden" name="shiftSched_Lin" id="shiftSched_Lin" value="<?=$arr_EmpTsInfo["shftLunchIn"]?>">
                                 <input type="hidden" name="shiftSched_Bout" id="shiftSched_Bout" value="<?=$arr_EmpTsInfo["shftBreakOut"]?>">
                                 <input type="hidden" name="shiftSched_Bin" id="shiftSched_Bin" value="<?=$arr_EmpTsInfo["shftBreakIn"]?>">
-                                 <input type="hidden" name="shiftSched_Tout" id="shiftSched_Tout" value="<?=$arr_EmpTsInfo["shftTimeOut"]?>">
+                                <input type="hidden" name="shiftSched_Tout" id="shiftSched_Tout" value="<?=$arr_EmpTsInfo["shftTimeOut"]?>">
                                 <input type="hidden" name="txtlogsExceeded" id="txtlogsExceeded" value="<?=$arr_EmpTsInfo["logsExceeded"]?>">
                                 
                                 <td width="8.33%" class='gridDtlVal' align="center"><?=$arr_EmpTsInfo["shftTimeIn"]?></td>
@@ -290,7 +290,7 @@ $font_editedTs = "993300";
 					parameters : $('frmEmpTimeSheet').serialize(),
 					onComplete : function (req){
 						eval(req.responseText);
-					}	
+					}
 				});
 			}
 		}

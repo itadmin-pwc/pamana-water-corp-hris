@@ -536,8 +536,6 @@ class transactionObj extends commonObj {
 			//return "CS Application failed.";
 			break;
 		}
-		
-		
 	}
 	
 	
@@ -965,8 +963,6 @@ class transactionObj extends commonObj {
 				$time[$ctr] = "NULL";
 			else
 				$time[$ctr] = "'".$time[$ctr]."'";
-			
-			
 		}
 		
 		switch($action)
@@ -1033,6 +1029,117 @@ class transactionObj extends commonObj {
 			$Trns = $this->commitTran();
 			return true;
 		}	
+	}
+
+	function tran_tsa($array, $action)
+	{
+		switch($action)
+		{
+			case "Add":
+				$sheets = $this->getTblData("tblTk_TimeSheet", " and empNo='".$array['txtAddEmpNo']."' and tsDate='".date("Y-m-d", strtotime($array["tsaDate"]))."'", "", "sqlAssoc");
+				$crossDay = '';
+				$timeIn = strtotime($array["timeIn"]);
+				$timeOut = strtotime($array["timeOut"]);
+
+				if ($timeOut < $timeIn) {
+					$crossDay = 'Y';
+				}
+
+				$qryIns = "Insert into tbltk_ts_corr_app(compcode,
+														dateFiled,
+														empNo,
+														tsDate,
+														sched_timeIn,
+														sched_lunchOut,
+														sched_lunchIn,
+														sched_timeOut,
+														actual_timeIn,
+														actual_lunchOut,
+														actual_lunchIn,
+														actual_timeOut,
+														timeIn,
+														lunchOut,
+														lunchIn,
+														timeOut,
+														editReason,
+														otherDetails,
+														crossTag,
+														logsExceed,
+														stat,
+														mStat,
+														added_by,
+														updated_by,
+														updated_at)
+						   						values('".$_SESSION["company_code"]."',
+													    '".date('Y-m-d')."',
+														'".$array['txtAddEmpNo']."',
+														'".date("Y-m-d", strtotime($array["tsaDate"]))."',
+														'".$sheets['shftTimeIn']."',
+														'".$sheets['shftLunchOut']."',
+														'".$sheets['shftLunchIn']."',
+														'".$sheets['shftTimeOut']."',
+														'".$sheets['timeIn']."',
+														'".$sheets['lunchOut']."',
+														'".$sheets['lunchIn']."',
+														'".$sheets['timeOut']."',
+														'".$array['timeIn']."',
+														'".$array['lunchOut']."',
+														'".$array['lunchIn']."',
+														'".$array['timeOut']."',
+														'".$array['violationCd']."',
+														'',
+														'".$crossDay."',
+														'".$sheets['logsExceeded']."',
+														'H',
+														'H',
+														'".$_SESSION['employee_number']."',
+														'".$_SESSION['employee_number']."',
+														'".date('Y-m-d H:i:s')."')";
+			
+			if($this->execQry($qryIns))
+				return true;
+			else
+				return false;
+
+			break;
+			
+			case "Update":
+				$sheets = $this->getTblData("tblTk_TimeSheet", " and empNo='".$array['txtAddEmpNo']."' and tsDate='".date("Y-m-d", strtotime($array["tsaDate"]))."'", "", "sqlAssoc");
+				$crossDay = '';
+				$timeIn = strtotime($array["timeIn"]);
+				$timeOut = strtotime($array["timeOut"]);
+
+				if ($timeOut < $timeIn) {
+					$crossDay = 'Y';
+				}
+
+				$qryIns = "Update tbltk_ts_corr_app set tsDate = '".date("Y-m-d", strtotime($array["tsaDate"]))."',
+														sched_timeIn = '".$sheets['shftTimeIn']."',
+														sched_lunchOut = '".$sheets['shftLunchOut']."',
+														sched_lunchIn = '".$sheets['shftLunchIn']."',
+														sched_timeOut = '".$sheets['shftTimeOut']."',
+														actual_timeIn = '".$sheets['timeIn']."',
+														actual_lunchOut = '".$sheets['lunchOut']."',
+														actual_lunchIn = '".$sheets['lunchIn']."',
+														actual_timeOut = '".$sheets['timeOut']."',
+														timeIn = '".$array['timeIn']."',
+														lunchOut = '".$array['lunchOut']."',
+														lunchIn = '".$array['lunchIn']."',
+														timeOut = '".$array['timeOut']."',
+														editReason = '".$array['violationCd']."',
+														otherDetails = '',
+														crossTag = '".$crossDay."',
+														logsExceed = '".$sheets['logsExceeded']."',
+														updated_by = '".$_SESSION['employee_number']."',
+														updated_at = '".date('Y-m-d H:i:s')."'
+							where seqNo=".$array['chkseq'][0];
+			if($this->execQry($qryIns))
+				return true;
+			else
+				return false;
+
+			break;
+		}
 	}
 	
 	function saveManagersAttendance($arr){

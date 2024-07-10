@@ -15,9 +15,6 @@
 	$emptimesheetObj = new transactionObj();
 	$sessionVars = $emptimesheetObj->getSeesionVars();
 	$emptimesheetObj->validateSessions('','MODULES');
-	
-	
-	
 ?>
 <HTML>
 	<HEAD>
