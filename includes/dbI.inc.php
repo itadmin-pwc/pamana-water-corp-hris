@@ -22,7 +22,7 @@ class dbHandler {
 	
 	function __construct(){
 		
-			 $this->connID = mysqli_connect(self::HOST,self::USER,self::PASS,'hris_office_warehouse_testdb');
+			 $this->connID = mysqli_connect(self::HOST,self::USER,self::PASS,'hris_office_warehouse');
 		
 		return $this->connID;
 	}
