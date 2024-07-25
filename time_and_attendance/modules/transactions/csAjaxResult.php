@@ -223,7 +223,7 @@
 		}
 	}
 							
-	$qryCSApp.=	"ORDER BY empmast.empLastName, empmast.empFirstName,CsApp.refNo limit $intOffset,$intLimit";
+	$qryCSApp.=	"ORDER BY CsApp.csStat desc, empmast.empLastName, empmast.empFirstName,CsApp.refNo limit $intOffset,$intLimit";
 	//echo $qryCSApp;
 	$resCSAppList = $csObj->execQry($qryCSApp);
 	$arrCSAppList = $csObj->getArrRes($resCSAppList);
