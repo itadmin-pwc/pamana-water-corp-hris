@@ -184,7 +184,7 @@ if ($level > '70'){
 		}
 	 }
 	
-	$qryGetOtAppDtl .= "ORDER BY emp.empLastName, emp.empFirstName, dtl.otDate limit $intOffset,$intLimit";
+	$qryGetOtAppDtl .= "ORDER BY dtl.otStat DESC, emp.empLastName, emp.empFirstName, dtl.otDate limit $intOffset,$intLimit";
 
 	//echo $qryGetOtAppDtl;
 	
