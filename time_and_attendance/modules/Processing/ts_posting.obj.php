@@ -1341,7 +1341,8 @@ if ($cday!='Y'){$hrsWrk=$hrsWrk;}else {
 						// }
 					}
 					
-					if ($dayCode==6 && $arr['CWWTag']=='Y' && $OtHrs >=5){
+					//test ito if OT break gawin after 5 hrs 07/25/2024 ($dayCode==6 && $arr['CWWTag']=='Y' && $OtHrs >=5)
+					if ($dayCode==6 && $arr['CWWTag']=='Y' && $OtHrs >=6){
 						$OtHrs--;
 					}
 											
@@ -1437,7 +1438,8 @@ if ($cday!='Y'){$hrsWrk=$hrsWrk;}else {
 				} 
 				else 
 				{
-					$time['hrsWork'] = ($time['hrsWork']>=5) ? $time['hrsWork']-1:$time['hrsWork'];
+					//test ito if OT break gawin after 5 hrs 07/25/2024 $time['hrsWork'] = ($time['hrsWork']>=5) ? $time['hrsWork']-1:$time['hrsWork'];
+					$time['hrsWork'] = ($time['hrsWork']>=6) ? $time['hrsWork']-1:$time['hrsWork'];
 				}	
 				
 				
