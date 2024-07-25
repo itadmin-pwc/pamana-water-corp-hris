@@ -188,7 +188,7 @@ $fullname = $empInfo['empLastName'] . ", " . htmlspecialchars(addslashes($empInf
 				}
 		 }
 		
-		$qrygetLeaveAppDtl .= "ORDER BY emp.empLastName, dtl.lvdateFrom limit $intOffset,$intLimit";
+		$qrygetLeaveAppDtl .= "ORDER BY dtl.lvStat emp.empLastName, dtl.lvdateFrom limit $intOffset,$intLimit";
 		//echo $qrygetLeaveAppDtl;
 		
 		$resgetLeaveAppDtl = $leaveAppObj->execQry($qrygetLeaveAppDtl);
