@@ -174,10 +174,10 @@ class TSPostingObj extends dateDiff {
 						
 					if ($valTSList['otCrossTag']=='Y') {
 						$var = $this->calDiff("{$valTSList['tsDate']} {$valTSList['otIn']}",$this->DateAdd($valTSList['tsDate'])." $OTOut",'m')/60;
-						$OtHrs = number_format($var, 2, '.', '');
+						$OtHrs = number_format(floor($var * 100) / 100, 2, '.', '');
 					} else {
 						$var = $this->calDiff("{$valTSList['tsDate']} {$valTSList['otIn']}","{$valTSList['tsDate']} $OTOut",'m')/60;
-						$OtHrs = number_format($var, 2, '.', '');
+						$OtHrs = number_format(floor($var * 100) / 100, 2, '.', '');
 					}
 //					$hrsOt = (($hrsWrk-$SchedHrsWork)<$OtHrs) ? $hrsWrk-$SchedHrsWork:$OtHrs;
 					$hrsOt = $OtHrs;
@@ -429,7 +429,7 @@ class TSPostingObj extends dateDiff {
 									//minus break
 									$hrsOTLe8 = $hrsOt;
 									$hrsOTGt8 = 0;
-									// if($valTSList['empNo'] == '010000065' && $valTSList['tsDate'] == '2024-02-10') {
+									// if($valTSList['empNo'] == '010000073') {
 									// 	echo $hrsOt . '<br>';
 									// 	echo $valTSList['shiftCode'] . '<br>';
 									// 	echo $sat . '<br>';
@@ -442,7 +442,7 @@ class TSPostingObj extends dateDiff {
 									// }
 								}else{
 
-									// if($valTSList['empNo'] == '010000013' && $valTSList['tsDate'] == '2024-02-12') {
+									// if($valTSList['empNo'] == '010000073') {
 									// 	echo $hrsOt . '<br>';
 									// 	echo $valTSList['shiftCode'] . '<br>';
 									// 	echo $sat . '<br>';
@@ -901,7 +901,7 @@ class TSPostingObj extends dateDiff {
 	function computehrsWork($arr) 
 	{
 		//balik dito
-		// if($arr['empNo'] == '010000065') {
+		// if($arr['empNo'] == '010000073') {
 		// 	echo $arr['empNo'] . '<br>';
 		// 	echo $arr['timeIn'] . '<br>';
 		// 	echo $arr['timeOut'] . '<br>';
@@ -1038,7 +1038,15 @@ class TSPostingObj extends dateDiff {
 						}
 						
 						//$time['hrsOT'] = (($time['hrsWork']-$SchedHrsWork)<$OtHrs) ? $time['hrsWork']-$SchedHrsWork:$OtHrs;
-						$time['hrsOT'] = number_format($var, 2, '.', '');
+						$time['hrsOT'] = number_format(floor($var * 100) / 100, 2, '.', '');
+						// if($arr['empNo'] == '010000073') {
+						// 	echo $arr['empNo'] . '<br>';
+						// 	echo $arr['timeIn'] . '<br>';
+						// 	echo $arr['timeOut'] . '<br>';
+						// 	echo $arr['otIn'] . '<br>';
+						// 	echo $arr['otOut'] . '<br><br>';
+						// 	echo $time['hrsOT'] . '<br>';
+						// }
 						
 						//compute ND for OT
 						if (((float)str_replace(":",".",$time['Out'])>22 && (float)str_replace(":",".",$arr['otOut'])>22) || $arr['otCrossTag']=='Y')  {
@@ -1318,18 +1326,18 @@ if ($cday!='Y'){$hrsWrk=$hrsWrk;}else {
 						//$OTIn = ((float)str_replace(":",".",$arr['otIn'])<(float)str_replace(":",".",$time['Out'])) ? $time['Out']:$arr['otIn'];						
 
 						$var = $this->calDiff("{$arr['tsDate']} $OTIn",$this->DateAdd($arr['tsDate'])." $OTOut",'m')/60;
-						$OtHrs = number_format($var, 2, '.', '');
+						$OtHrs = number_format(floor($var * 100) / 100, 2, '.', '');
 						$time['hrsND'] = $OtHrs - round($this->calDiff("{$arr['tsDate']} $OTIn","{$arr['tsDate']} 22:00",'m')/60,2);
 
 					} else {
 						$var = $this->calDiff("{$arr['tsDate']} $OTIn","{$arr['tsDate']} $OTOut",'m')/60;
-						$OtHrs = number_format($var, 2, '.', '');
+						$OtHrs = number_format(floor($var * 100) / 100, 2, '.', '');
 						if (((float)str_replace(":",".",$arr['timeOut'])>22 || (float)str_replace(":",".",$arr['otOut'])>22))  {
 							$time['hrsND'] += $OtHrs - round($this->calDiff("{$arr['tsDate']} $OTIn","{$arr['tsDate']} 22:00",'m')/60,2);
 						}
 
 						//hanap ot dito
-						// if($arr['empNo'] == '010000065' && $arr['tsDate'] == '2023-11-11') {
+						// if($arr['empNo'] == '010000073') {
 						// 	echo "" . '<br>';
 						// 	echo $OTOut . '<br>';
 						// 	echo $time['hrsWork'] . " - " . $arr['tsDate'] . ' - ' . $arr['dayType'] . '<br>' . '<br>'; 
@@ -1472,13 +1480,13 @@ if ($cday!='Y'){$hrsWrk=$hrsWrk;}else {
 				if (((float)str_replace(":",".",$arr['timeOut'])>22 && (float)str_replace(":",".",$arr['otOut'])>22))  {
 					
 					$time['hrsND'] += round($this->calDiff("{$arr['tsDate']} 22:00","{$arr['tsDate']} $OTOut",'m')/60,2);
-					// if($arr['empNo'] == '010000065') {
-					// 	echo $arr['empNo'] == '010000065' ? $arr['empNo'] . ' - ' . $arr['tsDate'] . '<br>' : '';
+					// if($arr['empNo'] == '010000073') {
+					// 	echo $arr['empNo'] == '010000073' ? $arr['empNo'] . ' - ' . $arr['tsDate'] . '<br>' : '';
 							
-					// 	echo $arr['empNo'] == '010000065' ? $arr['timeIn'] . '<br>' : '';
-					// 	echo $arr['empNo'] == '010000065' ? $arr['timeOut'] . '<br>' : '';
-					// 	echo $arr['empNo'] == '010000065' ? $arr['dayType'] . '<br>' : '';
-					// 	echo $arr['empNo'] == '010000065' ? 'ND: ' . $time['hrsND'] . '<br>' : '';
+					// 	echo $arr['empNo'] == '010000073' ? $arr['timeIn'] . '<br>' : '';
+					// 	echo $arr['empNo'] == '010000073' ? $arr['timeOut'] . '<br>' : '';
+					// 	echo $arr['empNo'] == '010000073' ? $arr['dayType'] . '<br>' : '';
+					// 	echo $arr['empNo'] == '010000073' ? 'ND: ' . $time['hrsND'] . '<br>' : '';
 					// }
 
 				}elseif ((float)str_replace(":",".",$arr['timeOut'])<22 &&(float)str_replace(":",".",$arr['otOut'])<22 && $arr['otCrossTag']=='Y')  {
@@ -1556,7 +1564,7 @@ if ($cday!='Y'){$hrsWrk=$hrsWrk;}else {
 						
 						if ($arr['otCrossTag']=='Y' || $arr['crossDay']=='Y') {
 							$var = $this->calDiff("{$arr['tsDate']} {$arr['otIn']}",$this->DateAdd($arr['tsDate'])." {$arr['otOut']}",'m')/60;
-							$OtHrs = number_format($var, 2, '.', '');
+							$OtHrs = number_format(floor($var * 100) / 100, 2, '.', '');
 							if ((float)str_replace(":",".",$OTOut)>22)  {
 								if ((float)str_replace(":",".",$time['Out'])>22)
 									$time['hrsND'] += round($this->calDiff("{$arr['tsDate']} $OTIn",$this->DateAdd($arr['tsDate'])." $OTOut",'m')/60,2);
@@ -1565,7 +1573,7 @@ if ($cday!='Y'){$hrsWrk=$hrsWrk;}else {
 								}
 						} else {
 							$var = $this->calDiff("{$arr['tsDate']} {$arr['otIn']}","{$arr['tsDate']} {$arr['otOut']}",'m')/60;
-							$OtHrs = number_format($var, 2, '.', '');
+							$OtHrs = number_format(floor($var * 100) / 100, 2, '.', '');
 							if ((float)str_replace(":",".",$OTOut)>22)  {
 								if ((float)str_replace(":",".",$time['Out'])>22)
 									$time['hrsND'] += round($this->calDiff("{$arr['tsDate']} $OTIn","{$arr['tsDate']} $OTOut",'m')/60,2);

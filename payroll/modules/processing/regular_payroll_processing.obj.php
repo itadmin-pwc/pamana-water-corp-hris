@@ -603,7 +603,9 @@ class regPayrollProcObj extends commonObj {
 						//$dai_allowAmnt  = ($allowArrVal['allowTag']=='D'?$allowArrVal['allowAmt']*$noCompDays:$allowArrVal['allowAmt']);
 						//Pamana Update
 						$allowance_pamana = $allowArrVal['allowAmt'] / 2;
-						$dai_allowAmnt  = ($allowArrVal['allowTag']=='D'?$allowance_pamana*$noCompDays:$allowance_pamana);
+						//$dai_allowAmnt  = ($allowArrVal['allowTag']=='D'?$allowance_pamana*$noCompDays:$allowance_pamana);
+						$dai_allowAmnt  = $allowance_pamana;
+						//echo $dai_allowAmnt . '<br>';
 						switch (trim($allowArrVal['allowPayTag'])){
 							case 'P':
 								//$totalAllowAmnt = $dai_allowAmnt * ($arr_empEarnings_curr["sumBasic"]/$arr_empEarnings_denom_curr["sumBasic"]);
@@ -660,7 +662,6 @@ class regPayrollProcObj extends commonObj {
 							$empTardUt = (float)$empTardUt*-1;
 						else
 							$empTardUt = 0;
-
 
 						$totalAllowAmnt =	$dai_allowAmnt * ($emp_AccruedDays[$allowArrVal['empNo']] - ($empTardUt/$allowArrVal['empDrate']));
 
@@ -1371,6 +1372,41 @@ WHERE tk.compCode = '".$_SESSION["company_code"]."'
 			//echo "hdmf: " . $hdmf . "<br>";
 			$total_deduction = $sss + $phil + $hdmf;
 			//echo "total_deduction: " . $total_deduction . "<br>";
+
+			//08/05/2024 Added for tax computation of newly hired *********************************
+			// Define the hire date
+			$dateHired = substr($arrEmpInfo["dateHired"], 0, 10); //'2024-05-27';
+
+			// Convert the hire date string to a Unix timestamp
+			$hireDateTimestamp = strtotime($dateHired);
+
+			// Get the current year and create a date string for December 1st of the current year
+			$currentYear = date('Y');
+			$decemberDateString = $currentYear . '-12-01';
+			$decemberDateTimestamp = strtotime($decemberDateString);
+
+			// Calculate the difference in months
+			$hireYear = date('Y', $hireDateTimestamp);
+			$hireMonth = date('m', $hireDateTimestamp);
+			$decemberYear = date('Y', $decemberDateTimestamp);
+			$decemberMonth = date('m', $decemberDateTimestamp);
+
+			$yearDiff = $decemberYear - $hireYear;
+			$monthDiff = $decemberMonth - $hireMonth;
+
+			$dateDiff = ($yearDiff * 12) + $monthDiff;
+
+			// Assume a salary value
+			$salary = (float)$arrEmpInfo["empMrate"]; // Replace with the actual salary
+
+			// Calculate the gross salary based on the difference
+			if ($dateDiff >= 12) {
+				$gross = $salary * 12;
+			} else {
+				$gross = $salary * $dateDiff;
+			}
+			//08/05/2024 *********************************************************************************
+
 			$net_taxable_income = $gross - $total_deduction;
 			//echo "net_taxable_income: " . $net_taxable_income . "<br>";
 			$estEarn = $net_taxable_income;
@@ -1967,13 +2003,16 @@ $qryUpdateEmpLoans = "UPDATE tblEmpLoansDtl SET dedTag = ''
 					$Trns = $this->writeToTblEarningsAllow('E1',$AdjustmentAllowanceProcVal['empNo'],$AdjustmentAllowanceProcVal['trnCode'],$AdjustmentAllowanceProcVal['sumEarnAmnt'],$AdjustmentAllowanceProcVal['sprtPS']);
 				}
 		}//end foreach for Adjustment Allowance
-		
 		foreach ((array)$this->getArrAllow($emp_AccruedDays,$emp_AmntTardy,$emp_AmntUt,$emp_LegalDays) as $arrAllwIndex => $arrAllwVal){//foreach for allowance
 			$tmpAllwIndex = explode("-",$arrAllwIndex);
 			$arrEmpAllow = $this->getEmpAllowance('tblAllowance',$tmpAllwIndex[0],'AND tblAllowance.allowCode = '.$tmpAllwIndex[2]);
 			
 			if((float)$arrAllwVal != 0){
 				if($Trns){
+					// echo $arrEmpAllow[0]['compCode'] . '<br>';
+					// echo $arrEmpAllow[0]['empNo'] . '<br>';
+					// echo $arrEmpAllow[0]['allowCode'] . '<br>';
+					// echo sprintf("%01.2f",$arrAllwVal) . '<br><br>';
 					//to be confirmed
 					$allowanceAmount = $arrEmpAllow[0]['allowAmt'];
 					// if($arrEmpAllow[0]['allowCode'] == 3) {
