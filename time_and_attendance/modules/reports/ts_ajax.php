@@ -122,6 +122,7 @@ switch ($inputId) {
 		}
 		$hist =  ($arr['pdStat'] !='O') ? 'hist':'';
 		$arrRD = $inqTSObj->TSProofList($_GET['empNo'],$_GET['branch'],$hist,$arr['pdFrmDate'],$arr['pdToDate'],$group,$_GET['cat']);
+
 		if (count($arrRD) == 0) {
 			echo "alert('No Record found.')";
 		} else {
