@@ -377,56 +377,6 @@ class pafObj extends commonObj {
 						$qrydel = "";
 						
 						foreach ($arrproc as $val) {
-//							if($val['old_enddate']!=""){
-//								$field = ",old_enddate";
-//								$value =",'{$val['old_enddate']}'";	
-//							}
-//							if($val['new_enddate']!=""){
-//								$field = ",new_enddate";
-//								$value = ",'{$val['new_enddate']}'";	
-//							}
-//							$qryprocess .= "Insert into tblPAF_EmpStatushist (controlNo,stat,compCode,empNo,old_status,new_status,
-//							effectivitydate,user_created,user_updated,remarks,dateadded,refNo,dateupdated,datereleased,
-//							old_nos,new_nos  $field) 
-//							values ('{$val['controlNo']}','{$val['stat']}','{$val['compCode']}','{$val['empNo']}','{$val['old_status']}',
-//							'{$val['new_status']}','{$val['effectivitydate']}','{$val['userid']}','{$this->session['user_id']}',
-//							'{$val['remarks']}','{$val['dateadded']}','{$val['refNo']}','{$this->today}','{$val['datereleased']}',
-//							'{$val['old_nos']}','{$val['new_nos']}' $value);";							
-//							$empfield = " compCode='{$this->get['compCode']}'";
-//							
-//							if($val['new_status']!=""){
-//								$empfield .= ",employmentTag='{$val['new_status']}'";
-//								if ($val['new_status'] == 'RG'){
-//									$dtResigned = ",dateReg='{$val['effectivitydate']}'";
-//								}
-//							}
-//							
-//							if($val['new_nos']!=""){
-//								$natures = $this->setNatures($val['new_nos']);
-//								$qrySeparated = "Insert into tblSeparatedEmployees (empNo,natureCode,[year],reason,dateAdded,
-//								dateReleased) values('{$val['empNo']}','{$val['new_nos']}','".date("Y")."','{$val['remarks']}',
-//								'{$val['dateadded']}','{$val['datereleased']}');";
-//							}
-//							if($val['new_enddate']!=""){
-//								$empfield .= ",empEndDate='{$val['new_enddate']}'";	
-//							}
-//							
-//							if ($natures == 'RS' || $natures == 'TR'  || $natures == 'AWOL'){
-//								$empfield .= ",empStat='RS'";
-//								$dtResigned = ",dateResigned='{$val['effectivitydate']}'";
-//							}
-//							elseif ($natures == 'EOC'){
-//								$empfield .= ",empStat='RS'";
-//								$dtResigned = ",endDate='{$val['effectivitydate']}'";
-//							}
-//							elseif ($natures == 'IN'){
-//								$empfield .= ",empStat='IN'";	
-//								$dtResigned = ",dateResigned='{$val['effectivitydate']}'";
-//							}
-//							
-//							$qryempMast .= "Update tblEmpMast set $empfield $dtResigned 
-//							where empNo='{$val['empNo']}' and compCode='{$val['compCode']}';";
-//							unset($dtResigned);
 							if($val['old_enddate']!=""){
 								$field = ",old_enddate";
 								$value =",'{$val['old_enddate']}'";	
@@ -774,7 +724,11 @@ class pafObj extends commonObj {
 					
 					$qryempstat = "";
 						$qryempMast = "";
-						$qryprocess = "";
+						$qryprocess = "INSERT INTO tblpaf_allowancehist
+										SELECT * FROM tblPAF_Allowance 
+										where compCode='{$_SESSION['company_code']}' and stat='R' $and";
+
+						echo $qryprocess;
 						$qrydel = "";
 						$qryempMastInsert = "";
 						$qryempMastUpdate = "";
@@ -805,51 +759,11 @@ class pafObj extends commonObj {
 													AND allowCode  = '{$row['allowCode']}';\n "; 
 
 
-							}}$qrydel .= "Delete from tblPAF_Allowance where compCode='{$_SESSION['company_code']}' and stat='R' $and;";	}
-					
-
-/* 						foreach($resAllw as $val) {
-							$qryprocess .= "Insert into tblPAF_Allowancehist (compCode, empNo, allowCode, allowAmt,allowAmtold,
-												allowSked, allowTaxTag, allowPayTag, allowStart, allowEnd, allowStat, sprtPS, refNo,
-												controlNo, effectivitydate, dateadded, dateupdated, user_created, 
-												user_updated,allowTag,stat) 
-											values ('{$val['compCode']}', '{$val['empNo']}', '{$val['allowCode']}',
-												'{$val['allowAmt']}', '{$val['allowAmtold']}', '{$val['allowSked']}',
-												'{$val['allowTaxTag']}', '{$val['allowPayTag']}', '{$val['allowStart']}',
-												'{$val['allowEnd']}', '{$val['allowStat']}', '{$val['sprtPS']}', '{$val['refNo']}',
-												'{$val['controlNo']}', '{$val['effectivitydate']}', '{$this->today}', 
-												'{$this->today}', '{$val['userid']}', '{$_SESSION['user_id']}', 
-												'{$val['allowTag']}', '{$val['stat']}'); ";
-							if ($this->checkEmpAllow($val['empNo'],$val['allowCode'])==0) {
-								$qryempMastInsert .= "Insert into tblAllowance (compCode, empNo, allowCode, allowAmt, allowSked, 
-													allowTaxTag, allowPayTag, allowStart, allowEnd, allowStat, sprtPS,allowTag) 
-												values ('{$val['compCode']}', '{$val['empNo']}', '{$val['allowCode']}', 
-													'{$val['allowAmt']}', '{$val['allowSked']}', '{$val['allowTaxTag']}',
-													'{$val['allowPayTag']}', '{$val['allowStart']}', '{$val['allowEnd']}',
-													'{$val['allowStat']}','{$val['sprtPS']}','{$val['allowTag']}');\n";
-							} else {
-								$qryempMastUpdate .= "Update tblAllowance set allowAmt='{$val['allowAmt']}',
-													allowTag='{$val['allowTag']}',allowSked='{$val['allowSked']}',
-													allowTaxTag='{$val['allowTaxTag']}',sprtPS='{$val['sprtPS']}',
-													allowStat='{$val['allowStat']}',allowPayTag='{$val['allowPayTag']}' 
-												where compCode = '{$_SESSION['company_code']}' AND empNo = '{$val['empNo']}'  
-													AND allowCode  = '{$val['allowCode']}';\n "; 
-
-
-							}
-				//if($qryempMastUpdate!=""){
-					//$Trns = $this->execQryI($qryempMastUpdate);	
-				//}
-			
-						
-						}
-						 */
+							}}
+							$qrydel .= "Delete from tblPAF_Allowance where compCode='{$_SESSION['company_code']}' and stat='R' $and;";	}
 										
 					break;
 				}
-				/* echo $pushNumber;
-				echo $allstat."-".$cnt."-".$empno.$sqlqry->num_rows;
-			echo $arrStr[1]; */
 			
 				if($qryempBio!=""){
 					$Trns = $this->execQryI($qryempBio);	

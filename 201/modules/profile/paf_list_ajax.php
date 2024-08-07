@@ -90,12 +90,12 @@ switch($_GET['stat']) {
 	<script type='text/javascript' src='movement.js'></script>
 	<link rel="stylesheet" type="text/css" href="../../style/payroll.css"></link>
     <style type="text/css">
-<!--
+/* 
 .style1 {
 	font-family: verdana;
 	font-size: 11px;
 }
--->
+ */
     </style>
 </head>
 	<BODY onLoad="" >
