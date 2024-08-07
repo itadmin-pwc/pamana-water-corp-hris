@@ -1031,6 +1031,12 @@ class transactionObj extends commonObj {
 		}	
 	}
 
+	function isValidTimeFormat($time) {
+		// Regular expression to match time format HH:MM
+		$pattern = '/^(2[0-3]|[01]?[0-9]):([0-5]?[0-9])$/';
+		return preg_match($pattern, $time);
+	}
+
 	function tran_tsa($array, $action)
 	{
 		switch($action)
@@ -1040,6 +1046,11 @@ class transactionObj extends commonObj {
 				$crossDay = '';
 				$timeIn = strtotime($array["timeIn"]);
 				$timeOut = strtotime($array["timeOut"]);
+
+				$_timeIn = $this->isValidTimeFormat($array["timeIn"]) ? $array["timeIn"] : '';
+				$_lunchOut = $this->isValidTimeFormat($array["lunchOut"]) ? $array["lunchOut"] : '';
+				$_lunchIn = $this->isValidTimeFormat($array["lunchIn"]) ? $array["lunchIn"] : '';
+				$_timeOut = $this->isValidTimeFormat($array["timeOut"]) ? $array["timeOut"] : '';
 
 				if ($timeOut < $timeIn) {
 					$crossDay = 'Y';
@@ -1082,10 +1093,10 @@ class transactionObj extends commonObj {
 														'".$sheets['lunchOut']."',
 														'".$sheets['lunchIn']."',
 														'".$sheets['timeOut']."',
-														'".$array['timeIn']."',
-														'".$array['lunchOut']."',
-														'".$array['lunchIn']."',
-														'".$array['timeOut']."',
+														'".$_timeIn."',
+														'".$_lunchOut."',
+														'".$_lunchIn."',
+														'".$_timeOut."',
 														'".$array['violationCd']."',
 														'',
 														'".$crossDay."',
@@ -1109,6 +1120,11 @@ class transactionObj extends commonObj {
 				$timeIn = strtotime($array["timeIn"]);
 				$timeOut = strtotime($array["timeOut"]);
 
+				$_timeIn = $this->isValidTimeFormat($array["timeIn"]) ? $array["timeIn"] : '';
+				$_lunchOut = $this->isValidTimeFormat($array["lunchOut"]) ? $array["lunchOut"] : '';
+				$_lunchIn = $this->isValidTimeFormat($array["lunchIn"]) ? $array["lunchIn"] : '';
+				$_timeOut = $this->isValidTimeFormat($array["timeOut"]) ? $array["timeOut"] : '';
+
 				if ($timeOut < $timeIn) {
 					$crossDay = 'Y';
 				}
@@ -1122,10 +1138,10 @@ class transactionObj extends commonObj {
 														actual_lunchOut = '".$sheets['lunchOut']."',
 														actual_lunchIn = '".$sheets['lunchIn']."',
 														actual_timeOut = '".$sheets['timeOut']."',
-														timeIn = '".$array['timeIn']."',
-														lunchOut = '".$array['lunchOut']."',
-														lunchIn = '".$array['lunchIn']."',
-														timeOut = '".$array['timeOut']."',
+														timeIn = '".$_timeIn."',
+														lunchOut = '".$_lunchOut."',
+														lunchIn = '".$_lunchIn."',
+														timeOut = '".$_timeOut."',
 														editReason = '".$array['violationCd']."',
 														otherDetails = '',
 														crossTag = '".$crossDay."',

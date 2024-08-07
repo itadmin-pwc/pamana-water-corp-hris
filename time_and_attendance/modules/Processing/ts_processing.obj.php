@@ -89,6 +89,19 @@ class TSProcessingObj extends dateDiff {
 				$sqlUnpostedRD .= " Update tblTK_ChangeRDApp  set completeTag='C' where empNo = '{$valRD['empNo']}' AND cast(cRDDateTo as date) = '".date('Y-m-d',strtotime($valRD['cRDDateTo']))."' AND  compCode='{$_SESSION['company_code']}';";
 			}
 		}
+		
+		//Process OB
+		if ($Trns) {
+			$tmp_empNo = $tmp_obDate = $sqlUpdateOB = "";
+			foreach($this->arrOBListgrp as $valOB) {
+				$sqlUpdateOB .= $this->getEmpOB($valOB['empNo'],$valOB['obDate'],$valOB['hrs8Deduct']);
+				if ($Trns) {
+					$Trns = $this->execQryI($this->getEmpOB($valOB['empNo'],$valOB['obDate'],$valOB['hrs8Deduct']));
+				} else {
+					break; 	
+				}
+			}
+		}
 
 		//Process Change Shift
 		$sqlUpdateCS = "";
@@ -154,21 +167,6 @@ class TSProcessingObj extends dateDiff {
 				}
 			}
 		}
-		
-	//Process OB
-		if ($Trns) {
-			$tmp_empNo = $tmp_obDate = $sqlUpdateOB = "";
-			foreach($this->arrOBListgrp as $valOB) {
-				//$sqlUpdateOB .= $this->getEmpOB($valOB['empNo'],$valOB['obDate'],$valOB['hrs8Deduct']);
-				if ($Trns) {
-					$Trns = $this->execQryI($this->getEmpOB($valOB['empNo'],$valOB['obDate'],$valOB['hrs8Deduct']));
-				} else {
-					break; 	
-				}
-			}
-		}
-		
-		
 		
 		//Process TS Corrections
 		if ($Trns) {
