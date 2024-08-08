@@ -1426,7 +1426,7 @@ WHERE tk.compCode = '".$_SESSION["company_code"]."'
         //echo $empNo."==".$taxDue."\n". "<br>";
         
         $taxPeriod = ($estTaxYear / 24);
-        //echo $empNo."==".$taxPeriod."\n". "<br>";
+        //echo $empNo."==".round($taxPeriod, 2)."\n". "<br>";
                                
         /*if($this->get['pdNum']=='24')
         {
@@ -1437,7 +1437,7 @@ WHERE tk.compCode = '".$_SESSION["company_code"]."'
         if ($this->get['pdNum'] < 24)
             $taxPeriod = ($taxPeriod < 0 ? 0 : $taxPeriod);
  
-		return sprintf("%01.2f", $taxPeriod);
+		return round($taxPeriod, 2);
 	}
 	
 	function getTimeSheetAdjusments($empEn)
@@ -2448,8 +2448,6 @@ $qryUpdateEmpLoans = "UPDATE tblEmpLoansDtl SET dedTag = ''
 				}
 			}
 			
-			
-			
 			if((int)$this->getCutOffPeriod() == 2) 
 				{	
 			
@@ -2568,10 +2566,10 @@ $qryUpdateEmpLoans = "UPDATE tblEmpLoansDtl SET dedTag = ''
 			$totEmpNonTaxAllow = $this->getEmpNonTaxAllow($empForDedVal['empNo']);
 			
 			//$netsalary = ($grossEarnings+$txbleEarningsPd)-($totDedForPeriod+$totalTaxDeducted);
-			//*echo "Gross Earnings = ".$grossEarnings."\n";*/
+			//echo "Gross Earnings = ".$grossEarnings."<br><br><br><br>";
 			
-			//echo "Tax = ".$totalTaxDeducted."\n";
 			$totalTaxDeducted += $totalTaxAdj;
+			//echo "Tax = ".$totalTaxDeducted."<br><br><br>";
 			$netsalary = ($grossEarnings)-($totDedForPeriod+$totalTaxDeducted+$YearEndTaxAdj);
 						
 			$dataToYtdHist 	   = $this->getDataToYtdDataHist($empForDedVal['empNo']);
