@@ -947,7 +947,6 @@ WHERE tk.compCode = '".$_SESSION["company_code"]."'
 						    AND emp.empPayCat = '{$this->session['pay_category']}'
 						    AND ytd.pdYear = '{$this->get['pdYear']}'
 						    AND ytd.empNo = '{$empNo}'";
-							//echo $qryGetDataToYtdHist . '<br><br>';
 		$resGetDataToYtdHist = $this->execQryI($qryGetDataToYtdHist);	
 		return 	$this->getSqlAssocI($resGetDataToYtdHist);
 	}
@@ -1353,26 +1352,26 @@ WHERE tk.compCode = '".$_SESSION["company_code"]."'
             // echo $empNo."==".$estEarn."\n" . "<br>";
 
 			//PAMANA 6/24/2023
-			echo "<br><br>" . $empNo . '<br>';
+			//echo "<br><br>" . $empNo . '<br>';
 			$salary = (float)$arrEmpInfo["empMrate"];
 			$gross = $salary * 12;
-			echo "gross: " . $gross . "<br>";
+			//echo "gross: " . $gross . "<br>";
 
 			$sssArr = $this->getGovDedAmnt($salary);
 			//var_dump($sssArr);
 			if ($sssArr['sssEmployee']!="") {$SssEmp=$sssArr['sssEmployee'];} else {$SssEmp=0;}
 			if ($sssArr['mProveFund_EE']!="") {$mProveEE=$sssArr['mProveFund_EE'];} else {$mProveEE=0;}
-			echo "sss emp: " . $SssEmp . "<br>";
-			echo "sss prove: " . $mProveEE . "<br>";
+			//echo "sss emp: " . $SssEmp . "<br>";
+			//echo "sss prove: " . $mProveEE . "<br>";
 			$sss = ($SssEmp + $mProveEE) * 12;
 
-			echo "sss: " . $sss . "<br>";
+			//echo "sss: " . $sss . "<br>";
 			$phil = $this->getGovDedAmntPhic($salary) * 12;
-			echo "phil: " . $phil . "<br>";
+			//echo "phil: " . $phil . "<br>";
 			$hdmf = 100 + (200 * 11);
-			echo "hdmf: " . $hdmf . "<br>";
+			//echo "hdmf: " . $hdmf . "<br>";
 			$total_deduction = $sss + $phil + $hdmf;
-			echo "total_deduction: " . $total_deduction . "<br>";
+			//echo "total_deduction: " . $total_deduction . "<br>";
 
 			//08/05/2024 Added for tax computation of newly hired *********************************
 			// Define the hire date
@@ -2753,9 +2752,10 @@ $qryUpdateEmpLoans = "UPDATE tblEmpLoansDtl SET dedTag = ''
                                 $res = $this->getSqlAssocI($resGetGovDed);
                                 $phicAmt = 0;
                                 if ($res['fixTag']=='Y'){
-                                	$phicAmt = round($res['fixAmt']/2,2);
+                                $phicAmt = round($res['fixAmt']/2,2);
                                 } else {
-                                	$phicAmt = round(($monthlyGrossEarn*$res['multiplier'])/2,2);
+                                $phicAmt = round(($monthlyGrossEarn*$res['multiplier'])/2,2);
+
                                 }
 
                                 return $phicAmt;
