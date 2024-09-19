@@ -1238,6 +1238,13 @@ WHERE tk.compCode = '".$_SESSION["company_code"]."'
 		return $this->getSqlAssocI($rsgetEmpYtdDataHist);
 	}
 
+	private function getEmpSumYtdDataHist($empNo) {
+		$qrygetEmpYtdDataHist = "Select SUM(YtdGross) as YtdGross, Sum(YtdTaxable) as YtdTaxable, Sum(YtdGovDed) as YtdGovDed, sum(YtdTax) as YtdTax from tblYtdDataHist where empNo='".$empNo."' and pdYear='".$this->get['pdYear']."' and compCode='".$_SESSION["company_code"]."'";
+		$rsgetEmpYtdDataHist = $this->execQryI($qrygetEmpYtdDataHist);
+		
+		return $this->getSqlAssocI($rsgetEmpYtdDataHist);
+	}
+
 	private function getEmpYtdData($empNo)
 	{
 		$qrygetEmpYtdData = "Select * from tblYtdData where empNo='".$empNo."' and pdYear='".$this->get['pdYear']."' and compCode='".$_SESSION["company_code"]."'";
@@ -1305,7 +1312,7 @@ WHERE tk.compCode = '".$_SESSION["company_code"]."'
         $basicPay = (float)$minBasicPay;
                                
         // //Get the tblYtdDataHist of the Employee
-        $arrYtdDataHist = $this->getEmpYtdDataHist($empNo);
+        //$arrYtdDataHist = $this->getEmpYtdDataHist($empNo);
         
         //Get the Previous Employe Tag / Mimimum Wage Earnner
         $arrEmpInfo = $this->getUserInfo($_SESSION["company_code"],$empNo,'');
@@ -1342,75 +1349,101 @@ WHERE tk.compCode = '".$_SESSION["company_code"]."'
         }
         else
         {
-        	//echo "<br><br>" . $empNo."==".$gross_Taxable."+".$arrYtdDataHist["YtdTaxable"]."+".$empPrevEarnings."-".
-        	// $arrYtdDataHist["YtdGovDed"]."-".$sumGov."\n";
-            
-            //$estEarn =  (float)$gross_Taxable + (float)$arrYtdDataHist["YtdTaxable"] + (float)$empPrevEarnings -  (float)$arrYtdDataHist["YtdGovDed"] - (float)$sumGov - (float)$empPrevGovDed;
-            // echo $empNo."==".$estEarn."\n" . "<br>";
-            //$estEarn = (float)$estEarn / $this->get['pdNum'];
-            // echo $empNo."==".$estEarn."\n" . "<br>";
-            //$estEarn = (float)$estEarn * 24;
-            // echo $empNo."==".$estEarn."\n" . "<br>";
-
-			//PAMANA 6/24/2023
-			echo "<br><br>" . $empNo . '<br>';
 			$salary = (float)$arrEmpInfo["empMrate"];
-			$gross = $salary * 12;
-			echo "gross: " . $gross . "<br>";
 
-			$sssArr = $this->getGovDedAmnt($salary);
-			//var_dump($sssArr);
-			if ($sssArr['sssEmployee']!="") {$SssEmp=$sssArr['sssEmployee'];} else {$SssEmp=0;}
-			if ($sssArr['mProveFund_EE']!="") {$mProveEE=$sssArr['mProveFund_EE'];} else {$mProveEE=0;}
-			echo "sss emp: " . $SssEmp . "<br>";
-			echo "sss prove: " . $mProveEE . "<br>";
-			$sss = ($SssEmp + $mProveEE) * 12;
+			if($this->get['taxType'] == 1) {
+				//echo "<br><br>" . $empNo."==".$gross_Taxable."+".$arrYtdDataHist["YtdTaxable"]."+".$empPrevEarnings."-".
+				// $arrYtdDataHist["YtdGovDed"]."-".$sumGov."\n";
+				
+				//$estEarn =  (float)$gross_Taxable + (float)$arrYtdDataHist["YtdTaxable"] + (float)$empPrevEarnings -  (float)$arrYtdDataHist["YtdGovDed"] - (float)$sumGov - (float)$empPrevGovDed;
+				// echo $empNo."==".$estEarn."\n" . "<br>";
+				//$estEarn = (float)$estEarn / $this->get['pdNum'];
+				// echo $empNo."==".$estEarn."\n" . "<br>";
+				//$estEarn = (float)$estEarn * 24;
+				// echo $empNo."==".$estEarn."\n" . "<br>";
 
-			echo "sss: " . $sss . "<br>";
-			$phil = $this->getGovDedAmntPhic($salary) * 12;
-			echo "phil: " . $phil . "<br>";
-			$hdmf = 100 + (200 * 11);
-			echo "hdmf: " . $hdmf . "<br>";
-			$total_deduction = $sss + $phil + $hdmf;
-			echo "total_deduction: " . $total_deduction . "<br>";
-
-			//08/05/2024 Added for tax computation of newly hired *********************************
-			// Define the hire date
-			$dateHired = substr($arrEmpInfo["dateHired"], 0, 10); //'2024-05-27';
-
-			// Convert the hire date string to a Unix timestamp
-			$hireDateTimestamp = strtotime($dateHired);
-
-			// Get the current year and create a date string for December 1st of the current year
-			$currentYear = date('Y');
-			$decemberDateString = $currentYear . '-12-01';
-			$decemberDateTimestamp = strtotime($decemberDateString);
-
-			// Calculate the difference in months
-			$hireYear = date('Y', $hireDateTimestamp);
-			$hireMonth = date('m', $hireDateTimestamp);
-			$decemberYear = date('Y', $decemberDateTimestamp);
-			$decemberMonth = date('m', $decemberDateTimestamp);
-
-			$yearDiff = $decemberYear - $hireYear;
-			$monthDiff = $decemberMonth - $hireMonth;
-
-			$dateDiff = ($yearDiff * 12) + $monthDiff;
-
-			// Assume a salary value
-			$salary = (float)$arrEmpInfo["empMrate"]; // Replace with the actual salary
-
-			// Calculate the gross salary based on the difference
-			if ($dateDiff >= 12) {
+				//PAMANA 6/24/2023
+				//echo "<br><br>" . $empNo . '<br>';
 				$gross = $salary * 12;
-			} else {
-				$gross = $salary * $dateDiff;
-			}
-			//08/05/2024 *********************************************************************************
+				//echo "gross: " . $gross . "<br>";
 
-			$net_taxable_income = $gross - $total_deduction;
-			//echo "net_taxable_income: " . $net_taxable_income . "<br>";
-			$estEarn = $net_taxable_income;
+				$sssArr = $this->getGovDedAmnt($salary);
+				//var_dump($sssArr);
+				if ($sssArr['sssEmployee']!="") {$SssEmp=$sssArr['sssEmployee'];} else {$SssEmp=0;}
+				if ($sssArr['mProveFund_EE']!="") {$mProveEE=$sssArr['mProveFund_EE'];} else {$mProveEE=0;}
+				//echo "sss emp: " . $SssEmp . "<br>";
+				//echo "sss prove: " . $mProveEE . "<br>";
+				$sss = ($SssEmp + $mProveEE) * 12;
+
+				//echo "sss: " . $sss . "<br>";
+				$phil = $this->getGovDedAmntPhic($salary) * 12;
+				//echo "phil: " . $phil . "<br>";
+				$hdmf = 100 + (200 * 11); //palitan ito ng 200 * 12 next year
+				//echo "hdmf: " . $hdmf . "<br>";
+				$total_deduction = $sss + $phil + $hdmf;
+				//echo "total_deduction: " . $total_deduction . "<br>";
+
+				//08/05/2024 Added for tax computation of newly hired *********************************
+				// Define the hire date
+				$dateHired = substr($arrEmpInfo["dateHired"], 0, 10); //'2024-05-27';
+
+				// Convert the hire date string to a Unix timestamp
+				$hireDateTimestamp = strtotime($dateHired);
+
+				// Get the current year and create a date string for December 1st of the current year
+				$currentYear = date('Y');
+				$decemberDateString = $currentYear . '-12-01';
+				$decemberDateTimestamp = strtotime($decemberDateString);
+
+				// Calculate the difference in months
+				$hireYear = date('Y', $hireDateTimestamp);
+				$hireMonth = date('m', $hireDateTimestamp);
+				$decemberYear = date('Y', $decemberDateTimestamp);
+				$decemberMonth = date('m', $decemberDateTimestamp);
+
+				$yearDiff = $decemberYear - $hireYear;
+				$monthDiff = $decemberMonth - $hireMonth;
+
+				$dateDiff = ($yearDiff * 12) + $monthDiff;
+
+				// Calculate the gross salary based on the difference
+				if ($dateDiff >= 12) {
+					$gross = $salary * 12;
+				} else {
+					$gross = $salary * $dateDiff;
+				}
+				//08/05/2024 *********************************************************************************
+
+				$net_taxable_income = $gross - $total_deduction;
+				//echo "net_taxable_income: " . $net_taxable_income . "<br>";
+				$estEarn = $net_taxable_income;
+			} elseif($this->get['taxType'] == 2) {
+				$arrSumYtdDataHis = $this->getEmpSumYtdDataHist($empNo);
+				$sssArr = $this->getGovDedAmnt($salary);
+				if ($sssArr['sssEmployee']!="") {$SssEmp=$sssArr['sssEmployee'];} else {$SssEmp=0;}
+				if ($sssArr['mProveFund_EE']!="") {$mProveEE=$sssArr['mProveFund_EE'];} else {$mProveEE=0;}
+				$phic = $this->getGovDedAmntPhic($salary);
+
+				$assumed = 24 - $this->get['pdNum'];
+				$assumed_salary = $assumed * $salary;
+				echo $empNo." Assumed Salary ==".$assumed_salary."\n" . "<br>";
+				$assumed_sss = $assumed * ($SssEmp + $mProveEE);
+				echo $empNo." Assumed SSS ==".$assumed_sss."\n" . "<br>";
+				$assumed_phic = $assumed * $phic;
+				echo $empNo." Assumed PHIC ==".$assumed_phic."\n" . "<br>";
+				$assumed_hdmf = $assumed * 200;
+				echo $empNo." Assumed HDMF ==".$assumed_hdmf."\n" . "<br>";
+				$assumed_deduct = $assumed_sss + $assumed_phic + $assumed_hdmf;
+				echo $empNo." Assumed Deduction ==".$assumed_deduct."\n" . "<br>";
+
+				$ytd_basic = $arrSumYtdDataHis['YtdTaxable'] + $gross_Taxable;
+				echo $empNo." YTD Basic ==".$ytd_basic."\n" . "<br>";
+				$ytd_deduct = $arrSumYtdDataHis['YtdGovDed'] + $phic;
+				echo $empNo." YTD Deduct ==".$ytd_deduct."\n" . "<br>";
+
+				echo $empNo."==".$gross_Taxable."\n" . "<br><br>";
+			}
+        	
         }
                          
         //Compute for the Net Taxable Earnings

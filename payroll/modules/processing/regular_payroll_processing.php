@@ -170,6 +170,19 @@ if(isset($_GET['action'])){
 								</td>
 							</tr>
 							<tr>
+								<td class="gridDtlLbl2" align="left" width="20%">
+									<font class="gridDtlLblTxt">Tax Type</font>
+								</td>
+								<td width="1%" class="gridDtlLbl2" align="center">:</td>
+								<td class="gridDtlVal2">
+										<select name="taxType" id="taxType">
+											<option value="1">Annualize</option>
+											<option value="2">Recompute</option>
+											<option value="0">---</option>
+										</select>
+								</td>
+							</tr>
+							<tr>
 								<td align="center" colspan="3" class="childGridFooter">
 									<? 
 										if(trim($arrPayPeriod['pdProcessTag']) == 'Y'){
@@ -211,6 +224,9 @@ if(isset($_GET['action'])){
 		var payCat = $('payCat').innerHTML.replace(' ','').split('-');
 		var payPd = $('payPd').innerHTML.replace(' ','').split('-');
 		var dteCvrd = $('DteCvrd').innerHTML.replace(' ','').split('-');
+		var taxType = document.frmProcRegPay.taxType.value;
+
+		console.log(taxType)
 
 		if(comCode[0] == ''){
 			alert('Company is Required');
@@ -286,7 +302,7 @@ if(isset($_GET['action'])){
 	}
 	
 
-		params = "?action="+act+"&pdNum="+payPd[0]+"&pdYear="+payPd[1].replace(' ','')+"&dtFrm="+dteCvrd[0]+"&dtTo="+dteCvrd[1].replace(' ','')+"&pdMonth="+$F('pdPayable');
+		params = "?action="+act+"&pdNum="+payPd[0]+"&pdYear="+payPd[1].replace(' ','')+"&dtFrm="+dteCvrd[0]+"&dtTo="+dteCvrd[1].replace(' ','')+"&pdMonth="+$F('pdPayable')+"&taxType="+taxType;
 		
 		new Ajax.Request('<?=$_SERVER['PHP_SELF']?>'+params,{
 			method : 'get',
