@@ -1417,56 +1417,82 @@ WHERE tk.compCode = '".$_SESSION["company_code"]."'
 				$net_taxable_income = $gross - $total_deduction;
 				//echo "net_taxable_income: " . $net_taxable_income . "<br>";
 				$estEarn = $net_taxable_income;
+
+				//Compute for the Net Taxable Earnings
+				//$netTaxable = (float) $estEarn - (float) $this->getTaxExemption($empTeu);
+				$netTaxable = (float) $estEarn;
+				//echo "Net Taxable == ".$netTaxable."\n" . "<br>";
+							
+				//Compute the Estimated Tax using the Annual Tax Table
+				$estTaxYear = $this->getAnnualTax($netTaxable);
+				echo $empNo." Est Tax Year == ".$estTaxYear."\n". "<br>";
+									
+				//Compute Taxes
+				//$taxDue = ($estTaxYear / 24) * $this->get['pdNum'];
+				//echo $empNo."==".$taxDue."\n". "<br>";
+				
+				$taxPeriod = ($estTaxYear / 24);
+				echo $empNo." Tax Period == ".round($taxPeriod, 2)."\n". "<br><br><br>";
+                               
 			} elseif($this->get['taxType'] == 2) {
+				$increase_salary = $this->getSalaryHist($_SESSION['company_code'], $empNo);
+				if(!empty($increase_salary)) {
+					echo var_dump($increase_salary) . '<br>';
+				}
+
 				$arrSumYtdDataHis = $this->getEmpSumYtdDataHist($empNo);
 				$sssArr = $this->getGovDedAmnt($salary);
 				if ($sssArr['sssEmployee']!="") {$SssEmp=$sssArr['sssEmployee'];} else {$SssEmp=0;}
 				if ($sssArr['mProveFund_EE']!="") {$mProveEE=$sssArr['mProveFund_EE'];} else {$mProveEE=0;}
 				$phic = $this->getGovDedAmntPhic($salary);
+				echo $empNo." Salary ==".$salary."\n" . "<br>";
+				$sss = $SssEmp + $mProveEE;
 
 				$assumed = 24 - $this->get['pdNum'];
+				$gov_assumed = floor((24 - $this->get['pdNum']) / 2);
+				echo $empNo." Gov Assumed ==".$gov_assumed."\n" . "<br>";
+				$salary = $salary / 2;
 				$assumed_salary = $assumed * $salary;
+				echo $empNo." Salary ==".$salary."\n" . "<br>";
 				echo $empNo." Assumed Salary ==".$assumed_salary."\n" . "<br>";
-				$assumed_sss = $assumed * ($SssEmp + $mProveEE);
+				echo $empNo." SSS ==".$sss."\n" . "<br>";
+				$assumed_sss = ($gov_assumed * $sss) + $sss;
 				echo $empNo." Assumed SSS ==".$assumed_sss."\n" . "<br>";
-				$assumed_phic = $assumed * $phic;
+				$assumed_phic = ($gov_assumed * $phic) + $phic;
+				echo $empNo." PHIC ==".$phic."\n" . "<br>";
 				echo $empNo." Assumed PHIC ==".$assumed_phic."\n" . "<br>";
-				$assumed_hdmf = $assumed * 200;
+				$assumed_hdmf = ($gov_assumed * 200) + 200;
 				echo $empNo." Assumed HDMF ==".$assumed_hdmf."\n" . "<br>";
 				$assumed_deduct = $assumed_sss + $assumed_phic + $assumed_hdmf;
 				echo $empNo." Assumed Deduction ==".$assumed_deduct."\n" . "<br>";
 
 				$ytd_basic = $arrSumYtdDataHis['YtdTaxable'] + $gross_Taxable;
 				echo $empNo." YTD Basic ==".$ytd_basic."\n" . "<br>";
-				$ytd_deduct = $arrSumYtdDataHis['YtdGovDed'] + $phic;
+				$total_basic = $ytd_basic + $assumed_salary;
+				echo $empNo." Total Basic ==".$total_basic."\n" . "<br>";
+				$ytd_deduct = $arrSumYtdDataHis['YtdGovDed'];
 				echo $empNo." YTD Deduct ==".$ytd_deduct."\n" . "<br>";
+				$total_deduction = $ytd_deduct + $assumed_deduct;
+				echo $empNo." Total Deduction ==".$total_deduction."\n" . "<br>";
 
-				echo $empNo."==".$gross_Taxable."\n" . "<br><br>";
+				$net_taxable_income = $total_basic - $total_deduction;
+				echo $empNo. " Net Taxable == " . $net_taxable_income . "<br>";
+				$estEarn = $net_taxable_income;
+
+				//Compute for the Net Taxable Earnings
+				//$netTaxable = (float) $estEarn - (float) $this->getTaxExemption($empTeu);
+				$netTaxable = (float) $estEarn;
+				//echo "Net Taxable == ".$netTaxable."\n" . "<br>";
+							
+				//Compute the Estimated Tax using the Annual Tax Table
+				$estTaxYear = $this->getAnnualTax($netTaxable);
+				echo $empNo." Est Tax Year == ".$estTaxYear."\n". "<br>";
+				
+				$taxPeriod = ($estTaxYear - $arrSumYtdDataHis['YtdTax']) / (25 - $this->get['pdNum']);
+				echo $empNo." Tax Period == ".round($taxPeriod, 2)."\n". "<br><br><br>";
 			}
         	
         }
-                         
-        //Compute for the Net Taxable Earnings
-        //$netTaxable = (float) $estEarn - (float) $this->getTaxExemption($empTeu);
-        $netTaxable = (float) $estEarn;
-        //echo "Net Taxable == ".$netTaxable."\n" . "<br>";
-                       
-        //Compute the Estimated Tax using the Annual Tax Table
-        $estTaxYear = $this->getAnnualTax($netTaxable);
-        //echo $empNo."==".$estTaxYear."\n". "<br>";
-                               
-        //Compute Taxes
-        //$taxDue = ($estTaxYear / 24) * $this->get['pdNum'];
-        //echo $empNo."==".$taxDue."\n". "<br>";
-        
-        $taxPeriod = ($estTaxYear / 24);
-        //echo $empNo."==".round($taxPeriod, 2)."\n". "<br>";
-                               
-        /*if($this->get['pdNum']=='24')
-        {
-            $taxPeriod = $taxPeriod;
-        }             
-        else*/
 
         if ($this->get['pdNum'] < 24)
             $taxPeriod = ($taxPeriod < 0 ? 0 : $taxPeriod);
@@ -2802,6 +2828,15 @@ $qryUpdateEmpLoans = "UPDATE tblEmpLoansDtl SET dedTag = ''
 						   AND   allowCode=3";
 
 		return $this->getSqlAssocI($this->execQryI($query));
+	}
+
+	function getSalaryHist($compCode,$empNo) {
+		$query = "SELECT * FROM tblpaf_payrollrelatedhist 
+						   WHERE compCode = '{$compCode}'
+						   AND   empNo    = '".trim($empNo)."'
+						   AND   effectivitydate > '{$_GET['dtTo']}'";
+
+		return $this->getArrResI($this->execQryI($query));
 	}
 	
 }
