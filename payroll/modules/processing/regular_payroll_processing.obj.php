@@ -1425,30 +1425,31 @@ WHERE tk.compCode = '".$_SESSION["company_code"]."'
 							
 				//Compute the Estimated Tax using the Annual Tax Table
 				$estTaxYear = $this->getAnnualTax($netTaxable);
-				echo $empNo." Est Tax Year == ".$estTaxYear."\n". "<br>";
+				//echo $empNo." Est Tax Year == ".$estTaxYear."\n". "<br>";
 									
 				//Compute Taxes
 				//$taxDue = ($estTaxYear / 24) * $this->get['pdNum'];
 				//echo $empNo."==".$taxDue."\n". "<br>";
 				
 				$taxPeriod = ($estTaxYear / 24);
-				echo $empNo." Tax Period == ".round($taxPeriod, 2)."\n". "<br><br><br>";
+				//echo $empNo." Tax Period == ".round($taxPeriod, 2)."\n". "<br><br><br>";
                                
 			} elseif($this->get['taxType'] == 2) {
 				$gov_assumed = floor((24 - $this->get['pdNum']) / 2);
 				$assumed = 25 - $this->get['pdNum']; // Remaining months
 				$_period = 25 - $assumed;
-				$increase_salary = $this->getSalaryHist($_SESSION['company_code'], $empNo); // Get salary increase history
-				if(!empty($increase_salary)) {
-					$latest_salary = $this->getLatestSalary($_SESSION['company_code'], $empNo);
-					echo $latest_salary['new_empMrate'] . '<br>';
-					$old_salary = $this->getOldSalary($_SESSION['company_code'], $empNo);
-					echo $old_salary['old_empMrate'] . '<br>';
-					$less = $latest_salary['new_empMrate'] - $old_salary['old_empMrate'];
-					$currentSalary = $salary - $less;
-				}else{
-					$currentSalary = $salary;
-				}
+				//salary increase experimental
+				// $increase_salary = $this->getSalaryHist($_SESSION['company_code'], $empNo); // Get salary increase history
+				// if(!empty($increase_salary)) {
+				// 	$latest_salary = $this->getLatestSalary($_SESSION['company_code'], $empNo);
+				// 	echo $latest_salary['new_empMrate'] . '<br>';
+				// 	$old_salary = $this->getOldSalary($_SESSION['company_code'], $empNo);
+				// 	echo $old_salary['old_empMrate'] . '<br>';
+				// 	$less = $latest_salary['new_empMrate'] - $old_salary['old_empMrate'];
+				// 	$currentSalary = $salary - $less;
+				// }else{
+				// 	$currentSalary = $salary;
+				// }
 				
 				$stackedSalary = 0;  // To accumulate salary
 				$stackedSSS = 0;     // To accumulate SSS
@@ -1457,22 +1458,24 @@ WHERE tk.compCode = '".$_SESSION["company_code"]."'
 
 				$month = 1;  // Start with December
 
-				$salary = $currentSalary;  // Default salary for the current month
+				//salary increase experimental
+				//$salary = $currentSalary;  // Default salary for the current month
 
 				while ($assumed != 0) {
 					$thisPeriod = $this->getThisPeriod(1, $_period);
 					
+					//salary increase experimental
 					// Check if the employee has a salary increase for this month
-					foreach ($increase_salary as $increase) {
-						if ($increase['effectivitydate'] <= $thisPeriod['pdToDate']) {
-							$add = $increase['new_empMrate'] - $salary;  // Apply the increased salary
-							$salary = $salary + $add;
-							break;  // No need to check further increases for this month
-						}
-					}
+					// foreach ($increase_salary as $increase) {
+					// 	if ($increase['effectivitydate'] <= $thisPeriod['pdToDate']) {
+					// 		$add = $increase['new_empMrate'] - $salary;  // Apply the increased salary
+					// 		$salary = $salary + $add;
+					// 		break;  // No need to check further increases for this month
+					// 	}
+					// }
 
 					//calculate gov deduct every end of the month only
-					echo $_period . '<br>';
+					//echo $_period . '<br>';
 					if ($_period % 2 == 0) {
 						// Calculate government deductions based on salary for this month
 						$sssArr = $this->getGovDedAmnt($salary);
@@ -1490,10 +1493,10 @@ WHERE tk.compCode = '".$_SESSION["company_code"]."'
 						$stackedHDMF += $hdmf;
 					}
 					$stackedSalary += ($salary / 2);
-					echo $stackedSalary . '<br>';
+					//echo $stackedSalary . '<br>';
 					
 					// Output details for the current month
-					echo "Emp: {$empNo}<br>, Month {$month}<br>: Salary = $salary<br>, SSS = $sss<br>, PHIC = $phic\n<br><br>";
+					//echo "Emp: {$empNo}<br>, Month {$month}<br>: Salary = $salary<br>, SSS = $sss<br>, PHIC = $phic\n<br><br>";
 					
 					// Decrement the assumed months
 					$assumed--;
@@ -1502,10 +1505,10 @@ WHERE tk.compCode = '".$_SESSION["company_code"]."'
 				}
 
 				// Final output for total accumulated values
-				echo "Total Stacked Salary = $stackedSalary\n<br>";
-				echo "Total Stacked SSS = $stackedSSS\n<br>";
-				echo "Total Stacked PHIC = $stackedPhic\n<br>";
-				echo "Total Stacked HDMF = $stackedHDMF\n<br>"; 
+				// echo "Total Stacked Salary = $stackedSalary\n<br>";
+				// echo "Total Stacked SSS = $stackedSSS\n<br>";
+				// echo "Total Stacked PHIC = $stackedPhic\n<br>";
+				// echo "Total Stacked HDMF = $stackedHDMF\n<br>"; 
 				
 				//else{
 				// 	$sssArr = $this->getGovDedAmnt($salary);
@@ -1534,19 +1537,19 @@ WHERE tk.compCode = '".$_SESSION["company_code"]."'
 				// }
 
 				$assumed_deduct = $stackedSSS + $stackedPhic + $stackedHDMF;
-				echo $empNo." Assumed Deduct ==".$assumed_deduct."\n" . "<br>";
+				//echo $empNo." Assumed Deduct ==".$assumed_deduct."\n" . "<br>";
 				$arrSumYtdDataHis = $this->getEmpSumYtdDataHist($empNo);
 				$ytd_basic = $arrSumYtdDataHis['YtdTaxable'];
-				echo $empNo." YTD Basic ==".$ytd_basic."\n" . "<br>";
+				//echo $empNo." YTD Basic ==".$ytd_basic."\n" . "<br>";
 				$total_basic = $ytd_basic + $stackedSalary;
-				echo $empNo." Total Basic ==".$total_basic."\n" . "<br>";
+				//echo $empNo." Total Basic ==".$total_basic."\n" . "<br>";
 				$ytd_deduct = $arrSumYtdDataHis['YtdGovDed'];
-				echo $empNo." YTD Deduct ==".$ytd_deduct."\n" . "<br>";
+				//echo $empNo." YTD Deduct ==".$ytd_deduct."\n" . "<br>";
 				$total_deduction = $ytd_deduct + $assumed_deduct;
-				echo $empNo." Total Deduction ==".$total_deduction."\n" . "<br>";
+				//echo $empNo." Total Deduction ==".$total_deduction."\n" . "<br>";
 
 				$net_taxable_income = $total_basic - $total_deduction;
-				echo $empNo. " Net Taxable == " . $net_taxable_income . "<br>";
+				//echo $empNo. " Net Taxable == " . $net_taxable_income . "<br>";
 				$estEarn = $net_taxable_income;
 
 				//Compute for the Net Taxable Earnings
@@ -1556,15 +1559,15 @@ WHERE tk.compCode = '".$_SESSION["company_code"]."'
 							
 				//Compute the Estimated Tax using the Annual Tax Table
 				$estTaxYear = $this->getAnnualTax($netTaxable);
-				echo $empNo." Est Tax Year == ".$estTaxYear."\n". "<br>";
+				//echo $empNo." Est Tax Year == ".$estTaxYear."\n". "<br>";
 				
 				$taxPeriod = ($estTaxYear - $arrSumYtdDataHis['YtdTax']) / (25 - $this->get['pdNum']);
-				echo $empNo." Tax Period == ".round($taxPeriod, 2)."\n". "<br><br><br>";
+				//echo $empNo." Tax Period == ".round($taxPeriod, 2)."\n". "<br><br><br>";
 			}
         	
         }
 
-        if ($this->get['pdNum'] < 24)
+        if ($this->get['pdNum'] < 25)
             $taxPeriod = ($taxPeriod < 0 ? 0 : $taxPeriod);
  
 		return round($taxPeriod, 2);
