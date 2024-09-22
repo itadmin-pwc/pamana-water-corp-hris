@@ -1435,40 +1435,110 @@ WHERE tk.compCode = '".$_SESSION["company_code"]."'
 				echo $empNo." Tax Period == ".round($taxPeriod, 2)."\n". "<br><br><br>";
                                
 			} elseif($this->get['taxType'] == 2) {
-				$increase_salary = $this->getSalaryHist($_SESSION['company_code'], $empNo);
+				$gov_assumed = floor((24 - $this->get['pdNum']) / 2);
+				$assumed = 25 - $this->get['pdNum']; // Remaining months
+				$_period = 25 - $assumed;
+				$increase_salary = $this->getSalaryHist($_SESSION['company_code'], $empNo); // Get salary increase history
 				if(!empty($increase_salary)) {
-					echo var_dump($increase_salary) . '<br>';
+					$latest_salary = $this->getLatestSalary($_SESSION['company_code'], $empNo);
+					echo $latest_salary['new_empMrate'] . '<br>';
+					$old_salary = $this->getOldSalary($_SESSION['company_code'], $empNo);
+					echo $old_salary['old_empMrate'] . '<br>';
+					$less = $latest_salary['new_empMrate'] - $old_salary['old_empMrate'];
+					$currentSalary = $salary - $less;
+				}else{
+					$currentSalary = $salary;
+				}
+				
+				$stackedSalary = 0;  // To accumulate salary
+				$stackedSSS = 0;     // To accumulate SSS
+				$stackedPhic = 0;    // To accumulate PHIC
+				$stackedHDMF = 0;
+
+				$month = 1;  // Start with December
+
+				$salary = $currentSalary;  // Default salary for the current month
+
+				while ($assumed != 0) {
+					$thisPeriod = $this->getThisPeriod(1, $_period);
+					
+					// Check if the employee has a salary increase for this month
+					foreach ($increase_salary as $increase) {
+						if ($increase['effectivitydate'] <= $thisPeriod['pdToDate']) {
+							$add = $increase['new_empMrate'] - $salary;  // Apply the increased salary
+							$salary = $salary + $add;
+							break;  // No need to check further increases for this month
+						}
+					}
+
+					//calculate gov deduct every end of the month only
+					echo $_period . '<br>';
+					if ($_period % 2 == 0) {
+						// Calculate government deductions based on salary for this month
+						$sssArr = $this->getGovDedAmnt($salary);
+						if ($sssArr['sssEmployee']!="") {$SssEmp=$sssArr['sssEmployee'];} else {$SssEmp=0;}
+						if ($sssArr['mProveFund_EE']!="") {$mProveEE=$sssArr['mProveFund_EE'];} else {$mProveEE=0;}
+						$sss = $SssEmp + $mProveEE;
+
+						$phic = $this->getGovDedAmntPhic($salary);
+
+						$hdmf = 200;
+
+						// Stack the salary and government deductions
+						$stackedSSS += $sss;
+						$stackedPhic += $phic;
+						$stackedHDMF += $hdmf;
+					}
+					$stackedSalary += ($salary / 2);
+					echo $stackedSalary . '<br>';
+					
+					// Output details for the current month
+					echo "Emp: {$empNo}<br>, Month {$month}<br>: Salary = $salary<br>, SSS = $sss<br>, PHIC = $phic\n<br><br>";
+					
+					// Decrement the assumed months
+					$assumed--;
+					$_period = 25 - $assumed;
+					$month++;
 				}
 
+				// Final output for total accumulated values
+				echo "Total Stacked Salary = $stackedSalary\n<br>";
+				echo "Total Stacked SSS = $stackedSSS\n<br>";
+				echo "Total Stacked PHIC = $stackedPhic\n<br>";
+				echo "Total Stacked HDMF = $stackedHDMF\n<br>"; 
+				
+				//else{
+				// 	$sssArr = $this->getGovDedAmnt($salary);
+				// 	if ($sssArr['sssEmployee']!="") {$SssEmp=$sssArr['sssEmployee'];} else {$SssEmp=0;}
+				// 	if ($sssArr['mProveFund_EE']!="") {$mProveEE=$sssArr['mProveFund_EE'];} else {$mProveEE=0;}
+				// 	$phic = $this->getGovDedAmntPhic($salary);
+				// 	echo $empNo." Salary ==".$salary."\n" . "<br>";
+				// 	$sss = $SssEmp + $mProveEE;
+	
+				// 	$assumed = 24 - $this->get['pdNum'];
+				// 	echo $empNo." Gov Assumed ==".$gov_assumed."\n" . "<br>";
+				// 	$salary = $salary / 2;
+				// 	$assumed_salary = $assumed * $salary;
+				// 	echo $empNo." Salary ==".$salary."\n" . "<br>";
+				// 	echo $empNo." Assumed Salary ==".$assumed_salary."\n" . "<br>";
+				// 	echo $empNo." SSS ==".$sss."\n" . "<br>";
+				// 	$assumed_sss = ($gov_assumed * $sss) + $sss;
+				// 	echo $empNo." Assumed SSS ==".$assumed_sss."\n" . "<br>";
+				// 	$assumed_phic = ($gov_assumed * $phic) + $phic;
+				// 	echo $empNo." PHIC ==".$phic."\n" . "<br>";
+				// 	echo $empNo." Assumed PHIC ==".$assumed_phic."\n" . "<br>";
+				// 	$assumed_hdmf = ($gov_assumed * 200) + 200;
+				// 	echo $empNo." Assumed HDMF ==".$assumed_hdmf."\n" . "<br>";
+				// 	$assumed_deduct = $assumed_sss + $assumed_phic + $assumed_hdmf;
+				// 	echo $empNo." Assumed Deduction ==".$assumed_deduct."\n" . "<br>";
+				// }
+
+				$assumed_deduct = $stackedSSS + $stackedPhic + $stackedHDMF;
+				echo $empNo." Assumed Deduct ==".$assumed_deduct."\n" . "<br>";
 				$arrSumYtdDataHis = $this->getEmpSumYtdDataHist($empNo);
-				$sssArr = $this->getGovDedAmnt($salary);
-				if ($sssArr['sssEmployee']!="") {$SssEmp=$sssArr['sssEmployee'];} else {$SssEmp=0;}
-				if ($sssArr['mProveFund_EE']!="") {$mProveEE=$sssArr['mProveFund_EE'];} else {$mProveEE=0;}
-				$phic = $this->getGovDedAmntPhic($salary);
-				echo $empNo." Salary ==".$salary."\n" . "<br>";
-				$sss = $SssEmp + $mProveEE;
-
-				$assumed = 24 - $this->get['pdNum'];
-				$gov_assumed = floor((24 - $this->get['pdNum']) / 2);
-				echo $empNo." Gov Assumed ==".$gov_assumed."\n" . "<br>";
-				$salary = $salary / 2;
-				$assumed_salary = $assumed * $salary;
-				echo $empNo." Salary ==".$salary."\n" . "<br>";
-				echo $empNo." Assumed Salary ==".$assumed_salary."\n" . "<br>";
-				echo $empNo." SSS ==".$sss."\n" . "<br>";
-				$assumed_sss = ($gov_assumed * $sss) + $sss;
-				echo $empNo." Assumed SSS ==".$assumed_sss."\n" . "<br>";
-				$assumed_phic = ($gov_assumed * $phic) + $phic;
-				echo $empNo." PHIC ==".$phic."\n" . "<br>";
-				echo $empNo." Assumed PHIC ==".$assumed_phic."\n" . "<br>";
-				$assumed_hdmf = ($gov_assumed * 200) + 200;
-				echo $empNo." Assumed HDMF ==".$assumed_hdmf."\n" . "<br>";
-				$assumed_deduct = $assumed_sss + $assumed_phic + $assumed_hdmf;
-				echo $empNo." Assumed Deduction ==".$assumed_deduct."\n" . "<br>";
-
-				$ytd_basic = $arrSumYtdDataHis['YtdTaxable'] + $gross_Taxable;
+				$ytd_basic = $arrSumYtdDataHis['YtdTaxable'];
 				echo $empNo." YTD Basic ==".$ytd_basic."\n" . "<br>";
-				$total_basic = $ytd_basic + $assumed_salary;
+				$total_basic = $ytd_basic + $stackedSalary;
 				echo $empNo." Total Basic ==".$total_basic."\n" . "<br>";
 				$ytd_deduct = $arrSumYtdDataHis['YtdGovDed'];
 				echo $empNo." YTD Deduct ==".$ytd_deduct."\n" . "<br>";
@@ -2834,11 +2904,41 @@ $qryUpdateEmpLoans = "UPDATE tblEmpLoansDtl SET dedTag = ''
 		$query = "SELECT * FROM tblpaf_payrollrelatedhist 
 						   WHERE compCode = '{$compCode}'
 						   AND   empNo    = '".trim($empNo)."'
-						   AND   effectivitydate > '{$_GET['dtTo']}'";
+						   ORDER BY effectivitydate desc";
 
 		return $this->getArrResI($this->execQryI($query));
 	}
+
+	function getLatestSalary($compCode,$empNo) {
+		$query = "SELECT new_empMrate FROM tblpaf_payrollrelatedhist 
+						   WHERE compCode = '{$compCode}'
+						   AND   empNo    = '".trim($empNo)."'
+						   ORDER BY effectivitydate desc LIMIT 1";
+
+		return $this->getSqlAssocI($this->execQryI($query));
+	}
+
+	function getOldSalary($compCode,$empNo) {
+		$query = "SELECT old_empMrate FROM tblpaf_payrollrelatedhist 
+		WHERE compCode = '{$compCode}'
+		AND   empNo    = '".trim($empNo)."'
+		AND   effectivitydate >= '{$_GET['dtTo']}'
+		ORDER BY effectivitydate ASC LIMIT 1";
+		//echo $query . '<br>';
+		return $this->getSqlAssocI($this->execQryI($query));
+	}
 	
+	function getThisPeriod($compCode,$period) 
+	{
+		$qry = "SELECT compCode, pdStat, date_format(pdPayable,'%m/%d/%Y') AS pdPayable, pdSeries,payGrp,payCat,pdYear,pdNumber,pdFrmDate,pdToDate FROM tblPayPeriod 
+				WHERE pdNumber = '$period' AND 
+			    compCode = '$compCode' AND
+				payGrp = '1' AND 
+				payCat = '3' ";
+				
+		$res = $this->execQryI($qry);
+		return $this->getSqlAssocI($res);
+	}
 }
 
 
