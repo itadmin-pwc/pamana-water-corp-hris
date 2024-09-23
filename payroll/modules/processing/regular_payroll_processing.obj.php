@@ -1239,7 +1239,7 @@ WHERE tk.compCode = '".$_SESSION["company_code"]."'
 	}
 
 	private function getEmpSumYtdDataHist($empNo) {
-		$qrygetEmpYtdDataHist = "Select SUM(YtdGross) as YtdGross, Sum(YtdTaxable) as YtdTaxable, Sum(YtdGovDed) as YtdGovDed, sum(YtdTax) as YtdTax from tblYtdDataHist where empNo='".$empNo."' and pdYear='".$this->get['pdYear']."' and compCode='".$_SESSION["company_code"]."'";
+		$qrygetEmpYtdDataHist = "Select YtdGross, YtdTaxable, YtdGovDed, YtdTax from tblYtdDataHist where empNo='".$empNo."' and pdYear='".$this->get['pdYear']."' and compCode='".$_SESSION["company_code"]."'";
 		$rsgetEmpYtdDataHist = $this->execQryI($qrygetEmpYtdDataHist);
 		
 		return $this->getSqlAssocI($rsgetEmpYtdDataHist);
@@ -1311,7 +1311,7 @@ WHERE tk.compCode = '".$_SESSION["company_code"]."'
                                
         $basicPay = (float)$minBasicPay;
                                
-        // //Get the tblYtdDataHist of the Employee
+        //Get the tblYtdDataHist of the Employee
         //$arrYtdDataHist = $this->getEmpYtdDataHist($empNo);
         
         //Get the Previous Employe Tag / Mimimum Wage Earnner
@@ -1433,18 +1433,16 @@ WHERE tk.compCode = '".$_SESSION["company_code"]."'
 				
 				$taxPeriod = ($estTaxYear / 24);
 				//echo $empNo." Tax Period == ".round($taxPeriod, 2)."\n". "<br><br><br>";
-                               
+            
 			} elseif($this->get['taxType'] == 2) {
 				$gov_assumed = floor((24 - $this->get['pdNum']) / 2);
 				$assumed = 25 - $this->get['pdNum']; // Remaining months
-				$_period = 25 - $assumed;
+				$_period = $this->get['pdNum'];
 				
 				$stackedSalary = 0;  // To accumulate salary
 				$stackedSSS = 0;     // To accumulate SSS
 				$stackedPhic = 0;    // To accumulate PHIC
 				$stackedHDMF = 0;
-
-				$month = 1;  // Start with December
 
 				while ($assumed != 0) {
 
@@ -1454,9 +1452,7 @@ WHERE tk.compCode = '".$_SESSION["company_code"]."'
 						if ($sssArr['sssEmployee']!="") {$SssEmp=$sssArr['sssEmployee'];} else {$SssEmp=0;}
 						if ($sssArr['mProveFund_EE']!="") {$mProveEE=$sssArr['mProveFund_EE'];} else {$mProveEE=0;}
 						$sss = $SssEmp + $mProveEE;
-
 						$phic = $this->getGovDedAmntPhic($salary);
-
 						$hdmf = 200;
 
 						// Stack the salary and government deductions
@@ -1469,8 +1465,7 @@ WHERE tk.compCode = '".$_SESSION["company_code"]."'
 					
 					// Decrement the assumed months
 					$assumed--;
-					$_period = 25 - $assumed;
-					$month++;
+					$_period++;
 				}
 
 				$assumed_deduct = $stackedSSS + $stackedPhic + $stackedHDMF;
@@ -1861,8 +1856,6 @@ $qryUpdateEmpLoans = "UPDATE tblEmpLoansDtl SET dedTag = ''
 						$Trns = $this->writeToTblEarnings('E2',$empToProcPayBaicVal['empNo'],$trnCodePayBasicDaliesLegHoliday,$trnAmountPayBasicDaliesLegHoliday);
 					}
 				}*/
-
-				
 			}//end of daily
 			unset($trnAmountPayBasicNotReg);
 		}//end of foreach pay basic	
