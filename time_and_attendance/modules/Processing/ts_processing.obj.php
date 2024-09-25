@@ -102,7 +102,7 @@ class TSProcessingObj extends dateDiff {
 					$i=0;
 					while($i<count($arrQry)) {
 						if ($Trns) {
-							//echo $arrQry[$i]."\n";
+							//echo $arrQry[$i] . '<br><br>';
 							$Trns = $this->execQryI($arrQry[$i]);
 						} else {
 							break; 	
@@ -119,6 +119,7 @@ class TSProcessingObj extends dateDiff {
 			foreach($this->arrOBListgrp as $valOB) {
 				$sqlUpdateOB .= $this->getEmpOB($valOB['empNo'],$valOB['obDate'],$valOB['hrs8Deduct']);
 				if ($Trns) {
+					//echo $this->getEmpOB($valOB['empNo'],$valOB['obDate'],$valOB['hrs8Deduct']) . '<br><br>';
 					$Trns = $this->execQryI($this->getEmpOB($valOB['empNo'],$valOB['obDate'],$valOB['hrs8Deduct']));
 				} else {
 					break; 	
@@ -130,9 +131,10 @@ class TSProcessingObj extends dateDiff {
 		$sqlUpdateCS = "";
 		if ($Trns) {
 			foreach($this->GetChangeShift() as $valCS) {
-				$sqlUpdateCS .= "Update tblTK_Timesheet set csTag='Y',shftTimeIn='{$valCS['csShiftToIn']}', shftTimeOut='{$valCS['csHiftToOut']}',crossDay='{$valCS['crossDay']}' where compCode='".$_SESSION["company_code"]."' and empNo='{$valCS['empNo']}' and cast(tsDate as date)= '".date('Y-m-d',strtotime($valCS['tsDate']))."'; \n";
+				$sqlUpdateCS = "Update tblTK_Timesheet set csTag='Y',shftTimeIn='{$valCS['csShiftToIn']}', shftTimeOut='{$valCS['csHiftToOut']}',crossDay='{$valCS['crossDay']}' where compCode='".$_SESSION["company_code"]."' and empNo='{$valCS['empNo']}' and cast(tsDate as date)= '".date('Y-m-d',strtotime($valCS['tsDate']))."'; \n";
 				if ($Trns) {
-					$Trns = $this->execQryI("Update tblTK_Timesheet set csTag='Y',shftTimeIn='{$valCS['csShiftToIn']}', shftTimeOut='{$valCS['csHiftToOut']}',crossDay='{$valCS['crossDay']}' where compCode='".$_SESSION["company_code"]."' and empNo='{$valCS['empNo']}' and cast(tsDate as date)= '".date('Y-m-d',strtotime($valCS['tsDate']))."'; \n");
+					//echo $sqlUpdateCS.'<br><br>';
+					$Trns = $this->execQryI($sqlUpdateCS);
 				} else {
 					break; 	
 				}			
@@ -145,10 +147,10 @@ class TSProcessingObj extends dateDiff {
 			$sqlUpdateLeaves = "";
 			foreach($this->getLeaves() as $valLeaves) {
 				$appType = $this->valLeaveType($valLeaves);
-				$sqlUpdateLeaves .= " Update tblTK_Timesheet set deductTag='{$valLeaves['deductTag']}',tsAppTypeCd='$appType',attendType='{$valLeaves['tsAppTypeCd']}' where empNo='{$valLeaves['empNo']}' and cast(tsDate as date)= '".date('Y-m-d',strtotime($valLeaves['tsDate']))."'; \n";
+				$sqlUpdateLeaves = "Update tblTK_Timesheet set deductTag='{$valLeaves['deductTag']}',tsAppTypeCd='$appType',attendType='{$valLeaves['tsAppTypeCd']}' where empNo='{$valLeaves['empNo']}' and cast(tsDate as date)= '".date('Y-m-d',strtotime($valLeaves['tsDate']))."'; \n";
 				if ($Trns) {
 					if ($valLeaves['dayType']==1 || $valLeaves['tsAppTypeCd']==11)
-						$Trns = $this->execQryI(" Update tblTK_Timesheet set deductTag='{$valLeaves['deductTag']}',tsAppTypeCd='$appType',attendType='{$valLeaves['tsAppTypeCd']}' where empNo='{$valLeaves['empNo']}' and cast(tsDate as date)= '".date('Y-m-d',strtotime($valLeaves['tsDate']))."'; \n");
+						$Trns = $this->execQryI($sqlUpdateLeaves);
 				} else {
 					break; 	
 				}			
@@ -285,6 +287,12 @@ class TSProcessingObj extends dateDiff {
 				}
 			}
 		}
+	}
+
+	if($Trns){
+		$Trns = $this->fixCheckTag();
+	}else{
+		return 3;
 	}
 			
 		if(!$Trns){
@@ -721,7 +729,6 @@ $arrPrev = $this->checkifPrevDateisCrossDay($arrTS['empNo'],date('Y-m-d',strtoti
 			{//Head Office
 				if ($this->IsLeaveAppType($arrTS['tsAppTypeCd'])) 
 				{
-					
 					if(in_array($arrTS['tsAppTypeCd'],array(12,13,14,15))) 
 					{//halfday leave
 						
@@ -845,13 +852,8 @@ $arrPrev = $this->checkifPrevDateisCrossDay($arrTS['empNo'],date('Y-m-d',strtoti
 						if ($ctr == 2)
 							$this->AddViolation($empNo,$tsDate,12);
 					}
-
-					
-					
-				}
-								
+				}			
 			}
-			
 		} 
 		else 
 		{
@@ -1590,6 +1592,33 @@ function createTempTables1111() {
 	 $sqlTransferLogs = "Insert into tk_eventlogs (cStoreNum,EDATE,ETIME,EDOOR,EFLOOR,ESABUN,ETAG,ENAME,ELNAME,EPART,EDEP,ESTATUS,EFUNCTION,EINOUT) Select distinct cStoreNum,EDATE,ETIME,EDOOR,EFLOOR,ESABUN,ETAG,ENAME,ELNAME,EPART,EDEP,ESTATUS,EFUNCTION,EINOUT from tbltk_eventlogs where  edate>=date_add(cast('{$this->pdFrom}' as date), INTERVAL -1 day) group by cStoreNum,EDATE,ETIME,EDOOR,EFLOOR,ESABUN,ETAG,ENAME,ELNAME,EPART,EDEP,ESTATUS,EFUNCTION,EINOUT";	
 
 		return $this->execQryI($sqlTransferLogs);
+	}
+
+	function fixCheckTag() {
+		$this->execQryI("UPDATE tbltk_timesheet SET checkTag = NULL WHERE checkTag = 'Y'");
+		$query = "SELECT * FROM tbltk_timesheet WHERE checkTag IS NULL";
+		$sheets = $this->getArrResI($this->execQryI($query));
+		foreach($sheets as $sheet) {
+			$qry = "SELECT * FROM tbltk_empshift WHERE empNo = '{$sheet['empNo']}' and compCode=1";
+			$record = $this->getSqlAssocI($this->execQryI($qry));
+			
+			$checkTag = NULL;
+			if(empty($sheet['timeIn']) || empty($sheet['timeOut'])) {
+				$checkTag = 'Y';
+			}
+			
+			$sat = date("N",strtotime($sheet['tsDate']));
+			if($sat == 6 && $record['shiftCode'] == '01' && $record['CWWTag'] == 'Y' || $sheet['dayType'] == '02') {
+				$checkTag = NULL;
+			}
+
+			if(!empty($sheet['tsAppTypeCd'])) {
+				$checkTag = NULL;
+			}
+
+			$this->execQryI("UPDATE tbltk_timesheet SET checkTag = '{$checkTag}' WHERE seqNo = {$sheet['seqNo']} AND empNo = '{$sheet['empNo']}'");
+		}
+		return true;
 	}
 }
 

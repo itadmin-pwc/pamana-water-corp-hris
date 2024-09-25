@@ -307,9 +307,7 @@ class TSPostingObj extends dateDiff {
 					if ($SchedHrsWork<=8) {
 						if(!in_array($valTSList['tsAppTypeCd'],array(12,13,14,15,21))) 
 							$hrsWrk = $SchedHrsWork - $hrsTardy - $hrsUT;
-
 					} else {
-
 						if(!in_array($valTSList['tsAppTypeCd'],array(12,13,14,15,21))) 
 							$hrsWrk = $SchedHrsWork - $hrsTardy - $hrsUT;
 					}

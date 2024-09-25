@@ -22,7 +22,7 @@
 
 	$url = $_GET["url"];
 	
-	if ($_SESSION['user_level'] == 3) 
+	if ($_SESSION['user_level'] == 3)
 	{
 		$userinfo = $common->getUserHeaderInfo($_SESSION['employee_number'],$_SESSION['employee_id']);
 		$and = ($_GET['isSearch'] == 1) ? 'AND' : 'Where';	
@@ -147,8 +147,6 @@
 	$resEmpList = $common->execQry($qryEmpList);
 	$arrEmpList = $common->getArrRes($resEmpList);
 	
-	
-
 ?>
 <div class="niftyCorner">
 	<TABLE border="0" width="100%" cellpadding="1" cellspacing="0" class="parentGrid">
