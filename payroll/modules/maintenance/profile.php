@@ -166,14 +166,24 @@ include("../../../includes/calendar.php");
 		<STYLE>@import url("../../../js/themes/mac_os_x.css");</STYLE>
         
 		<style type="text/css">
-        <!--
-        .headertxt {font-family: verdana; font-size: 11px;}
-        -->
+        
+        /* .headertxt {font-family: verdana; font-size: 11px;} */
+        div.content1, div.content2, div.content3, 
+		div.content4, div.content5, div.content6, 
+		div.content7, div.content8, div.content1-focus, 
+		div.content2-focus, div.content3-focus, 
+		div.content4-focus, div.content5-focus, 
+		div.content6-focus, div.content7-focus, 
+		div.content8-focus {
+			width: 800px;
+			height: 430px;
+		}
+
         </style>        
 	</HEAD>
 	<BODY onLoad="focusTab(1); ">
 		<FORM name='frmViewEditEmp' id="frmViewEditEmp" action="" method="post" >
-			<TABLE border="0" cellpadding="1" cellspacing="0" class="parentGrid" width="100%">
+			<TABLE border="0" cellpadding="1" cellspacing="0" class="parentGrid" width="100%" height="580px">
 				<tr>
 					
       <td class="parentGridHdr" height="30"> &nbsp;<img src="../../../images/grid.png">&nbsp; 
