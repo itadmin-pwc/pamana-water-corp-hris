@@ -36,7 +36,6 @@ if ($_POST['save']!="") {
 	//General Tab	
 	$maintEmpObj->empNo   	 = (isset($_POST['txtempNo'])) ? $_POST['txtempNo'] : "";
 	$maintEmpObj->bio		 = (isset($_POST['txtbio'])) ? $_POST['txtbio'] : "";
-	$maintEmpObj->empNo      = (isset($_POST['txtempNo'])) ? $_POST['txtempNo'] : "";
 	$maintEmpObj->compCode   = (isset($_POST['cmbcompny'])) ? $_POST['cmbcompny'] : 0;
 	$maintEmpObj->lName      = (isset($_POST['txtlname'])) ? $_POST['txtlname'] : "";
 	$maintEmpObj->fName	   	 = (isset($_POST['txtfname'])) ? $_POST['txtfname'] : "";
@@ -391,7 +390,6 @@ include("../../../includes/calendar.php");
 						<td class="gridDtlVal"><?
 						$salaryamount=$maintEmpObj->Salary;
 						//$maintEmpObj->DropDownMenu($maintEmpObj->makeArr($maintEmpObj->getCompany(''),'compCode','compName',''),'cmbcompny',$maintEmpObj->compCode,'class="inputs" style="width:222px;" onchange="getresult(this.value,\'profile.obj.php\',\'cdpaycat\',\'divpaycat\');getresult(this.value,\'profile.obj.php\',\'cdbranch\',\'divbranch\'); getresult(this.value,\'profile.obj.php\',\'cdshift\',\'dvshift\'); getresult(this.value,\'profile.obj.php\',\'cdposition\',\'dvposition\'); getsalary(this.value,\'profile.obj.php\',\'cdsalarycmb\',\'dvsalary\',\''.$maintEmpObj->Salary.'\'); getsalary(this.value,\'profile.obj.php\',\'cddratecmb\',\'dvdailyrate\',\''.$maintEmpObj->Drate.'\'); getcompany(this.value);"'); 
-						
 						$maintEmpObj->DropDownMenu($maintEmpObj->makeArr($maintEmpObj->getCompany(''),'compCode','compName',''),'cmbcompny',$maintEmpObj->compCode,'class="inputs" style="width:222px;" onchange="getresult(this.value,\'profile.obj.php\',\'cdpaycat\',\'divpaycat\');getresult(this.value,\'profile.obj.php\',\'divbranch\'); getresult(this.value,\'profile.obj.php\',\'cdshift\',\'dvshift\'); getresult(this.value,\'profile.obj.php\',\'cdposition\',\'dvposition\'); getsalary(this.value,\'profile.obj.php\',\'cdsalarycmb\',\'dvsalary\',\''.$maintEmpObj->Salary.'\'); getsalary(this.value,\'profile.obj.php\',\'cddratecmb\',\'dvdailyrate\',\''.$maintEmpObj->Drate.'\'); getcompany(this.value);"' . $readisabled); ?><input type="hidden" value="<?=$maintEmpObj->compCode?>" name="company_code" id="company_code"></td>
 					  </tr>
 					  <tr> 
@@ -401,17 +399,19 @@ include("../../../includes/calendar.php");
 							<div id="divbranch">
 						<? $maintEmpObj->DropDownMenu($maintEmpObj->makeArr($maintEmpObj->getBranch($maintEmpObj->compCode),'brnCode','brnDesc',''),'cmbbranch',$maintEmpObj->branch,'class="inputs" style="width:222px;" onchange="loadPayGroup(this.value);"' . $readisabled); ?></div>						</td>
 					  </tr>
-  
-                                            <tr>
-                        <td class="headertxt"></td>
-                        <td class="headertxt"></td>
-                        <td class="gridDtlVal"></td>
-                        </tr>
+                      <tr>
+						<td class="headertxt" >Picture</td>
+						<td class="headertxt">:</td>
+                        <td class="gridDtlVal">
+							<img id="profile-img" src="../../../images/Employee Picture/profile.png" alt="profile" height="100px" width="100px" style="border: 1px solid #c9c9c9;" onclick="triggerFileInput()">
+							<input type="file" id="file-input" accept="image/*" onchange="previewImage(event)" style="display: none;">
+						</td>
+                      </tr>
                       <tr>
                         <td class="headertxt"></td>
                         <td class="headertxt"></td>
                         <td class="gridDtlVal"></td>
-                        </tr>
+                      </tr>
                       <tr>
                         <td class="headertxt"></td>
                         <td class="headertxt"></td>
@@ -620,7 +620,7 @@ include("../../../includes/calendar.php");
 						  <?
 						  } else {
 						  ?>
-							  <td colspan="6" style="color:#FF0000; border:1px solid; text-align:center;"><strong>Basic Rate Not Yet Encoded</strong></td>
+							  <td colspan="6" style="color:#FF0000; border:1px solid; text-align:center;"><strong>Basic Rate is Not Yet Encoded</strong></td>
 						  <?
 						  }
 					   ?>
@@ -844,6 +844,22 @@ include("../../../includes/calendar.php");
 <script src="../../../includes/validations.js"></script>
 <script type='text/javascript' src='timesheet_js.js'></script>
 <script>
+	// Trigger file input when the image box is clicked
+	function triggerFileInput() {
+        document.getElementById('file-input').click();
+    }
+
+	// Display the selected image in the box
+	function previewImage(event) {
+		const file = event.target.files[0];
+		if (file) {
+			const reader = new FileReader();
+			reader.onload = function(e) {
+				document.getElementById('profile-img').src = e.target.result;
+			};
+			reader.readAsDataURL(file);
+		}
+	}
 
 	function getname(){
 		var lname=document.getElementById('txtlname').value + ", ";
