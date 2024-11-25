@@ -156,6 +156,7 @@ class ProfileObj extends commonObj {
 	var $strprofile;
 	var $paycat;
 	var $level;
+	var $picture;
 	
 	//Contact Tab
 	var $Addr1;
