@@ -9,6 +9,38 @@ $mainUserDefObjObj = new  mainUserDefObj();
 $maintEmpObj = new ProfileObj();
 $mainContent6Obj = new  mainContent6();
 
+if ($_GET['act']=="Edit" || $_GET['act']=="View") {
+	$payGrp = $maintEmpObj->getProcGrp();
+	$_SESSION['oldcompCode']=$_GET['compCode'];
+	$maintEmpObj->oldcompCode=$_SESSION['oldcompCode'];
+	$maintEmpObj->viewprofile($_GET['empNo']);
+	$_SESSION['strprofile']=$_GET['empNo'];
+	$_SESSION['empRestDay']=$maintEmpObj->RestDay;
+	$disablematstatus="";
+	if ($maintEmpObj->maritalStat=="SG") {
+		$disablematstatus="disabled";
+	}
+	// echo $_SESSION['user_payCat'];
+	// echo "<br>";
+	// echo $maintEmpObj->paycat;
+	// if (!in_array(1,explode(',',$_SESSION['user_payCat'])))  {
+	// 	if ($maintEmpObj->paycat == 1) 
+	// 		$visible = "visibility:hidden;";
+	// }
+} else {
+	unset($_SESSION['oldcompCode']);
+}
+
+if($_GET['act']=="Add")
+	$maintEmpObj->picture = 'profile.png';
+
+// Base URL generation
+$protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? "https://" : "http://";
+$host = $_SERVER['HTTP_HOST'];
+$projectFolder = "/pamana-water-corp-hris";
+$imageUrl = $protocol . $host . $projectFolder . "/images/Employee Picture/";
+$uploadDir = $_SERVER['DOCUMENT_ROOT'] . 'pamana-water-corp-hris/images/Employee Picture/';
+
 if($_GET["action"] == "updateSalary") {
 	$maintEmpObj->branch  	 = (isset($_POST['cmbbranch'])) ? $_POST['cmbbranch'] : 0;
 	$maintEmpObj->empNo = (isset($_POST['txtempNo'])) ? $_POST['txtempNo'] : "";
@@ -27,7 +59,7 @@ if($_GET["action"] == "updateSalary") {
 		echo "alert('Record sucessfully updated.');";
 		echo "window.location.href = 'new_emp_list.php'";
 	}
-	else	
+	else
 		echo "alert('Error while updating the record.');";
 	exit();
 }
@@ -98,18 +130,55 @@ if ($_POST['save']!="") {
 	$maintEmpObj->empSunLine = (isset($_POST['chkSun'])) ? $_POST['chkSun'] : "";
 	$maintEmpObj->empGlobeLine = (isset($_POST['chkGlobe'])) ? $_POST['chkGlobe'] : "";
 	$maintEmpObj->empSmartLine = (isset($_POST['chkSmart'])) ? $_POST['chkSmart'] : "";
+	if(isset($_FILES['file-input']) && $_FILES['file-input']['error'] === UPLOAD_ERR_OK && !empty($_FILES['file-input']['name'])) {
+		//die(var_dump($_FILES['file-input']));
+		$fileExtension = strtolower(pathinfo($_FILES["file-input"]["name"], PATHINFO_EXTENSION));
+		$fileName = time() . "." . $fileExtension;
+		$targetFilePath = $uploadDir . $fileName;
+		// Check if file is an image
+		$check = getimagesize($_FILES["file-input"]["tmp_name"]);
+		if ($check === false) {
+			echo "alert('File is not an image.');";
+			exit;
+		}
+	
+		// Allow only specific file formats
+		$allowedTypes = array("jpg", "jpeg", "png", "gif");
+		if (!in_array($fileExtension, $allowedTypes)) {
+			echo "alert('Only JPG, JPEG, PNG, and GIF files are allowed.')";
+			exit;
+		}
+	
+		// Move the uploaded file to the target folder
+		if (move_uploaded_file($_FILES["file-input"]["tmp_name"], $targetFilePath)) {
+			$maintEmpObj->picture = $fileName; 
+		} else {
+			echo "alert('Sorry, there was an error uploading your file.')";
+			exit;
+		}
+	}
 	//Payroll Tab
+
 	if ($_GET['act']=="Add") {
 		if ($_POST['chRelease'] == "") {
 			$maintEmpObj->addEmployee('tblEmpMast_new');	
 		} else {
-			$maintEmpObj->addEmployee('tblEmpMast_new');	
+			$maintEmpObj->addEmployee('tblEmpMast_new');
 			$maintEmpObj->releaseEmp($maintEmpObj->empNo,$maintEmpObj->compCode);	
 			$maintEmpObj->releaseAllowance($maintEmpObj->empNo,$maintEmpObj->compCode);
 			$maintEmpObj->updateAllowance($maintEmpObj->empNo,$maintEmpObj->compCode);
 		}
 	}
 	elseif ($_GET['act']=="Edit") {
+		$old_picture = $maintEmpObj->getPicture($_GET['empNo'], $_GET['compCode']);
+		//die(var_dump($maintEmpObj));
+		//die($maintEmpObj->picture);
+		if($maintEmpObj->picture !== $old_picture) {
+			if($old_picture !== 'profile.png') {
+				unlink($uploadDir . $old_picture);
+			}
+			$maintEmpObj->picture = $fileName;
+		}
 		if ($_POST['chRelease'] != "") {
 			if($maintEmpObj->PhilHealth)
 			$maintEmpObj->updateemployee($_GET['empNo'],$_GET['compCode']);	
@@ -192,27 +261,6 @@ if($_SESSION['user_level'] == 1) {
 	$viewonly = "";
 }
 
-if ($_GET['act']=="Edit" || $_GET['act']=="View") {
-	$payGrp = $maintEmpObj->getProcGrp();
-	$_SESSION['oldcompCode']=$_GET['compCode'];
-	$maintEmpObj->oldcompCode=$_SESSION['oldcompCode'];
-	$maintEmpObj->viewprofile($_GET['empNo']);
-	$_SESSION['strprofile']=$_GET['empNo'];
-	$_SESSION['empRestDay']=$maintEmpObj->RestDay;
-	$disablematstatus="";
-	if ($maintEmpObj->maritalStat=="SG") {
-		$disablematstatus="disabled";
-	}
-	// echo $_SESSION['user_payCat'];
-	// echo "<br>";
-	// echo $maintEmpObj->paycat;
-	// if (!in_array(1,explode(',',$_SESSION['user_payCat'])))  {
-	// 	if ($maintEmpObj->paycat == 1) 
-	// 		$visible = "visibility:hidden;";
-	// }
-} else {
-	unset($_SESSION['oldcompCode']);
-}
 $disabled="";
 $_SESSION['profile_act']=$_GET['act'];
 if ($_GET['act']=="View") {
@@ -280,7 +328,7 @@ include("../../../includes/calendar.php");
         </script>     
 	</HEAD>
 	<BODY onLoad="focusTab(1);doOnLoad();">
-		<FORM name='frmViewEditEmp' id="frmViewEditEmp" action="" method="post" >
+		<FORM name='frmViewEditEmp' id="frmViewEditEmp" action="" method="POST" enctype="multipart/form-data">
 			<TABLE border="0" cellpadding="1" cellspacing="0" class="parentGrid" width="100%">
 				<tr>
 					
@@ -403,8 +451,8 @@ include("../../../includes/calendar.php");
 						<td class="headertxt" >Picture</td>
 						<td class="headertxt">:</td>
                         <td class="gridDtlVal">
-							<img id="profile-img" src="../../../images/Employee Picture/profile.png" alt="profile" height="100px" width="100px" style="border: 1px solid #c9c9c9;" onclick="triggerFileInput()">
-							<input type="file" id="file-input" accept="image/*" onchange="previewImage(event)" style="display: none;">
+							<img id="profile-img" src="<?=$imageUrl . $maintEmpObj->picture?>" alt="profile" height="100px" width="100px" style="border: 1px solid #c9c9c9;" onclick="triggerFileInput()">
+							<input type="file" id="file-input" name="file-input" accept="image/*" onchange="previewImage(event)" style="display: none;">
 						</td>
                       </tr>
                       <tr>
@@ -416,12 +464,12 @@ include("../../../includes/calendar.php");
                         <td class="headertxt"></td>
                         <td class="headertxt"></td>
                         <td class="gridDtlVal"></td>
-                        </tr>
+                      </tr>
                       <tr>
                         <td class="headertxt"></td>
                         <td class="headertxt"></td>
                         <td class="gridDtlVal"></td>
-                        </tr>                
+                      </tr>                
 					</table>
                         </td>
                       </tr>
@@ -858,6 +906,8 @@ include("../../../includes/calendar.php");
 				document.getElementById('profile-img').src = e.target.result;
 			};
 			reader.readAsDataURL(file);
+		} else {
+			console.log("No file selected.");
 		}
 	}
 
@@ -866,7 +916,7 @@ include("../../../includes/calendar.php");
 		var fname=document.getElementById('txtfname').value + " ";
 		var mname=document.getElementById('txtmname').value;
 		document.getElementById("name1").innerHTML= " " +lname.toUpperCase()+fname.toUpperCase()+mname.toUpperCase();	
-		}
+	}
 
 	function viewTabSix(){
 		new Ajax.Request('profile_content6.php',{
@@ -1119,17 +1169,20 @@ include("../../../includes/calendar.php");
 		?>	
 	}	
 	function submitProfile() {
-		var post = document.getElementById('chRelease')
-		if(post && post.checked) {
+		const post = document.getElementById('chRelease');
+		const fileInput = document.getElementById('file-input');
+		const form = document.forms['frmViewEditEmp'];
+
+		if (post && post.checked) {
 			if (validateTabsForPosting('<?=$_GET['act']?>')) {
-				document.frmViewEditEmp.submit();
+				form.submit();
 				return true;
 			} else {
 				return false;
 			}
-		}else{
+		} else {
 			if (validateTabs('<?=$_GET['act']?>')) {
-				document.frmViewEditEmp.submit();
+				form.submit();
 				return true;
 			} else {
 				return false;

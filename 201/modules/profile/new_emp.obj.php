@@ -298,23 +298,27 @@ class ProfileObj extends commonObj {
 		}
 		return $no;
 	}
+
 	function getEmpID() {
 		$sqlID="Select id from tblEmpID where compCode='{$this->compCode}'";
 		$res = $this->getSqlAssoc($this->execQry($sqlID));
 		$ID = $res['id'] + 1;
-		$sqlUpdateID = "Update tblEmpID set id='$ID' where compCode='{$this->compCode}' ";
+		$sqlUpdateID = "Update tblEmpID set id='$ID' where compCode='{$this->compCode}'";
 		$this->execQry($sqlUpdateID);
 		return $ID;
-	}	
+	}
+
 	function createempno($compcode)
 	{
 		$qryemptype="SELECT tblCompType.typeDesc,tblCompType.lastEmpNo,tblCompType.typeId FROM tblCompany INNER JOIN tblCompType ON tblCompany.typeId = tblCompType.typeId where compCode='{$this->compCode}'";
 		$resemptype=$this->getArrRes($this->execQry($qryemptype));
-		foreach ($resemptype as $value)  {
+
+		foreach ($resemptype as $value) {
 			$emptype=$value['typeDesc'];
 			$emplastno=$value['lastEmpNo'];
 			$emptypeid=$value['typeId'];
 		}
+
 		switch ($emptype) {
 			case "Employee":
 				$empcode=$this->bioseries($emplastno+1,2);
@@ -342,6 +346,7 @@ class ProfileObj extends commonObj {
 				$empcode="M$empcode"; 
 			break;								
 		}
+
 		$emplastno=$emplastno+1;
 		$sqlempnoupdate="Update tblCompType set lastEmpNo='$emplastno' where typeId='$emptypeid'";
 		$this->execQry($sqlempnoupdate);
@@ -351,6 +356,7 @@ class ProfileObj extends commonObj {
 	function addEmployee($tbl){
 //		$newempcode=$this->createempno($this->compCode);
 		$genfields="
+					picture,
 					empNo,
 					empLastName,
 					empFirstName,
@@ -362,6 +368,7 @@ class ProfileObj extends commonObj {
 					empLevel,
 					";
 		$genvalues="
+					'{$this->picture}',
 					'".str_replace("'","''",stripslashes(strtoupper($this->empNo)))."',
 					'".str_replace("'","''",stripslashes(strtoupper($this->lName)))."',
 					'".str_replace("'","''",stripslashes(strtoupper($this->fName)))."',
@@ -529,7 +536,6 @@ class ProfileObj extends commonObj {
 					'".date('Y-m-d')."',
 					'".$this->getEmpID()."'
 					";
-
 		
 		$qryAddEmployee = "INSERT INTO $tbl (
 							$genfields
@@ -623,7 +629,7 @@ class ProfileObj extends commonObj {
 	function viewprofile($empNo) {
 		$qryviewprofile="Select *,Day(empBday) as empBday_D , Month(empBday) as empBday_M, Year(empBday) as empBday_Y, Day(dateHired) as dateHired_D , Month(dateHired) as dateHired_M, Year(dateHired) as dateHired_Y
 		, Day(dateReg) as dateReg_D , Month(dateReg) as dateReg_M, Year(dateReg) as dateReg_Y
-		, Day(empEndDate) as empEndDate_D , Month(empEndDate) as empEndDate_M, Year(empEndDate) as empEndDate_Y,employmentTag as status from tblEmpMast_new where empNo='$empNo' and compCode='{$this->oldcompCode}'";
+		, Day(empEndDate) as empEndDate_D , Month(empEndDate) as empEndDate_M, Year(empEndDate) as empEndDate_Y,employmentTag as status, picture from tblEmpMast_new where empNo='$empNo' and compCode='{$this->oldcompCode}'";
 		$res=$this->execQry($qryviewprofile);
 		$res=$this->getArrRes($res);
 		foreach ($res as $profile) {
@@ -713,6 +719,7 @@ class ProfileObj extends commonObj {
 			$this->smartLine=$profile['empSmartLine'];
 //			$this->Release=$profile[''];
 			$this->stat_=$profile['stat'];
+			$this->picture = $profile['picture'];
 		}
 
 	}
@@ -720,6 +727,7 @@ class ProfileObj extends commonObj {
 	function updateemployee($empNox) {
 		$this->computesalary($this->compCode,$this->Salary);
 		$genfields="
+					picture='$this->picture',
 					empNo='".str_replace("'","''",stripslashes(strtoupper($this->empNo)))."',
 					empLastName='".str_replace("'","''",stripslashes(strtoupper($this->lName)))."',
 					empFirstName='".str_replace("'","''",stripslashes(strtoupper($this->fName)))."',
@@ -984,6 +992,13 @@ class ProfileObj extends commonObj {
 		$res=$this->execQry($qryBio);
 		return $this->getSqlAssoc($res);
 	}	
+
+	function getPicture($empNo, $compCode) {
+		$qry = "SELECT picture FROM tblempmast_new WHERE empNo = '$empNo' AND compCode = '{$compCode}'";
+		$res = $this->execQry($qry);
+		$row = $this->getSqlAssoc($res);
+		return  $row['picture'];
+	}
 	
 }
 
