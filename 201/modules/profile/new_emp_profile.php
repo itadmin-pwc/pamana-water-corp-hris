@@ -844,7 +844,7 @@ include("../../../includes/calendar.php");
                 <tr><td class="parentGridDtl" >
 			
                <? 
-				if (($payGrp == $maintEmpObj->Group && $_SESSION['user_release']=="Y") || $_SESSION['user_level'] == 1) {   
+				if (($payGrp == $maintEmpObj->Group && $_SESSION['user_release']=="Y") || $_SESSION['user_level'] == 1 && $_SESSION['user_release']=="Y") {   
 			   ?>
                 <label>
                 &nbsp;&nbsp;&nbsp;<input type="checkbox" name="chRelease" id="chRelease">

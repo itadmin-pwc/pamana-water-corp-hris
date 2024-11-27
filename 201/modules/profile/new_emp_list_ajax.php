@@ -80,7 +80,6 @@ $qryEmpList = "SELECT *
         	if($_GET['srchType'] == 2){
         		$qryEmpList .= "AND empFirstName LIKE '".str_replace("'","''",trim($_GET['txtSrch']))."%' ";
         	}
-			
 			if ($_GET['brnCd']!=0) 
 			{
 				$qryEmpList .= " AND empbrnCode='".$_GET["brnCd"]."' ";
