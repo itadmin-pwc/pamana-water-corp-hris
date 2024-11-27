@@ -255,7 +255,7 @@ if ($_SESSION['Confiaccess'] !== "Y") {
 	$viewonly = "readonly";
 }
 
-if($_SESSION['user_level'] == 1) {
+if($_SESSION['user_level'] == 1 || $_SESSION['user_level'] == 2) {
 	$visible = "";
 	$readisabled = "";
 	$viewonly = "";
