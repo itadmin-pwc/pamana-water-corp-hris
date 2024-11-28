@@ -206,6 +206,7 @@ class ProfileObj extends commonObj {
 	var $provinceCd;
 	var $ECPerson;
 	var $ECnumber;
+	var $picture;
 	
 	//Personal Tab
 	var $sex;
@@ -589,7 +590,7 @@ class ProfileObj extends commonObj {
 	function viewprofile($empNo) {
 		$qryviewprofile="Select *,Day(empBday) as empBday_D , Month(empBday) as empBday_M, Year(empBday) as empBday_Y, Day(dateHired) as dateHired_D , Month(dateHired) as dateHired_M, Year(dateHired) as dateHired_Y
 		, Day(dateReg) as dateReg_D , Month(dateReg) as dateReg_M, Year(dateReg) as dateReg_Y
-		, Day(empEndDate) as empEndDate_D , Month(empEndDate) as empEndDate_M, Year(empEndDate) as empEndDate_Y,employmentTag as status from tblEmpMast where empNo='$empNo' and compCode='{$this->oldcompCode}'";
+		, Day(empEndDate) as empEndDate_D , Month(empEndDate) as empEndDate_M, Year(empEndDate) as empEndDate_Y,employmentTag as status, picture from tblEmpMast where empNo='$empNo' and compCode='{$this->oldcompCode}'";
 		$res=$this->execQry($qryviewprofile);
 		$res=$this->getArrRes($res);
 		foreach ($res as $profile) {
@@ -679,6 +680,7 @@ class ProfileObj extends commonObj {
 			$this->globeLine=$profile['empGlobeLine'];
 			$this->smartLine=$profile['empSmartLine'];
 //			$this->Release=$profile[''];
+			$this->picture = $profile['picture'];
 		}
 
 	}

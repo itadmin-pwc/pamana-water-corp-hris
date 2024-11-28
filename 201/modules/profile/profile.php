@@ -9,6 +9,37 @@ include("profile_content6.obj.php");
 $mainUserDefObjObj = new  mainUserDefObj();
 $maintEmpObj = new ProfileObj();
 $mainContent6Obj = new  mainContent6();
+if ($_GET['act']=="Edit" || $_GET['act']=="View") {
+	$_SESSION['oldcompCode']=$_GET['compCode'];
+	$maintEmpObj->oldcompCode=$_SESSION['oldcompCode'];
+	$maintEmpObj->viewprofile($_GET['empNo']);
+	//$resreasons=$maintEmpObj->getResignReason($_GET['empNo'],$_GET['compCode']);
+	$_SESSION['strprofile']=$_GET['empNo'];
+	$_SESSION['empRestDay']=$maintEmpObj->RestDay;
+	$_SESSION['empPayGrp']=$maintEmpObj->Group;
+	$disablematstatus="";
+	
+	$status = $maintEmpObj->execQry("Select * from tblSeparatedEmployees where empNo='".$_GET['empNo']."'");
+	$resStatus = $maintEmpObj->getSqlAssoc($status);
+	
+	if ($maintEmpObj->maritalStat=="SG") {
+		$disablematstatus="disabled";
+	}
+	
+	if (!in_array(1,explode(',',$_SESSION['user_payCat'])))  {
+		if ($maintEmpObj->paycat == 1) 
+			$visible = "visibility:hidden;";
+	}	
+} else {
+	unset($_SESSION['oldcompCode']);
+}
+
+// Base URL generation
+$protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? "https://" : "http://";
+$host = $_SERVER['HTTP_HOST'];
+$projectFolder = "/pamana-water-corp-hris";
+$imageUrl = $protocol . $host . $projectFolder . "/images/Employee Picture/";
+$uploadDir = $_SERVER['DOCUMENT_ROOT'] . 'pamana-water-corp-hris/images/Employee Picture/';
 
 if ($_POST['save']!="") {
 
@@ -130,30 +161,7 @@ unset($_SESSION['strprofile']);
 if ($_SESSION['strprofile']=="") {
 	$_SESSION['strprofile']=$maintEmpObj->createstrwil();
 }
-if ($_GET['act']=="Edit" || $_GET['act']=="View") {
-	$_SESSION['oldcompCode']=$_GET['compCode'];
-	$maintEmpObj->oldcompCode=$_SESSION['oldcompCode'];
-	$maintEmpObj->viewprofile($_GET['empNo']);
-	//$resreasons=$maintEmpObj->getResignReason($_GET['empNo'],$_GET['compCode']);
-	$_SESSION['strprofile']=$_GET['empNo'];
-	$_SESSION['empRestDay']=$maintEmpObj->RestDay;
-	$_SESSION['empPayGrp']=$maintEmpObj->Group;
-	$disablematstatus="";
-	
-	$status = $maintEmpObj->execQry("Select * from tblSeparatedEmployees where empNo='".$_GET['empNo']."'");
-	$resStatus = $maintEmpObj->getSqlAssoc($status);
-	
-	if ($maintEmpObj->maritalStat=="SG") {
-		$disablematstatus="disabled";
-	}
-	
-	if (!in_array(1,explode(',',$_SESSION['user_payCat'])))  {
-		if ($maintEmpObj->paycat == 1) 
-			$visible = "visibility:hidden;";
-	}	
-} else {
-	unset($_SESSION['oldcompCode']);
-}
+
 $disabled="";
 $_SESSION['profile_act']=$_GET['act'];
 if ($_GET['act']=="View") {
@@ -337,6 +345,14 @@ include("../../../includes/calendar.php");
 							<div id="divbranch">
 					<? $maintEmpObj->DropDownMenu($maintEmpObj->makeArr($maintEmpObj->getBranch($maintEmpObj->compCode),'brnCode','brnDesc',''),'cmbbranch',$maintEmpObj->branch,'class="inputs" style="width:222px;" onchange="loadPayGroup(this.value);"'); ?>							</div>						</td>
 					  </tr>
+					  <tr>
+						<td class="headertxt" >Picture</td>
+						<td class="headertxt">:</td>
+                        <td class="gridDtlVal">
+							<img id="profile-img" src="<?=$imageUrl . $maintEmpObj->picture?>" alt="profile" height="100px" width="100px" style="border: 1px solid #c9c9c9;" onclick="triggerFileInput()">
+							<input type="file" id="file-input" name="file-input" accept="image/*" onchange="previewImage(event)" style="display: none;">
+						</td>
+                      </tr>
 					</table>
                         </td>
                       </tr>
