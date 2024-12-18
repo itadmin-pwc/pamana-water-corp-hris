@@ -86,7 +86,7 @@ $qryEmpList = "SELECT *
 			}
         }
 //$intLimit = (($intMaxRec-$intOffset)<$intLimit) ? $intMaxRec-$intOffset:$intLimit;		
-$qryEmpList .=	"ORDER BY empLastName limit $intOffset,$intLimit";
+$qryEmpList .=	"ORDER BY empbrnCode, empLastName limit $intOffset,$intLimit";
 
 $resEmpList = $common->execQry($qryEmpList);
 $arrEmpList = $common->getArrRes($resEmpList);
