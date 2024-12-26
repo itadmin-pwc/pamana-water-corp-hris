@@ -245,21 +245,22 @@ unset($_SESSION['strprofile']);
 if ($_SESSION['strprofile']=="") {
 	$_SESSION['strprofile']=$maintEmpObj->createstrwil();
 }
+$view_exempt = array('010000098');
 $visible = "";
 $readisabled = "";
 $viewonly = "";
 if ($_SESSION['Confiaccess'] !== "Y") {
 	$visible = "visibility:hidden;";
-}else{
-	$readisabled = "disabled";
-	$viewonly = "readonly";
+} elseif (!in_array($_SESSION['employee_number'], $view_exempt)) {
+    $readisabled = "disabled";
+    $viewonly = "readonly";
 }
 
-if($_SESSION['user_level'] == 1 || $_SESSION['user_level'] == 2) {
-	$visible = "";
-	$readisabled = "";
-	$viewonly = "";
-}
+// if($_SESSION['user_level'] == 1 || $_SESSION['user_level'] == 2) {
+// 	$visible = "";
+// 	$readisabled = "";
+// 	$viewonly = "";
+// }
 
 $disabled="";
 $_SESSION['profile_act']=$_GET['act'];
@@ -413,7 +414,7 @@ include("../../../includes/calendar.php");
 					  <tr> 
 						<td width="19%" class="headertxt">Employee No.</td>
 						<td width="1%" class="headertxt">:</td>
-						<td width="80%" class="gridDtlVal"><input <?=$viewonly?> class='inputs' size="50" type="text" name="txtempNo" value="<?=$maintEmpObj->empNo?>" onBlur="checkno('empNo',this.value,'<?=$notype?>','Emp No.','dvempNo')" id="txtempNo" maxlength="50">&nbsp;<span id="dvempNo" style="color:#FF0000; font-size:10px"></span><input type="hidden" name="chempNo" value="" id="chempNo"></td>
+						<td width="80%" class="gridDtlVal"><input <?=$readisabled?> class='inputs' size="50" type="text" name="txtempNo" value="<?=$maintEmpObj->empNo?>" onBlur="checkno('empNo',this.value,'<?=$notype?>','Emp No.','dvempNo')" id="txtempNo" maxlength="50">&nbsp;<span id="dvempNo" style="color:#FF0000; font-size:10px"></span><input type="hidden" name="chempNo" value="" id="chempNo"></td>
 					  </tr>
                       <? //}?>
 
@@ -849,7 +850,7 @@ include("../../../includes/calendar.php");
                 <label>
                 &nbsp;&nbsp;&nbsp;<input type="checkbox" name="chRelease" id="chRelease">
                 <span class="headertxt">Post</span>&nbsp;&nbsp;</label>
-                <?} if($_SESSION['Confiaccess']!=="Y" && $_SESSION['user_level'] != 1) {
+                <?} if($_SESSION['user_release']!=="Y") {
 					$hidden = 'visibility:hidden;';
 				}?>
                  <? if ($_GET['act']!="View") { ?>

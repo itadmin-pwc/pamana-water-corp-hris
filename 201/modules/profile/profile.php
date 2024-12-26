@@ -162,6 +162,16 @@ if ($_SESSION['strprofile']=="") {
 	$_SESSION['strprofile']=$maintEmpObj->createstrwil();
 }
 
+$visible = "";
+$readisabled = "";
+$viewonly = "";
+if ($_SESSION['Confiaccess'] !== "Y") {
+	$visible = "visibility:hidden;";
+}else{
+	$readisabled = "disabled";
+	$viewonly = "readonly";
+}
+
 $disabled="";
 $_SESSION['profile_act']=$_GET['act'];
 if ($_GET['act']=="View") {
@@ -593,41 +603,41 @@ include("../../../includes/calendar.php");
 						<td class="headertxt">Marital Status</td>
 						<td class="headertxt">:</td>
 						<td class="gridDtlVal"><? $maintEmpObj->DropDownMenu(array('','SG'=>'Single','ME'=>'Married','SP'=>'Separated','WI'=>'Widow(er)'),'cmbmaritalstatus',$maintEmpObj->maritalStat,'class="inputs" style="width:222px;"  onchange="checkmarital();"'); ?></td>
-						<td class="headertxt">Rate Mode</td>
-						<td class="headertxt"></td>
-						<td class="gridDtlVal"><? $maintEmpObj->DropDownMenu(array('','D'=>'Per Day','M'=>'Per Month'),'cmbpstatus',$maintEmpObj->PStatus,' class="inputs" onChange="checkrate();" style="width:145px;"'); ?></td>
+						<td class="headertxt" style="<?=$visible?>">Rate Mode</td>
+						<td class="headertxt" style="<?=$visible?>"></td>
+						<td class="gridDtlVal" style="<?=$visible?>"><? $maintEmpObj->DropDownMenu(array('','D'=>'Per Day','M'=>'Per Month'),'cmbpstatus',$maintEmpObj->PStatus,' class="inputs" onChange="checkrate();" style="width:145px;"'); ?></td>
 					  </tr>
 					  <tr> 
 						<td class="headertxt">Height</td>
 						<td class="headertxt">:</td>
 						<td class="gridDtlVal"><input class='inputs' maxlength="4" type="text" value="<?=$maintEmpObj->Height?>"  name="txtheight" id="txtheight" /></td>
-						<td class="headertxt">Basic Rate</td>
-						<td class="headertxt">:</td>
-						<td class="gridDtlVal"><div id="dvsalary"><input class='inputs' type="text" style="<?=$visible?>" value="<?=$maintEmpObj->Salary?>"  name="txtsalary" onKeyPress="return computeRates(this.value,<?=$maintEmpObj->compCode?>,'1',event);" maxlength="9" id="txtsalary" readonly /></div></td>
+						<td class="headertxt" style="<?=$visible?>">Basic Rate</td>
+						<td class="headertxt" style="<?=$visible?>">:</td>
+						<td class="gridDtlVal" style="<?=$visible?>"><div id="dvsalary"><input class='inputs' type="text" style="<?=$visible?>" value="<?=$maintEmpObj->Salary?>"  name="txtsalary" onKeyPress="return computeRates(this.value,<?=$maintEmpObj->compCode?>,'1',event);" maxlength="9" id="txtsalary" readonly /></div></td>
 					  </tr>
 					  <tr>
 					    <td class="headertxt">Weight</td>
 					    <td class="headertxt">:</td>
 					    <td class="gridDtlVal"><input class='inputs' maxlength="4" type="text" value="<?=$maintEmpObj->Weight?>"  name="txtweight" id="txtweight" /></td>
-					    <td class="headertxt">Daily Rate</td>
-					    <td class="headertxt">:</td>
-					    <td class="gridDtlVal"><div id="dvdailyrate"><input class='inputs' style="<?=$visible?>" type="text" value="<?=$maintEmpObj->Drate?>" onKeyPress="return computeRates(this.value,<?=$maintEmpObj->compCode?>,'0',event);"  name="txtdailyrate" maxlength="9" id="txtdailyrate" readonly /></DIV></td>
+					    <td class="headertxt" style="<?=$visible?>">Daily Rate</td>
+					    <td class="headertxt" style="<?=$visible?>">:</td>
+					    <td class="gridDtlVal" style="<?=$visible?>"><div id="dvdailyrate"><input class='inputs' style="<?=$visible?>" type="text" value="<?=$maintEmpObj->Drate?>" onKeyPress="return computeRates(this.value,<?=$maintEmpObj->compCode?>,'0',event);"  name="txtdailyrate" maxlength="9" id="txtdailyrate" readonly /></DIV></td>
 				      </tr>
 					  <tr>
 					    <td class="headertxt">Citizenship</td>
 					    <td class="headertxt">:</td>
 					    <td class="gridDtlVal"><? $maintEmpObj->DropDownMenu($maintEmpObj->makeArr($maintEmpObj->getcitizenshipwil(''),'citizenCd','citizenDesc',''),'cmbcitizenship',$maintEmpObj->CitizenCd,'class="inputs" style="width:222px;"'); ?></td>
-					    <td class="gridDtlVal">Pay Group</td>
-					    <td class="gridDtlVal">:</td>
-					    <td class="gridDtlVal"><div id="payGroupId"><? $maintEmpObj->DropDownMenu(array('','Group 1'),'cmbgroup',$maintEmpObj->Group,'class="inputs" style="width:145px;"'); ?></div><input class='inputs' type="hidden" value="<?=$maintEmpObj->Hrate?>" style="<?=$visible?>"  name="txthourlyrate" readonly maxlength="9" id="txthourlyrate" /></td>
+					    <td class="gridDtlVal" style="<?=$visible?>">Pay Group</td>
+					    <td class="gridDtlVal" style="<?=$visible?>">:</td>
+					    <td class="gridDtlVal" style="<?=$visible?>"><div id="payGroupId"><? $maintEmpObj->DropDownMenu(array('','Group 1'),'cmbgroup',$maintEmpObj->Group,'class="inputs" style="width:145px;"'); ?></div><input class='inputs' type="hidden" value="<?=$maintEmpObj->Hrate?>" style="<?=$visible?>"  name="txthourlyrate" readonly maxlength="9" id="txthourlyrate" /></td>
 				      </tr>
 					  <tr>
 					    <td class="headertxt">Religion</td>
 					    <td class="headertxt">:</td>
 					    <td class="gridDtlVal"><? $maintEmpObj->DropDownMenu($maintEmpObj->makeArr($maintEmpObj->getreligionwil(),'relCd','relDesc',''),'cmbreligion',$maintEmpObj->Religion,'class="inputs" style="width:222px;"'); ?></td>
-					    <td class="gridDtlVal">Pay Category</td>
-					    <td class="gridDtlVal">:</td>
-					    <td class="gridDtlVal"><div id="divpaycat">
+					    <td class="gridDtlVal" style="<?=$visible?>">Pay Category</td>
+					    <td class="gridDtlVal" style="<?=$visible?>">:</td>
+					    <td class="gridDtlVal" style="<?=$visible?>"><div id="divpaycat">
                               <? $maintEmpObj->DropDownMenu($maintEmpObj->makeArr($maintEmpObj->getPayCat($maintEmpObj->compCode,''),'payCat','payCatDesc',''),'cmbCategory',$maintEmpObj->paycat,'class="inputs" style="width:145px;'.$visible.'"'); ?>
                             </div></td>
 				      </tr>
@@ -635,17 +645,17 @@ include("../../../includes/calendar.php");
 					    <td class="headertxt">Blood Type</td>
 					    <td class="headertxt">:</td>
 					    <td class="gridDtlVal"><? $maintEmpObj->DropDownMenu(array('','A'=>'A','B'=>'B','AB'=>'A B','O'=>'O','A-'=>'A-','A+'=>'A+','B-'=>'B-','B+'=>'B+','O-'=>'O-','O+'=>'O+'),'cmbbloodtype',$maintEmpObj->BloodType,'class="inputs" style="width:222px;"'); ?></td>
-					    <td class="gridDtlVal">Bank Account Type</td>
-					    <td class="gridDtlVal">:</td>
-					    <td class="gridDtlVal"><? $maintEmpObj->DropDownMenu($maintEmpObj->makeArr($maintEmpObj->getbankwil(),'bankCd','bankDesc',''),'cmbbank',$maintEmpObj->bank,'class="inputs" style="width:145px;" onChange="checkno(\'empAcctNo\',\'\',\'' .$notype. '\',\'Account No.\',\'dvAcctNo\')"'); ?></td>
+					    <td class="gridDtlVal" style="<?=$visible?>">Bank Account Type</td>
+					    <td class="gridDtlVal" style="<?=$visible?>">:</td>
+					    <td class="gridDtlVal" style="<?=$visible?>"><? $maintEmpObj->DropDownMenu($maintEmpObj->makeArr($maintEmpObj->getbankwil(),'bankCd','bankDesc',''),'cmbbank',$maintEmpObj->bank,'class="inputs" style="width:145px;" onChange="checkno(\'empAcctNo\',\'\',\'' .$notype. '\',\'Account No.\',\'dvAcctNo\')"'); ?></td>
 				      </tr>
                      <tr>
                      	<td class="headertxt">Tax Exemption</td>
                         <td class="headertxt">:</td>
                         <td class="gridDtlVal"><? $maintEmpObj->DropDownMenu($maintEmpObj->makeArr($maintEmpObj->getTEU(),'teuCode','teuDesc',''),'cmbexemption',$maintEmpObj->Exemption,'class="inputs" style="width:145px;"'); ?></td>
-                        <td class="headertxt">Bank Account No.</td>
-                        <td class="headertxt">:</td>
-                        <td class="gridDtlVal"><input class='inputs' maxlength="25" onKeyDown="return AcctFormat(event);" type="text" value="<?=$maintEmpObj->bankAcctNo?>"  name="txtbankaccount" id="txtbankaccount" onBlur="checkno('empAcctNo',this.value,'<?=$notype?>','Account No.','dvAcctNo')" /><span id="dvAcctNo" style="color:#FF0000;font-size:10px"></span><input type="hidden" name="chAcctNo" value="" id="chAcctNo"></td>
+                        <td class="headertxt" style="<?=$visible?>">Bank Account No.</td>
+                        <td class="headertxt" style="<?=$visible?>">:</td>
+                        <td class="gridDtlVal" style="<?=$visible?>"><input class='inputs' maxlength="25" onKeyDown="return AcctFormat(event);" type="text" value="<?=$maintEmpObj->bankAcctNo?>"  name="txtbankaccount" id="txtbankaccount" onBlur="checkno('empAcctNo',this.value,'<?=$notype?>','Account No.','dvAcctNo')" /><span id="dvAcctNo" style="color:#FF0000;font-size:10px"></span><input type="hidden" name="chAcctNo" value="" id="chAcctNo"></td>
                     </tr> 
                     <?
                     if($_SESSION['user_telcoaccess']=="Y"){
@@ -660,7 +670,7 @@ include("../../../includes/calendar.php");
 					?>                   
 					</table><table width="100%" border="0" cellspacing="0" cellpadding="0">
   <tr><td height="15"></td></tr>
-  <tr>
+  <tr style="<?=$visible?>">
     <td><div id="empAllowList"></div>
 	<div id="indicator1" align="center"></div></td>
   </tr>

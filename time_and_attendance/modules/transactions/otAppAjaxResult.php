@@ -61,9 +61,9 @@ if ($level > '70'){
 	$_SESSION['uType'] = "T"; // Time Keeper
 	$approverData = $OtAppObj->getTblData("tbltna_approver", " and approverEmpNo='".$_SESSION['employee_number']."' and status='A' AND dateValid >= NOW()", "", "sqlAssoc");
 	$forApproval = '';
-	$timeKeeperApprover = $approverData["approverEmpNo"] != "" && $_SESSION['user_level'] == 2 && $_SESSION['user_release']=="Y";
-	$managerApporver = $approverData["approverEmpNo"] != "" && $_SESSION['user_level'] == 2 && $_SESSION['user_release']!="Y";
-	$timeKeeper = $approverData["approverEmpNo"] == "" && $_SESSION['user_level'] == 2 && $_SESSION['user_release']=="Y";
+	$timeKeeperApprover = $approverData["approverEmpNo"] != "" && ($_SESSION['user_level'] == 2 || $_SESSION['user_level'] == 1) && $_SESSION['user_release']=="Y";
+	$managerApporver = $approverData["approverEmpNo"] != "" && ($_SESSION['user_level'] == 2 || $_SESSION['user_level'] == 1) && $_SESSION['user_release']!="Y";
+	$timeKeeper = $approverData["approverEmpNo"] == "" && ($_SESSION['user_level'] == 2 || $_SESSION['user_level'] == 1) && $_SESSION['user_release']=="Y";
 	if($timeKeeperApprover) { 
 		$_SESSION['uType'] = "TA"; //Timekeeper Approver
 		$forApproval = " AND (emp.empNo IN (Select subordinateEmpNo from tbltna_approver 

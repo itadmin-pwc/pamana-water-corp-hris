@@ -948,16 +948,16 @@ class ProfileObj extends commonObj {
 		empAddr2, empAddr3, empMarStat, empSex, empBday, empReligion, empMrate, empDrate, empHrate, empOtherInfo, empNickName, 
 		empBplace, empHeight, empWeight, empCitizenCd, empBloodType, empEndDate, empLevel, empSubSection, empCityCd, 
 		empSpouseName, empBuildDesc, empComplexDesc, empEyeColorDesc, empHairDesc, empPhicNo, empAbsencesTag, empLatesTag, 
-		empUtTag, empOtTag, empPicture, empImageSize, empShiftId, annualTag, empRank,releasedby,empdateadded,id, empProvinceCd, 
-		empECPerson, empECNumber, empMunicipalityCd,employmentTag,empSunLine,empGlobeLine,empSmartLine)
+		empUtTag, empOtTag, empImageSize, empShiftId, annualTag, empRank,releasedby,empdateadded,id, empProvinceCd, 
+		empECPerson, empECNumber, empMunicipalityCd,employmentTag,empSunLine,empGlobeLine,empSmartLine, picture)
 		SELECT compCode, empNo, empLastName, empFirstName, empMidName, empLocCode, empBrnCode, 
 		empDiv, empDepCode, empSecCode, empPosId, dateHired, empStat, dateReg, dateResigned, empRestDay, empTeu, empTin, 
 		empSssNo, empPagibig, empBankCd, empAcctNo, empPayGrp, empPayType, empPayCat, empWageTag, empPrevTag, empAddr1, 
 		empAddr2, empAddr3, empMarStat, empSex, empBday, empReligion, empMrate, empDrate, empHrate, empOtherInfo, empNickName, 
 		empBplace, empHeight, empWeight, empCitizenCd, empBloodType, empEndDate, empLevel, empSubSection, empCityCd, 
 		empSpouseName, empBuildDesc, empComplexDesc, empEyeColorDesc, empHairDesc, empPhicNo, empAbsencesTag, empLatesTag, 
-		empUtTag, empOtTag, empPicture, empImageSize, empShiftId, annualTag, empRank,'{$_SESSION['user_id']}', empdateadded, id, empProvinceCd,
-		empECPerson, empECNumber, empMunicipalityCd, employmentTag, empSunLine, empGlobeLine, empSmartLine
+		empUtTag, empOtTag, empImageSize, empShiftId, annualTag, empRank,'{$_SESSION['user_id']}', empdateadded, id, empProvinceCd,
+		empECPerson, empECNumber, empMunicipalityCd, employmentTag, empSunLine, empGlobeLine, empSmartLine, picture
 		FROM tblEmpMast_new 
 		WHERE empNo='$empNo' AND compCode='$compCode'";
 			
