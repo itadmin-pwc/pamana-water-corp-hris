@@ -89,7 +89,7 @@ if ($_POST['save']!="") {
 	$maintEmpObj->sex	   	 = (isset($_POST['cmbgender'])) ? $_POST['cmbgender'] : 0;
 	$maintEmpObj->NickName	 = (isset($_POST['txtnickname'])) ? $_POST['txtnickname'] : "";
 	$maintEmpObj->Bplace	 = (isset($_POST['txtbplace'])) ? $_POST['txtbplace'] : "";
-	$maintEmpObj->dateOfBirth= (isset($_POST['txtBDay'])) ? $_POST['txtBDay'] : date('Y-m-d');
+	$maintEmpObj->dateOfBirth= (isset($_POST['txtBDay'])) ? date('Y-m-d', strtotime($_POST['txtBDay'])) : date('Y-m-d');
 	$maintEmpObj->maritalStat= (isset($_POST['cmbmaritalstatus'])) ? $_POST['cmbmaritalstatus'] : 0;
 	$maintEmpObj->Height	 = (isset($_POST['txtheight'])) ? $_POST['txtheight'] : "";
 	$maintEmpObj->Weight	 = (isset($_POST['txtweight'])) ? $_POST['txtweight'] : "";
@@ -122,10 +122,10 @@ if ($_POST['save']!="") {
 	$maintEmpObj->empRank	= (isset($_POST['txtRank'])) ? $_POST['txtRank'] : 0;
 	$maintEmpObj->level	 	 = (isset($_POST['txtLevel'])) ? $_POST['txtLevel'] : 0;
 	$maintEmpObj->Status	= (isset($_POST['cmbstatus'])) ? $_POST['cmbstatus'] : 0;
-	$maintEmpObj->Effectivity = $_POST['txtEffDate'];
-	$maintEmpObj->Regularization 	= $_POST['txtRegDate'];
-	$maintEmpObj->EndDate 			= $_POST['txtEndDate'];
-	$maintEmpObj->RSDate 			= $_POST['txtRSDate'];
+	$maintEmpObj->Effectivity = (isset($_POST['txtEffDate']) && strtotime($_POST['txtEffDate']) !== false) ? date('Y-m-d', strtotime($_POST['txtEffDate'])) : "";
+	$maintEmpObj->Regularization 	= (isset($_POST['txtRegDate']) && strtotime($_POST['txtRegDate']) !== false) ? date('Y-m-d', strtotime($_POST['txtRegDate'])) : "";
+	$maintEmpObj->EndDate 			= (isset($_POST['txtEndDate']) && strtotime($_POST['txtEndDate']) !== false) ? date('Y-m-d', strtotime($_POST['txtEndDate'])) : "";
+	$maintEmpObj->RSDate 			= (isset($_POST['txtRSDate']) && strtotime($_POST['txtRSDate']) !== false) ? date('Y-m-d', strtotime($_POST['txtRSDate'])) : "";
 	$maintEmpObj->prevtag   = (isset($_POST['chprev'])) ? $_POST['chprev'] : "";
 	$maintEmpObj->empSunLine = (isset($_POST['chkSun'])) ? $_POST['chkSun'] : "";
 	$maintEmpObj->empGlobeLine = (isset($_POST['chkGlobe'])) ? $_POST['chkGlobe'] : "";
@@ -301,6 +301,7 @@ include("../../../includes/calendar.php");
     var myCalendar;
     function doOnLoad() {
         myCalendar = new dhtmlXCalendarObject(["txtEffDate","txtEndDate","txtRSDate","txtRegDate","txtBDay"]);
+		myCalendar.setDateFormat("%m-%d-%Y");
     }
 
 	function cnclLockSys(){
@@ -605,22 +606,22 @@ include("../../../includes/calendar.php");
                               <tr>
                                 <td class="headertxt">Date Hired</td>
                                 <td class="headertxt">:</td>
-                                <td class="gridDtlVal"><input <?=$readisabled?> name="txtEffDate" type="text" class='inputs' id="txtEffDate" value="<?=($maintEmpObj->Effectivity !="") ? date('Y-m-d',strtotime($maintEmpObj->Effectivity)) : "";?>" size="15" maxlength="10" readonly/></td>
+                                <td class="gridDtlVal"><input <?=$readisabled?> name="txtEffDate" type="text" class='inputs' id="txtEffDate" value="<?=(!empty($maintEmpObj->Effectivity) && strtotime($maintEmpObj->Effectivity) !== false) ? date('m-d-Y',strtotime($maintEmpObj->Effectivity)) : "";?>" size="15" maxlength="10" readonly/></td>
                               </tr>
                               <tr>
                                 <td class="headertxt">Regularization</td>
                                 <td class="headertxt">:</td>
-                                <td class="gridDtlVal"><input  <?=$readisabled?>  name="txtRegDate" value="<?=($maintEmpObj->Regularization !="") ? date('Y-m-d',strtotime($maintEmpObj->Regularization)) : "";?>" type="text" class='inputs' id="txtRegDate"   size="15" maxlength="10" readonly /></td>
+                                <td class="gridDtlVal"><input  <?=$readisabled?>  name="txtRegDate" value="<?=(!empty($maintEmpObj->Regularization) && strtotime($maintEmpObj->Regularization) !== false) ? date('m-d-Y',strtotime($maintEmpObj->Regularization)) : "";?>" type="text" class='inputs' id="txtRegDate"   size="15" maxlength="10" readonly /></td>
                               </tr>
                             <tr>
                             	<td class="headertxt">End Date</td>
                                 <td class="headertxt">:</td>
-                                <td class="gridDtlVal"><input  <?=$readisabled?> name="txtEndDate" value="<?=($maintEmpObj->EndDate !="") ? date('Y-m-d',strtotime($maintEmpObj->EndDate)) : "";?>" type="text" class='inputs' id="txtEndDate"  size="15" maxlength="10" readonly /></td>
+                                <td class="gridDtlVal"><input  <?=$readisabled?> name="txtEndDate" value="<?=(!empty($maintEmpObj->EndDate) && strtotime($maintEmpObj->EndDate) !== false) ? date('m-d-Y',strtotime($maintEmpObj->EndDate)) : "";?>" type="text" class='inputs' id="txtEndDate"  size="15" maxlength="10" readonly /></td>
                             </tr>
                             <tr>
                             	<td class="headertxt">Resigned Date</td>
                                 <td class="headertxt">:</td>
-                                <td class="gridDtlVal"><input <?=$readisabled?> value="<?=($maintEmpObj->RSDate !="") ? date('Y-m-d',strtotime($maintEmpObj->RSDate)) : "";?>" name="txtRSDate" type="text" class='inputs' id="txtRSDate"  size="15" maxlength="10" readonly /></td>
+                                <td class="gridDtlVal"><input <?=$readisabled?> value="<?=(!empty($maintEmpObj->RSDate) && strtotime($maintEmpObj->RSDate) !== false) ? date('m-d-Y', strtotime($maintEmpObj->RSDate)) : "";?>" name="txtRSDate" type="text" class='inputs' id="txtRSDate"  size="15" maxlength="10" readonly /></td>
                             </tr>
                             <tr>
                             	<td class="headertxt">With Previous Employer</td>
@@ -704,7 +705,7 @@ include("../../../includes/calendar.php");
 					  <tr> 
 						<td class="headertxt">Birthday</td>
 						<td class="headertxt">:</td>
-						<td class="gridDtlVal"><input <?=$readisabled?> name="txtBDay" type="text" value="<?=($maintEmpObj->dateOfBirth !="") ? date('Y-m-d',strtotime($maintEmpObj->dateOfBirth)) : "";?>"  class='inputs' id="txtBDay" size="12" readonly></td>
+						<td class="gridDtlVal"><input <?=$readisabled?> name="txtBDay" type="text" value="<?=(!empty($maintEmpObj->dateOfBirth) && strtotime($maintEmpObj->dateOfBirth) !== false) ? date('m-d-Y', strtotime($maintEmpObj->dateOfBirth)) : "";?>"  class='inputs' id="txtBDay" size="12" readonly></td>
 						<td class="headertxt">HDMF</td>
                         <td class="headertxt">:</td>
                         <td class="gridDtlVal"><input <?=$readisabled?> class='inputs' maxlength="25" type="text" value="<?=$maintEmpObj->HDMF?>" onBlur="checkno('empPagibig',this.value,'<?=$notype?>','HDMF No.','dvhdmf')"  name="txthdmf" id="txthdmf" /><span id="dvhdmf" style="color:#FF0000;font-size:10px"></span><input type="hidden" name="chhdmf" value="" id="chhdmf"><? //$maintEmpObj->DropDownMenu(array('','Light'=>'Light','Fair'=>'Fair','Dark'=>'Dark'),'cmbcomplexion',$maintEmpObj->Complexion,'class="inputs" style="width:222px;"'); ?></td>
