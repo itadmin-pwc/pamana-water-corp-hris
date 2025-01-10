@@ -13,6 +13,45 @@ if ($_GET['act']=="Edit" || $_GET['act']=="View") {
 	$_SESSION['oldcompCode']=$_GET['compCode'];
 	$maintEmpObj->oldcompCode=$_SESSION['oldcompCode'];
 	$maintEmpObj->viewprofile($_GET['empNo']);
+	//AGE CALCULATION
+	// Convert date of birth to a timestamp
+	$dateOfBirth = strtotime($maintEmpObj->dateOfBirth);
+
+	// Get the current timestamp
+	$currentDate = time();
+
+	// Calculate the difference in seconds
+	$ageInSeconds = $currentDate - $dateOfBirth;
+
+	// Convert the difference to years
+	$age = floor($ageInSeconds / (365 * 24 * 60 * 60));
+	//END OF AGE CALCULATION
+
+	//YEARS OF SERVICE CALCULATION
+	// Convert Effectivity date to a timestamp
+	$effectivityDate = strtotime($maintEmpObj->Effectivity);
+
+	// Get the current timestamp
+	$currentDate = time();
+
+	// Calculate the difference in seconds
+	$diffInSeconds = $currentDate - $effectivityDate;
+
+	// Calculate the difference in days, months, and years
+	$diffInDays = floor($diffInSeconds / (24 * 60 * 60));
+	$diffInMonths = floor($diffInDays / 30);
+	$diffInYears = floor($diffInDays / 365);
+
+	// Determine the appropriate unit to display
+	if ($diffInDays < 30) {
+		$serviceDuration = $diffInDays . " day" . ($diffInDays > 1 ? "s" : "");
+	} elseif ($diffInDays < 365) {
+		$serviceDuration = $diffInMonths . " month" . ($diffInMonths > 1 ? "s" : "");
+	} else {
+		$serviceDuration = $diffInYears . " year" . ($diffInYears > 1 ? "s" : "");
+	}
+	//END OF YEARS OF SERVICE CALCULATION
+
 	//$resreasons=$maintEmpObj->getResignReason($_GET['empNo'],$_GET['compCode']);
 	$_SESSION['strprofile']=$_GET['empNo'];
 	$_SESSION['empRestDay']=$maintEmpObj->RestDay;
@@ -505,7 +544,10 @@ include("../../../includes/calendar.php");
                               <tr>
                                 <td class="headertxt">Date Hired</td>
                                 <td class="headertxt">:</td>
-                                <td class="gridDtlVal"><input   name="txtEffDate" type="text" class='inputs' id="txtEffDate"  value="<?=($maintEmpObj->Effectivity !="") ? date('m-d-Y',strtotime($maintEmpObj->Effectivity)) : "";?>" size="15" maxlength="10" readonly /></td>
+                                <td class="gridDtlVal" style="display: flex; align-items: center; vertical-align: middle !important;">
+									<input name="txtEffDate" type="text" class='inputs' id="txtEffDate"  value="<?=($maintEmpObj->Effectivity !="") ? date('m-d-Y',strtotime($maintEmpObj->Effectivity)) : "";?>" size="15" maxlength="10" readonly />
+									<span style="font-size: 12px; margin-left: 5px;"> Service: <?=$serviceDuration;?></span>
+								</td>
                               </tr>
                               <tr>
                                 <td class="headertxt">Regularization</td>
@@ -586,7 +628,9 @@ include("../../../includes/calendar.php");
 					  <tr> 
 						<td class="headertxt">Birth Place</td>
 						<td class="headertxt">:</td>
-						<td class="gridDtlVal"><input class='inputs' maxlength="50" size="33" type="text" value="<?=$maintEmpObj->Bplace?>"  name="txtbplace" id="txtbplace" /></td>
+						<td class="gridDtlVal">
+							<input class='inputs' maxlength="50" size="33" type="text" value="<?=$maintEmpObj->Bplace?>"  name="txtbplace" id="txtbplace" />
+						</td>
 						<td class="headertxt">Tax ID</td>
 						<td class="headertxt">:</td>
 						<td class="gridDtlVal"><input class='inputs' maxlength="11" type="text" onKeyDown="javascript:return dFilter (event.keyCode, this, '###-###-###');" value="<?=$maintEmpObj->TIN?>" onBlur="checkno('empTin',this.value,'<?=$notype?>','Tax ID No.','dvtaxid')"  name="txttax" id="txttax" /><span id="dvtaxid" style="color:#FF0000; font-size:10px"></span><input type="hidden" name="chtaxid" value="" id="chtaxid"></td>
@@ -594,7 +638,10 @@ include("../../../includes/calendar.php");
 					  <tr> 
 						<td class="headertxt">Birthday</td>
 						<td class="headertxt">:</td>
-						<td class="gridDtlVal"><input name="txtBDay" type="text" value="<?=($maintEmpObj->dateOfBirth !="") ? date('m-d-Y',strtotime($maintEmpObj->dateOfBirth)) : "";?>"  class='inputs' id="txtBDay" size="12" ></td>
+						<td class="gridDtlVal" style="display: flex; align-items: center; vertical-align: middle !important;">
+							<input name="txtBDay" type="text" value="<?=($maintEmpObj->dateOfBirth !="") ? date('m-d-Y',strtotime($maintEmpObj->dateOfBirth)) : "";?>" class='inputs' id="txtBDay" size="12">
+							<span style="font-size: 12px; margin-left: 5px;"> Age: <?=$age?></span>
+						</td>
 						<td class="headertxt">HDMF</td>
 						<td class="headertxt">:</td>
 						<td class="gridDtlVal"><input class='inputs' maxlength="25" type="text" value="<?=$maintEmpObj->HDMF?>" onBlur="checkno('empPagibig',this.value,'<?=$notype?>','HDMF No.','dvhdmf')"  name="txthdmf" id="txthdmf" /><span id="dvhdmf" style="color:#FF0000;font-size:10px"></span><input type="hidden" name="chhdmf" value="" id="chhdmf"></td>
