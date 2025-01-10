@@ -73,7 +73,7 @@ if ($_POST['save']!="") {
 	$maintEmpObj->sex	   	 = (isset($_POST['cmbgender'])) ? $_POST['cmbgender'] : 0;
 	$maintEmpObj->NickName	 = (isset($_POST['txtnickname'])) ? $_POST['txtnickname'] : "";
 	$maintEmpObj->Bplace	 = (isset($_POST['txtbplace'])) ? $_POST['txtbplace'] : "";
-	$maintEmpObj->dateOfBirth= (isset($_POST['txtBDay'])) ? $_POST['txtBDay'] : date('Y-m-d');
+	$maintEmpObj->dateOfBirth= (isset($_POST['txtBDay'])) ? date('Y-m-d', strtotime($_POST['txtBDay'])) : date('Y-m-d');
 	$maintEmpObj->maritalStat= (isset($_POST['cmbmaritalstatus'])) ? $_POST['cmbmaritalstatus'] : 0;
 	//Removed from previous by Nhomer requested by HR with document
 		//$maintEmpObj->Spouse	 = (isset($_POST['txtspouse'])) ? $_POST['txtspouse'] : "";
@@ -98,10 +98,10 @@ if ($_POST['save']!="") {
 	$maintEmpObj->empRank	= (isset($_POST['txtRank'])) ? $_POST['txtRank'] : 0;
 	$maintEmpObj->level	 	= (isset($_POST['txtLevel'])) ? $_POST['txtLevel'] : 0;
 	$maintEmpObj->Status;	
-	$maintEmpObj->Effectivity 		= $_POST['txtEffDate'];
-	$maintEmpObj->Regularization 	= $_POST['txtRegDate'];
-	$maintEmpObj->EndDate 			= $_POST['txtEndDate'];
-	$maintEmpObj->RSDate 			= $_POST['txtRSDate'];
+	$maintEmpObj->Effectivity = (isset($_POST['txtEffDate']) && strtotime($_POST['txtEffDate']) !== false) ? date('Y-m-d', strtotime($_POST['txtEffDate'])) : "";
+	$maintEmpObj->Regularization 	= (isset($_POST['txtRegDate']) && strtotime($_POST['txtRegDate']) !== false) ? date('Y-m-d', strtotime($_POST['txtRegDate'])) : "";
+	$maintEmpObj->EndDate 			= (isset($_POST['txtEndDate']) && strtotime($_POST['txtEndDate']) !== false) ? date('Y-m-d', strtotime($_POST['txtEndDate'])) : "";
+	$maintEmpObj->RSDate 			= (isset($_POST['txtRSDate']) && strtotime($_POST['txtRSDate']) !== false) ? date('Y-m-d', strtotime($_POST['txtRSDate'])) : "";
 	$maintEmpObj->prevtag   = (isset($_POST['chprev'])) ? $_POST['chprev'] : "";
 	$maintEmpObj->empStat	= (isset($_POST['cmbstatus'])) ? $_POST['cmbstatus'] : 0;
 	$maintEmpObj->resReason;
@@ -505,22 +505,22 @@ include("../../../includes/calendar.php");
                               <tr>
                                 <td class="headertxt">Date Hired</td>
                                 <td class="headertxt">:</td>
-                                <td class="gridDtlVal"><input   name="txtEffDate" type="text" class='inputs' id="txtEffDate"  value="<?=($maintEmpObj->Effectivity !="") ? date('Y-m-d',strtotime($maintEmpObj->Effectivity)) : "";?>" size="15" maxlength="10" readonly /></td>
+                                <td class="gridDtlVal"><input   name="txtEffDate" type="text" class='inputs' id="txtEffDate"  value="<?=($maintEmpObj->Effectivity !="") ? date('m-d-Y',strtotime($maintEmpObj->Effectivity)) : "";?>" size="15" maxlength="10" readonly /></td>
                               </tr>
                               <tr>
                                 <td class="headertxt">Regularization</td>
                                 <td class="headertxt">:</td>
-                                <td class="gridDtlVal"><input   name="txtRegDate" value="<?=($maintEmpObj->Regularization !="") ? date('Y-m-d',strtotime($maintEmpObj->Regularization)) : "";?>" type="text" class='inputs' id="txtRegDate"   size="15" maxlength="10" readonly /></td>
+                                <td class="gridDtlVal"><input   name="txtRegDate" value="<?=($maintEmpObj->Regularization !="") ? date('m-d-Y',strtotime($maintEmpObj->Regularization)) : "";?>" type="text" class='inputs' id="txtRegDate"   size="15" maxlength="10" readonly /></td>
                               </tr>
                               <tr>
                                 <td class="headertxt">End Date</td>
                                 <td class="headertxt">:</td>
-                                <td class="gridDtlVal"><input   name="txtEndDate" value="<?=($maintEmpObj->EndDate !="") ? date('Y-m-d',strtotime($maintEmpObj->EndDate)) : "";?>" type="text" class='inputs' id="txtEndDate"  size="15" maxlength="10" readonly /></td>
+                                <td class="gridDtlVal"><input   name="txtEndDate" value="<?=($maintEmpObj->EndDate !="") ? date('m-d-Y',strtotime($maintEmpObj->EndDate)) : "";?>" type="text" class='inputs' id="txtEndDate"  size="15" maxlength="10" readonly /></td>
                               </tr>
                               <tr>
                                 <td class="headertxt">Resigned Date</td>
                                 <td class="headertxt">:</td>
-                                <td class="gridDtlVal"><input value="<?=($maintEmpObj->RSDate !="") ? date('Y-m-d',strtotime($maintEmpObj->RSDate)) : "";?>" name="txtRSDate" type="text" class='inputs' id="txtRSDate"  size="15" maxlength="10" readonly /></td>
+                                <td class="gridDtlVal"><input value="<?=($maintEmpObj->RSDate !="") ? date('m-d-Y',strtotime($maintEmpObj->RSDate)) : "";?>" name="txtRSDate" type="text" class='inputs' id="txtRSDate"  size="15" maxlength="10" readonly /></td>
                               </tr>
                               <tr>
                                 <td><span class="headertxt">With Previous Employer</span></td>
@@ -594,7 +594,7 @@ include("../../../includes/calendar.php");
 					  <tr> 
 						<td class="headertxt">Birthday</td>
 						<td class="headertxt">:</td>
-						<td class="gridDtlVal"><input name="txtBDay" type="text" value="<?=($maintEmpObj->dateOfBirth !="") ? date('Y-m-d',strtotime($maintEmpObj->dateOfBirth)) : "";?>"  class='inputs' id="txtBDay" size="12" ></td>
+						<td class="gridDtlVal"><input name="txtBDay" type="text" value="<?=($maintEmpObj->dateOfBirth !="") ? date('m-d-Y',strtotime($maintEmpObj->dateOfBirth)) : "";?>"  class='inputs' id="txtBDay" size="12" ></td>
 						<td class="headertxt">HDMF</td>
 						<td class="headertxt">:</td>
 						<td class="gridDtlVal"><input class='inputs' maxlength="25" type="text" value="<?=$maintEmpObj->HDMF?>" onBlur="checkno('empPagibig',this.value,'<?=$notype?>','HDMF No.','dvhdmf')"  name="txthdmf" id="txthdmf" /><span id="dvhdmf" style="color:#FF0000;font-size:10px"></span><input type="hidden" name="chhdmf" value="" id="chhdmf"></td>
