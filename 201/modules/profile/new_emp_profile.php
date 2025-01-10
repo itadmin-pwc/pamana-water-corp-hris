@@ -191,7 +191,7 @@ if ($_POST['save']!="") {
 		}
 	}
 	unset($_SESSION['strprofile'],$_SESSION['oldcompCode'],$_SESSION['profile_act'],$_SESSION['empRestDay']);
-	header("Location: new_emp_list.php");
+	header("Location: new_emp_profile.php?act=Edit&empNo={$_GET['empNo']}&compCode={$_GET['compCode']}");
 } else {
 	unset($_SESSION['empRestDay']);
 }
