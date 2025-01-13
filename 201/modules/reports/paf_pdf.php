@@ -91,13 +91,13 @@ $empName1=($empName>""?" AND ($nameType LIKE '{$empName}%')":"");
 if ($_GET['from'] != "" && $_GET['to'] != "") {
 	$fromdt = date('Y-m-d',strtotime($_GET['from']));
 	$todt = date('Y-m-d',strtotime($_GET['to']));
-	$datefilter1 = " and tblPAF_Others$type.dateupdated >= '$fromdt' and tblPAF_Others$type.dateupdated <='$todt'";
-	$datefilter2 = " and tblPAF_EmpStatus$type.dateupdated >= '$fromdt' and tblPAF_EmpStatus$type.dateupdated <='$todt'";
-	$datefilter3 = " and tblPAF_Branch$type.dateupdated >= '$fromdt' and tblPAF_Branch$type.dateupdated <='$todt'";
-	$datefilter4 = " and tblPAF_Position$type.dateupdated >= '$fromdt' and tblPAF_Position$type.dateupdated <='$todt'";
-	$datefilter5 = " and tblPAF_PayrollRelated$type.dateupdated >= '$fromdt' and tblPAF_PayrollRelated$type.dateupdated <='$todt'";
-	$datefilter6 = " and tblPAF_Allowance$type.dateupdated >= '$fromdt' and tblPAF_Allowance$type.dateupdated <='$todt'";
-	$datefilter  = " and dateupdated >= '$fromdt' and dateupdated <='$todt'";
+	$datefilter1 = " and tblPAF_Others$type.effectivitydate >= '$fromdt' and tblPAF_Others$type.effectivitydate <='$todt'";
+	$datefilter2 = " and tblPAF_EmpStatus$type.effectivitydate >= '$fromdt' and tblPAF_EmpStatus$type.effectivitydate <='$todt'";
+	$datefilter3 = " and tblPAF_Branch$type.effectivitydate >= '$fromdt' and tblPAF_Branch$type.effectivitydate <='$todt'";
+	$datefilter4 = " and tblPAF_Position$type.effectivitydate >= '$fromdt' and tblPAF_Position$type.effectivitydate <='$todt'";
+	$datefilter5 = " and tblPAF_PayrollRelated$type.effectivitydate >= '$fromdt' and tblPAF_PayrollRelated$type.effectivitydate <='$todt'";
+	$datefilter6 = " and tblPAF_Allowance$type.effectivitydate >= '$fromdt' and tblPAF_Allowance$type.effectivitydate <='$todt'";
+	$datefilter  = " and effectivitydate >= '$fromdt' and effectivitydate <='$todt'";
 	
 }
 if (empty($pafType) || $pafType =="others") {
