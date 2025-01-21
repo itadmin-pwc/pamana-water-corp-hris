@@ -89,7 +89,7 @@ if ($_POST['save']!="") {
 	$maintEmpObj->sex	   	 = (isset($_POST['cmbgender'])) ? $_POST['cmbgender'] : 0;
 	$maintEmpObj->NickName	 = (isset($_POST['txtnickname'])) ? $_POST['txtnickname'] : "";
 	$maintEmpObj->Bplace	 = (isset($_POST['txtbplace'])) ? $_POST['txtbplace'] : "";
-	$maintEmpObj->dateOfBirth= (isset($_POST['txtBDay'])) ? date('Y-m-d', strtotime($_POST['txtBDay'])) : date('Y-m-d');
+	$maintEmpObj->dateOfBirth= (isset($_POST['txtBDay'])) ? date('Y-m-d', strtotime(str_replace("-", "/", $_POST['txtBDay']))) : date('Y-m-d');
 	$maintEmpObj->maritalStat= (isset($_POST['cmbmaritalstatus'])) ? $_POST['cmbmaritalstatus'] : 0;
 	$maintEmpObj->Height	 = (isset($_POST['txtheight'])) ? $_POST['txtheight'] : "";
 	$maintEmpObj->Weight	 = (isset($_POST['txtweight'])) ? $_POST['txtweight'] : "";
@@ -122,10 +122,10 @@ if ($_POST['save']!="") {
 	$maintEmpObj->empRank	= (isset($_POST['txtRank'])) ? $_POST['txtRank'] : 0;
 	$maintEmpObj->level	 	 = (isset($_POST['txtLevel'])) ? $_POST['txtLevel'] : 0;
 	$maintEmpObj->Status	= (isset($_POST['cmbstatus'])) ? $_POST['cmbstatus'] : 0;
-	$maintEmpObj->Effectivity = (isset($_POST['txtEffDate']) && strtotime($_POST['txtEffDate']) !== false) ? date('Y-m-d', strtotime($_POST['txtEffDate'])) : "";
-	$maintEmpObj->Regularization 	= (isset($_POST['txtRegDate']) && strtotime($_POST['txtRegDate']) !== false) ? date('Y-m-d', strtotime($_POST['txtRegDate'])) : "";
-	$maintEmpObj->EndDate 			= (isset($_POST['txtEndDate']) && strtotime($_POST['txtEndDate']) !== false) ? date('Y-m-d', strtotime($_POST['txtEndDate'])) : "";
-	$maintEmpObj->RSDate 			= (isset($_POST['txtRSDate']) && strtotime($_POST['txtRSDate']) !== false) ? date('Y-m-d', strtotime($_POST['txtRSDate'])) : "";
+	$maintEmpObj->Effectivity = (isset($_POST['txtEffDate']) && strtotime(str_replace("-", "/", $_POST['txtEffDate'])) !== false) ? date('Y-m-d', strtotime(str_replace("-", "/", $_POST['txtEffDate']))) : "";
+	$maintEmpObj->Regularization 	= (isset($_POST['txtRegDate']) && strtotime(str_replace("-", "/", $_POST['txtRegDate'])) !== false) ? date('Y-m-d', strtotime(str_replace("-", "/", $_POST['txtRegDate']))) : "";
+	$maintEmpObj->EndDate 			= (isset($_POST['txtEndDate']) && strtotime(str_replace("-", "/", $_POST['txtEndDate'])) !== false) ? date('Y-m-d', strtotime(str_replace("-", "/", $_POST['txtEndDate']))) : "";
+	$maintEmpObj->RSDate 			= (isset($_POST['txtRSDate']) && strtotime(str_replace("-", "/", $_POST['txtRSDate'])) !== false) ? date('Y-m-d', strtotime(str_replace("-", "/", $_POST['txtRSDate']))) : "";
 	$maintEmpObj->prevtag   = (isset($_POST['chprev'])) ? $_POST['chprev'] : "";
 	$maintEmpObj->empSunLine = (isset($_POST['chkSun'])) ? $_POST['chkSun'] : "";
 	$maintEmpObj->empGlobeLine = (isset($_POST['chkGlobe'])) ? $_POST['chkGlobe'] : "";
@@ -172,7 +172,7 @@ if ($_POST['save']!="") {
 	elseif ($_GET['act']=="Edit") {
 		$old_picture = $maintEmpObj->getPicture($_GET['empNo'], $_GET['compCode']);
 		//die(var_dump($maintEmpObj));
-		//die($maintEmpObj->picture);
+		//die($maintEmpObj->dateOfBirth);
 		if($maintEmpObj->picture !== $old_picture) {
 			if($old_picture !== 'profile.png') {
 				unlink($uploadDir . $old_picture);

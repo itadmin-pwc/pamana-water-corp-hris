@@ -440,7 +440,6 @@ if($_GET['action']=="loadMunicipality")
 		<STYLE>@import url("../../../js/themes/mac_os_x.css");</STYLE>
         
 	<style type="text/css">
-        <!--
         .headertxt {font-family: verdana; font-size: 11px;}
 		.style1 {font-size: 11px}
 		.style2 {
@@ -454,8 +453,6 @@ if($_GET['action']=="loadMunicipality")
 		a:link    {color:red; text-decoration:none}
 		a:visited {color:red;}
 		a:hover   {color:green;}
-
-        -->
         </style>        
 	</HEAD>
 	<BODY onLoad="<? if ($_GET['frmRefNo'] !="") { echo "checkECOLA();"; }?>">
@@ -693,7 +690,7 @@ if($_GET['action']=="loadMunicipality")
                         
                         <tr>
                           <td class="style4 style1"><div align="right"><strong>Effectivity Date </strong><span class="style2">:</span>&nbsp;&nbsp;&nbsp;</div></td>
-                          <td><input value="<?=($empStatview['effectivitydate'] !=""? date('Y-m-d',strtotime($empStatview['effectivitydate'])) : "")?>" type='text'  class='inputs' name='txtempstatDate' id='txtempstatDate' maxLength='10' readonly size="10"/><a href="#"><img name="imgempstatDate" id="imgempstatDate" src="../../../images/cal_new.png" title="Effectivity Date" style="cursor: pointer;position:relative;top:3px;border:none;"></a></td>
+                          <td><input value="<?=($empStatview['effectivitydate'] !=""? date('m-d-Y',strtotime($empStatview['effectivitydate'])) : "")?>" type='text'  class='inputs' name='txtempstatDate' id='txtempstatDate' maxLength='10' readonly size="10"/><a href="#"><img name="imgempstatDate" id="imgempstatDate" src="../../../images/cal_new.png" title="Effectivity Date" style="cursor: pointer;position:relative;top:3px;border:none;"></a></td>
                           <td>&nbsp;</td>
                         </tr>
                         
@@ -857,7 +854,7 @@ if($_GET['action']=="loadMunicipality")
                         <tr>
                           <td class="style4 style1"><div align="right"><strong>Effectivity Date </strong><span class="style2">:</span>&nbsp;&nbsp;&nbsp;</div></td>
                           <td>&nbsp;</td>
-                          <td><input value="<?=($Branchview['effectivitydate'] !=""? date('Y-m-d',strtotime($Branchview['effectivitydate'])) : "")?>" type='text'  class='inputs' name='txtbrDate' id='txtbrDate' maxLength='10' readonly size="10"/>
+                          <td><input value="<?=($Branchview['effectivitydate'] !=""? date('m-d-Y',strtotime($Branchview['effectivitydate'])) : "")?>" type='text'  class='inputs' name='txtbrDate' id='txtbrDate' maxLength='10' readonly size="10"/>
                             <a href="#"><img name="imgbrDate" id="imgbrDate" src="../../../images/cal_new.png" title="Effectivity Date" style="cursor: pointer;position:relative;top:3px;border:none;"></a></td>
                           <td>&nbsp;</td>
                         </tr>
@@ -1012,7 +1009,7 @@ if($_GET['action']=="loadMunicipality")
                         <tr>
                           <td class="style4 style1"><div align="right"><strong>Effectivity Date </strong><span class="style2">:</span>&nbsp;&nbsp;&nbsp;</div></td>
                           <td>&nbsp;</td>
-                          <td><input value="<?=($effectivitydate !=""? date('Y-m-d',strtotime($effectivitydate)) : "")?>" type='text'  class='inputs' name='txtposDate' id='txtposDate' maxLength='10' readonly size="10"/>
+                          <td><input value="<?=($effectivitydate !=""? date('m-d-Y',strtotime($effectivitydate)) : "")?>" type='text'  class='inputs' name='txtposDate' id='txtposDate' maxLength='10' readonly size="10"/>
                             <a href="#"><img name="imgposDate" id="imgposDate" src="../../../images/cal_new.png" title="Effectivity Date" style="cursor: pointer;position:relative;top:3px;border:none;"></a></td>
                           <td>&nbsp;</td>
                         </tr>
@@ -1232,7 +1229,7 @@ if($_GET['action']=="loadMunicipality")
                         <tr>
                           <td class="style4 style1"><div align="right"><strong>Effectivity Date </strong><span class="style2">:</span>&nbsp;&nbsp;&nbsp;</div></td>
                           <td>&nbsp;</td>
-                          <td><input value="<?=($payroll_view['effectivitydate'] !=""? date('Y-m-d',strtotime($payroll_view['effectivitydate'])) : "")?>" type='text'  class='inputs' name='txtprDate' id='txtprDate' maxLength='10' readonly size="10"/>
+                          <td><input value="<?=($payroll_view['effectivitydate'] !=""? date('m-d-Y',strtotime($payroll_view['effectivitydate'])) : "")?>" type='text'  class='inputs' name='txtprDate' id='txtprDate' maxLength='10' readonly size="10"/>
                             <a href="#"><img name="imgprDate" id="imgprDate" src="../../../images/cal_new.png" title="Effectivity Date" style="cursor: pointer;position:relative;top:3px;border:none;"></a></td>
                           <td>&nbsp;</td>
                         </tr>
@@ -1362,13 +1359,13 @@ if($_GET['action']=="loadMunicipality")
                           <td>&nbsp;</td>
                           <td><div align="center" class="headertxt" >
                               <div align="left">
-                                <?=date("Y/m/d",strtotime($empProf['empBday']));?>
+                                <?=date("m/d/Y",strtotime($empProf['empBday']));?>
 								<input type="hidden" value="<?=date("Y-m-d",strtotime($empProf['empBday']))?>" name="old_bdy" id="old_bdy">
                               </div>
                           </div></td>
                          <td>
 						 
-						 <input value="<?=($empProf['empBday'] !=""? date('Y-m-d',strtotime($empProf['empBday'])) : "")?>" type='text'  class='inputs' name='txtbdyDate' id='txtbdyDate' maxLength='10' readonly size="10"/>
+						 <input value="<?=($empProf['empBday'] !=""? date('m-d-Y',strtotime($empProf['empBday'])) : "")?>" type='text'  class='inputs' name='txtbdyDate' id='txtbdyDate' maxLength='10' readonly size="10"/>
                             <a href="#"><img name="imgbdyDate" id="imgbdyDate" src="../../../images/cal_new.png" title="Birth Date" style="cursor: pointer;position:relative;top:3px;border:none;"></a></td>
                          
                         </tr>
@@ -1649,7 +1646,7 @@ if($_GET['action']=="loadMunicipality")
                         <tr>
                           <td class="style4 style1"><div align="right"><strong>Effectivity Date </strong><span class="style2">:</span>&nbsp;&nbsp;&nbsp;</div></td>
                           <td>&nbsp;</td>
-                          <td><input value="<?=($others_view['effectivitydate'] !=""? date('Y-m-d',strtotime($others_view['effectivitydate'])) : "")?>" type='text'  class='inputs' name='txtothDate' id='txtothDate' maxLength='10' readonly size="10"/>
+                          <td><input value="<?=($others_view['effectivitydate'] !=""? date('m-d-Y',strtotime($others_view['effectivitydate'])) : "")?>" type='text'  class='inputs' name='txtothDate' id='txtothDate' maxLength='10' readonly size="10"/>
                             <a href="#"><img name="imgothDate" id="imgothDate" src="../../../images/cal_new.png" title="Effectivity Date" style="cursor: pointer;position:relative;top:3px;border:none;"></a></td>
                           <td>&nbsp;</td>
                         </tr>
@@ -2341,47 +2338,47 @@ if($_GET['action']=="loadMunicipality")
 	<? if ($act == "empstat") {?>
 	Calendar.setup({
 			  inputField  : "txtempstatDate",      // ID of the input field
-			  ifFormat    : "%Y-%m-%d",          // the date format
+			  ifFormat    : "%m-%d-%Y",          // the date format
 			  button      : "imgempstatDate"       // ID of the button
 		}
 	)
 	Calendar.setup({
 			  inputField  : "txtenddate",      // ID of the input field
-			  ifFormat    : "%Y-%m-%d",          // the date format
+			  ifFormat    : "%m-%d-%Y",          // the date format
 			  button      : "imgenddate"       // ID of the button
 		}
 	)
 	<? } elseif  ($act == "payroll") {?>
 	Calendar.setup({
 			  inputField  : "txtprDate",      // ID of the input field
-			  ifFormat    : "%Y-%m-%d",          // the date format
+			  ifFormat    : "%m-%d-%Y",          // the date format
 			  button      : "imgprDate"       // ID of the button
 		}
 	)	
 	<? } elseif  ($act == "others") {?>
 	Calendar.setup({
 			  inputField  : "txtothDate",      // ID of the input field
-			  ifFormat    : "%Y-%m-%d",           // the date format
+			  ifFormat    : "%m-%d-%Y",           // the date format
 			  button      : "imgothDate"       // ID of the button
 		}
 	)	
 		Calendar.setup({
 			  inputField  : "txtbdyDate",      // ID of the input field
-			  ifFormat    : "%Y-%m-%d",           // the date format
+			  ifFormat    : "%m-%d-%Y",           // the date format
 			  button      : "imgbdyDate"       // ID of the button
 		}
 	)
 	<? } elseif  ($act == "position") {?>
 	Calendar.setup({
 			  inputField  : "txtposDate",      // ID of the input field
-			  ifFormat    : "%Y-%m-%d",          // the date format
+			  ifFormat    : "%m-%d-%Y",          // the date format
 			  button      : "imgposDate"       // ID of the button
 		}
 	)	
 	<? } elseif  ($act == "branch") {?>
 	Calendar.setup({
 			  inputField  : "txtbrDate",      // ID of the input field
-			  ifFormat    : "%Y-%m-%d",           // the date format
+			  ifFormat    : "%m-%d-%Y",           // the date format
 			  button      : "imgbrDate"       // ID of the button
 		}
 	)	

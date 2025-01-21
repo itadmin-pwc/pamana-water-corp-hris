@@ -32,7 +32,7 @@ class pafObj extends commonObj {
 		}
 		if($this->get['txtenddate']!="" && $this->get['txtenddate']!=$this->get['oldenddate']){
 			$field .= ",old_enddate,new_enddate";
-			$value .= ",'{$this->get['oldenddate']}','{$this->get['txtenddate']}'";	
+			$value .= ",'{$this->get['oldenddate']}','" . date('Y-m-d', strtotime($this->get['txtenddate'])) . "'";	
 		}
 		if($this->get['cmbempnos']!="0" && $this->get['cmbempnos']!=$this->get['oldnos']){
 			$field .= ",old_nos,new_nos";
@@ -41,7 +41,7 @@ class pafObj extends commonObj {
 		
 		$qrydel = "Delete from tblPAF_EmpStatus where refNo='{$this->get['refno']}' and compCode='{$this->get['compCode']}' and empNo='{$this->get['empNo']}'";
 		$this->execQry($qrydel);		
-			$qryempStat = "Insert into tblPAF_EmpStatus (controlNo,compCode,empNo $field,stat,effectivitydate,userid,remarks,refNo,dateadded) values ('0','{$this->get['compCode']}','{$this->get['empNo']}' $value,'{$this->get['cmbstatus']}','{$this->get['txtempstatDate']}','{$this->session['user_id']}','{$this->get['txtempstatremarks']}','{$this->get['refno']}','".date('Y-m-d')."')";
+			$qryempStat = "Insert into tblPAF_EmpStatus (controlNo,compCode,empNo $field,stat,effectivitydate,userid,remarks,refNo,dateadded) values ('0','{$this->get['compCode']}','{$this->get['empNo']}' $value,'{$this->get['cmbstatus']}','" . date('Y-m-d', strtotime($this->get['txtempstatDate'])) . "','{$this->session['user_id']}','{$this->get['txtempstatremarks']}','{$this->get['refno']}','".date('Y-m-d')."')";
 		if ($Trns) {
 			$Trns = $this->execQry($qryempStat);
 		}	
@@ -65,16 +65,14 @@ class pafObj extends commonObj {
 		if ($this->get['cmbbrgroup'] !="0" && $this->get['cmbbrgroup'] != $this->get['old_payGrp']) {
 			$field .= ",old_payGrp,new_payGrp";
 			$value .= ",'{$this->get['old_payGrp']}','{$this->get['cmbbrgroup']}'";
-			
 		}
 		if ($this->get['cmbbranch'] !="0" && $this->get['cmbbranch'] != $this->get['old_branchCode']) {
 			$field .= ",old_branchCode,new_branchCode";
 			$value .= ",'{$this->get['old_branchCode']}','{$this->get['cmbbranch']}'";
-			
 		}
 		$qrydel = "Delete from tblPAF_Branch where refNo='{$this->get['refno']}' and compCode='{$this->get['compCode']}' and empNo='{$this->get['empNo']}'";
 		$this->execQry($qrydel);				
-		$qrybranch = "Insert into tblPAF_Branch (controlNo,compCode,empNo $field ,stat,effectivitydate,userid,remarks,refNo,dateadded) values ('0','{$this->get['compCode']}','{$this->get['empNo']}' $value ,'{$this->get['cmbbrstatus']}','{$this->get['txtbrDate']}','{$this->session['user_id']}','{$this->get['txtbrremarks']}','{$this->get['refno']}','".date('Y-m-d')."')";
+		$qrybranch = "Insert into tblPAF_Branch (controlNo,compCode,empNo $field ,stat,effectivitydate,userid,remarks,refNo,dateadded) values ('0','{$this->get['compCode']}','{$this->get['empNo']}' $value ,'{$this->get['cmbbrstatus']}','" . date('Y-m-d', strtotime($this->get['txtbrDate'])) ."','{$this->session['user_id']}','{$this->get['txtbrremarks']}','{$this->get['refno']}','".date('Y-m-d')."')";
 		if ($Trns) {
 			$Trns = $this->execQry($qrybranch);
 		}	
@@ -140,7 +138,7 @@ class pafObj extends commonObj {
 		
 		$qrydel = "Delete from tblPAF_PayrollRelated where refNo='{$this->get['refno']}' and compCode='{$this->get['compCode']}' and empNo='{$this->get['empNo']}'";
 		$this->execQry($qrydel);
-		$qrypayroll = "Insert into tblPAF_PayrollRelated ($field,stat,effectivitydate,userid,refNo,reasonCd,dateadded) values ($value,'" . $this->get['cmbprstatus'] . "','" . $this->get['txtprDate'] . "','" . $this->session['user_id'] . "','" . $this->get['refno'] . "','" . $this->get['cmbreason'] . "','".date('Y-m-d')."')";
+		$qrypayroll = "Insert into tblPAF_PayrollRelated ($field,stat,effectivitydate,userid,refNo,reasonCd,dateadded) values ($value,'" . $this->get['cmbprstatus'] . "','" . date('Y-m-d', strtotime($this->get['txtprDate'])) . "','" . $this->session['user_id'] . "','" . $this->get['refno'] . "','" . $this->get['cmbreason'] . "','".date('Y-m-d')."')";
 		if ($Trns) {
 			$Trns = $this->execQry($qrypayroll);
 		}		
@@ -162,7 +160,7 @@ class pafObj extends commonObj {
 		$Trns = $this->beginTran();
 		$qrydel = "Delete from tblPAF_PayrollRelated where refNo='{$this->get['refno']}' and compCode='{$this->get['compCode']}' and empNo='{$this->get['empNo']}'";
 		$this->execQry($qrydel);
-		$qrypayroll = "Insert into tblPAF_PayrollRelated (controlNo,compCode,empNo,stat,effectivitydate,userid,refNo,reasonCd,dateadded) values ('0','{$this->get['compCode']}','{$this->get['empNo']}','" . $this->get['cmbprstatus'] . "','" . $this->get['txtprDate'] . "','" . $this->session['user_id'] . "','" . $this->get['refno'] . "','" . $this->get['cmbreason'] . "','".date('Y-m-d')."')";
+		$qrypayroll = "Insert into tblPAF_PayrollRelated (controlNo,compCode,empNo,stat,effectivitydate,userid,refNo,reasonCd,dateadded) values ('0','{$this->get['compCode']}','{$this->get['empNo']}','" . $this->get['cmbprstatus'] . "','" . date('Y-m-d', strtotime($this->get['txtprDate'])) . "','" . $this->session['user_id'] . "','" . $this->get['refno'] . "','" . $this->get['cmbreason'] . "','".date('Y-m-d')."')";
 		$this->execQry($qrypayroll);
 		if(!$Trns){
 			$Trns = $this->rollbackTran();
@@ -274,7 +272,7 @@ class pafObj extends commonObj {
 		}
 		$qrydel = "Delete from tblPAF_Others where refNo='{$this->get['refno']}' and compCode='{$this->get['compCode']}' and empNo='{$this->get['empNo']}'";
 		$this->execQry($qrydel);
-		$qryothers = "Insert into tblPAF_Others ($field,stat,effectivitydate,userid,refNo,dateadded) values ($value,'{$this->get['cmbothstatus']}','{$this->get['txtothDate']}','{$this->session['user_id']}','{$this->get['refno']}','".date('Y-m-d')."')";
+		$qryothers = "Insert into tblPAF_Others ($field,stat,effectivitydate,userid,refNo,dateadded) values ($value,'{$this->get['cmbothstatus']}','" . date('Y-m-d', strtotime($this->get['txtothDate'])) ."','{$this->session['user_id']}','{$this->get['refno']}','".date('Y-m-d')."')";
 		if ($Trns) {
 			$Trns = $this->execQry($qryothers);
 		}		
@@ -329,7 +327,7 @@ class pafObj extends commonObj {
 		}	
 		$qrydel = "Delete from tblPAF_Position where refNo='{$this->get['refno']}' and compCode='{$this->get['compCode']}' and empNo='{$this->get['empNo']}'";
 		$this->execQry($qrydel);
-		$qryothers = "Insert into tblPAF_Position ($field,stat,effectivitydate,userid,refNo,dateadded) values ($value,'{$this->get['cmbposstatus']}','{$this->get['txtposDate']}','{$this->session['user_id']}','{$this->get['refno']}','".date('Y-m-d')."')";
+		$qryothers = "Insert into tblPAF_Position ($field,stat,effectivitydate,userid,refNo,dateadded) values ($value,'{$this->get['cmbposstatus']}','" . date('Y-m-d', strtotime($this->get['txtposDate'])) ."','{$this->session['user_id']}','{$this->get['refno']}','".date('Y-m-d')."')";
 		if ($Trns) {
 			$Trns = $this->execQry($qryothers);
 		}			
@@ -399,31 +397,30 @@ class pafObj extends commonObj {
 							if($val['new_status']!=""){
 								$empfield .= ",employmentTag='{$val['new_status']}'";
 								if ($val['new_status'] == 'RG'){
-									$dtResigned = ",dateReg='{$val['effectivitydate']}'";
+									$dtResigned = ",dateReg='" . date('Y-m-d', strtotime($this->get['effectivitydate'])) . "'";
 								}
 							}
-							
-
+				
 							if(trim($val['new_nos'])!="" || isset($val['new_nos'])){
 								if ($val['new_nos'] == 3 || $val['new_nos']=="3"){
 									$empfield .= ",empStat='RS'";
-									$dtResigned = ",dateResigned='{$val['effectivitydate']}'";
+									$dtResigned = ",dateResigned='" . date('Y-m-d', strtotime($this->get['effectivitydate'])) . "'";
 								}
 								if ($val['new_nos'] == 5 || $val['new_nos']=="5"){
 									$empfield .= ",empStat='RS'";
-									$dtResigned = ",dateResigned='{$val['effectivitydate']}'";
+									$dtResigned = ",dateResigned='" . date('Y-m-d', strtotime($this->get['effectivitydate'])) . "'";
 								}
 								if ($val['new_nos'] == 1 || $val['new_nos']=="1"){
 									$empfield .= ",empStat='RS'";
-									$dtResigned = ",dateResigned='{$val['effectivitydate']}'";
+									$dtResigned = ",dateResigned='" . date('Y-m-d', strtotime($this->get['effectivitydate'])) . "'";
 								}
 								if ($val['new_nos'] == 2 || $val['new_nos']=="2"){
 									$empfield .= ",empStat='RS'";
-									$dtResigned = ",endDate='{$val['effectivitydate']}'";
+									$dtResigned = ",endDate='" . date('Y-m-d', strtotime($this->get['effectivitydate'])) . "'";
 								}
 								if ($val['new_nos'] == 4 || $val['new_nos']=="4"){
 									$empfield .= ",empStat='IN'";	
-									$dtResigned = ",dateResigned='{$val['effectivitydate']}'";
+									$dtResigned = ",dateResigned='" . date('Y-m-d', strtotime($this->get['effectivitydate'])) . "'";
 								}
 								
 								$qrySeparated .= "Insert into tblSeparatedEmployees (empNo,natureCode,year,reason,dateAdded,
@@ -677,7 +674,7 @@ class pafObj extends commonObj {
 							if ($val['old_branchCode'] !="") {
 								$empfield .= ",empBrnCode='{$val['new_branchCode']}',empLocCode='{$val['new_branchCode']}'";
 								$bioField .= ",locCode='{$val['new_branchCode']}'";
-							}	
+							}
 							if ($val['old_payGrp'] !="") {
 								$empfield .= ",empPayGrp='{$val['new_payGrp']}'";
 							}
