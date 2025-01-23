@@ -8,6 +8,7 @@ $empNo 		= $_GET['empNo'];
 $compCode 	= $_GET['compCode'];
 $refNo		= $_GET['refNo'];
 $type 		= $_GET['type'];
+$empProf =  $maintEmpObj->getEmployee($compCode,$empNo,'');
 switch($_GET['type']) {
 	case '1':
 		$table='tblPAF_EmpStatus';
@@ -60,10 +61,8 @@ switch($_GET['code']) {
 		<STYLE>@import url("../../../js/themes/mac_os_x.css");</STYLE>
         
 		<style type="text/css">
-        <!--
-        .headertxt {font-family: verdana; font-size: 11px;}
-.style5 {font-size: 11px}
-        -->
+			.headertxt {font-family: verdana; font-size: 11px;}
+			.style5 {font-size: 11px}
         </style>        
 	</HEAD>
 	<BODY >
@@ -84,7 +83,17 @@ switch($_GET['code']) {
                       </table>
                      </td>
                     </tr>
-                    
+                    <tr>
+						<td height="20"><span class="gridDtlLbl2 style5" >Employee No.</span></td>
+						<td><div align="center"><span class="style3">:</span></div></td>
+						<td height="20"><span class="headertxt">
+						<?=$empProf['empNo'];?></span></td>
+					</tr>
+					<tr>
+						<td height="20"><span class="gridDtlLbl2 style5">Name</span></td>
+						<td><div align="center"><span class="style3">:</span></div></td>
+						<td height="20"><span class="headertxt"><?=$empProf['empLastName'] . ", " . $empProf['empFirstName'] . " " . $empProf['empMidName'];?></span></td>
+					</tr>
                     <tr>
                       <td width="83" class="gridDtlLbl style5">PAF Type</td>
                       <td width="5" class="gridDtlLbl style5">:</td>
