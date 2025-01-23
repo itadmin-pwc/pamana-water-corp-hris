@@ -987,7 +987,7 @@ function getPAF_others($empNo,$pafType,$and="",$hist="") {
 				from view_newEmpReports emp 
 				inner join tbluserbranch ub on emp.empBrnCode=ub.brnCode
 				where $stat and emp.compCode='".$compcode."' and emp.empStat='Regular' 
-					and emp.empdateadded between '".$dfrom."' and '".$dto."'  
+					and emp.dateHired between '".$dfrom."' and '".$dto."'  
 					and ub.empNo='".$empno."'
 					$group $userlevelview $employeediv $employeedep $employeesect";
 		return $this->execQry($qry);
