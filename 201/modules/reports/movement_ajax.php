@@ -42,7 +42,7 @@ if ($thisValue=="new_emp" || $thisValue=="new_emp_excel") {
 		}
 	} else {
 		if ($from != "" && $to!= "") {
-			$filter_from_to = " AND (empdateadded between '".date('Y-m-d',strtotime($from))."' AND '".date('Y-m-d',strtotime($to))."') ";
+			$filter_from_to = " AND (dateHired between '".date('Y-m-d',strtotime($from))."' AND '".date('Y-m-d',strtotime($to))."') ";
 		}
 	}	
 	if ($group!='' && $group!='0') {
@@ -56,16 +56,16 @@ if ($thisValue == 'EmpStatus') {
 				$empStatDatefilter = " AND dateReg between '".date('Y-m-d',strtotime($from))."' AND '".date('Y-m-d',strtotime($to))."' ";
 			break;
 			case "PR":
-				$empStatDatefilter = " AND empdateadded between '".date('Y-m-d',strtotime($from))."' AND '".date('Y-m-d',strtotime($to))."' ";
+				$empStatDatefilter = " AND dateHired between '".date('Y-m-d',strtotime($from))."' AND '".date('Y-m-d',strtotime($to))."' ";
 			break;
 			case "CN":
-				$empStatDatefilter = " AND empdateadded between '".date('Y-m-d',strtotime($from))."' AND '".date('Y-m-d',strtotime($to))."' ";
+				$empStatDatefilter = " AND dateHired between '".date('Y-m-d',strtotime($from))."' AND '".date('Y-m-d',strtotime($to))."' ";
 			break;
 			case "RS":
 				$empStatDatefilter = " AND dateResigned between '".date('Y-m-d',strtotime($from))."' AND '".date('Y-m-d',strtotime($to))."' ";
 			break;
 			case "TR":
-				$empStatDatefilter = " AND empdateadded between '".date('Y-m-d',strtotime($from))."' AND '".date('Y-m-d',strtotime($to))."' ";
+				$empStatDatefilter = " AND dateHired between '".date('Y-m-d',strtotime($from))."' AND '".date('Y-m-d',strtotime($to))."' ";
 			break;
 		}
 	}	
@@ -123,7 +123,7 @@ switch ($inputId) {
 					and empBrnCode IN (Select brnCode from tblUserBranch where compCode='{$_SESSION['company_code']}' and empNo='{$_SESSION['employee_number']}')
 				  $filter_from_to $empNo1 $status $empStatDatefilter $empName1 $empDiv1 $empDept1 $empSect1 $confi $groupType1 $catType1
 				   $orderBy1 ";
-		//echo $sqlEmp;
+		echo $sqlEmp;
 		$resEmp = $inqTSObj->execQry($sqlEmp);		   
 		$numEmp = $inqTSObj->getRecCount($resEmp);
 		
