@@ -36,6 +36,13 @@
 			return false;			
 		}
 
+		if(trim(empInputs['txtEffDate']) == ""){
+			alert('Date Hired is Required.');
+			focusTab(2);
+			$('txtEffDate').focus();
+			return false;
+		}
+
 	 if(trim(empInputs['txtempNo']) == ""){
 			alert('Employee No. is Required.');
 			focusTab(1);
@@ -457,6 +464,13 @@
 		// 	focusTab(1);
 		// 	return false;			
 		// }
+
+		if(trim(empInputs['txtEffDate']) == ""){
+			alert('Date Hired is Required.');
+			focusTab(2);
+			$('txtEffDate').focus();
+			return false;
+		}
 
 	 if(trim(empInputs['txtempNo']) == ""){
 			alert('Employee No. is Required.');

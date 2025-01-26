@@ -173,6 +173,10 @@ class ProfileObj extends commonObj {
 	var $ECPerson;
 	var $ECNumber;
 	var $provinceCd;
+	var $empRegion;
+	var $empZipCode;
+	var $empECNumber2;
+	var $empECRelation;
 	
 	//Personal Tab
 	var $sex;
@@ -387,6 +391,10 @@ class ProfileObj extends commonObj {
 					empECperson,
 					empECNumber,
 					empMunicipalityCd,
+					empRegion,
+					empZipCode,
+					empECNumber2,
+					empECRelation
 					";
 		$convalues="
 					'".str_replace("'","''",stripslashes(strtoupper($this->Addr1)))."',
@@ -395,6 +403,10 @@ class ProfileObj extends commonObj {
 					'".str_replace("'","''",stripslashes(strtoupper($this->ECPerson)))."',
 					'".str_replace("'","''",stripslashes(strtoupper($this->ECNumber)))."',
 					'{$this->Municipality}',
+					'".str_replace("'","''",stripslashes(strtoupper($this->empRegion)))."',
+					'".str_replace("'","''",stripslashes(strtoupper($this->empZipCode)))."',
+					'".str_replace("'","''",stripslashes(strtoupper($this->empECNumber2)))."',
+					'".str_replace("'","''",stripslashes(strtoupper($this->empECRelation)))."',
 					";		
 		$perfields="
 					empSex,
@@ -629,7 +641,7 @@ class ProfileObj extends commonObj {
 	function viewprofile($empNo) {
 		$qryviewprofile="Select *,Day(empBday) as empBday_D , Month(empBday) as empBday_M, Year(empBday) as empBday_Y, Day(dateHired) as dateHired_D , Month(dateHired) as dateHired_M, Year(dateHired) as dateHired_Y
 		, Day(dateReg) as dateReg_D , Month(dateReg) as dateReg_M, Year(dateReg) as dateReg_Y
-		, Day(empEndDate) as empEndDate_D , Month(empEndDate) as empEndDate_M, Year(empEndDate) as empEndDate_Y,employmentTag as status, picture from tblEmpMast_new where empNo='$empNo' and compCode='{$this->oldcompCode}'";
+		, Day(empEndDate) as empEndDate_D , Month(empEndDate) as empEndDate_M, Year(empEndDate) as empEndDate_Y,employmentTag as status from tblEmpMast_new where empNo='$empNo' and compCode='{$this->oldcompCode}'";
 		$res=$this->execQry($qryviewprofile);
 		$res=$this->getArrRes($res);
 		foreach ($res as $profile) {
@@ -720,8 +732,11 @@ class ProfileObj extends commonObj {
 //			$this->Release=$profile[''];
 			$this->stat_=$profile['stat'];
 			$this->picture = $profile['picture'];
+			$this->empRegion = $profile['empRegion'];
+			$this->empZipCode = $profile['empZipCode'];
+			$this->empECNumber2 = $profile['empECNumber2'];
+			$this->empECRelation = $profile['empECRelation'];
 		}
-
 	}
 	
 	function updateemployee($empNox) {
@@ -746,6 +761,10 @@ class ProfileObj extends commonObj {
 					empECPerson='".str_replace("'","''",stripslashes(strtoupper($this->ECPerson)))."',
 					empECNumber='".str_replace("'","''",stripslashes(strtoupper($this->ECNumber)))."',
 					empMunicipalityCd='{$this->Municipality}',
+					empRegion='".str_replace("'","''",stripslashes(strtoupper($this->empRegion)))."',
+					empZipCode='".str_replace("'","''",stripslashes(strtoupper($this->empZipCode)))."',
+					empECNumber2='".str_replace("'","''",stripslashes(strtoupper($this->empECNumber2)))."',
+					empECRelation='".str_replace("'","''",stripslashes(strtoupper($this->empECRelation)))."',
 					";
 		$perfields="
 					empSex='{$this->sex}',
@@ -949,7 +968,7 @@ class ProfileObj extends commonObj {
 		empBplace, empHeight, empWeight, empCitizenCd, empBloodType, empEndDate, empLevel, empSubSection, empCityCd, 
 		empSpouseName, empBuildDesc, empComplexDesc, empEyeColorDesc, empHairDesc, empPhicNo, empAbsencesTag, empLatesTag, 
 		empUtTag, empOtTag, empImageSize, empShiftId, annualTag, empRank,releasedby,empdateadded,id, empProvinceCd, 
-		empECPerson, empECNumber, empMunicipalityCd,employmentTag,empSunLine,empGlobeLine,empSmartLine, picture)
+		empECPerson, empECNumber, empMunicipalityCd,employmentTag,empSunLine,empGlobeLine,empSmartLine, picture, empRegion, empZipCode, empECNumber2, empECRelation)
 		SELECT compCode, empNo, empLastName, empFirstName, empMidName, empLocCode, empBrnCode, 
 		empDiv, empDepCode, empSecCode, empPosId, dateHired, empStat, dateReg, dateResigned, empRestDay, empTeu, empTin, 
 		empSssNo, empPagibig, empBankCd, empAcctNo, empPayGrp, empPayType, empPayCat, empWageTag, empPrevTag, empAddr1, 
@@ -957,7 +976,7 @@ class ProfileObj extends commonObj {
 		empBplace, empHeight, empWeight, empCitizenCd, empBloodType, empEndDate, empLevel, empSubSection, empCityCd, 
 		empSpouseName, empBuildDesc, empComplexDesc, empEyeColorDesc, empHairDesc, empPhicNo, empAbsencesTag, empLatesTag, 
 		empUtTag, empOtTag, empImageSize, empShiftId, annualTag, empRank,'{$_SESSION['user_id']}', empdateadded, id, empProvinceCd,
-		empECPerson, empECNumber, empMunicipalityCd, employmentTag, empSunLine, empGlobeLine, empSmartLine, picture
+		empECPerson, empECNumber, empMunicipalityCd, employmentTag, empSunLine, empGlobeLine, empSmartLine, picture, empRegion, empZipCode, empECNumber2, empECRelation
 		FROM tblEmpMast_new 
 		WHERE empNo='$empNo' AND compCode='$compCode'";
 			

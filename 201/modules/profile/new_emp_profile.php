@@ -130,6 +130,10 @@ if ($_POST['save']!="") {
 	$maintEmpObj->empSunLine = (isset($_POST['chkSun'])) ? $_POST['chkSun'] : "";
 	$maintEmpObj->empGlobeLine = (isset($_POST['chkGlobe'])) ? $_POST['chkGlobe'] : "";
 	$maintEmpObj->empSmartLine = (isset($_POST['chkSmart'])) ? $_POST['chkSmart'] : "";
+	$maintEmpObj->empRegion = (isset($_POST['cmbRegion'])) ? $_POST['cmbRegion'] : "";
+	$maintEmpObj->empZipCode = (isset($_POST['txtZipCode'])) ? $_POST['txtZipCode'] : "";
+	$maintEmpObj->empECNumber2 = (isset($_POST['txtECNumber2'])) ? $_POST['txtECNumber2'] : "";
+	$maintEmpObj->empECRelation = (isset($_POST['txtRelationship'])) ? $_POST['txtRelationship'] : "";
 	if(isset($_FILES['file-input']) && $_FILES['file-input']['error'] === UPLOAD_ERR_OK && !empty($_FILES['file-input']['name'])) {
 		//die(var_dump($_FILES['file-input']));
 		$fileExtension = strtolower(pathinfo($_FILES["file-input"]["name"], PATHINFO_EXTENSION));
@@ -512,15 +516,58 @@ include("../../../includes/calendar.php");
 						$arrresmun=$maintEmpObj->makeArr($maintEmpObj->getMunicipality(),'municipalityCd','municipalityDesc','');
 						$maintEmpObj->DropDownMenu($arrresmun,'cmbMunicipality',$maintEmpObj->Municipality,'class="inputs" style="width:222px"' . $readisabled);?></div></td>
                       </tr>
+					  <tr> 
+						<td class="headertxt">Region</td>
+						<td class="headertxt">:</td>
+						<td class="gridDtlVal" valign="top">
+							<select class="inputs" name="cmbRegion" id="cmbRegion" <?php echo $readisabled; ?>>
+								<option value=""></option> 
+								<option value="NCR" <?php echo ($maintEmpObj->empRegion == "NCR") ? 'selected' : ''; ?>>NCR</option>
+								<option value="CAR" <?php echo ($maintEmpObj->empRegion == "CAR") ? 'selected' : ''; ?>>CAR</option>
+								<option value="REGION I" <?php echo ($maintEmpObj->empRegion == "REGION I") ? 'selected' : ''; ?>>REGION I</option>
+								<option value="REGION II" <?php echo ($maintEmpObj->empRegion == "REGION II") ? 'selected' : ''; ?>>REGION II</option>
+								<option value="REGION III" <?php echo ($maintEmpObj->empRegion == "REGION III") ? 'selected' : ''; ?>>REGION III</option> 
+								<option value="REGION IV-A" <?php echo ($maintEmpObj->empRegion == "REGION IV-A") ? 'selected' : ''; ?>>REGION IV-A</option>
+								<option value="MIMAROPA" <?php echo ($maintEmpObj->empRegion == "MIMAROPA") ? 'selected' : ''; ?>>MIMAROPA</option>
+								<option value="REGION V" <?php echo ($maintEmpObj->empRegion == "REGION V") ? 'selected' : ''; ?>>REGION V</option> 
+								<option value="REGION VI" <?php echo ($maintEmpObj->empRegion == "REGION VI") ? 'selected' : ''; ?>>REGION VI</option>
+								<option value="NIR" <?php echo ($maintEmpObj->empRegion == "NIR") ? 'selected' : ''; ?>>NIR</option>
+								<option value="REGION VII" <?php echo ($maintEmpObj->empRegion == "REGION VII") ? 'selected' : ''; ?>>REGION VII</option>
+								<option value="REGION VIII" <?php echo ($maintEmpObj->empRegion == "REGION VIII") ? 'selected' : ''; ?>>REGION VIII</option>
+								<option value="REGION IX" <?php echo ($maintEmpObj->empRegion == "REGION IX") ? 'selected' : ''; ?>>REGION IX</option>
+								<option value="REGION X" <?php echo ($maintEmpObj->empRegion == "REGION X") ? 'selected' : ''; ?>>REGION X</option>
+								<option value="REGION XI" <?php echo ($maintEmpObj->empRegion == "REGION XI") ? 'selected' : ''; ?>>REGION XI</option>
+								<option value="REGION XII" <?php echo ($maintEmpObj->empRegion == "REGION XII") ? 'selected' : ''; ?>>REGION XII</option>
+								<option value="REGION XIII" <?php echo ($maintEmpObj->empRegion == "REGION XIII") ? 'selected' : ''; ?>>REGION XIII</option>
+								<option value="BARMM" <?php echo ($maintEmpObj->empRegion == "BARMM") ? 'selected' : ''; ?>>BARMM</option>
+							</select>
+						</td>
+					  </tr>
+					  <tr> 
+						<td class="headertxt">Zip Code</td>
+						<td class="headertxt">:</td>
+						<td class="gridDtlVal" valign="top"><input <?=$readisabled?> value="<?=$maintEmpObj->empZipCode?>" size="10" name="txtZipCode" type="text" class="inputs" maxlength="150" id="txtZipCode" /></td>
+					  </tr>
+					  <tr>
                       <tr>
                       	<td class="headertxt">In Case of Emergency Contact</td>
                         <td class="headertxt">:</td>
                         <td class="gridDtlVal" valign="top"><input <?=$readisabled?> value="<?=$maintEmpObj->ECPerson;?>" size="50" name="txtECPerson" type="text" class="inputs" maxlength="150"  id="txtECPerson"/></td>
                       </tr>
+					  <tr>
+                      	<td class="headertxt">Relationship</td>
+                        <td class="headertxt">:</td>
+                        <td class="gridDtlVal" valign="top"><input <?=$readisabled?> value="<?=$maintEmpObj->empECRelation?>" size="20" name="txtRelationship" type="text" class="inputs" maxlength="150"  id="txtRelationship"/></td>
+                      </tr>
                       <tr>
-                      	<td class="headertxt">Contact Number</td>
+                      	<td class="headertxt">Contact # 1</td>
                         <td class="headertxt">:</td>
                         <td class="gridDtlVal" valign="top"><input <?=$readisabled?> value="<?=$maintEmpObj->ECNumber?>" size="15" name="txtECNumber" type="text" class="inputs" maxlength="15" id="txtECNumber"/></td>
+                      </tr>
+					  <tr>
+                      	<td class="headertxt">Contact # 2</td>
+                        <td class="headertxt">:</td>
+                        <td class="gridDtlVal" valign="top"><input <?=$readisabled?> value="<?=$maintEmpObj->empECNumber2?>" size="15" name="txtECNumber2" type="text" class="inputs" maxlength="15" id="txtECNumber2"/></td>
                       </tr>
 					  <tr>
 					    <td colspan="3" height="10" ></td> 

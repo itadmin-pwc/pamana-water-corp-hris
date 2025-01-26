@@ -207,6 +207,10 @@ class ProfileObj extends commonObj {
 	var $ECPerson;
 	var $ECnumber;
 	var $picture;
+	var $empRegion;
+	var $empZipCode;
+	var $empECNumber2;
+	var $empECRelation;
 	
 	//Personal Tab
 	var $sex;
@@ -590,7 +594,7 @@ class ProfileObj extends commonObj {
 	function viewprofile($empNo) {
 		$qryviewprofile="Select *,Day(empBday) as empBday_D , Month(empBday) as empBday_M, Year(empBday) as empBday_Y, Day(dateHired) as dateHired_D , Month(dateHired) as dateHired_M, Year(dateHired) as dateHired_Y
 		, Day(dateReg) as dateReg_D , Month(dateReg) as dateReg_M, Year(dateReg) as dateReg_Y
-		, Day(empEndDate) as empEndDate_D , Month(empEndDate) as empEndDate_M, Year(empEndDate) as empEndDate_Y,employmentTag as status, picture from tblEmpMast where empNo='$empNo' and compCode='{$this->oldcompCode}'";
+		, Day(empEndDate) as empEndDate_D , Month(empEndDate) as empEndDate_M, Year(empEndDate) as empEndDate_Y,employmentTag as status from tblEmpMast where empNo='$empNo' and compCode='{$this->oldcompCode}'";
 		$res=$this->execQry($qryviewprofile);
 		$res=$this->getArrRes($res);
 		foreach ($res as $profile) {
@@ -681,6 +685,10 @@ class ProfileObj extends commonObj {
 			$this->smartLine=$profile['empSmartLine'];
 //			$this->Release=$profile[''];
 			$this->picture = $profile['picture'];
+			$this->empRegion = $profile['empRegion'];
+			$this->empZipCode = $profile['empZipCode'];
+			$this->empECNumber2 = $profile['empECNumber2'];
+			$this->empECRelation = $profile['empECRelation'];
 		}
 
 	}

@@ -968,7 +968,7 @@ function getPAF_others($empNo,$pafType,$and="",$hist="") {
 
 	function getEmpProoflist($compcode,$status,$dfrom,$dto,$empno,$grp,$userview,$ulevel,$empdiv,$empdep,$empsect){
 		
-		if($status=="H"){$stat = " emp.stat is NULL";} else {$stat = " emp.stat='R'";}
+		if($status=="H"){$stat = " (emp.stat is NULL OR emp.stat='')";} else {$stat = " emp.stat='R'";}
 		if($ulevel==3){$userlevelview = " and emp.userReleased='".$userview."'";} else {$userlevelview = "";}
 		if($grp==1){$group = " and emp.empPayGrp='Group 1'";} else {$group = " and emp.empPayGrp='Group 2'";}
 		if($empdiv!="" && $empdiv>0){$employeediv = " and emp.empDiv='{$empdiv}'";} else {$employeediv="";}

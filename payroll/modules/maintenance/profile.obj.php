@@ -208,6 +208,11 @@ class ProfileObj extends commonObj {
 	var $RestDay;
 	var $prevtag;
 	var $empRank;
+	var $picture;
+	var $empRegion;
+	var $empZipCode;
+	var $empECNumber2;
+	var $empECRelation;
 	
 	//Prev Employment Tab
 	var $prevEmplr;
@@ -616,6 +621,11 @@ class ProfileObj extends commonObj {
 			$this->Exemption=$profile['empTeu'];
 			$this->paycat=$profile['empPayCat'];
 //			$this->Release=$profile[''];
+			$this->picture = $profile['picture'];
+			$this->empRegion = $profile['empRegion'];
+			$this->empZipCode = $profile['empZipCode'];
+			$this->empECNumber2 = $profile['empECNumber2'];
+			$this->empECRelation = $profile['empECRelation'];
 		}
 
 	}
