@@ -818,7 +818,7 @@ include("../../../includes/calendar.php");
 					  <tr>
 					    <td class="headertxt">Blood Type</td>
 					    <td class="headertxt">:</td>
-					    <td class="gridDtlVal"><? $maintEmpObj->DropDownMenu(array('','A'=>'A','B'=>'B','AB'=>'A B','O'=>'O','A-'=>'A-','A+'=>'A+','B-'=>'B-','B+'=>'B+','O-'=>'O-','O+'=>'O+'),'cmbbloodtype',$maintEmpObj->BloodType,'class="inputs" style="width:222px;"' . $readisabled); ?></td>
+					    <td class="gridDtlVal"><? $maintEmpObj->DropDownMenu(array('','A'=>'A','B'=>'B','AB'=>'AB','AB+'=>'AB+','O'=>'O','A-'=>'A-','A+'=>'A+','B-'=>'B-','B+'=>'B+','O-'=>'O-','O+'=>'O+'),'cmbbloodtype',$maintEmpObj->BloodType,'class="inputs" style="width:222px;"' . $readisabled); ?></td>
 						
 						<td class="headertxt" style="<?=$visible?>">Bank Account Type</td>
 						<td class="headertxt" style="<?=$visible?>">:</td>

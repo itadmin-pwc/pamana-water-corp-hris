@@ -1467,7 +1467,7 @@ if($_GET['action']=="loadMunicipality")
 								?>
                               </div>
                           </div></td>
-                          <td><div id="divMunicipality" align="left"><? $maintEmpObj->DropDownMenu(array('','A'=>'A','B'=>'B','AB'=>'A B','O'=>'O','A-'=>'A-','A+'=>'A+','B-'=>'B-','B+'=>'B+','O-'=>'O-','O+'=>'O+'),'cmbbloodtype',$bloodType,'class="inputs" style="width:180px;"'); ?>
+                          <td><div id="divMunicipality" align="left"><? $maintEmpObj->DropDownMenu(array('','A'=>'A','B'=>'B','AB'=>'AB','AB+'=>'AB+','O'=>'O','A-'=>'A-','A+'=>'A+','B-'=>'B-','B+'=>'B+','O-'=>'O-','O+'=>'O+'),'cmbbloodtype',$bloodType,'class="inputs" style="width:180px;"'); ?>
                             <input type="hidden" value="<?=$empProf['empBloodType']?>" name="old_bloodType" id="old_bloodType">
                           </div></td>
                         </tr>
