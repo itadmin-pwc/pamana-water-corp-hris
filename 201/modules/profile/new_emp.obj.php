@@ -394,7 +394,7 @@ class ProfileObj extends commonObj {
 					empRegion,
 					empZipCode,
 					empECNumber2,
-					empECRelation
+					empECRelation,
 					";
 		$convalues="
 					'".str_replace("'","''",stripslashes(strtoupper($this->Addr1)))."',
