@@ -81,13 +81,13 @@
 						 and empPayCat<>0 $user_payCat_view";
 	}				
 			if($_GET['isSearch'] == 1){
-				if($_GET['srchType'] == 0){
+				if($_GET['srchType'] == 2){
 					$qryIntMaxRec .= "AND empMast.empNo LIKE '{$_GET['txtSrch']}%' ";
 				}
-				if($_GET['srchType'] == 1){
+				if($_GET['srchType'] == 0){
 					$qryIntMaxRec .= "AND empLastName LIKE '".str_replace("'","''",$_GET['txtSrch'])."%' ";
 				}
-				if($_GET['srchType'] == 2){
+				if($_GET['srchType'] == 1){
 					$qryIntMaxRec .= "AND empFirstName LIKE '".str_replace("'","''",$_GET['txtSrch'])."%' ";
 				}
 				
@@ -125,13 +125,13 @@
 					and empPayCat<>0 $where_empStat $user_payCat_view  $brnCodelist "; 
 	}
 					if($_GET['isSearch'] == 1){
-						if($_GET['srchType'] == 0){
+						if($_GET['srchType'] == 2){
 							$qryEmpList .= "AND empMast.empNo LIKE '".trim($_GET['txtSrch'])."%' ";
 						}
-						if($_GET['srchType'] == 1){
+						if($_GET['srchType'] == 0){
 							$qryEmpList .= "AND empLastName LIKE '".str_replace("'","''",trim($_GET['txtSrch']))."%' ";
 						}
-						if($_GET['srchType'] == 2){
+						if($_GET['srchType'] == 1){
 							$qryEmpList .= "AND empFirstName LIKE '".str_replace("'","''",trim($_GET['txtSrch']))."%' ";
 						}
 						

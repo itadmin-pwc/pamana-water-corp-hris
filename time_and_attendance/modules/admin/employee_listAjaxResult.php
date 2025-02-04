@@ -21,13 +21,13 @@ $qryIntMaxRec = "SELECT * FROM tblEmpMast
 			   WHERE compCode = '{$sessionVars['compCode']}'
 			   AND empStat NOT IN('RS','TR') ";
         if($_GET['isSearch'] == 1){
-        	if($_GET['srchType'] == 0){
+        	if($_GET['srchType'] == 2){
         		$qryIntMaxRec .= "AND empNo LIKE '{$_GET['txtSrch']}%' ";
         	}
-        	if($_GET['srchType'] == 1){
+        	if($_GET['srchType'] == 0){
         		$qryIntMaxRec .= "AND empLastName LIKE '".str_replace("'","''",$_GET['txtSrch'])."%' ";
         	}
-        	if($_GET['srchType'] == 2){
+        	if($_GET['srchType'] == 1){
         		$qryIntMaxRec .= "AND empFirstName LIKE '".str_replace("'","''",$_GET['txtSrch'])."%' ";
         	}
 			if ($_GET['brnCd']!=0) 
@@ -48,13 +48,13 @@ $qryEmpList = "SELECT *
 				AND compCode = '{$sessionVars['compCode']}'
 				AND empStat NOT IN('RS','TR') ";
         if($_GET['isSearch'] == 1){
-        	if($_GET['srchType'] == 0){
+        	if($_GET['srchType'] == 2){
         		$qryEmpList .= "AND empNo LIKE '".trim($_GET['txtSrch'])."%' ";
         	}
-        	if($_GET['srchType'] == 1){
+        	if($_GET['srchType'] == 0){
         		$qryEmpList .= "AND empLastName LIKE '".str_replace("'","''",trim($_GET['txtSrch']))."%' ";
         	}
-        	if($_GET['srchType'] == 2){
+        	if($_GET['srchType'] == 1){
         		$qryEmpList .= "AND empFirstName LIKE '".str_replace("'","''",trim($_GET['txtSrch']))."%' ";
         	}
 			if ($_GET['brnCd']!=0) 

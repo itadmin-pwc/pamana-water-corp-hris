@@ -61,13 +61,13 @@ $qryEmpList = "SELECT tblEmpMast.compCode, tblEmpMast.empNo, tblEmpMast.empLastN
 				WHERE tblEmpMast.compCode = '{$sessionVars['compCode']}' and tblEmpMast.empStat NOT IN('RS','TR') ".$userAccess; 
 
         if($_GET['isSearch'] == 1){
-        	if($_GET['srchType'] == 0){
+        	if($_GET['srchType'] == 2){
         		$qryEmpList .= "AND tblEmpMast.empNo LIKE '".trim($_GET['txtSrch'])."%' ";
         	}
-        	if($_GET['srchType'] == 1){
+        	if($_GET['srchType'] == 0){
         		$qryEmpList .= "AND tblEmpMast.empLastName LIKE '".str_replace("'","''",trim($_GET['txtSrch']))."%' ";
         	}
-        	if($_GET['srchType'] == 2){
+        	if($_GET['srchType'] == 1){
         		$qryEmpList .= "AND tblEmpMast.empFirstName LIKE '".str_replace("'","''",trim($_GET['txtSrch']))."%' ";
         	}
 			if ($_GET['brnCd']!=0) 
