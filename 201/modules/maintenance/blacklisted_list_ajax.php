@@ -45,13 +45,13 @@ $qryIntMaxRec = "SELECT * FROM tblBlacklistedEmp
 			     ";
 				
         if($_GET['isSearch'] == 1){
-        	if($_GET['srchType'] == 0){
+        	if($_GET['srchType'] == 2){
         		$qryIntMaxRec .= "WHERE Emp_ID LIKE '{$_GET['txtSrch']}%' ";
         	}
-        	if($_GET['srchType'] == 1){
+        	if($_GET['srchType'] == 0){
         		$qryIntMaxRec .= "WHERE Emp_last LIKE '".str_replace("'","''",$_GET['txtSrch'])."%' ";
         	}
-        	if($_GET['srchType'] == 2){
+        	if($_GET['srchType'] == 1){
         		$qryIntMaxRec .= "WHERE Emp_first LIKE '".str_replace("'","''",$_GET['txtSrch'])."%' ";
         	}
 			
@@ -70,26 +70,26 @@ $qryEmpList = "SELECT TOP $intLimit *
         (SELECT TOP $intOffset Blacklist_no FROM tblBlacklistedEmp "; 
 
         if($_GET['isSearch'] == 1){
-        	if($_GET['srchType'] == 0){
+        	if($_GET['srchType'] == 2){
 				$qryEmpList .= " WHERE Emp_ID LIKE '{$_GET['txtSrch']}%' ";
         	}
-        	if($_GET['srchType'] == 1){
+        	if($_GET['srchType'] == 0){
         		$qryEmpList .= " WHERE Emp_last LIKE '".str_replace("'","''",$_GET['txtSrch'])."%' ";
         	}
-        	if($_GET['srchType'] == 2){
+        	if($_GET['srchType'] == 1){
         		$qryEmpList .= " WHERE Emp_first LIKE '".str_replace("'","''",$_GET['txtSrch'])."%' ";
         	}
 			
         }  
 $qryEmpList .= " ORDER BY Emp_last)";
         if($_GET['isSearch'] == 1){
-        	if($_GET['srchType'] == 0){
+        	if($_GET['srchType'] == 2){
 				$qryEmpList .= " AND Emp_ID LIKE '{$_GET['txtSrch']}%' ";
         	}
-        	if($_GET['srchType'] == 1){
+        	if($_GET['srchType'] == 0){
         		$qryEmpList .= " AND  Emp_last LIKE '".str_replace("'","''",$_GET['txtSrch'])."%' ";
         	}
-        	if($_GET['srchType'] == 2){
+        	if($_GET['srchType'] == 1){
         		$qryEmpList .= " AND  Emp_first LIKE '".str_replace("'","''",$_GET['txtSrch'])."%' ";
         	}
         }

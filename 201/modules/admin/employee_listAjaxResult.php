@@ -33,13 +33,13 @@ $qryIntMaxRec = "SELECT tblEmpMast.compCode, tblEmpMast.empNo, tblEmpMast.empLas
 				LEFT OUTER JOIN tblBranch ON tblEmpMast.empBrnCode=tblBranch.brnCode
 			   	WHERE tblEmpMast.compCode = '{$sessionVars['compCode']}' AND tblEmpMast.empStat NOT IN('RS','TR') ".$userAccess;
         if($_GET['isSearch'] == 1){
-        	if($_GET['srchType'] == 0){
+        	if($_GET['srchType'] == 2){
         		$qryIntMaxRec .= "AND tblEmpMast.empNo LIKE '{$_GET['txtSrch']}%' ";
         	}
-        	if($_GET['srchType'] == 1){
+        	if($_GET['srchType'] == 0){
         		$qryIntMaxRec .= "AND tblEmpMast.empLastName LIKE '".str_replace("'","''",$_GET['txtSrch'])."%' ";
         	}
-        	if($_GET['srchType'] == 2){
+        	if($_GET['srchType'] == 1){
         		$qryIntMaxRec .= "AND tblEmpMast.empFirstName LIKE '".str_replace("'","''",$_GET['txtSrch'])."%' ";
         	}
 			if ($_GET['brnCd']!=0) 
