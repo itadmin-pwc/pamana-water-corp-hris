@@ -50,18 +50,17 @@ $qryEmpAllwList = "SELECT allw.compCode,allw.empNo,allw.allowCode,allw.allowAmt,
 $qryEmpAllwList .= "ORDER BY allwTyp.allowDesc  limit $intOffset,$intLimit";
 $resEmpAllwList = $common->execQry($qryEmpAllwList);
 $arrEmpAllwList = $common->getArrRes($resEmpAllwList);
+
 ?>
 <html>
 <head>
 <style type="text/css">
-<!--
 .style1 {
 	font-family: verdana;
 	font-size: 11px;
 	font-weight: bold;
 }
 .style2 {font-size: 8px}
--->
 </style>
 </head>
 <body>    
@@ -87,7 +86,7 @@ $arrEmpAllwList = $common->getArrRes($resEmpAllwList);
 						<td  class="gridDtlLbl" align="center" width="11%">START DATE</td>
 						<td width="11%" align="center" class="gridDtlLbl">ACTION</td>
 					</tr>
-					<?
+					<?php
 					if($empProfileAllowObj->getRecCount($resEmpAllwList) > 0){
 						$i=0;
 						foreach ($arrEmpAllwList as $empAllowances=> $employeeAllowance){

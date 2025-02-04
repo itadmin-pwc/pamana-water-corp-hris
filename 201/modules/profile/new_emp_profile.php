@@ -9,6 +9,11 @@ $mainUserDefObjObj = new  mainUserDefObj();
 $maintEmpObj = new ProfileObj();
 $mainContent6Obj = new  mainContent6();
 
+unset($_SESSION['strprofile']);
+if ($_SESSION['strprofile']=="") {
+	$_SESSION['strprofile']=$maintEmpObj->createstrwil();
+}
+
 if ($_GET['act']=="Edit" || $_GET['act']=="View") {
 	$payGrp = $maintEmpObj->getProcGrp();
 	$_SESSION['oldcompCode']=$_GET['compCode'];
@@ -20,6 +25,7 @@ if ($_GET['act']=="Edit" || $_GET['act']=="View") {
 	if ($maintEmpObj->maritalStat=="SG") {
 		$disablematstatus="disabled";
 	}
+	
 	// echo $_SESSION['user_payCat'];
 	// echo "<br>";
 	// echo $maintEmpObj->paycat;
@@ -248,10 +254,6 @@ if($_GET['action']=="loadMunicipality")
 	exit();	
 }
 
-unset($_SESSION['strprofile']);
-if ($_SESSION['strprofile']=="") {
-	$_SESSION['strprofile']=$maintEmpObj->createstrwil();
-}
 $view_exempt = array('010000098');
 $visible = "";
 $readisabled = "";
