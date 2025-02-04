@@ -34,7 +34,7 @@ $qryPayperiod = $common->execQry("Select pdFrmDate,DATE_ADD(pdToDate,INTERVAL 3 
 $payperiod = $common->getSqlAssoc($qryPayperiod);
 
 
-$arrSrch = array('EMPLOYEE NUMBER','LAST NAME','FIRST NAME');
+$arrSrch = array('LAST NAME','FIRST NAME','EMPLOYEE NUMBER');
 
 
 $qryIntMaxRec = "SELECT * FROM tblEmpMast

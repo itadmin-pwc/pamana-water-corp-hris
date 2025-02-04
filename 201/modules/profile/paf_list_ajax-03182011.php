@@ -11,7 +11,7 @@ $pafObj->validateSessions('','MODULES');
 
 $pager = new AjaxPager(2,'../../../im	ages/');
 
-$arrSrch = array('EMPLOYEE NUMBER','LAST NAME','FIRST NAME');
+$arrSrch = array('LAST NAME','FIRST NAME','EMPLOYEE NUMBER');
 
 if ($_GET['stat'] !="") {
 	$stat = " AND stat='{$_GET['stat']}'";

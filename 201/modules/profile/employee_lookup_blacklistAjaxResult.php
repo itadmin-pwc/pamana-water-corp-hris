@@ -16,7 +16,7 @@ else{
 	$compCode =  $_SESSION['company_code'];
 }
 
-$arrSrch = array('EMPLOYEE NUMBER','LAST NAME','FIRST NAME');
+$arrSrch = array('LAST NAME','FIRST NAME','EMPLOYEE NUMBER');
 
 $qryIntMaxRec = "SELECT * FROM tblEmpMast 
 			     WHERE compCode = '{$compCode}' ";

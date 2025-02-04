@@ -16,7 +16,7 @@ else{
 	$compCode =  $_SESSION['company_code'];
 }
 
-$arrSrch = array('EMPLOYEE NUMBER','LAST NAME','FIRST NAME');
+$arrSrch = array('LAST NAME','FIRST NAME','EMPLOYEE NUMBER');
 
 $qryIntMaxRec = "SELECT * FROM tblEmpMast 
 			     WHERE compCode = '{$compCode}' ";
@@ -122,7 +122,7 @@ $arrEmpList = $common->getArrRes($resEmpList);
 	?>
 	<tr style="cursor:pointer;" bgcolor="<?php echo $bgcolor; ?>" <?php echo $on_mouse; ?> onclick="passEmpNo('txtAddEmpNo','<?=$empListVal['empNo']?>');">
 		<td class="gridDtlVal"><font class="gridDtlLblTxt"><?=$empListVal['empNo']?></font></td>
-		<td class="gridDtlVal"><font class="gridDtlLblTxt"><?=str_replace('Ñ','&Ntilde;',$empListVal['empLastName']. ", " . $empListVal['empFirstName'] . " " . $empListVal['empMidName'])?></font></td>
+		<td class="gridDtlVal"><font class="gridDtlLblTxt"><?=str_replace('ï¿½','&Ntilde;',$empListVal['empLastName']. ", " . $empListVal['empFirstName'] . " " . $empListVal['empMidName'])?></font></td>
 	</tr>
 	<?
 		}

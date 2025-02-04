@@ -11,7 +11,7 @@ $inqTSObj->validateSessions('','MODULES');
 
 $pager = new AjaxPager(10,'../../../images/');
 
-$arrSrch = array('EMPLOYEE NUMBER','LAST NAME','FIRST NAME');
+$arrSrch = array('LAST NAME','FIRST NAME','EMPLOYEE NUMBER');
 $fromDate = $_GET['fromDate'];
 $toDate = $_GET['toDate'];
 $empDiv = $_GET['empDiv'];

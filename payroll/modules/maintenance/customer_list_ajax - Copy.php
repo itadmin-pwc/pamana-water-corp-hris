@@ -32,7 +32,7 @@ $sessionVars = $common->getSeesionVars();
 $preEmplyrVal =0;
 $srchType = 0;
 
-$arrSrch = array('EMPLOYEE NUMBER','LAST NAME','FIRST NAME');
+$arrSrch = array('LAST NAME','FIRST NAME','EMPLOYEE NUMBER');
 
 if(isset($_GET['btnSearchReg'])){
 	//$viewRegNoCustNo = "and cust.custNo is null";	
@@ -167,7 +167,7 @@ $arrEmpList = $common->getArrRes($sqlEmpList);
 					<tr bgcolor="<?php echo $bgcolor; ?>" <?php echo $on_mouse; ?>>
 						<td class="gridDtlVal"><?=$i?></td>
 						<td class="gridDtlVal"><font class="gridDtlLblTxt"><?=$empListVal['empNo']?></font></td>
-						<td class="gridDtlVal"><font class="gridDtlLblTxt"><?=str_replace("Ñ","&Ntilde;",$empListVal['empLastName']. ", " . $empListVal['empFirstName'] ." ". $empListVal['empMidName'])?></font></td>
+						<td class="gridDtlVal"><font class="gridDtlLblTxt"><?=str_replace("ï¿½","&Ntilde;",$empListVal['empLastName']. ", " . $empListVal['empFirstName'] ." ". $empListVal['empMidName'])?></font></td>
 						<td class="gridDtlVal"><font class="gridDtlLblTxt"><?=$empListVal['custNo']?></font></td>
 						<td class="gridDtlVal" align="center">
 							<a href="#" onClick="PopUp('customer_act.php?act=Add&empNo=<?=$empListVal['empNo']?>&custNo=<?=$empListVal['custNo']?>','ADD CUSTOMER NO.','','customer_list_ajax.php','empMastCont',<?=$intOffset?>,<?=$_GET['isSearch']?>,'txtSrch','cmbSrch')"><img class="toolbarImg" src="../../../images/allowance_list.png" title="View/Edit" /></a>

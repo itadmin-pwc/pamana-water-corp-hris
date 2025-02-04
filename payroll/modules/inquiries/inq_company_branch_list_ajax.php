@@ -11,7 +11,7 @@ $inqCompObj->validateSessions('','MODULES');
 
 $pager = new AjaxPager(10,'../../../images/');
 
-$arrSrch = array('EMPLOYEE NUMBER','LAST NAME','FIRST NAME');
+$arrSrch = array('LAST NAME','FIRST NAME','EMPLOYEE NUMBER');
 $compCodeBranch = $_GET['compCodeBranch'];
 $qryIntMaxRec = "SELECT * FROM tblBranch WHERE compCode = '$compCodeBranch' ORDER BY brnDesc ASC";
 $resIntMaxRec = $inqCompObj->execQry($qryIntMaxRec);

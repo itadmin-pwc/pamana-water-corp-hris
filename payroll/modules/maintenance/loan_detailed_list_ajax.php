@@ -11,7 +11,7 @@ $inqTSObj->validateSessions('','MODULES');
 
 $pager = new AjaxPager(8,'../../../images/');
 
-$arrSrch = array('EMPLOYEE NUMBER','LAST NAME','FIRST NAME');
+$arrSrch = array('LAST NAME','FIRST NAME','EMPLOYEE NUMBER');
 $qryIntMaxRec = "Select tblEmpLoansDtlHist.* from tblEmpLoansDtlHist Inner Join tblEmpLoans on tblEmpLoansDtlHist.empNo=tblEmpLoans.empNo and tblEmpLoansDtlHist.lonTypeCd=tblEmploans.lonTypeCd and tblEmpLoansDtlHist.lonRefNo=tblEmploans.lonRefNo where lonSeries={$_GET['lonSeries']} and tblEmploans.compCode='{$_SESSION['company_code']}'  and tblEmpLoansDtlHist.compCode='{$_SESSION['company_code']}'";
 
 $resIntMaxRec = $inqTSObj->execQry($qryIntMaxRec);

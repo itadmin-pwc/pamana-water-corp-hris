@@ -11,7 +11,7 @@
 
 	$pager = new AjaxPager(4,'../../../images/');
 	
-	$arrSrch = array('EMPLOYEE NUMBER','LAST NAME','FIRST NAME');
+	$arrSrch = array('LAST NAME','FIRST NAME','EMPLOYEE NUMBER');
 	$empNo = $_GET['empNo'];
 	$empName = $_GET['empName'];
 	$empDiv = $_GET['empDiv'];

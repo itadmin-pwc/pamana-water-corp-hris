@@ -15,7 +15,7 @@
 	$compCode = $_SESSION['company_code'];
 	
 	$pager = new AjaxPager(10,'../../../images/');
-	$arrSrch = array('EMPLOYEE NUMBER','LAST NAME','FIRST NAME');
+	$arrSrch = array('LAST NAME','FIRST NAME','EMPLOYEE NUMBER');
 	$qryIntMaxRec = "SELECT * from tblOtPrem
 					 ORDER BY dayType ASC ";
 	$resIntMaxRec = $inqOtObj->execQry($qryIntMaxRec);

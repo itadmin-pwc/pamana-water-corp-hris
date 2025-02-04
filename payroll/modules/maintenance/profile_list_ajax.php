@@ -32,7 +32,7 @@ $sessionVars = $common->getSeesionVars();
 $preEmplyrVal =0;
 $srchType = 0;
 
-$arrSrch = array('EMPLOYEE NUMBER','LAST NAME','FIRST NAME','ACCT. NO.');
+$arrSrch = array('LAST NAME','FIRST NAME','EMPLOYEE NUMBER','ACCT. NO.');
 
 if($brnCode_View ==""){
 	$arrBrnch = $common->makeArr($common->getBranchByCompGrp(" and brnDefGrp='".$_SESSION["pay_group"]."' and compCode='".$_SESSION["company_code"]."'"),'brnCode','brnDesc','All');

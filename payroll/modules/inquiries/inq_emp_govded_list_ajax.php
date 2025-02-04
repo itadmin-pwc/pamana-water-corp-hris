@@ -11,7 +11,7 @@ $inqEmpLoanObj->validateSessions('','MODULES');
 
 $pager = new AjaxPager(10,'../../../images/');
 $arrSrch = array('REF NO.','ACTIVE (status)','HELD (status)','PROCESSED (status)');
-$arrSrch = array('EMPLOYEE NUMBER','LAST NAME','FIRST NAME');
+$arrSrch = array('LAST NAME','FIRST NAME','EMPLOYEE NUMBER');
 $empNo = $_GET['empNo'];
 $from = $_GET['from'];
 $to = $_GET['to'];

@@ -25,7 +25,7 @@ $sessionVars = $common->getSeesionVars();
 $preEmplyrVal =0;
 $srchType = 0;
 
-$arrSrch = array('EMPLOYEE NUMBER','LAST NAME','FIRST NAME','SSS. NO','BRANCH');
+$arrSrch = array('LAST NAME','FIRST NAME','EMPLOYEE NUMBER','SSS. NO','BRANCH');
 
 //$qryIntMaxRec = "CALL sp_BlacklistedEmp_Max ('{$_GET['isSearch']}','{$_GET['srchType']}','{$_GET['txtSrch']}')";
 $qryIntMaxRec = "SELECT * FROM tblblacklistedemp where 0=0 ";
@@ -151,7 +151,7 @@ $arrEmpList = $common->getArrRes($resEmpList);
                     <tr  bgcolor="<?php echo $bgcolor; ?>" <?php echo $on_mouse; ?>>
 						<td class="gridDtlVal"><?=$empListVal['blacklist_No']?></td>
 						<td class="gridDtlVal"><font class="gridDtlLblTxt"><?=$empListVal['empNo']?></font></td>
-                        <td class="gridDtlVal"><font class="gridDtlLblTxt"><?=str_replace("Ñ","&Ntilde;",$empListVal['empLastName']. ", " . $empListVal['empFirstName'] ." ". $empListVal['empMidName'])?></font></td>
+                        <td class="gridDtlVal"><font class="gridDtlLblTxt"><?=str_replace("ï¿½","&Ntilde;",$empListVal['empLastName']. ", " . $empListVal['empFirstName'] ." ". $empListVal['empMidName'])?></font></td>
 						<td class="gridDtlVal"><font color="#FF0000" class="gridDtlLblTxt"><?php echo $empListVal['reason']; ?></font></td>
 						<td class="gridDtlVal"><font class="gridDtlLblTxt"><?php echo $empListVal['empBrnCode']; ?></font></td>
 						   <td class="gridDtlVal" >

@@ -12,7 +12,7 @@
 	
 	
 	$pager = new AjaxPager(20,'../../../images/');
-	$arrSrch = array('EMPLOYEE NUMBER','LAST NAME','FIRST NAME');
+	$arrSrch = array('LAST NAME','FIRST NAME','EMPLOYEE NUMBER');
 	$qryIntMaxRec = "SELECT * from tblAllowType where compCode='{$_SESSION['company_code']}' and hrTag='Y'";
 	$resIntMaxRec = $inqTeuObj->execQry($qryIntMaxRec);
 	$intMaxRec = $pager->_getMaxRec($resIntMaxRec);

@@ -52,7 +52,7 @@
 	$srchType = 0;
 	
 	
-	$arrSrch = array('EMPLOYEE NUMBER','LAST NAME','FIRST NAME');
+	$arrSrch = array('LAST NAME','FIRST NAME','EMPLOYEE NUMBER');
 	
 	if($brnCode_View ==""){
 		$queryBrnches = "Select empNo,tblUB.brnCode as brnCode, brnDesc from tblTK_UserBranch tblUB, tblBranch as tblbrn

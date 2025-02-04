@@ -12,7 +12,7 @@ $maintEmpLoanObj->validateSessions('','MODULES');
 $common = new commonObj();
 $pager = new AjaxPager(20,'../../../images/');
 
-$arrSrch = array('EMPLOYEE NUMBER','LAST NAME','FIRST NAME');
+$arrSrch = array('LAST NAME','FIRST NAME','EMPLOYEE NUMBER');
 $empNo = $_GET['empNo'];
 $empName = $_GET['empName'];
 $empDiv = $_GET['empDiv'];

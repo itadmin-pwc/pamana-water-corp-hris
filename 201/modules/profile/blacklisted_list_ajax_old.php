@@ -42,7 +42,7 @@ $sessionVars = $common->getSeesionVars();
 $preEmplyrVal =0;
 $srchType = 0;
 
-$arrSrch = array('EMPLOYEE NUMBER','LAST NAME','FIRST NAME','SSS. NO');
+$arrSrch = array('LAST NAME','FIRST NAME','EMPLOYEE NUMBER','SSS. NO');
 
 if($brnCode_View =="")
 {
@@ -196,7 +196,7 @@ $arrEmpList = $common->getArrRes($resEmpList);
                     <tr  bgcolor="<?php echo $bgcolor; ?>" <?php echo $on_mouse; ?>>
 						<td class="gridDtlVal"><?=$i?></td>
 						<td class="gridDtlVal"><font class="gridDtlLblTxt"><?=$empListVal['empNo']?></font></td>
-                        <td class="gridDtlVal"><font class="gridDtlLblTxt"><?=str_replace("Ñ","&Ntilde;",$empListVal['empLastName']. ", " . $empListVal['empFirstName'] ." ". $empListVal['empMidName'])?></font></td>
+                        <td class="gridDtlVal"><font class="gridDtlLblTxt"><?=str_replace("ï¿½","&Ntilde;",$empListVal['empLastName']. ", " . $empListVal['empFirstName'] ." ". $empListVal['empMidName'])?></font></td>
 						<td class="gridDtlVal"><font color="#FF0000" class="gridDtlLblTxt"><?php echo ($visibility!=""?"":"BLACKLISTED"); ?></font></td>
 						<td class="gridDtlVal" >
 							<table border="0" width="70%" align="center">

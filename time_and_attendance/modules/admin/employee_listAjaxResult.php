@@ -88,7 +88,7 @@ $arrEmpList = $common->getArrRes($resEmpList);
 							}
 						}
 						?>
-						Search<INPUT type="text" name="txtSrch" id="txtSrch" value="<?if(isset($_GET['txtSrch'])){echo $_GET['txtSrch'];} ?>" class="inputs">In<?=$common->DropDownMenu(array('EMPLOYEE NUMBER','LAST NAME','FIRST NAME'),'cmbSrch',$srchType,'class="inputs"');?>
+						Search<INPUT type="text" name="txtSrch" id="txtSrch" value="<?if(isset($_GET['txtSrch'])){echo $_GET['txtSrch'];} ?>" class="inputs">In<?=$common->DropDownMenu(array('LAST NAME','FIRST NAME','EMPLOYEE NUMBER'),'cmbSrch',$srchType,'class="inputs"');?>
 						<?php echo  "Branch |";?> <? echo $common->DropDownMenu($arrBrnch,'brnCd',$_GET['brnCd'],'class="inputs"');?>
 						
                         <INPUT class="inputs" type="button" name="btnSrch" id="btnSrch" value="SEARCH" onclick="pager('employee_listAjaxResult.php','empList','Search',0,1,'txtSrch','cmbSrch','&brnCd='+document.getElementById('brnCd').value,'','../../../images/')">

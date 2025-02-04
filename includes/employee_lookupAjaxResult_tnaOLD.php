@@ -19,7 +19,7 @@ else{
 $qryPayGrp = "Select * from tblProcGrp where compCode='{$_SESSION['company_code']}' and status='H'";
 $resPayGrp = $common->getSqlAssoc($common->execQry($qryPayGrp));	
 
-$arrSrch = array('EMPLOYEE NUMBER','LAST NAME','FIRST NAME');
+$arrSrch = array('LAST NAME','FIRST NAME','EMPLOYEE NUMBER');
 
 
 	$qryIntMaxRec = "SELECT * FROM tblEmpMast

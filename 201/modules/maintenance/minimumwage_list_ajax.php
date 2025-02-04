@@ -12,7 +12,7 @@
 	
 	
 	$pager = new AjaxPager(20,'../../../images/');
-	$arrSrch = array('EMPLOYEE NUMBER','LAST NAME','FIRST NAME');
+	$arrSrch = array('LAST NAME','FIRST NAME','EMPLOYEE NUMBER');
 	$qryIntMaxRec = "SELECT tblMinimumWage.minimumWageId, tblMinimumWage.compCode, 
 					  tblMinimumWage.brnCode, tblMinimumWage.minimumWage_Old, tblMinimumWage.minimumWage_New, 
 					  tblMinimumWage.eCola_Old, tblMinimumWage.eCola_New, tblMinimumWage.effectiveDate, 

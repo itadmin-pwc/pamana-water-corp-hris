@@ -12,7 +12,7 @@
 	
 	
 	$pager = new AjaxPager(10,'../../../images/');
-	$arrSrch = array('EMPLOYEE NUMBER','LAST NAME','FIRST NAME');
+	$arrSrch = array('LAST NAME','FIRST NAME','EMPLOYEE NUMBER');
 	$qryIntMaxRec = "SELECT * from tblSssPhic
 					 ORDER BY sssSeqNo";
 	$resIntMaxRec = $inqSSSObj->execQry($qryIntMaxRec);

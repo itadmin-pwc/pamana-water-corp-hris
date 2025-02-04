@@ -12,7 +12,7 @@ $inqEmpAllowObj->validateSessions('','MODULES');
 $common = new commonObj();
 $pager = new AjaxPager(20,'../../../images/');
 
-$arrSrch = array('EMPLOYEE NUMBER','LAST NAME','FIRST NAME');
+$arrSrch = array('LAST NAME','FIRST NAME','EMPLOYEE NUMBER');
 $empNo = $_GET['empNo'];
 $empName = $_GET['empName'];
 $empDiv = $_GET['empDiv'];
@@ -98,7 +98,7 @@ $inputId = $_GET['inputId'];
 							<tr bgcolor="<?php echo $bgcolor; ?>" <?php echo $on_mouse; ?>>
 								<td class="gridDtlVal"><?=$i?></td>
 								<td class="gridDtlVal"><font class="gridDtlLblTxt"><?=$empListVal['empNo']?></font></td>
-								<td class="gridDtlVal"><font class="gridDtlLblTxt"><?=str_replace("Ñ","&Ntilde;",$empListVal['empLastName']. ", " . $empListVal['empFirstName'] . " " . $empListVal['empMidName'])?></font></td>
+								<td class="gridDtlVal"><font class="gridDtlLblTxt"><?=str_replace("ï¿½","&Ntilde;",$empListVal['empLastName']. ", " . $empListVal['empFirstName'] . " " . $empListVal['empMidName'])?></font></td>
 								
 					<td class="gridDtlVal" align="center"> <a href="#" onclick="location.href='<?=$fileName?>?hide_option=<?=$inputId?>&empNo=<?=$empListVal['empNo']?>'"><img class="actionImg" src="../../../images/application_get.png" title="Select Employee"></a> 
 					</td>

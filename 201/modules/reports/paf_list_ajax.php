@@ -11,7 +11,7 @@ $inqTSObj->validateSessions('','MODULES');
 
 $pager = new AjaxPager(2,'../../../im	ages/');
 
-$arrSrch = array('EMPLOYEE NUMBER','LAST NAME','FIRST NAME');
+$arrSrch = array('LAST NAME','FIRST NAME','EMPLOYEE NUMBER');
 $empNo = $_GET['empNo'];
 $empName = $_GET['empName'];
 $empDiv = $_GET['empDiv'];
@@ -38,6 +38,7 @@ if ($_GET['from'] != "" && $_GET['to'] != "") {
 	$fromdt = $_GET['from'];
 	$todt = $_GET['to'];
 	$datefilter = " and dateupdated >= '$fromdt' and dateupdated <='$todt'";
+	die($datefilter);
 }
 if (empty($pafType) || $pafType =="others") {
 	$inqTSObj->arrOthers 		= $inqTSObj->convertArr("tblPAF_Others$type", " $datefilter $empNo1 $empName1 $empDiv1 $empDept1 $empSect1");

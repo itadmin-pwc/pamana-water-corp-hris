@@ -32,7 +32,7 @@ $sessionVars = $common->getSeesionVars();
 $preEmplyrVal =0;
 $srchType = 0;
 
-$arrSrch = array('EMPLOYEE NUMBER','LAST NAME','FIRST NAME');
+$arrSrch = array('LAST NAME','FIRST NAME','EMPLOYEE NUMBER');
 
 if($brnCode_View ==""){
 	$arrBrnch = $common->makeArr($common->getBranchByCompGrp(" and brnDefGrp='".$_SESSION["pay_group"]."' and compCode='".$_SESSION["company_code"]."'"),'brnCode','brnDesc','All');
@@ -141,7 +141,7 @@ $arrEmpList = $common->getArrRes($resEmpList);
                     <tr  bgcolor="<?php echo $bgcolor; ?>" <?php echo $on_mouse; ?>>
 						<td class="gridDtlVal"><?=$i?></td>
 						<td class="gridDtlVal"><font class="gridDtlLblTxt"><?=$empListVal['empNo']?></font></td>
-                        <td class="gridDtlVal"><font class="gridDtlLblTxt"><?=str_replace("Ñ","&Ntilde;",$empListVal['empLastName']. ", " . $empListVal['empFirstName'] ." ". $empListVal['empMidName'])?></font></td>
+                        <td class="gridDtlVal"><font class="gridDtlLblTxt"><?=str_replace("ï¿½","&Ntilde;",$empListVal['empLastName']. ", " . $empListVal['empFirstName'] ." ". $empListVal['empMidName'])?></font></td>
 						<td class="gridDtlVal" align="center">
 						 <a href="#" onclick="location.href='timesheet_adjustment_emp_list.php?action=add&empNo=<?php echo $empListVal['empNo']; ?>'" ><img class="toolbarImg" src="../../../images/application_form_edit.png" title="Time Sheet Adjustment"></a>                                    
                            

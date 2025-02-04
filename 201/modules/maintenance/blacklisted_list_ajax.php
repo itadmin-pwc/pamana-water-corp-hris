@@ -34,7 +34,7 @@ $sessionVars = $common->getSeesionVars();
 $preEmplyrVal =0;
 $srchType = 0;
 
-$arrSrch = array('EMPLOYEE NUMBER','LAST NAME','FIRST NAME');
+$arrSrch = array('LAST NAME','FIRST NAME','EMPLOYEE NUMBER');
 
 if($brnCode_View ==""){
 	$arrBrnch = $common->makeArr($common->getBrnchArt($_SESSION["company_code"]),'brnCode','brnDesc','All');

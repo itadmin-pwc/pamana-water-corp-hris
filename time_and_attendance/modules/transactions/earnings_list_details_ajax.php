@@ -11,7 +11,7 @@ $inqTSObj->validateSessions('','MODULES');
 
 $pager = new AjaxPager(4,'../../../images/');
 
-$arrSrch = array('EMPLOYEE NUMBER','LAST NAME','FIRST NAME');
+$arrSrch = array('LAST NAME','FIRST NAME','EMPLOYEE NUMBER');
 $refNo = $_GET['refNo'];
 $earnHdr = $inqTSObj->getEarnTranHdr($sessionVars['compCode'], $refNo);
 $qryIntMaxRec = "SELECT * FROM tblEarnTranDtl 
@@ -74,7 +74,7 @@ $arrEarnList = $inqTSObj->getArrRes($resEarnList);
 								<td class="gridDtlVal">
 									<font class="gridDtlLblTxt">
 										<?
-											echo str_replace("Ñ","&Ntilde;",$employee['empLastName']. ", " . $employee['empFirstName'][0] .".". $employee['empMidName'][0].".");
+											echo str_replace("ï¿½","&Ntilde;",$employee['empLastName']. ", " . $employee['empFirstName'][0] .".". $employee['empMidName'][0].".");
 										?>
 									</font>
 								</td>

@@ -14,7 +14,7 @@ $sessionVars = $common->getSeesionVars();
 $preEmplyrVal =0;
 $srchType = 0;
 
-$arrSrch = array('EMPLOYEE NUMBER','LAST NAME','FIRST NAME');
+$arrSrch = array('LAST NAME','FIRST NAME','EMPLOYEE NUMBER');
 
 $qryIntMaxRec = "SELECT * FROM tblEmpMast 
 			     WHERE compCode = '{$sessionVars['compCode']}' ";

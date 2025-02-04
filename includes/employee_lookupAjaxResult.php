@@ -16,7 +16,7 @@ else{
 	$compCode =  $_SESSION['company_code'];
 }
 
-$arrSrch = array('EMPLOYEE NUMBER','LAST NAME','FIRST NAME');
+$arrSrch = array('LAST NAME','FIRST NAME','EMPLOYEE NUMBER');
 
 if ($_SESSION['module_id'] != 1){
 	$qryIntMaxRec = "SELECT * FROM tblEmpMast
