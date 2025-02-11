@@ -16,6 +16,7 @@ $arrSrch = array('LAST NAME','FIRST NAME','EMPLOYEE NUMBER');
 if ($_GET['stat'] !="") {
 	$stat = " AND stat='{$_GET['stat']}'";
 	$statAllow = " AND stat='{$_GET['stat']}'";
+	$hist ='';
 }
 if ($_GET['stat'] =="P") {
 	$hist ='hist';
@@ -53,8 +54,8 @@ if($_SESSION['employee_number']!='999999999' && $_SESSION['Confiaccess'] == "Y")
 	//$user_payCat_view = " AND empPayCat <> 'A' AND empPayCat IN (1,2,3,9)";
 }
 
-if($_SESSION['employee_number']=='999999999') {
-	$user_payCat_view = " AND empPayCat IN (1,2,3,9)";
+if (in_array($_SESSION['employee_number'], array('999999999', '010000098'))) {
+    $user_payCat_view = " AND empPayCat IN (1,2,3,9)";
 }
 //08-30-2023
 $qryEmpList = "SELECT *, tblBranch.brnDesc
