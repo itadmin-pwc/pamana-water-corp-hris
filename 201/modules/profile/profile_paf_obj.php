@@ -392,7 +392,7 @@ class pafObj extends commonObj {
 							
 							$qryprocess .= "Insert into tblPAF_EmpStatushist (controlNo,stat,compCode,empNo,old_status,new_status,
 							effectivitydate,user_created,user_updated,remarks,dateadded,refNo,dateupdated,datereleased,
-							old_nos,new_nos  $field) 
+							old_nos,new_nos  $field)
 							Select controlNo,stat,compCode,empNo,old_status,new_status,effectivitydate,userid,
 							'{$this->session['user_id']}',remarks,dateadded,refNo,'{$this->today}',datereleased,
 							old_nos,new_nos $value 
@@ -403,30 +403,30 @@ class pafObj extends commonObj {
 							if($val['new_status']!=""){
 								$empfield .= ",employmentTag='{$val['new_status']}'";
 								if ($val['new_status'] == 'RG'){
-									$dtResigned = ",dateReg='" . $this->fdate($this->get['effectivitydate']) . "'";
+									$dtResigned = ",dateReg='" . $this->fdate($val['effectivitydate']) . "'";
 								}
 							}
 				
 							if(trim($val['new_nos'])!="" || isset($val['new_nos'])){
 								if ($val['new_nos'] == 3 || $val['new_nos']=="3"){
 									$empfield .= ",empStat='RS'";
-									$dtResigned = ",dateResigned='" . $this->fdate($this->get['effectivitydate']) . "'";
+									$dtResigned = ",dateResigned='" . $this->fdate($val['effectivitydate']) . "'";
 								}
 								if ($val['new_nos'] == 5 || $val['new_nos']=="5"){
 									$empfield .= ",empStat='RS'";
-									$dtResigned = ",dateResigned='" . $this->fdate($this->get['effectivitydate']) . "'";
+									$dtResigned = ",dateResigned='" . $this->fdate($val['effectivitydate']) . "'";
 								}
 								if ($val['new_nos'] == 1 || $val['new_nos']=="1"){
 									$empfield .= ",empStat='RS'";
-									$dtResigned = ",dateResigned='" . $this->fdate($this->get['effectivitydate']) . "'";
+									$dtResigned = ",dateResigned='" . $this->fdate($val['effectivitydate']) . "'";
 								}
 								if ($val['new_nos'] == 2 || $val['new_nos']=="2"){
 									$empfield .= ",empStat='RS'";
-									$dtResigned = ",endDate='" . $this->fdate($this->get['effectivitydate']) . "'";
+									$dtResigned = ",endDate='" . $this->fdate($val['effectivitydate']) . "'";
 								}
 								if ($val['new_nos'] == 4 || $val['new_nos']=="4"){
 									$empfield .= ",empStat='IN'";	
-									$dtResigned = ",dateResigned='" . $this->fdate($this->get['effectivitydate']) . "'";
+									$dtResigned = ",dateResigned='" . $this->fdate($val['effectivitydate']) . "'";
 								}
 								
 								$qrySeparated .= "Insert into tblSeparatedEmployees (empNo,natureCode,year,reason,dateAdded,
