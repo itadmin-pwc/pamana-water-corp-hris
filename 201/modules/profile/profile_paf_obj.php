@@ -36,18 +36,18 @@ class pafObj extends commonObj {
 			$field .= ",old_status,new_status";
 			$value .= ",'{$this->get['oldstatus']}','{$this->get['cmbempstatus']}'"; 	
 		}
-		if($this->get['txtenddate']!="" && $this->get['txtenddate']!=$this->get['oldenddate']){
+		if($this->get['txtempstatDate']!=""){
 			$field .= ",old_enddate,new_enddate";
-			$value .= ",'{$this->get['oldenddate']}','" . $this->fdate($this->get['txtenddate']) . "'";	
+			$value .= ",'{$this->fdate($this->get['oldenddate'])}','{$this->fdate($this->get['txtempstatDate'])}'";	
 		}
 		if($this->get['cmbempnos']!="0" && $this->get['cmbempnos']!=$this->get['oldnos']){
 			$field .= ",old_nos,new_nos";
-			$value .= ",'{$this->get['oldnos']}','{$this->get['cmbempnos']}'"; 	
+			$value .= ",'{$this->get['oldnos']}','{$this->get['cmbempnos']}'"; 
 		}
 		
 		$qrydel = "Delete from tblPAF_EmpStatus where refNo='{$this->get['refno']}' and compCode='{$this->get['compCode']}' and empNo='{$this->get['empNo']}'";
 		$this->execQry($qrydel);		
-			$qryempStat = "Insert into tblPAF_EmpStatus (controlNo,compCode,empNo $field,stat,effectivitydate,userid,remarks,refNo,dateadded) values ('0','{$this->get['compCode']}','{$this->get['empNo']}' $value,'{$this->get['cmbstatus']}','" . $this->fdate($this->get['txtempstatDate']). "','{$this->session['user_id']}','{$this->get['txtempstatremarks']}','{$this->get['refno']}','".date('Y-m-d')."')";
+			$qryempStat = "Insert into tblPAF_EmpStatus (controlNo,compCode,empNo $field,stat,effectivitydate,userid,remarks,refNo,dateadded) values ('0','{$this->get['compCode']}','{$this->get['empNo']}' $value,'{$this->get['cmbstatus']}','" . $this->fdate($this->get['txtempstatDate']) . "','{$this->session['user_id']}','{$this->get['txtempstatremarks']}','{$this->get['refno']}','".date('Y-m-d')."')";
 		if ($Trns) {
 			$Trns = $this->execQry($qryempStat);
 		}	
@@ -434,7 +434,7 @@ class pafObj extends commonObj {
 								'{$val['dateadded']}','{$val['datereleased']}');";
 							}
 							if($val['new_enddate']!=""){
-								$empfield .= ",empEndDate='" . $this->fdate($this->get['new_enddate']) . "'";	
+								$empfield .= ",empEndDate='" . $this->fdate($val['new_enddate']) . "'";	
 							}
 														
 							$qryempMast .= "Update tblEmpMast set $empfield $dtResigned 

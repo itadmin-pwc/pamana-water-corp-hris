@@ -72,6 +72,7 @@ switch ($_GET['code']) {
 				echo "	location.href = 'profile_actionlist.php?empNo=$empNo&compCode=$compCode';";
 		}
 		else{
+			//die(var_dump($_GET));
 			if ($maintEmpObj->empStatus()) {
 				if ($_GET['empstattag'] != "1") {
 					echo "alert('PAF Employment Status update queued');";

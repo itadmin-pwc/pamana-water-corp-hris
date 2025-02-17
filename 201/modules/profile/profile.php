@@ -13,6 +13,7 @@ if ($_GET['act']=="Edit" || $_GET['act']=="View") {
 	$_SESSION['oldcompCode']=$_GET['compCode'];
 	$maintEmpObj->oldcompCode=$_SESSION['oldcompCode'];
 	$maintEmpObj->viewprofile($_GET['empNo']);
+	//die(var_dump($maintEmpObj));
 	//AGE CALCULATION
 	// Convert date of birth to a timestamp
 	$dateOfBirth = strtotime($maintEmpObj->dateOfBirth);
