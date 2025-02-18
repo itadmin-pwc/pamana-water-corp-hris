@@ -634,8 +634,8 @@ class ProfileObj extends commonObj {
 	function computesalary($compCode,$salary) {
 		$getCompInfo = $this->getCompany($compCode);
 
-		$this->Drate = sprintf('%01.2f',(float)$salary/(float)$getCompInfo['compNoDays']);
-		$this->Hrate =  sprintf('%01.2f',$this->Drate/8);
+		$this->Drate = sprintf('%01.2f',($salary * 12) / (float)$getCompInfo['compDaysInYear']);
+		$this->Hrate =  sprintf('%01.2f', $this->Drate/8);
 	}
 	
 	function viewprofile($empNo) {

@@ -148,9 +148,12 @@ switch ($_GET['code']) {
 					// $Drate = sprintf('%01.2f',(float)$rate);
 					// $Hrate =  sprintf('%01.2f',$Drate/8);
 
-					$Mrate = sprintf('%01.2f',((float)$getCompInfo['compDaysInYear'] / 12) * (float)$rate);
-					$Drate = sprintf('%01.2f',(float)$rate);
-					$Hrate =  sprintf('%01.2f',$Drate/8);
+					// $Mrate = sprintf('%01.2f',((float)$getCompInfo['compDaysInYear'] / 12) * (float)$rate);
+					// $Drate = sprintf('%01.2f',(float)$rate);
+					// $Hrate =  sprintf('%01.2f',$Drate/8);
+					$Mrate = sprintf('%01.2f', (round($getCompInfo['compDaysInYear'] / 12, 4)) * (float)$rate);
+					$Drate = sprintf('%01.2f', (float)$rate);
+					$Hrate = sprintf('%01.2f', round((float)$Drate / 8, 4));
 				}
 /*				$Mrate = number_format($Mrate,2);
 				$Drate = number_format($Drate,2);
@@ -587,8 +590,11 @@ class ProfileObj extends commonObj {
 	function computesalary($compCode,$salary) {
 		$getCompInfo = $this->getCompany($compCode);
 		
-		$this->Drate = sprintf('%01.2f',(float)$salary/(float)$getCompInfo['compNoDays']);
-		$this->Hrate =  sprintf('%01.2f',$this->Drate/8);
+		// $this->Drate = sprintf('%01.2f',(float)$salary/(float)$getCompInfo['compNoDays']);
+		// $this->Hrate =  sprintf('%01.2f',$this->Drate/8);
+
+		$this->Drate = sprintf('%01.2f',($salary * 12) / (float)$getCompInfo['compDaysInYear']);
+		$this->Hrate =  sprintf('%01.2f', $this->Drate/8);
 	}
 	
 	function viewprofile($empNo) {
@@ -695,6 +701,7 @@ class ProfileObj extends commonObj {
 	
 	function updateemployee($empNox) {
 		$this->computesalary($this->compCode,$this->Salary);
+		
 		$genfields="
 					empNo='".str_replace("'","''",stripslashes(strtoupper($this->empNo)))."',
 					empLastName='".str_replace("'","''",stripslashes(strtoupper($this->lName)))."',

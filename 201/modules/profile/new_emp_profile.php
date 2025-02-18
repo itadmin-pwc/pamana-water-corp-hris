@@ -197,7 +197,7 @@ if ($_POST['save']!="") {
 			$maintEmpObj->updateAllowance($_GET['empNo'],$_GET['compCode']);
 		}
 		else{
-			$maintEmpObj->updateemployee($_GET['empNo'],$_GET['compCode']);	
+			$maintEmpObj->updateemployee($_GET['empNo'],$_GET['compCode']);
 		}
 	}
 	unset($_SESSION['strprofile'],$_SESSION['oldcompCode'],$_SESSION['profile_act'],$_SESSION['empRestDay']);
