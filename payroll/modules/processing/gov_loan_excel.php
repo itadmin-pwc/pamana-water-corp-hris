@@ -1,7 +1,7 @@
 <?
 ################### INCLUDE FILE #################
 	session_start();
-	ini_set('include_path','D:\wamp\php\PEAR');
+	ini_set('include_path','C:\wamp\bin\php\php5.2.6\PEAR\pear');
 	include("../../../includes/db.inc.php");
 	include("../../../includes/common.php");
 	include("timesheet_obj.php");

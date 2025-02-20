@@ -1,7 +1,7 @@
 <?
 ################### INCLUDE FILE #################
 	session_start();
-	ini_set('include_path','D:\wamp\php\PEAR');
+	ini_set('include_path','C:\wamp\bin\php\php5.2.6\PEAR\pear');
 	require_once 'Spreadsheet/Excel/Writer.php';
 	include("../../../includes/db.inc.php");
 	include("../../../includes/common.php");
@@ -25,6 +25,8 @@ if($confaccess == 'N'){
 }else {
 	$confi = "and tblEmpMast.empPayCat ='2'";
 }
+
+$confi = "";
 
 	$sqlRD = "SELECT tblEmpMast.empNo, tblEmpMast.empLastName, tblEmpMast.empFirstName, tblEmpMast.empMidName, 
 	   				tblDepartment.deptDesc, tblPosition.posDesc, tblEmpMast.empEndDate AS empEndDate, 

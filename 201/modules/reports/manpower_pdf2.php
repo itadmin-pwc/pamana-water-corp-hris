@@ -40,7 +40,7 @@ if($confaccess == 'N'){
 }elseif ($confaccess == 'Y') {
 	$confi = "and tblEmpMast.empPayCat ='2'";
 }
-else $confi = '';
+$confi = '';
 
 
 	   $sqlRD = "SELECT tblEmpMast.empNo, tblEmpMast.empLastName, tblEmpMast.empFirstName, tblEmpMast.empMidName, 
