@@ -49,12 +49,12 @@ class PDF extends FPDF
 		$this->Cell(30,6,'Name');
 		$this->Cell(90,6,$arrInfo['empLastName'] . ', ' . $arrInfo['empFirstName'] . ' ' . $arrInfo['empMidName'],'B',0);
 		$this->Cell(30,6,' Date Prepared');
-		$this->Cell(40,6,date('Y-m-d'),'B',1);
+		$this->Cell(40,6,date('m/d/Y'),'B',1);
 
 		$this->Cell(30,6,'Position',0,0);
 		$this->Cell(90,6,$arrInfo['posDesc'],'B',0);
 		$this->Cell(30,6,' Date Hired',0,0);
-		$this->Cell(40,6,date('Y-m-d',strtotime($arrInfo['dateHired'])),'B',1);
+		$this->Cell(40,6,date('m/d/Y',strtotime($arrInfo['dateHired'])),'B',1);
 
 		$this->Cell(30,6,'Department',0,0);
 		$this->Cell(90,6,$arrInfo['deptShortDesc'],'B',0);
@@ -75,7 +75,7 @@ class PDF extends FPDF
 			$this->Cell(46,5,$Movement,1,0);
 			$this->Cell(67,5,$old_value,1,0);
 			$this->Cell(67,5,$new_value,1,0);
-			$this->Cell(20,5,$effdate,1,1,'C');
+			$this->Cell(20,5,date('m/d/Y', strtotime($effdate)),1,1,'C');
 		}
 		else{
 			$this->Cell(46,5,"",1,0);
@@ -144,7 +144,7 @@ class PDF extends FPDF
 			$payreason=$Remarks;	
 		}
 
-		$this->MultiCell(200,12,$payreason,1,'C');
+		$this->MultiCell(200,12,$payreason . ' ('.$arrInfo['remarks'].')',1,'C');
 		$this->SetFont('arial','',8);
 		
 	}
@@ -184,13 +184,13 @@ class PDF extends FPDF
 		$this->Cell(35,5,'','LR',0,'C');
 		$this->Cell(30,5,'','LR',1);
 		$this->SetFont('arial','',6);
-		$this->Cell(35,5,$signee,'LR',0,'C');
+		$this->Cell(35,5,'','LR',0,'C');
 		$this->Cell(33,5,strtoupper($arrInfo['brnSignatory']),'LR',0,'C');
-		$this->Cell(32,5,'','LR',0,'C'); //HR
-		$this->Cell(35,5,'','LR',0,'C'); //President
+		$this->Cell(32,5,'HERMA MAE M. PAGBILAO','LR',0,'C'); //HR
+		$this->Cell(35,5,'PAULA JANE SALON','LR',0,'C'); //President
 		$this->Cell(35,5,'','LR',0,'C');
 		//$this->Cell(30,5,strtoupper($arrInfo['empFirstName'][0].$arrInfo['empMidName'][0].' '.$arrInfo['empLastName']),'LR',1,'C');
-		$this->Cell(30,5,($arrInfo['empSex']=="M"?"MR.":"MS."). " ".strtoupper($arrInfo['empLastName']),'LR',1,'C');
+		$this->Cell(30,5,$arrInfo['empFirstName'] . ' ' . substr($arrInfo['empMidName'], 0, 1) . '. ' . $arrInfo['empLastName'],'LR',1,'C');
 		
 		$this->Cell(35,5,'Signature/Date',1,0,'C');
 		$this->Cell(33,5,'Signature/Date',1,0,'C');
