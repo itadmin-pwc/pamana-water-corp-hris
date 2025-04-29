@@ -127,69 +127,6 @@ switch ($_GET['code']) {
 		$brhobj->DropDownMenu($brhobj->makeArr($x,'posCode','pp1',''),'cmbposition','cmbposition','class="inputs" style="width:222px;" onchange="setRateMode(); getPosInfo(this.value); getPayCats(this.value); "');
 		exit();
 	break;
-	case "cdsalary":
-				$brhobj=new commonObj();
-				$rate =  str_replace(',','',$_GET['Rate']);
-				$getCompInfo = $brhobj->getCompany($_GET['compcode']);
-
-				//1 monthly
-				//0 daily
-				if ($_GET['cat']=="1") {
-					// $Mrate = sprintf('%01.2f',(float)$rate);
-					// $Drate = sprintf('%01.2f',$Mrate/(float)$getCompInfo['compNoDays']);
-					// $Hrate =  sprintf('%01.2f',$Drate/8);
-
-					$Mrate = sprintf('%01.2f',(float)$rate);
-					$Drate = sprintf('%01.2f',($Mrate * 12) / (float)$getCompInfo['compDaysInYear']);
-					$Hrate =  sprintf('%01.2f',$Drate/8);
-				}
-				else {
-					// $Mrate = sprintf('%01.2f',(float)$rate*(float)$getCompInfo['compNoDays']);
-					// $Drate = sprintf('%01.2f',(float)$rate);
-					// $Hrate =  sprintf('%01.2f',$Drate/8);
-
-					// $Mrate = sprintf('%01.2f',((float)$getCompInfo['compDaysInYear'] / 12) * (float)$rate);
-					// $Drate = sprintf('%01.2f',(float)$rate);
-					// $Hrate =  sprintf('%01.2f',$Drate/8);
-					$Mrate = sprintf('%01.2f', (round($getCompInfo['compDaysInYear'] / 12, 4)) * (float)$rate);
-					$Drate = sprintf('%01.2f', (float)$rate);
-					$Hrate = sprintf('%01.2f', round((float)$Drate / 8, 4));
-				}
-/*				$Mrate = number_format($Mrate,2);
-				$Drate = number_format($Drate,2);
-				$Hrate = number_format($Hrate,2);
-*/
-			//echo $Mrate."\n".$Drate."\n".$Hrate;
-				if ($_GET['cat']=="1") {
-					echo "$('txtdailyrate').value='$Drate';";
-					echo "$('txthourlyrate').value='$Hrate';";
-				}	
-				elseif ($_GET['cat']=="0") {
-					echo "$('txtsalary').value='$Mrate';";
-					echo "$('txthourlyrate').value='$Hrate';";					
-				}
-			exit();
-	break;
-	case "cdsalarywallow":
-		$brhobj=new commonObj();
-		$rate =  str_replace(',','',$_GET['Rate']);
-		$getCompInfo = $brhobj->getCompany($_SESSION['company_code']);
-		$emp_allowance = $this->getEmpAllowance($_SESSION['company_code'], $valOT['empNo']);
-
-		$allowance = 0;
-		if($emp_allowance['allowAmt'] != '') {
-			$allowance = $emp_allowance['allowAmt'];
-		}
-
-		$Mrate = sprintf('%01.2f',(float)$rate);
-		$Drate = sprintf('%01.2f',(($Mrate + $allowance) * 12) / (float)$getCompInfo['compDaysInYear']);
-		$Hrate =  sprintf('%01.2f',$Drate/8);
-
-		echo "$('txtsalary').value='$Mrate';";
-		echo "$('txtdailyrate').value='$Drate';";
-		echo "$('txthourlyrate').value='$Hrate';";
-
-		exit();
 	case "cdsalarycmb":
 		$ccode=$_GET['id'];
 		$salary=$_GET['rate'];
@@ -894,6 +831,16 @@ class ProfileObj extends commonObj {
 	function updateuser() {
 		$qryupdatuer = "Update tblusers set compCode='{$this->compCode}' where empNo='{$this->empNo}' and compCode='{$this->oldcompCode}'";
 		$res=$this->execQry($qryupdatuer);
+	}	
+
+	function getEmpAllowance($compCode,$empNo){
+
+		$query = "SELECT SUM(allowAmt) AS allowAmt FROM tblallowance_new 
+						   WHERE compCode = '{$compCode}'
+						   AND   empNo    = '".trim($empNo)."'
+						   AND allowCode IN (3, 9)";
+
+		return $this->getSqlAssoc($this->execQry($query));
 	}
 	
 	function restday($empNo,$compCode,$restday) {
@@ -931,6 +878,75 @@ class ProfileObj extends commonObj {
 	
 }
 
+if($_GET['code']=='cdsalarywallow'){
+		$brhobj=new ProfileObj();
+		$rate =  str_replace(',','',$_GET['Rate']);
+		$getCompInfo = $brhobj->getCompany($_SESSION['company_code']);
+		$emp_allowance = $brhobj->getEmpAllowance($_SESSION['company_code'], $_GET['empNo']);
+
+		$allowance = 0;
+		if($emp_allowance['allowAmt'] != '') {
+			$allowance = $emp_allowance['allowAmt'];
+		}
+
+		$Mrate = sprintf('%01.2f',(float)$rate);
+		$Drate = sprintf('%01.2f',(($Mrate + $allowance) * 12) / (float)$getCompInfo['compDaysInYear']);
+		$Hrate =  sprintf('%01.2f',$Drate/8);
+
+		//echo "$('txtsalary').value='$Mrate';";
+		//echo $Mrate."\n".$Drate."\n".$Hrate;
+		echo "$('txtdailyrate').value='$Drate';";
+		echo "$('txthourlyrate').value='$Hrate';";
+}
+
+if($_GET['code']=="cdsalary"){
+	$brhobj=new ProfileObj();
+	$rate =  str_replace(',','',$_GET['Rate']);
+	$getCompInfo = $brhobj->getCompany($_GET['compcode']);
+	$emp_allowance = $brhobj->getEmpAllowance($_SESSION['company_code'], $_GET['empNo']);
+
+	$allowance = 0;
+	if($emp_allowance['allowAmt'] != '') {
+		$allowance = $emp_allowance['allowAmt'];
+	}
+
+	//1 monthly
+	//0 daily
+	if ($_GET['cat']=="1") {
+		// $Mrate = sprintf('%01.2f',(float)$rate);
+		// $Drate = sprintf('%01.2f',$Mrate/(float)$getCompInfo['compNoDays']);
+		// $Hrate =  sprintf('%01.2f',$Drate/8);
+
+		$Mrate = sprintf('%01.2f',(float)$rate);
+		$Drate = sprintf('%01.2f',(($Mrate + $allowance) * 12) / (float)$getCompInfo['compDaysInYear']);
+		$Hrate =  sprintf('%01.2f',$Drate/8);
+	}
+	else {
+		// $Mrate = sprintf('%01.2f',(float)$rate*(float)$getCompInfo['compNoDays']);
+		// $Drate = sprintf('%01.2f',(float)$rate);
+		// $Hrate =  sprintf('%01.2f',$Drate/8);
+
+		// $Mrate = sprintf('%01.2f',((float)$getCompInfo['compDaysInYear'] / 12) * (float)$rate);
+		// $Drate = sprintf('%01.2f',(float)$rate);
+		// $Hrate =  sprintf('%01.2f',$Drate/8);
+		$Mrate = sprintf('%01.2f', (round($getCompInfo['compDaysInYear'] / 12, 4)) * (float)$rate);
+		$Drate = sprintf('%01.2f', (float)$rate);
+		$Hrate = sprintf('%01.2f', round((float)$Drate / 8, 4));
+	}
+/*				$Mrate = number_format($Mrate,2);
+	$Drate = number_format($Drate,2);
+	$Hrate = number_format($Hrate,2);
+*/
+//echo $Mrate."\n".$Drate."\n".$Hrate;
+	if ($_GET['cat']=="1") {
+		echo "$('txtdailyrate').value='$Drate';";
+		echo "$('txthourlyrate').value='$Hrate';";
+	}	
+	elseif ($_GET['cat']=="0") {
+		echo "$('txtsalary').value='$Mrate';";
+		echo "$('txthourlyrate').value='$Hrate';";					
+	}
+}
 
 if ($_GET['code']=="cdsavecontact"){
 		$brhobj=new ProfileObj();
@@ -1026,6 +1042,6 @@ if ($_GET['code']=="cdcheckno"){
 			else {
 				echo "$('$txt').value='';";
 			}
-		}		
+		}	
 }
 ?>

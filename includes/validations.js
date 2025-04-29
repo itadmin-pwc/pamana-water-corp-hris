@@ -1117,7 +1117,7 @@
 	
 	
 	function computeRates(Rate,compcode,cat,event){
-		console.log(event);
+		var empNo=document.getElementById('txtempNo').value;
 		$('save').disabled = true;
 		if (window.event)
 		  	key = window.event.keyCode;
@@ -1128,7 +1128,7 @@
 		  
 			console.log(event);
 		if(key == 13){	
-			params = 'profile.obj.php?code=cdsalary&Rate='+Rate+'&compcode='+compcode+'&cat='+cat;
+			params = 'profile.obj.php?code=cdsalary&Rate='+Rate+'&compcode='+compcode+'&cat='+cat+'&empNo='+empNo;
 			new Ajax.Request(params,{
 				method : 'get',
 				onComplete : function (req){
@@ -1143,11 +1143,12 @@
 
 	function computeRatesWithAllowance(empNo){
 		var Rate=document.getElementById('txtsalary').value;
-
+		
 		params = 'profile.obj.php?code=cdsalarywallow&Rate='+Rate+'&empNo='+empNo;
 		new Ajax.Request(params,{
 			method : 'get',
 			onComplete : function (req){
+				console.log(req);
 				eval(req.responseText);
 			}
 		})

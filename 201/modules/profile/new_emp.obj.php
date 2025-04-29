@@ -534,7 +534,7 @@ class ProfileObj extends commonObj {
 					id
 					";
 
-		$this->computesalary($this->compCode,$this->Salary);
+		$this->computesalary($this->compCode,$this->Salary, $this->empNo);
 		
 		$payvalues="
 					'".str_replace("'","''",stripslashes(strtoupper($this->Salary)))."',
@@ -631,11 +631,27 @@ class ProfileObj extends commonObj {
 		return $this->getArrRes($res);
 	}
 	
-	function computesalary($compCode,$salary) {
+	function computesalary($compCode,$salary, $empNo) {
 		$getCompInfo = $this->getCompany($compCode);
+		$emp_allowance = $this->getEmpAllowance($_SESSION['company_code'], $empNo);
 
-		$this->Drate = sprintf('%01.2f',($salary * 12) / (float)$getCompInfo['compDaysInYear']);
+		$allowance = 0;
+		if($emp_allowance['allowAmt'] != '') {
+			$allowance = $emp_allowance['allowAmt'];
+		}
+
+		$this->Drate = sprintf('%01.2f',(($salary+$allowance) * 12) / (float)$getCompInfo['compDaysInYear']);
 		$this->Hrate =  sprintf('%01.2f', $this->Drate/8);
+	}
+
+	function getEmpAllowance($compCode,$empNo){
+
+		$query = "SELECT SUM(allowAmt) AS allowAmt FROM tblallowance_new 
+						   WHERE compCode = '{$compCode}'
+						   AND   empNo    = '".trim($empNo)."'
+						   AND allowCode IN (3, 9)";
+
+		return $this->getSqlAssoc($this->execQry($query));
 	}
 	
 	function viewprofile($empNo) {
@@ -740,7 +756,7 @@ class ProfileObj extends commonObj {
 	}
 	
 	function updateemployee($empNox) {
-		$this->computesalary($this->compCode,$this->Salary);
+		$this->computesalary($this->compCode,$this->Salary, $this->empNo);
 		$genfields="
 					picture='$this->picture',
 					empNo='".str_replace("'","''",stripslashes(strtoupper($this->empNo)))."',
@@ -876,7 +892,7 @@ class ProfileObj extends commonObj {
 	}
 
 	function updateSalary() {
-		$this->computesalary($this->compCode,$this->Salary);
+		$this->computesalary($this->compCode,$this->Salary, $this->empNo);
 		$wageTag= $this->CheckMinWageTag($this->compCode,$this->branch,$this->Drate);
 		$payfields="
 					empMrate='".str_replace("'","''",stripslashes(strtoupper($this->Salary)))."',

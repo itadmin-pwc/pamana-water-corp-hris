@@ -254,7 +254,7 @@ if($_GET['action']=="loadMunicipality")
 	exit();	
 }
 
-$view_exempt = array('010000098');
+$view_exempt = array('010000098', '999999999');
 $visible = "";
 $readisabled = "";
 $viewonly = "";
@@ -1282,6 +1282,8 @@ include("../../../includes/calendar.php");
 					editProfileAllw = null;
 					pager(URL,'Allowance',ele,offset,isSearch,txtSrch,cmbSrch,'&empNo='+empNo+"&allwCode="+allwCode,'../../../images/');
 					Windows.removeObserver(this);
+
+					computeRatesWithAllowance(empNo)
 				}
 		    }
 		}
