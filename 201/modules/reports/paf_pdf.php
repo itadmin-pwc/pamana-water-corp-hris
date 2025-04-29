@@ -32,7 +32,7 @@ class PDF extends FPDF
 		$this->SetFont('Courier','B','9'); 
 		$this->Cell(8,6,'#',0,'','C');
 		$this->Cell(20,6,'EMP. NO.',0);
-		$this->Cell(57,6,'EMPLOYEE NAME',0);
+		$this->Cell(70,6,'EMPLOYEE NAME',0);
 		$this->Cell(57,6,'MOVEMENT',0);
 		$this->Cell(60,6,'OLD VALUE',0);
 		$this->Cell(60,6,'NEW VALUE',0);
@@ -43,7 +43,7 @@ class PDF extends FPDF
 		$this->SetFont('Courier','','9'); 
 		$this->Cell(8,6,$ctr,0,'','C');
 		$this->Cell(20,6,$empNo,0);
-		$this->Cell(57,6,$empName,0);
+		$this->Cell(70,6,$empName,0);
 		$this->Cell(57,6,$Movement,0);
 		$this->Cell(60,6,$old_value,0);
 		$this->Cell(60,6,$new_value,0);
@@ -161,7 +161,7 @@ $pdf->AddPage();
 			if ($x == 0) {
 				$q = $no;
 				$no++;
-				$name = $empListVal['empLastName']. " " . $empListVal['empFirstName'][0] . "." . $empListVal['empMidName'][0].".";
+				$name = $empListVal['empLastName']. " " . $empListVal['empFirstName'] . "." . $empListVal['empMidName'].".";
 				$empNo = $empListVal['empNo'];
 			}		
 			$pdf->Data($q,$empNo,$name,$resArrOthers['field'][$x],$resArrOthers['value1'][$x],$resArrOthers['value2'][$x],date("m/d/Y",strtotime($resArrOthers['effdate'][$x])));
