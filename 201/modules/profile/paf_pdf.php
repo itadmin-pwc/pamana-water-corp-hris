@@ -12,33 +12,7 @@ class PDF extends FPDF
 	var $table;
 	var $reportlabel;
 	var $arrPayPd;
-/*	function Header()
-	{
-		$this->SetFont('Courier','','9'); 
-		$this->Cell(100,5,"Run Date: " . $this->rundate);
-		$this->Cell(200,5,$this->company);
-		$this->Cell(35,5,'Page '.$this->PageNo().' of {nb}',0,0,'R');		
-		$this->Ln();
-		$this->Cell(100,5,"Report ID: POSTEDPAF");
-		if ($_POST['from'] != "" && $_POST['to'] != "") {
-			$fromdt = $_POST['from'];
-			$todt = $_POST['to'];
-			$date = "$fromdt - $todt";
-		} 
-		$this->Cell(184,5,$this->reportlabel.'Posted PAF');
-		$this->Cell(60,5,$this->reportlabel.$date);
-		$this->Ln();
-		
-		$this->SetFont('Courier','B','9'); 
-		$this->Cell(8,6,'#',0,'','C');
-		$this->Cell(20,6,'EMP. NO.',0);
-		$this->Cell(57,6,'EMPLOYEE NAME',0);
-		$this->Cell(57,6,'MOVEMENT',0);
-		$this->Cell(60,6,'OLD VALUE',0);
-		$this->Cell(60,6,'NEW VALUE',0);
-		$this->Cell(60,6,'EFFECTIVITY DATE',0);
-		$this->Ln();
-	}*/
+
 	function empInfo($arrInfo) {
 		$this->SetFont('arial','B',10);
 		$this->Cell(200,6,$this->company,0,1,'C');
@@ -108,7 +82,7 @@ class PDF extends FPDF
 			$this->Cell(3,3,$this->box(1));	
 		} else {
 			$this->Cell(3,3,$this->box(0));	
-		}	
+		}
 		$this->Cell(60,3,'Termination for Cause','R',1,1);	
 		$this->Cell(200,2,'','LR',1,1);
 		$this->Cell(38,5,'Effectivity Date: ','L',0,'R');
@@ -144,13 +118,15 @@ class PDF extends FPDF
 			$payreason=$Remarks;	
 		}
 
-		$this->MultiCell(200,12,$payreason . ' ('.$arrInfo['remarks'].')',1,'C');
+		$this->MultiCell(200,12,$payreason . '',1,'C');
 		$this->SetFont('arial','',8);
 		
 	}
+
 	function box($tag) {
 		$this->Cell(3,3,'',1,0,1,$tag);
 	}
+
 	function Approval($arrInfo) {
 		$signee="";
 		$sql=$this->checkDivision($arrInfo['empDiv'],$arrInfo['empDepCode']);
