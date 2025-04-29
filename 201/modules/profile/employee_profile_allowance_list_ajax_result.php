@@ -75,7 +75,9 @@ $arrEmpAllwList = $common->getArrRes($resEmpAllwList);
 				<TABLE border="0" width="100%" cellpadding="1" cellspacing="1" class="childGrid" >
 					<td colspan="8" class="gridToolbar"><? //=$intOffset?>
 						<a href="#"  class="anchor" onClick="empProfileAllow('Add','<?=$empProfileAllowObj->empNo?>','','employee_profile_allowance_list_ajax_result.php','','',<?=$intOffset?>,'',<?=$_GET['isSearch']?>,'','')">
-                        <img class="anchor" src="../../../images/add.gif">Add Allowance</a></td>
+                        	<img class="anchor" src="../../../images/add.gif">Add Allowance
+						</a>
+					</td>
 					<tr>
 						<td class="gridDtlLbl" align="center" width="5%">#</td>
 						<td class="gridDtlLbl" align="center" width="18%">CODE-TYPE</td>

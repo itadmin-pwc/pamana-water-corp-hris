@@ -170,6 +170,26 @@ switch ($_GET['code']) {
 				}
 			exit();
 	break;
+	case "cdsalarywallow":
+		$brhobj=new commonObj();
+		$rate =  str_replace(',','',$_GET['Rate']);
+		$getCompInfo = $brhobj->getCompany($_SESSION['company_code']);
+		$emp_allowance = $this->getEmpAllowance($_SESSION['company_code'], $valOT['empNo']);
+
+		$allowance = 0;
+		if($emp_allowance['allowAmt'] != '') {
+			$allowance = $emp_allowance['allowAmt'];
+		}
+
+		$Mrate = sprintf('%01.2f',(float)$rate);
+		$Drate = sprintf('%01.2f',(($Mrate + $allowance) * 12) / (float)$getCompInfo['compDaysInYear']);
+		$Hrate =  sprintf('%01.2f',$Drate/8);
+
+		echo "$('txtsalary').value='$Mrate';";
+		echo "$('txtdailyrate').value='$Drate';";
+		echo "$('txthourlyrate').value='$Hrate';";
+
+		exit();
 	case "cdsalarycmb":
 		$ccode=$_GET['id'];
 		$salary=$_GET['rate'];

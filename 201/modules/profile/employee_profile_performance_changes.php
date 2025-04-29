@@ -271,5 +271,4 @@ if($_GET['act']=="valrate"){
 			}
 		});	
 	}	
-	
 </SCRIPT>

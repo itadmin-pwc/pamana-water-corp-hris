@@ -110,110 +110,6 @@ if($_GET['transType']=='Edit'){
 			$allowTag=$specificAllowance['allowTag'];
 		}
 	}	
-//switch ($_GET['action']){
-//	case 'ADD':
-//			
-//			if($empProfileAllowObj->checkEmpAllowance() > 0){
-//				echo "alert('Allowance Already Exist');";
-//			}
-//			else{
-//				if($empProfileAllowObj->addEmpAllowance() == true){
-//					if ($_GET['prtag']==1) {
-//							if ($empProfileAllowObj->ProcessPAF()) {
-//								echo "alert('PAF Allowance update processed');";
-//							} else {
-//								echo "alert('PAF Allowance update failed');";
-//							}
-//					} else {
-//						echo "alert('PAF Allowance Successfully queud');";
-//					}		
-//				}
-//				else{
-//					echo "alert('PAF Allowance update failed');";
-//				}
-//			}
-//		exit();
-//	break;
-//	case 'EDIT':
-//				if ($_GET['code'] != "1") {
-//					$check = $empProfileAllowObj->editEmpAllowance();
-//				} else {
-//					if($empProfileAllowObj->checkEmpAllowance() > 0){
-//						$check = $empProfileAllowObj->editEmpAllowance();					
-//					} else {
-//						$check = $empProfileAllowObj->addEmpAllowance();
-//					}	
-//				}		
-//			if($check == true){
-//					if ($_GET['prtag']==1) {
-//							if ($empProfileAllowObj->ProcessPAF()) {
-//								echo "alert('PAF Allowance update processed');";
-//							} else {
-//								echo "alert('PAF Allowance update failed');";
-//							}
-//					} else {
-//						echo "alert('PAF Allowance Successfully queud');";
-//					}
-//			}
-//			else{
-//				echo "alert('Allowance Update Failed ');";
-//			}
-//		exit();
-//	break;
-//	
-//	
-//	
-//}
-//
-//$empPayType = $empProfileAllowObj->getUserInfo($sessionVars['compCode'],$_GET['empNo'],'');
-//$empPayType['empPayTag'];
-//$dvdTagEn = 'disabled';
-//	
-//$controlNo	  = $_GET['controlNo'];
-//
-//if($_GET['transType'] == 'Edit'){
-//	$SpcfcEmpAllow = $empProfileAllowObj->getSpecificEmpAllow($sessionVars['compCode'],$_GET['empNo'],$_GET['allwCode'],$_GET['code']);
-//	if ($_GET['code'] != 1) {
-//		$allwAmount_old   = $SpcfcEmpAllow['allowAmtold'];
-//		$allwAmount   = $SpcfcEmpAllow['allowAmt'];
-//		$controlNo	  = $SpcfcEmpAllow['controlNo'];
-//		$effDate	  = date('m/d/Y',strtotime($SpcfcEmpAllow['effectivitydate']));
-//		$refNo		  = $SpcfcEmpAllow['refNo'];
-//		
-//	} else {
-//		$allwAmount_old   = $SpcfcEmpAllow['allowAmt'];
-//		$allwAmount   =  $SpcfcEmpAllow['allowAmt'];;
-//	}
-//	$allowType    = $SpcfcEmpAllow['allowCode'];
-//	$allwSked     = $SpcfcEmpAllow['allowSked'];
-//	$AllwTaxTag   = $SpcfcEmpAllow['allowTaxTag'];
-//	$AllwPayTag   = $SpcfcEmpAllow['allowPayTag'];
-//	$allowTag     = $SpcfcEmpAllow['allowTag'];
-//	
-//	$allwStart    = (date("m/d/Y",strtotime($SpcfcEmpAllow['allowStart'])) == '01/01/1970') ? '' : date("m/d/Y",strtotime($SpcfcEmpAllow['allowStart']));
-//	$allwEnd      = (date("m/d/Y",strtotime($SpcfcEmpAllow['allowEnd'])) == '01/01/1970') ? '' : date("m/d/Y",strtotime($SpcfcEmpAllow['allowEnd']));
-//	$AllwStat	  = $SpcfcEmpAllow['allowStat'];
-//	if($empPayType['empPayType'] == 'M' && $allwSked == 3){
-//		$dvdTagEn = '';
-//	}
-//	
-//	$disable = 'disabled';
-//	$disabled_allowType = "disabled";
-//}
-//
-//if ($_GET['refNo'] != "" && $refNo=="") {
-//		
-//	$refNo		  = $_GET['refNo'];
-//} elseif ($_GET['refNo'] == "" && $refNo=="") {
-//	$refNo 		  = $empProfileAllowObj->getRefNo($compCode);
-//
-//}
-//
-//if($AllwStat=="")
-//	$AllwStat = "A";
-//	
-	
-	//echo $disabled_allowType;
 ?>
 <HTML>
 	<HEAD>
@@ -278,7 +174,8 @@ if($_GET['transType']=='Edit'){
 					</tr>
 					<tr>
 						<td class="gridDtlLbl" align="left" >
-							Allowance Tag						</td>
+							Allowance Tag
+						</td>
 						<td width="1%" class="gridDtlLbl" align="center">:</td>
 						<td class="gridDtlVal"><div id="divAllowTag">
 							<?

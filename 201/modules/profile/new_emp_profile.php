@@ -1275,17 +1275,19 @@ include("../../../includes/calendar.php");
 		editProfileAllw.show(true);
 		editProfileAllw.showCenter();	
 		
-		  myObserver = {
+		myObserver = {
 		    onDestroy: function(eventName, win) {
 
-		      if (win == editProfileAllw) {
-		        editProfileAllw = null;
-		        pager(URL,'Allowance',ele,offset,isSearch,txtSrch,cmbSrch,'&empNo='+empNo+"&allwCode="+allwCode,'../../../images/');
-		        Windows.removeObserver(this);
-		      }
+				if (win == editProfileAllw) {
+					editProfileAllw = null;
+					pager(URL,'Allowance',ele,offset,isSearch,txtSrch,cmbSrch,'&empNo='+empNo+"&allwCode="+allwCode,'../../../images/');
+					Windows.removeObserver(this);
+
+					computeRatesWithAllowance(empNo)
+				}
 		    }
-		  }
-		  Windows.addObserver(myObserver);
+		}
+		Windows.addObserver(myObserver);
 	}
 	
 	function deleEmpAllw(URL,ele,empNo,allwSeries,offset,maxRec,isSearch,txtSrch,cmbSrch,allwDesc){

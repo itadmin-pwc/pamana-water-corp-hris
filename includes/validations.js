@@ -1140,6 +1140,18 @@
 			})
 		}
 	}
+
+	function computeRatesWithAllowance(empNo){
+		var Rate=document.getElementById('txtsalary').value;
+
+		params = 'profile.obj.php?code=cdsalarywallow&Rate='+Rate+'&empNo='+empNo;
+		new Ajax.Request(params,{
+			method : 'get',
+			onComplete : function (req){
+				eval(req.responseText);
+			}
+		})
+	}
 	
 	function saverestday(){
 		rdDate=document.getElementById('date').value;
