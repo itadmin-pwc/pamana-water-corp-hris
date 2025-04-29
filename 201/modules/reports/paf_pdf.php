@@ -33,20 +33,22 @@ class PDF extends FPDF
 		$this->Cell(8,6,'#',0,'','C');
 		$this->Cell(20,6,'EMP. NO.',0);
 		$this->Cell(70,6,'EMPLOYEE NAME',0);
+		$this->Cell(30,6,'BRANCH',0);
 		$this->Cell(57,6,'MOVEMENT',0);
 		$this->Cell(60,6,'OLD VALUE',0);
-		$this->Cell(60,6,'NEW VALUE',0);
+		$this->Cell(50,6,'NEW VALUE',0);
 		$this->Cell(60,6,'EFFECTIVITY DATE',0);
 		$this->Ln();
 	}
-	function Data($ctr,$empNo,$empName,$Movement,$old_value,$new_value,$effdate) {
+	function Data($ctr,$empNo,$empName,$Movement,$old_value,$new_value,$effdate, $branch) {
 		$this->SetFont('Courier','','9'); 
 		$this->Cell(8,6,$ctr,0,'','C');
 		$this->Cell(20,6,$empNo,0);
 		$this->Cell(70,6,$empName,0);
+		$this->Cell(30,6,$branch,0);
 		$this->Cell(57,6,$Movement,0);
 		$this->Cell(60,6,$old_value,0);
-		$this->Cell(60,6,$new_value,0);
+		$this->Cell(50,6,$new_value,0);
 		$this->Cell(60,6,$effdate,0);
 		$this->Ln();	
 	}
@@ -122,10 +124,12 @@ $arrPAF = array_unique(array_merge($psObj->arrOthers,$psObj->arrOthers,$psObj->a
 $strPAF = implode(",",$arrPAF);
 $strPAF = ($strPAF != "" ? " AND empNo IN ($strPAF)" : "");
   $qryIntMaxRec = "SELECT tblEmpMast.empNo,tblEmpMast.empLastName,tblEmpMast.empFirstName,
-				tblEmpMast.empMidName,tblDepartment.deptShortDesc 
+				tblEmpMast.empMidName,tblDepartment.deptShortDesc, tblbranch.brnShortDesc
 				FROM tblEmpMast INNER JOIN tblDepartment ON 
 				tblEmpMast.compCode = tblDepartment.compCode 
 				AND tblEmpMast.empDiv = tblDepartment.divCode 
+				INNER JOIN tblBranch ON tblEmpMast.compCode = tblBranch.compCode 
+			    AND tblEmpMast.empBrnCode = tblBranch.brnCode
 			    WHERE tblEmpMast.compCode = '{$sessionVars['compCode']}'
 			    AND tblDepartment.deptLevel = '1' AND empPayGrp='$group'
 				and empBrnCode IN (Select brnCode from tblUserBranch where compCode='{$_SESSION['company_code']}' and empNo='{$_SESSION['employee_number']}')
@@ -157,14 +161,16 @@ $pdf->AddPage();
 		for($x=0;$x<$ctr; $x++) {
 			$name = "";
 			$empNo = "";
+			$branch = "";
 			$q = "";
 			if ($x == 0) {
 				$q = $no;
 				$no++;
 				$name = $empListVal['empLastName']. " " . $empListVal['empFirstName'] . "." . $empListVal['empMidName'].".";
 				$empNo = $empListVal['empNo'];
-			}		
-			$pdf->Data($q,$empNo,$name,$resArrOthers['field'][$x],$resArrOthers['value1'][$x],$resArrOthers['value2'][$x],date("m/d/Y",strtotime($resArrOthers['effdate'][$x])));
+				$branch = $empListVal['brnShortDesc'];
+			}
+			$pdf->Data($q,$empNo,$name,$resArrOthers['field'][$x],$resArrOthers['value1'][$x],$resArrOthers['value2'][$x],date("m/d/Y",strtotime($resArrOthers['effdate'][$x])), $branch);
 		}	
 	}
 
