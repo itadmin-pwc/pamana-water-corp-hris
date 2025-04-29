@@ -1282,8 +1282,6 @@ include("../../../includes/calendar.php");
 					editProfileAllw = null;
 					pager(URL,'Allowance',ele,offset,isSearch,txtSrch,cmbSrch,'&empNo='+empNo+"&allwCode="+allwCode,'../../../images/');
 					Windows.removeObserver(this);
-
-					computeRatesWithAllowance(empNo)
 				}
 		    }
 		}
