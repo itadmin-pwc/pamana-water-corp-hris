@@ -166,7 +166,7 @@ $pdf->AddPage();
 			if ($x == 0) {
 				$q = $no;
 				$no++;
-				$name = $empListVal['empLastName']. " " . $empListVal['empFirstName'] . "." . $empListVal['empMidName'].".";
+				$name = $empListVal['empLastName']. " " . $empListVal['empFirstName'] . " " . $empListVal['empMidName'].".";
 				$empNo = $empListVal['empNo'];
 				$branch = $empListVal['brnShortDesc'];
 			}
