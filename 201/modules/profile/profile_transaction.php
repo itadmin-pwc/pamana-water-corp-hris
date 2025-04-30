@@ -2400,6 +2400,7 @@ if($_GET['action']=="loadMunicipality")
 	}	
 	function computePAFRates(Rate,compcode,cat,event){
 	  $('Save').disabled = true;
+	  var empNo = document.getElementById('empNo3').value;
 	  if (window.event)
 		key = window.event.keyCode;
 	  else if (event)
@@ -2408,7 +2409,7 @@ if($_GET['action']=="loadMunicipality")
 	  	return true
 		
 		if(key == 13){
-			params = 'profile.obj.php?code=cdsalary&Rate='+Rate+'&compcode='+compcode+'&cat='+cat;
+			params = 'profile.obj.php?code=cdsalary&Rate='+Rate+'&compcode='+compcode+'&cat='+cat+'&empNo='+empNo;
 			new Ajax.Request(params,{
 				method : 'get',
 				onComplete : function (req){
