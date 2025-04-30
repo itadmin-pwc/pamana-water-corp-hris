@@ -838,7 +838,7 @@ class ProfileObj extends commonObj {
 		$query = "SELECT SUM(allowAmt) AS allowAmt FROM tblallowance_new 
 						   WHERE compCode = '{$compCode}'
 						   AND   empNo    = '".trim($empNo)."'
-						   AND allowCode IN (3, 9)";
+						   AND allowCode IN (3)";
 
 		return $this->getSqlAssoc($this->execQry($query));
 	}
