@@ -301,7 +301,7 @@ include("../../../includes/calendar.php");
         </div></td>
 				</tr>
 				<tr>
-					<td class="parentGridDtl" >
+					<td class="parentGridDtl" style="height: 700px;">
                     <br>
                     <br>
                     <br>
