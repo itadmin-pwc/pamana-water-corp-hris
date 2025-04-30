@@ -2206,6 +2206,7 @@ class pafObj extends commonObj {
 	function convertArr2($table,$empNo) {
 		$array = array();
 		$qry = "SELECT $table.empNo from tblEmpMast INNER JOIN $table ON tblEmpMast.compCode = $table.compCode AND tblEmpMast.empNo = $table.empNo where tblEmpMast.compCode='{$_SESSION['company_code']}' AND tblEmpMast.empNo = '{$empNo}'";
+		//echo $qry . "<br><br>";
 		$res = $this->getArrRes($this->execQry($qry));
 		foreach($res as $val) {
 			$array[] = $val['empNo']; 

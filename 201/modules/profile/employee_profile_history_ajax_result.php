@@ -41,6 +41,7 @@ $qryEmpList = "SELECT *, tblBranch.brnDesc
 FROM         tblEmpMast INNER JOIN
                       tblBranch ON tblEmpMast.empBrnCode = tblBranch.brnCode
 				Where tblEmpMast.compCode = '{$sessionVars['compCode']}' and tblEmpMast.empNo = '{$empNo}'";
+				//echo $qryEmpList;
 $resEmpList = $pafObj->execQry($qryEmpList);
 $arrEmpList = $pafObj->getArrRes($resEmpList);
 ?>

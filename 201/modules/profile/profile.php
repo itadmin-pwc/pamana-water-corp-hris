@@ -197,10 +197,10 @@ if($_GET['action']=="loadMunicipality")
 	exit();
 }
  
-unset($_SESSION['strprofile']);
-if ($_SESSION['strprofile']=="") {
-	$_SESSION['strprofile']=$maintEmpObj->createstrwil();
-}
+// unset($_SESSION['strprofile']);
+// if ($_SESSION['strprofile']=="") {
+// 	$_SESSION['strprofile']=$maintEmpObj->createstrwil();
+// }
 
 $visible = "";
 $readisabled = "";
