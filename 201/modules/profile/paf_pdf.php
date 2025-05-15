@@ -214,7 +214,7 @@ $cmbDiv1 = ($cmbDiv>"" && $cmbDiv>0 ? " AND (empDiv = '{$cmbDiv}')":"");
 $empDept1 = ($empDept>"" && $empDept>0 ? " AND (empDepCode = '{$empDept}')":"");
 $empSect1 = ($empSect>"" && $empSect>0 ? " AND (empSecCode = '{$empSect}')":"");
 $empName1=($empName>""?" AND ($nameType LIKE '{$empName}%')":"");
-$refNo ='0';
+$refNo ='-1';
 for($i=0;$i<$_GET['chCtr'];$i++) {
 	$arrRefNo = explode(',',$_GET['chPAF'.$i]);
 	if ($arrRefNo[1] != '')
@@ -229,7 +229,7 @@ if ($_GET['pafStat'] != 'P') {
 	else
 		$reportLabel = 'Released PAF';
 } else {
-	$filter = " AND  refNo IN ($refNo)";
+	$filter = " AND refNo IN ($refNo)";
 	$allowfilter = " AND refNo IN ($refNo)";
 	$type = "hist";	
 	$reportLabel = 'Posted PAF';
@@ -273,6 +273,8 @@ $strPAF = ($strPAF != "" ? " AND empNo IN ($strPAF)" : "");
 				 ";
 $resEmpList = $psObj->execQry($qryIntMaxRec);
 $arrEmpList = $psObj->getArrRes($resEmpList);
+
+//die($qryIntMaxRec);
 
 $pdf->AliasNbPages();
 $pdf->reportlabel = 'PERSONNEL ACTION FORM';
