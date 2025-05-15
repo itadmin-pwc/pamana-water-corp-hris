@@ -165,7 +165,8 @@ switch($_GET['stat']) {
     <td height="20" class="gridDtlVal"><div align="center">
       <? 
 								 
-								  if ($resArrOthers['type'][$x] != $type) {?>
+								  if ($resArrOthers['type'][$x] != $type) { ?>
+								  
       <input type="checkbox" value="<?=$resArrOthers['type'][$x];?>" onClick="check(this.name);" name="chPAF<?=$q?>" id="chPAF<?=$q?>">
       <?
                                   	$q++;

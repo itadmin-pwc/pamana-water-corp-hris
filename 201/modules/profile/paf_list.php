@@ -128,6 +128,7 @@ switch($_GET['action']) {
 			alert('Please select PAF.');
 			return false;
 		}
+		//console.log($('frmPAF').serialize());
 		window.open('paf_pdf.php?'+$('frmPAF').serialize());
 /*		new Ajax.Request('paf_pdf.php',{
 			method : 'get',
@@ -145,6 +146,7 @@ switch($_GET['action']) {
 		for(i=0;i<=cnt;i++){
 			if ($('chPAF'+i).checked==true) {
 				$('checker').value = chkcnt++;
+				//console.log(chkcnt)
 				;
 			} 
 		}
