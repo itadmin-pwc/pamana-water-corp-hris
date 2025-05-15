@@ -128,7 +128,7 @@ switch($_GET['action']) {
 			alert('Please select PAF.');
 			return false;
 		}
-		console.log($('frmPAF').serialize());
+		//console.log($('frmPAF').serialize());
 		window.open('paf_pdf.php?'+$('frmPAF').serialize());
 /*		new Ajax.Request('paf_pdf.php',{
 			method : 'get',

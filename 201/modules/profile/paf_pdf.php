@@ -214,11 +214,12 @@ $cmbDiv1 = ($cmbDiv>"" && $cmbDiv>0 ? " AND (empDiv = '{$cmbDiv}')":"");
 $empDept1 = ($empDept>"" && $empDept>0 ? " AND (empDepCode = '{$empDept}')":"");
 $empSect1 = ($empSect>"" && $empSect>0 ? " AND (empSecCode = '{$empSect}')":"");
 $empName1=($empName>""?" AND ($nameType LIKE '{$empName}%')":"");
-$refNo ='-1';
-for($i=0;$i<$_GET['chCtr'];$i++) {
-	$arrRefNo = explode(',',$_GET['chPAF'.$i]);
-	if ($arrRefNo[1] != '')
-		$refNo .= ','.$arrRefNo[1];
+$refNo = ''; 
+for ($i = 0; $i < $_GET['chCtr']; $i++) {
+    $arrRefNo = explode(',', $_GET['chPAF' . $i]);
+    if (!empty($arrRefNo[1])) {
+        $refNo .= (empty($refNo) ? '' : ',') . $arrRefNo[1];
+    }
 }
 if ($_GET['pafStat'] != 'P') {
 	$filter = " AND stat='{$_GET['pafStat']}' AND refNo IN ($refNo)";
