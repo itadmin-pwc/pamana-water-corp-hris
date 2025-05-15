@@ -601,12 +601,12 @@ include("../../../includes/calendar.php");
                               <tr>
                                 <td class="headertxt">End Date</td>
                                 <td class="headertxt">:</td>
-                                <td class="gridDtlVal"><input   name="txtEndDate" value="<?=($maintEmpObj->EndDate !="") ? date('m-d-Y',strtotime($maintEmpObj->EndDate)) : "";?>" type="text" class='inputs' id="txtEndDate"  size="15" maxlength="10" readonly /></td>
+                                <td class="gridDtlVal"><input   name="txtEndDate" value="<?=($maintEmpObj->EndDate !="" && $maintEmpObj->EndDate >= '1971-01-01') ? date('m-d-Y',strtotime($maintEmpObj->EndDate)) : "";?>" type="text" class='inputs' id="txtEndDate"  size="15" maxlength="10" readonly /></td>
                               </tr>
                               <tr>
                                 <td class="headertxt">Resigned Date</td>
                                 <td class="headertxt">:</td>
-                                <td class="gridDtlVal"><input value="<?=($maintEmpObj->RSDate !="") ? date('m-d-Y',strtotime($maintEmpObj->RSDate)) : "";?>" name="txtRSDate" type="text" class='inputs' id="txtRSDate"  size="15" maxlength="10" readonly /></td>
+                                <td class="gridDtlVal"><input value="<?= ($maintEmpObj->RSDate != "" && $maintEmpObj->RSDate >= '1971-01-01') ? date('m-d-Y', strtotime($maintEmpObj->RSDate)) : ""; ?>" name="txtRSDate" type="text" class='inputs' id="txtRSDate"  size="15" maxlength="10" readonly /></td>
                               </tr>
                               <tr>
                                 <td><span class="headertxt">With Previous Employer</span></td>
