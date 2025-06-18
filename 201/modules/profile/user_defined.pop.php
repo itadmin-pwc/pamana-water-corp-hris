@@ -37,7 +37,7 @@ if($_GET['act']=="Edit"){
 				foreach($rowTableContent as $rowContent_val=>$value)
 				{
 					$schoolid=$value['type'];
-					$schoolname=$value['schoolId'];
+					$schoolname=$value['schoolName'];
 					$datestart=$maintEmpObj->valDateArt($value['dateStarted']);
 					$datefinish=$maintEmpObj->valDateArt($value['dateCompleted']);
 					$licenseNumber=$value['licenseNumber'];
@@ -100,12 +100,6 @@ if($_GET['btnUserDef']=="Add"){
 	$resChecker="";
 	switch($_GET['catcode']){
 		case "1":
-		$resChecker=$mainUserDefObjObj->recordChecker("Select * from tblEducationalBackground where type='" . $_GET['cmbSchoolType'] . "' and schoolId='" . $_GET['cmbSchool'] . "' and empNo='" . $empNo . "'");
-		if($resChecker){
-			echo "alert('Educational background already exist.')";
-			exit();
-		}
-		else{
 			$fields="";
 			$values="";	
 			if($_GET['txtobtaindate']!=""){
@@ -116,14 +110,13 @@ if($_GET['btnUserDef']=="Add"){
 				$fields.=",dateExpired";
 				$values.=",'{$_GET['txtexpirydate']}'";
 				}	
-			$result=$mainUserDefObjObj->setQry("Insert into tblEducationalBackground (type,schoolId,dateStarted,dateCompleted,empNo,catCode,licenseNumber,licenseName $fields) values('" . $_GET['cmbSchoolType'] . "','" . $_GET['cmbSchool'] . "','" . trim($_GET['txtstartdate']) . "','" . trim($_GET['txtfinisdate']) . "','" . $empNo . "','" . $_GET['catcode'] . "','" . str_replace("'","''",$_GET['txtlicenseno']) . "','" . str_replace("'","''",$_GET['txtlicensename']) . "'$values)");
+			$result=$mainUserDefObjObj->setQry("Insert into tblEducationalBackground (type,schoolName,dateStarted,dateCompleted,empNo,catCode,licenseNumber,licenseName $fields) values('" . $_GET['cmbSchoolType'] . "','" . $_GET['txtschoolname'] . "','" . trim($_GET['txtstartdate']) . "','" . trim($_GET['txtfinisdate']) . "','" . $empNo . "','" . $_GET['catcode'] . "','" . str_replace("'","''",$_GET['txtlicenseno']) . "','" . str_replace("'","''",$_GET['txtlicensename']) . "'$values)");
 			if($result){
 				echo "alert('Educational background/license sucessfully saved.');";	
-				}
+			}
 			else{
 				echo "alert('Educational background/license failed to save.');";
-				}	
-		}
+			}
 		exit();
 		break;			
 		
@@ -187,12 +180,6 @@ if($_GET['btnUserDef']=="Edit"){
 	$resChecker="";
 	switch($_GET['catcode']){
 		case "1":
-		$resChecker=$mainUserDefObjObj->recordChecker("Select * from tblEducationalBackground where type='" . $_GET['cmbSchoolType'] . "' and schoolId='" . $_GET['cmbSchool'] . "' and empNo='" . $empNo . "' and educationalBackgroundId<>'" . $_GET['datacode'] . "'");
-		if($resChecker){
-			echo "alert('Educational background already exist.');";
-			exit();	
-		}
-		else{
 			$fields="";
 			if($_GET['txtobtaindate']!=""){
 				$fields.=",dateIssued='{$_GET['txtobtaindate']}'";
@@ -200,14 +187,13 @@ if($_GET['btnUserDef']=="Edit"){
 			if($_GET['txtexpirydate']!=""){
 				$fields.=",dateExpired='{$_GET['txtexpirydate']}'";
 				}	
-			$result=$mainUserDefObjObj->setQry("Update tblEducationalBackground set type='" . $_GET['cmbSchoolType'] . "',schoolId='" . $_GET['cmbSchool'] . "',dateStarted='" . trim($_GET['txtstartdate']) . "',dateCompleted='" . trim($_GET['txtfinisdate']) . "',licenseNumber='" . str_replace("'","''",$_GET['txtlicenseno']) . "',licenseName='" . str_replace("'","''",$_GET['txtlicensename']) . "'" . $fields . " where educationalBackgroundId='" . $_GET['datacode'] . "'");
+			$result=$mainUserDefObjObj->setQry("Update tblEducationalBackground set type='" . $_GET['cmbSchoolType'] . "',schoolName='" . $_GET['txtschoolname'] . "',dateStarted='" . trim($_GET['txtstartdate']) . "',dateCompleted='" . trim($_GET['txtfinisdate']) . "',licenseNumber='" . str_replace("'","''",$_GET['txtlicenseno']) . "',licenseName='" . str_replace("'","''",$_GET['txtlicensename']) . "'" . $fields . " where educationalBackgroundId='" . $_GET['datacode'] . "'");
 			if($result){
 				echo "alert('Educational background sucessfully updated.');";
 				}
 			else{
 				echo "alert('Educational background failed to update.')";
 				}	
-		}
 		exit();
 		break;	
 						
@@ -308,9 +294,10 @@ if($_GET['transtype']=="violations"){
 					  <td class="gridDtlLbl" align="left">School Name</td>
 					  <td class="gridDtlLbl" align="center">:</td>
 					  <td class="gridDtlVal">
-					  <? 
+					  <input name="txtschoolname" type="text" class="inputs" id="txtschoolname" size="70" value="<?=$schoolname;?>">
+					  <!-- <? 
 					  $maintEmpObj->DropDownMenu($maintEmpObj->makeArr($maintEmpObj->getDefLookup(" where type='SchoolName'"),'seqId','typeDesc',''),'cmbSchool',$schoolname,'class="inputs" style="width:350px;"');
-					  ?>
+					  ?> -->
 				      </td>
 				  </tr>
 					<tr>

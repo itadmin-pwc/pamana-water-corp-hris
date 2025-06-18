@@ -87,7 +87,7 @@ $qryEmpList = "SELECT *
         }
 //$intLimit = (($intMaxRec-$intOffset)<$intLimit) ? $intMaxRec-$intOffset:$intLimit;		
 $qryEmpList .=	"ORDER BY empbrnCode, empLastName limit $intOffset,$intLimit";
-
+//echo $qryEmpList;
 $resEmpList = $common->execQry($qryEmpList);
 $arrEmpList = $common->getArrRes($resEmpList);
 ?>
@@ -122,9 +122,7 @@ $arrEmpList = $common->getArrRes($resEmpList);
 								$srchType = $_GET['srchType'];
 							}
 						}
-							
-							
-					
+						
 						?>
 						Search<INPUT type="text" name="txtSrch" id="txtSrch" value="<? if(isset($_GET['txtSrch'])){echo $_GET['txtSrch'];} ?>" class="inputs">In<?=$common->DropDownMenu($arrSrch,'cmbSrch',$_GET['srchType'],'class="inputs"');?>
 						<?php if($brnCode_View==""){echo  "Branch |";}?> <? if($brnCode_View ==""){echo $common->DropDownMenu($arrBrnch,'brnCd',$_GET['brnCd'],'class="inputs"');}?>

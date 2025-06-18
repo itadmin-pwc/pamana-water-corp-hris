@@ -21,7 +21,7 @@ include("../../../includes/pager.inc.php");
 		
 
 		<STYLE>@import url('../../../js/themes/default.css');</STYLE>
-		<STYLE>@import url("../../../js/themes/mac_os_x.css");</STYLE>		
+		<STYLE>@import url("../../../js/themes/mac_os_x.css");</STYLE>	
 	</HEAD>
 	<BODY>
 		<FORM name='frmEmpMast' id="frmEmpMast" method="post" action="<?=$_SERVER['PHP_SELF']?>">
@@ -31,9 +31,14 @@ include("../../../includes/pager.inc.php");
 	</BODY>
 </HTML>
 <SCRIPT>
-	pager("profile_list_ajax.php",'empMastCont','load',0,0,'','','','../../../images/');  
-	
-	
+
+<?php
+if (isset($_GET['back']) && $_GET['back'] == 1) {
+	echo "pager('profile_list_ajax.php','empMastCont','load',0,1,'','','&brnCd=" . $_GET['brnCd'] . "','','../../../images/');";
+} else {
+    echo "pager('profile_list_ajax.php','empMastCont','load',0,1,'','','&brnCd=999','../../../images/');";
+}
+?>  
 	function viewPrevEmp(id){
 
 		swtch = $('prevEmpCont'+id).style.display;

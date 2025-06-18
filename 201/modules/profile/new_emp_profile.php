@@ -911,7 +911,8 @@ include("../../../includes/calendar.php");
                 <? } else {?>
                 <input name="save" style="visibility:hidden;" type="submit" onClick="return submitProfile()" disabled class="inputs" id="save" value="Save">
                 <? } ?>
-                  <INPUT class="inputs" type="button" name="btnBack" id="btnBack" value="BACK" onClick="location.href='new_emp_list.php'">
+				<input class="inputs" type="button" name="btnBack" id="btnBack" value="BACK"
+				onClick="location.href='new_emp_list.php?back=1&brnCd=<?=$maintEmpObj->branch?>'">
                   
                    </td></tr>
 			</TABLE>

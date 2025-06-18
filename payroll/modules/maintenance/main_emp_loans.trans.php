@@ -157,8 +157,8 @@ switch ($option_menu) {
 					$loanRefNo = $loanInfo['lonRefNo'];
 					$loanPrinc = $loanInfo['lonAmt'];
 					$loanInt = $loanInfo['lonWidInterst'];
-					$loanStart = $maintEmpLoanObj->valDateArt($loanInfo['lonStart']);
-					$loanEnd = $maintEmpLoanObj->valDateArt($loanInfo['lonEnd']);
+					$loanStart = ($loanInfo['lonStart'] != "") ? date('m/d/Y',strtotime($loanInfo['lonStart'])):"";
+					$loanEnd = ($loanInfo['lonEnd'] != "") ? date('m/d/Y',strtotime($loanInfo['lonEnd'])):"";
 					$loanPeriod = $loanInfo['lonSked'];
 					$loanTerms = $loanInfo['lonNoPaymnts'];
 					$loanDedEx = $loanInfo['lonDedAmt1'];
@@ -168,7 +168,7 @@ switch ($option_menu) {
 					$loanPayNo = $loanInfo['lonPaymentNo'];
 					$loanBal = $loanInfo['lonCurbal'];
 					$dtGranted = ($loanInfo['lonGranted'] != "") ? date('m/d/Y',strtotime($loanInfo['lonGranted'])):"";
-					$loanLastPay =$maintEmpLoanObj->valDateArt($loanInfo['lonLastPay']);
+					$loanLastPay = ($loanInfo['lonLastPay'] != "") ? date('m/d/Y',strtotime($loanInfo['lonLastPay'])):"";
 					
 				}
 			} else {

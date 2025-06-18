@@ -178,6 +178,7 @@ include("main_emp_loans.trans.php");
                       <td class="gridDtlLbl">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Date of Last Payments</td>
                       <td class="gridDtlLbl">:</td>
                       <td class="gridDtlVal"><input class="inputs" name="loanLastPay" id="loanLastPay"  value="<? echo $loanLastPay; ?>" type="text" size="25" maxlength="50" onChange="valDateToCurrDate(this.value,this.id);">
+                      <a href="#"><img name="imgloanLastPay" id="imgloanLastPay" type="image" src="../../../images/cal_new.png" title="Last Pay Date" style="cursor: pointer;position:relative;top:3px;border:none;" /></a>
                        </td>
                     </tr>
                     <tr class="childGrid">

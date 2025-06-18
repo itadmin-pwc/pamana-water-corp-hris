@@ -35,7 +35,7 @@ $maintEmpLoanObj->loanDedIn   = $_GET['loanDedIn'];
 $maintEmpLoanObj->loanPay     = $_GET['loanPay'];
 $maintEmpLoanObj->loanPayNo   = $_GET['loanPayNo'];
 $maintEmpLoanObj->loanBal     = $_GET['loanBal'];
-$maintEmpLoanObj->loanLastPay = $_GET['loanLastPay'];
+$maintEmpLoanObj->loanLastPay = date('Y-m-d',strtotime($_GET['loanLastPay']));
 $maintEmpLoanObj->dtGranted   = date('Y-m-d',strtotime($_GET['dtGranted']));
 
 switch ($inputId) {
@@ -142,7 +142,7 @@ switch ($inputId) {
 		} else {////////////////////edit loan
 			 $loanTypeSplit[1] = $loanRefNo;
 			if ($loanTypeSplit[1]<>$loanRefNo) { ////if changing the reference no
-				$loanInfo = $maintEmpLoanObj->getEmpLoanDataArt($compCode , $empNo, $loanTypeSplit[0],$loanRefNo); 
+				$loanInfo = $maintEmpLoanObj->getEmpLoanDataArt($compCode, $empNo, $loanTypeSplit[0],$loanRefNo); 
 				$newLoanRefNo = $loanInfo['lonRefNo'];
 				if ($newLoanRefNo>"") { ////existing
 					echo "document.getElementById('loanRefNo').value='';";

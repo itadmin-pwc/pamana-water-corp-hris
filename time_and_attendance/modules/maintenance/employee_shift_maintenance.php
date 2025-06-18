@@ -76,7 +76,7 @@
 <SCRIPT>
 	pager('employee_shift_maintenance_listAjaxResult.php','empMastCont','load',0,0,'','','','../../../images/');  
 	
-	function maintShiftCode(act,empNo,URL,ele,offset,maxRec,isSearch,txtSrch,cmbSrch)
+	function maintShiftCode(act,empNo,URL,ele,offset,maxRec,isSearch,txtSrch,cmbSrch,brnCd)
 	{
 		var editAllw = new Window({
 		id: "editAllw",
@@ -101,8 +101,8 @@
 
 		      if (win == editAllw) {
 		        editAllw = null;
-		        pager('employee_shift_maintenance_listAjaxResult.php','empMastCont','load',0,0,'','','','../../../images/');    
-		        Windows.removeObserver(this);
+		        pager('employee_shift_maintenance_listAjaxResult.php','empMastCont','load',0,1,'txtSrch','cmbSrch','&brnCd='+brnCd,'../../../images/');    
+				Windows.removeObserver(this);
 		      }
 		    }
 		  }
@@ -128,8 +128,6 @@
 					$('indicator2').innerHTML="";
 				}
 			});	
-			
-			
 		}
 	}
 	

@@ -1,4 +1,6 @@
 <?
+header('Content-Type: text/html; charset=iso-8859-1');
+
 session_start();
 include("../../../includes/userErrorHandler.php");
 include("../../../includes/db.inc.php");
@@ -112,9 +114,7 @@ $qryEmpList = "SELECT * FROM tblEmpMast
 				$qryEmpList .= " AND empbrnCode='".$_GET["brnCd"]."' ";
 			}
         }
-$qryEmpList .=	" $brnCodelist ORDER BY empLastName limit $intOffset,$intLimit";
-
-//echo $qryEmpList;
+$qryEmpList .=	" $brnCodelist ORDER BY empStat, empbrnCode, empLastName limit $intOffset,$intLimit";
 
 $resEmpList = $common->execQry($qryEmpList);
 $arrEmpList = $common->getArrRes($resEmpList);
@@ -177,7 +177,7 @@ $payGrp = $common->getProcGrp();
 					<tr  bgcolor="<?php echo $bgcolor; ?>" <?php echo $on_mouse; ?>>
 						<td class="gridDtlVal"><?=$i?></td>
 						<td class="gridDtlVal"><font class="gridDtlLblTxt"><?=$empListVal['empNo']?></font></td>
-						<td class="gridDtlVal"><font class="gridDtlLblTxt"><?=str_replace("�","&Ntilde;",$empListVal['empLastName']. ", " . $empListVal['empFirstName'] ." ". $empListVal['empMidName'])?></font></td>
+						<td class="gridDtlVal"><font class="gridDtlLblTxt"><?=$empListVal['empLastName']. ", " . $empListVal['empFirstName'] ." ". $empListVal['empMidName']?></font></td>
 						<td class="gridDtlVal"><font class="gridDtlLblTxt">
 						  <?
 						  $brnch['brnDesc'] = $common->getInfoBranch($empListVal['empBrnCode'],$empListVal['compCode']);
@@ -187,13 +187,12 @@ $payGrp = $common->getProcGrp();
 						<td class="gridDtlVal" align="center"><font class="gridDtlLblTxt"><?
 						$status = $common->execQry("Select * from tblSeparatedEmployees where empNo='".$empListVal['empNo']."'");
 						$resStatus = $common->getSqlAssoc($status);
-						
 						if($empListVal['empStat']=='RS' && $empListVal['dateResigned']!=""){
 							if($resStatus['natureCode']!=""){
 								if($resStatus['natureCode']==1){
 									echo "AWOL";		
 								}	
-								elseif($resStatus['natureCode']==3){
+								elseif($resStatus['natureCode']==3 || $resStatus['natureCode']==6){
 									echo "RESIGNED";	
 								}
 								elseif($resStatus['natureCode']==5){

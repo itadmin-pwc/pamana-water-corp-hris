@@ -16,6 +16,7 @@ $maintEmpLoanObj->validateSessions('','MODULES');
 		<SCRIPT type="text/javascript" src="../../../js/extjs/adapter/prototype/prototype.js"></SCRIPT>
 		<SCRIPT type="text/javascript" src="../../../includes/jSLib.js"></SCRIPT>
 		<STYLE>@import url('../../style/maintenance_employee.css');</STYLE>
+		<link rel="stylesheet" type="text/css" href="../../style/payroll.css"></link>
 	</HEAD>
 	<BODY>
 		<form name="frmEmpList" method="post" action="">

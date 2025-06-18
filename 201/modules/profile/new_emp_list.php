@@ -29,8 +29,15 @@ include("../../../includes/pager.inc.php");
 	</BODY>
 </HTML>
 <SCRIPT>
-	pager("new_emp_list_ajax.php",'empMastCont','load',0,0,'','','','../../../images/');  
-	
+
+<?php
+if (isset($_GET['back']) && $_GET['back'] == 1) {
+	echo "pager('new_emp_list_ajax.php','empMastCont','load',0,1,'','','&brnCd=" . $_GET['brnCd'] . "','','../../../images/');";
+} else {
+    echo "pager('new_emp_list_ajax.php','empMastCont','load', 0,0,'','','', '../../../images/');";
+}
+?>
+
 	function viewPrevEmp(id){
 
 		swtch = $('prevEmpCont'+id).style.display;

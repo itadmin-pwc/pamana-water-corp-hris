@@ -93,37 +93,30 @@
 	}
 	
 //new codes	
-	$qryIntMaxRec = "SELECT * FROM tblEmpMast 
-					 WHERE compCode = '{$sessionVars['compCode']}' 
-					 $brnCodelist 
-					 and (empStat='RG') 
-					 OR (dateResigned between '".date("Y-m-d",strtotime($payperiod['pdFrmDate']))."' 
-					 	AND '".date("Y-m-d",strtotime($payperiod['pdToDate']))."') 
-					 OR (endDate between '".date("Y-m-d",strtotime($payperiod['pdFrmDate']))."' 
-					 	AND '".date("Y-m-d",strtotime($payperiod['pdToDate']))."')";
-
-//old codes	
-//	$qryIntMaxRec = "SELECT * FROM tblEmpMast 
-//					 WHERE compCode = '{$sessionVars['compCode']}' 
-//					 $brnCodelist $where_empStat
-//					 and empPayCat<>0 $user_payCat_view";
+	$qryIntMaxRec = "SELECT * FROM tblEmpMast
+					WHERE compCode= '{$sessionVars['compCode']}'
+					and ((empStat='RG') 
+					OR (dateResigned between '".date("Y-m-d",strtotime($payperiod['pdFrmDate']))."' 
+						AND '".date("Y-m-d",strtotime($payperiod['pdToDate']))."') 
+					OR endDate between '".date("Y-m-d",strtotime($payperiod['pdFrmDate']))."'
+						AND '".date("Y-m-d",strtotime($payperiod['pdToDate']))."') $brnCodelist "; 
 					
-			if($_GET['isSearch'] == 1){
-				if($_GET['srchType'] == 2){
-					$qryIntMaxRec .= "AND empNo LIKE '{$_GET['txtSrch']}%' ";
-				}
-				if($_GET['srchType'] == 0){
-					$qryIntMaxRec .= "AND empLastName LIKE '".str_replace("'","''",$_GET['txtSrch'])."%' ";
-				}
-				if($_GET['srchType'] == 1){
-					$qryIntMaxRec .= "AND empFirstName LIKE '".str_replace("'","''",$_GET['txtSrch'])."%' ";
-				}
-				
-				if ($_GET['brnCd']!=0) 
-				{
-					$qryIntMaxRec.= " AND empbrnCode='".$_GET["brnCd"]."' ";
-				}
-			}
+	if($_GET['isSearch'] == 1){
+		if($_GET['srchType'] == 2){
+			$qryIntMaxRec .= "AND empNo LIKE '".trim($_GET['txtSrch'])."%' ";
+		}
+		if($_GET['srchType'] == 0){
+			$qryIntMaxRec .= "AND empLastName LIKE '".str_replace("'","''",trim($_GET['txtSrch']))."%' ";
+		}
+		if($_GET['srchType'] == 1){
+			$qryIntMaxRec .= "AND empFirstName LIKE '".str_replace("'","''",trim($_GET['txtSrch']))."%' ";
+		}
+		
+		if ($_GET['brnCd']!=0) 
+		{
+			$qryIntMaxRec .= " AND empbrnCode='".$_GET["brnCd"]."' ";
+		}
+	}
 			
 	$resIntMaxRec = $common->execQry($qryIntMaxRec);
 	$intMaxRec = $pager->_getMaxRec($resIntMaxRec);
@@ -134,19 +127,12 @@
 //new codes
 	$qryEmpList = "SELECT * FROM tblEmpMast
 					WHERE compCode= '{$sessionVars['compCode']}'
-					and (empStat='RG') 
+					and ((empStat='RG') 
 					OR (dateResigned between '".date("Y-m-d",strtotime($payperiod['pdFrmDate']))."' 
 						AND '".date("Y-m-d",strtotime($payperiod['pdToDate']))."') 
-					OR (endDate between '".date("Y-m-d",strtotime($payperiod['pdFrmDate']))."' 
+					OR endDate between '".date("Y-m-d",strtotime($payperiod['pdFrmDate']))."'
 						AND '".date("Y-m-d",strtotime($payperiod['pdToDate']))."') $brnCodelist "; 
-//old codes	
-//	$qryEmpList = "SELECT TOP $intLimit *
-//					FROM tblEmpMast
-//					WHERE compCode= '{$sessionVars['compCode']}'
-//					and empPayCat<>0 and empStat<>'User' $where_empStat $user_payCat_view and
-//					empNo NOT IN
-//					(SELECT TOP $intOffset empNo FROM tblEmpMast WHERE  compCode = '{$sessionVars['compCode']}'  $where_empStat $user_payCat_view and empPayCat<>0 $brnCodelist "; 
-	
+
 					if($_GET['isSearch'] == 1){
 						if($_GET['srchType'] == 2){
 							$qryEmpList .= "AND empNo LIKE '".trim($_GET['txtSrch'])."%' ";
@@ -163,7 +149,8 @@
 							$qryEmpList .= " AND empbrnCode='".$_GET["brnCd"]."' ";
 						}
 					}
-	$qryEmpList .=	"ORDER BY empLastName limit $intOffset,$intLimit";
+	$qryEmpList .=	"ORDER BY empBrnCode, empLastName limit $intOffset,$intLimit";
+	//echo $qryEmpList;
 	$resEmpList = $common->execQry($qryEmpList);
 	$arrEmpList = $common->getArrRes($resEmpList);
 	
@@ -260,7 +247,7 @@
 														if($chkDuplicate["shiftCode"]=="")
 														{
 												?>
-                                            				<a href="#"  onClick="" ><img class="toolbarImg" src="../../../images/application_form_add.png" title="Add Employee Shift" onclick="maintShiftCode('Add','<?=$empListVal['empNo']?>','employee_shift_maintenance_pop.php','empMastCont',<?=$intOffset?>,'',<?=$_GET['isSearch']?>,'txtSrch','cmbSrch')"></a> 
+                                            				<a href="#"  onClick="" ><img class="toolbarImg" src="../../../images/application_form_add.png" title="Add Employee Shift" onclick="maintShiftCode('Add','<?=$empListVal['empNo']?>','employee_shift_maintenance_pop.php','empMastCont',<?=$intOffset?>,'',<?=$_GET['isSearch']?>,'txtSrch','cmbSrch','<?=$empListVal['empBrnCode']?>')"></a> 
                                            		 <?php 	} ?>
                                            		
                                             </td>
@@ -270,7 +257,7 @@
 														if(($chkDuplicate["shiftCode"]!="")&&($chkDuplicate["status"]!="D"))
 														{
 												?>
-                                            				<a href="#"  onClick=""><img class="toolbarImg" src="../../../images/application_form_edit.png" title="View/Edit Employee Shift" <?php echo $disabledButtons; ?> onclick="maintShiftCode('Edit','<?=$empListVal['empNo']?>','employee_shift_maintenance_pop.php','empMastCont',<?=$intOffset?>,'',<?=$_GET['isSearch']?>,'txtSrch','cmbSrch')"></a>
+                                            				<a href="#"  onClick=""><img class="toolbarImg" src="../../../images/application_form_edit.png" title="View/Edit Employee Shift" <?php echo $disabledButtons; ?> onclick="maintShiftCode('Edit','<?=$empListVal['empNo']?>','employee_shift_maintenance_pop.php','empMastCont',<?=$intOffset?>,'',<?=$_GET['isSearch']?>,'txtSrch','cmbSrch','<?=$empListVal['empBrnCode']?>')"></a>
                                             	<? 		}elseif($chkDuplicate["status"]=="D"){ ?>
                                                 			<a href="#"  onClick=""><img class="toolbarImg" src="../../../images/edit_prev_emp.png" title="Set Employee Shift to Active" <?php echo $disabledButtons; ?> onclick="setEmpShiftActive('Delete','<?=$empListVal['empNo']?>','employee_shift_maintenance_pop.php','empMastCont',<?=$intOffset?>,'',<?=$_GET['isSearch']?>,'txtSrch','cmbSrch')"></a>
                                             	<? 		}?>

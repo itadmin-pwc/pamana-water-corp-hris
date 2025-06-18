@@ -99,7 +99,7 @@
 					?>
                     <tr class='rowDtlEmplyrLst'>
                       <td class='gridDtlVal'><font class="gridDtlLblTxt"><? echo strtoupper($value['schooltype'])?></td>
-                      <td class='gridDtlVal'><? echo strtoupper($value['typeDesc']);?></td>
+                      <td class='gridDtlVal'><? echo strtoupper($value['schoolName']);?></td>
                       <td class='gridDtlVal'><? echo strtoupper($value['licenseNumber']);?></td>
                       <td class='gridDtlVal'><? echo strtoupper($value['licenseName']);?></td>
                       <td width="6%" align='center'><img onclick="maintUserDefMast('<?=$values['catDesc']?>','Edit','<?=$value['catCode']?>','<?=$value['educationalBackgroundId']?>','<?=$empNo?>',0)" src='../../../images/application_form_edit.png' width='15' height='15' title='Edit <?=$values['catDesc'] . "/" . $value['catCode']?> Information' /> <img onclick="deleUserDefMst('<?=$value['educationalBackgroundId']?>','<?=$value['catCode']?>')" src='../../../images/application_form_delete.png' width='15' height='15' title='Delete <?=$values['typeDesc'];?> Information' /></td>

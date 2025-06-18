@@ -596,7 +596,7 @@ include("../../../includes/calendar.php");
                               <tr>
                                 <td class="headertxt">Regularization</td>
                                 <td class="headertxt">:</td>
-                                <td class="gridDtlVal"><input   name="txtRegDate" value="<?=($maintEmpObj->Regularization !="") ? date('m-d-Y',strtotime($maintEmpObj->Regularization)) : "";?>" type="text" class='inputs' id="txtRegDate"   size="15" maxlength="10" readonly /></td>
+                                <td class="gridDtlVal"><input   name="txtRegDate" value="<?=($maintEmpObj->Regularization !="" && $maintEmpObj->Regularization >= '1971-01-01') ? date('m-d-Y',strtotime($maintEmpObj->Regularization)) : "";?>" type="text" class='inputs' id="txtRegDate"   size="15" maxlength="10" readonly /></td>
                               </tr>
                               <tr>
                                 <td class="headertxt">End Date</td>
@@ -819,7 +819,7 @@ include("../../../includes/calendar.php");
                 <? } else {?>
                 <input name="save" style="visibility:hidden;" disabled onClick="return submitProfile()" type="submit" class="inputs" id="save" value="Save">
                 <? }?>
-                  <INPUT class="inputs" type="button" name="btnBack" id="btnBack" value="BACK" onClick="location.href='profile_list.php'">
+                  <INPUT class="inputs" type="button" name="btnBack" id="btnBack" value="BACK" onClick="location.href='profile_list.php?back=1&brnCd=<?=$maintEmpObj->branch?>'">
                   
                    </td></tr>
 			</TABLE>

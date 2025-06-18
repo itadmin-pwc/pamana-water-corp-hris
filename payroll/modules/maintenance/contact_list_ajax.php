@@ -35,14 +35,12 @@ $arrDedList = $profileobj->getArrRes($resDedList);
 <HTML>
 <head>
 <style type="text/css">
-<!--
-.style1 {
+/* .style1 {
 	font-family: verdana;
 	font-size: 11px;
 	font-weight: bold;
 }
-.style2 {font-size: 8px}
--->
+.style2 {font-size: 8px} */
 </style>
 </head>
 	<BODY>

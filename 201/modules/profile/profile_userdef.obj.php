@@ -109,7 +109,7 @@
 			if($col_labelval=='1')
 			{
 				$col_label = "Type, School Name, Date Started, Date Completed";
-				$col_field = "type,schoolId,dateStartred,dateCompleted,empNo";
+				$col_field = "type,schoolName,dateStartred,dateCompleted,empNo";
 				$order_by = "dateStartred DESC";
 				$input_type = "2,2,3,3";
 				$tablename  = "tblEducationalBackground";
@@ -533,19 +533,17 @@
 				$lookupQry="Select Distinct tblEducationalBackground.educationalBackgroundId,
 				tblEducationalBackground.catCode,
 				tblEducationalBackground.type,
-				tblEducationalBackground.schoolId,
+				tblEducationalBackground.schoolName,
 				tblEducationalBackground.dateStarted,
 				tblEducationalBackground.dateCompleted,
 				tblEducationalBackground.empNo,
-				tblUserDefLookUp.typeDesc,
-				tblUserDefLookUp_1.typeDesc as schooltype,
+				tblUserDefLookUp.typeDesc schooltype,
 				tblEducationalBackground.licenseNumber,
 				tblEducationalBackground.licenseName,
 				tblEducationalBackground.dateIssued,
 				tblEducationalBackground.dateExpired 
 				from tblEducationalBackground 
-				inner join tblUserDefLookUp On tblEducationalBackground.schoolId=tblUserDefLookUp.seqId 
-				inner Join tblUserDefLookUp tblUserDefLookUp_1 On tblEducationalBackground.type=tblUserDefLookUp_1.seqId" . $wherelookup;
+				inner Join tblUserDefLookUp On tblEducationalBackground.type=tblUserDefLookUp.seqId" . $wherelookup;
 				$resLookUpQry=$this->execQry($lookupQry);
 				return $resLookUpQry;	
 			}

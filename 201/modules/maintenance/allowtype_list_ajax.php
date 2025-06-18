@@ -21,7 +21,7 @@
 	$intOffset = $pager->_watToDo($_GET['action'],$_GET['offSet'],$_GET['isSearch']);
 	
 	//$intLimit = (($intMaxRec-$intOffset)<$intLimit) ? $intMaxRec-$intOffset:$intLimit;
-	$qryAllow = "SELECT *, CASE allowTypeStat WHEN 'A' THEN 'Active' WHEN 'H' THEN 'Held' END as status from tblAllowType where compCode='{$_SESSION['company_code']}' and hrTag='Y' order by allowTypeStat limit $intOffset,$intLimit";
+	$qryAllow = "SELECT *, CASE allowTypeStat WHEN 'A' THEN 'Active' WHEN 'H' THEN 'Held' END as status from tblAllowType where compCode='{$_SESSION['company_code']}' and hrTag='Y' order by allowTypeStat, allowDesc limit $intOffset,$intLimit";
 	
 	$resAllow = $inqTeuObj->execQry($qryAllow);
 	$AllowEmpList = $inqTeuObj->getArrRes($resAllow);

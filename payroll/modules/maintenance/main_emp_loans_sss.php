@@ -178,7 +178,10 @@ include("main_emp_loans.trans.php");
                     <tr class="childGrid">
                       <td class="gridDtlLbl">&nbsp;Date of Last Payments</td>
                       <td class="gridDtlLbl">:</td>
-                      <td class="gridDtlVal"><input class="inputs" name="loanLastPay" id="loanLastPay"  value="<? echo $loanLastPay; ?>" type="text" size="25" maxlength="50" onChange="valDateToCurrDate(this.value,this.id);" />                      </td>
+                      <td class="gridDtlVal">
+                        <input class="inputs" name="loanLastPay" id="loanLastPay"  value="<? echo $loanLastPay; ?>" type="text" size="25" maxlength="50" onChange="valDateToCurrDate(this.value,this.id);" />                      
+                        <a href="#"><img name="imgloanLastPay" id="imgloanLastPay" type="image" src="../../../images/cal_new.png" title="Last Pay Date" style="cursor: pointer;position:relative;top:3px;border:none;" /></a>
+                      </td>
                     </tr>
                     <tr class="childGrid">
                       <td class="gridDtlLbl">&nbsp;Loan Status</td>
@@ -234,6 +237,12 @@ include("main_emp_loans.trans.php");
 				  inputField  : "dtGranted",      // ID of the input field
 				  ifFormat    : "%m/%d/%Y",          // the date format
 				  button      : "imgdtGranted"       // ID of the button
+			}
+		)
+    Calendar.setup({
+				  inputField  : "loanLastPay",      // ID of the input field
+				  ifFormat    : "%m/%d/%Y",          // the date format
+				  button      : "imgloanLastPay"       // ID of the button
 			}
 		)
 </SCRIPT>
