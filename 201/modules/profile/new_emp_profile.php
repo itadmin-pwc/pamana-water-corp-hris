@@ -744,7 +744,7 @@ include("../../../includes/calendar.php");
 						<td class="gridDtlVal"><input <?=$readisabled?> class='inputs' maxlength="20" size="33" type="text" value="<?=$maintEmpObj->NickName?>"  name="txtnickname" id="txtnickname" /></td>
 						<td class="headertxt">Philhealth</td>
                         <td class="headertxt">:</td>
-                        <td class="gridDtlVal"><input <?=$readisabled?> class='inputs' maxlength="25" type="text" value="<?=$maintEmpObj->PhilHealth?>"  onBlur="checkno('empPhicNo',this.value,'<?=$notype?>','Philhealth No.','dvphilhealth')" name="txtphilhealth" id="txtphilhealth" /><span id="dvphilhealth" style="color:#FF0000;font-size:10px"></span><input type="hidden" name="chphilhealth" value="" id="chphilhealth"></td>
+                        <td class="gridDtlVal"><input <?=$readisabled?> class='inputs' maxlength="25" type="text" value="<?=$maintEmpObj->PhilHealth?>" onKeyDown="javascript:return dFilter (event.keyCode, this, '##-#########-#');" onBlur="checkno('empPhicNo',this.value,'<?=$notype?>','Philhealth No.','dvphilhealth')" name="txtphilhealth" id="txtphilhealth" /><span id="dvphilhealth" style="color:#FF0000;font-size:10px"></span><input type="hidden" name="chphilhealth" value="" id="chphilhealth"></td>
 					  </tr>
 					  <tr> 
 						<td class="headertxt">Birth Place</td>
@@ -760,7 +760,7 @@ include("../../../includes/calendar.php");
 						<td class="gridDtlVal"><input <?=$readisabled?> name="txtBDay" type="text" value="<?=(!empty($maintEmpObj->dateOfBirth) && strtotime($maintEmpObj->dateOfBirth) !== false) ? date('m-d-Y', strtotime($maintEmpObj->dateOfBirth)) : "";?>"  class='inputs' id="txtBDay" size="12" readonly></td>
 						<td class="headertxt">HDMF</td>
                         <td class="headertxt">:</td>
-                        <td class="gridDtlVal"><input <?=$readisabled?> class='inputs' maxlength="25" type="text" value="<?=$maintEmpObj->HDMF?>" onBlur="checkno('empPagibig',this.value,'<?=$notype?>','HDMF No.','dvhdmf')"  name="txthdmf" id="txthdmf" /><span id="dvhdmf" style="color:#FF0000;font-size:10px"></span><input type="hidden" name="chhdmf" value="" id="chhdmf"><? //$maintEmpObj->DropDownMenu(array('','Light'=>'Light','Fair'=>'Fair','Dark'=>'Dark'),'cmbcomplexion',$maintEmpObj->Complexion,'class="inputs" style="width:222px;"'); ?></td>
+                        <td class="gridDtlVal"><input <?=$readisabled?> class='inputs' maxlength="25" type="text" value="<?=$maintEmpObj->HDMF?>" onKeyDown="javascript:return dFilter (event.keyCode, this, '####-####-####');" onBlur="checkno('empPagibig',this.value,'<?=$notype?>','HDMF No.','dvhdmf')"  name="txthdmf" id="txthdmf" /><span id="dvhdmf" style="color:#FF0000;font-size:10px"></span><input type="hidden" name="chhdmf" value="" id="chhdmf"><? //$maintEmpObj->DropDownMenu(array('','Light'=>'Light','Fair'=>'Fair','Dark'=>'Dark'),'cmbcomplexion',$maintEmpObj->Complexion,'class="inputs" style="width:222px;"'); ?></td>
 					  </tr>
 					  <tr> 
 						<td class="headertxt">Marital Status</td>
