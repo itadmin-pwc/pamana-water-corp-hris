@@ -300,12 +300,12 @@
 			focusTab(5);
             return false;
         }		
-        if(empInputs['cmbbank'] == 0){
-            alert('Bank Type is Required.');
-            $('cmbbank').focus();
-			focusTab(5);
-            return false;
-        }	
+        // if(empInputs['cmbbank'] == 0){
+        //     alert('Bank Type is Required.');
+        //     $('cmbbank').focus();
+		// 	focusTab(5);
+        //     return false;
+        // }	
         if(trim(empInputs['txtbankaccount']) == "" && empInputs['cmbbank'] != 3){
             alert('Bank Account No. is Required.');
             $('txtbankaccount').focus();
