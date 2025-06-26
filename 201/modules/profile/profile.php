@@ -836,6 +836,24 @@ include("../../../includes/calendar.php");
 <script src="../../../includes/validations.js"></script>
 <script type='text/javascript' src='timesheet_js.js'></script>
 <script>
+	// Trigger file input when the image box is clicked
+	function triggerFileInput() {
+        document.getElementById('file-input').click();
+    }
+
+	// Display the selected image in the box
+	function previewImage(event) {
+		const file = event.target.files[0];
+		if (file) {
+			const reader = new FileReader();
+			reader.onload = function(e) {
+				document.getElementById('profile-img').src = e.target.result;
+			};
+			reader.readAsDataURL(file);
+		} else {
+			console.log("No file selected.");
+		}
+	}
 
 	function cnclLockSys(){
 		Windows.getWindow('winLcok').close();
