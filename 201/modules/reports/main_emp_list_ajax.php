@@ -47,21 +47,20 @@ $intMaxRec = $pager->_getMaxRec($resIntMaxRec);
 $intLimit = $pager->_limit;
 $intOffset = $pager->_watToDo($_GET['action'],$_GET['offSet'],$_GET['isSearch']);
 
-$qryEmpList = "SELECT TOP $intLimit *
+$qryEmpList = "SELECT  *
 		FROM tblEmpMast
-		WHERE empStat NOT IN('RS','IN','TR') $brnCodelist
-		and empPayCat<>0 and
-		empNo NOT IN
-        (SELECT TOP $intOffset empNo FROM tblEmpMast WHERE empStat NOT IN('RS','IN','TR') $brnCodelist
-		$empNo1 $empName1 $empDiv1 $empDept1 $empSect1 "; 
-$qryEmpList .= " 
-				AND compCode = '{$sessionVars['compCode']}' 
-				ORDER BY empLastName) 
-				AND compCode = '{$sessionVars['compCode']}'
-				AND empStat NOT IN('RS','IN','TR') $brnCodelist
-				$empNo1 $empName1 $empDiv1 $empDept1 $empSect1 ";
-      	
-$qryEmpList .=	"ORDER BY empLastName";
+		WHERE compCode='1' " ;
+        if($_GET['isSearch'] == 1){
+        	if($_GET['srchType'] == 1){
+        		$qryEmpList .= " AND empLastName Like '{$_GET['txtSrch']}%' ";
+        	}
+        	if($_GET['srchType'] == 2){
+        		$qryEmpList .= " AND empNo = '{$_GET['txtSrch']}' ";
+        	}
+
+        }
+ $qryEmpList .= " AND compCode = '{$_SESSION['company_code']}' $qryFilter
+				$empNo1 $empName1 $empDiv1 $empDept1 $empSect1 order by empLastName, empFirstName, empMidName limit $intOffset,$intLimit";
 $resEmpList = $common->execQry($qryEmpList);
 $arrEmpList = $common->getArrRes($resEmpList);
 
