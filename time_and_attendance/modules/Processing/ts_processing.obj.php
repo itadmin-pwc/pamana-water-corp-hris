@@ -13,6 +13,7 @@ class TSProcessingObj extends dateDiff {
 	var $arrHolidays	 	= array();
 	function ProcessTS() {
 		$Trns = $this->beginTranI();//begin transaction
+		$this->checkLongLeave();
 		$this->resetTKlogs();
 		$this->EmpShiftCode();
 		$this->getOB();
@@ -1619,6 +1620,95 @@ function createTempTables1111() {
 			$this->execQryI("UPDATE tbltk_timesheet SET checkTag = '{$checkTag}' WHERE seqNo = {$sheet['seqNo']} AND empNo = '{$sheet['empNo']}'");
 		}
 		return true;
+	}
+
+	function checkLongLeave() {
+		$current = $this->getTblData("tblPayPeriod", "payGrp='1' and payCat = '3' and pdStat IN ('O','')");
+		$dtFrom = date('Y-m-d', strtotime($current['pdFrmDate']));
+		$dtTo = date('Y-m-d', strtotime($current['pdToDate']));
+
+		$query = "SELECT *
+					FROM tbl_leaveapp_template
+					WHERE lvDateFrom <= '{$dtTo}' AND lvDateTo >= '{$dtFrom}' and lvStat = 'A'";
+		$res = $this->execQryI($query);
+		if($this->getRecCountI($res) > 0){
+			$leaves = $this->getArrResI($res);
+
+			foreach($leaves as $leave) {
+				$l_query = "SELECT * FROM tbltk_leaveapp 
+							WHERE empNo = '" . $leave['empNo'] . "' 
+							AND refNo = '". $leave['refNo'] ."'
+							AND dateFiled = '". $leave['dateFiled'] ."'";
+
+				$l_res = $this->execQryI($l_query);
+				//$rec = $this->getSqlAssocI($l_res);
+				if($this->getRecCountI($l_res) == 0){
+					$rec_query = "INSERT INTO tbltk_leaveapp (
+							compCode, empNo, refNo, dateFiled, lvDateFrom,
+							lvFromAMPM, lvDateTo, lvToAMPM, tsAppTypeCd,
+							lvDateReturn, lvReturnAMPM, lvReason, lvReliever,
+							lvAuthorized, lvStat, dateApproved, userApproved,
+							dateAdded, userAdded, deductTag, mApproverdBy,
+							mStat, mDateApproved
+						) VALUES ('" . $leave['compCode'] . "',
+								'" . $leave['empNo'] . "',
+								'" . $leave['refNo'] . "',
+								'" . $leave['dateFiled'] . "',
+								'" . $leave['lvDateFrom'] . "',
+								'" . $leave['lvFromAMPM'] . "',
+								'" . $leave['lvDateTo'] . "',
+								'" . $leave['lvToAMPM'] . "',
+								'" . $leave['tsAppTypeCd'] . "',
+								'" . $leave['lvDateReturn'] . "',
+								'" . $leave['lvReturnAMPM'] . "',
+								'" . $leave['lvReason'] . "',
+								'" . $leave['lvReliever'] . "',
+								'" . $leave['lvAuthorized'] . "',
+								'" . $leave['lvStat'] . "',
+								'" . $leave['dateApproved'] . "',
+								'" . $leave['userApproved'] . "',
+								'" . $leave['dateAdded'] . "',
+								'" . $leave['userAdded'] . "',
+								'" . $leave['deductTag'] . "',
+								'" . $leave['mApproverdBy'] . "',
+								'" . $leave['mStat'] . "',
+								'" . $leave['mDateApproved'] . "'
+						)";
+				} else {
+					$rec_query = "UPDATE tbltk_leaveapp SET
+						compCode = '" . $leave['compCode'] . "',
+						lvDateFrom = '" . $leave['lvDateFrom'] . "',
+						lvFromAMPM = '" . $leave['lvFromAMPM'] . "',
+						lvDateTo = '" . $leave['lvDateTo'] . "',
+						lvToAMPM = '" . $leave['lvToAMPM'] . "',
+						tsAppTypeCd = '" . $leave['tsAppTypeCd'] . "',
+						lvDateReturn = '" . $leave['lvDateReturn'] . "',
+						lvReturnAMPM = '" . $leave['lvReturnAMPM'] . "',
+						lvReason = '" . $leave['lvReason'] . "',
+						lvReliever = '" . $leave['lvReliever'] . "',
+						lvAuthorized = '" . $leave['lvAuthorized'] . "',
+						lvStat = 'A',
+						dateApproved = '" . $leave['dateApproved'] . "',
+						userApproved = '" . $leave['userApproved'] . "',
+						dateAdded = '" . $leave['dateAdded'] . "',
+						userAdded = '" . $leave['userAdded'] . "',
+						deductTag = '" . $leave['deductTag'] . "',
+						mApproverdBy = '" . $leave['mApproverdBy'] . "',
+						mStat = '" . $leave['mStat'] . "',
+						mDateApproved = '" . $leave['mDateApproved'] . "'
+					WHERE empNo = '" . $leave['empNo'] . "' AND refNo = '" . $leave['refNo'] . "' AND dateFiled = '" . $leave['dateFiled'] . "'";
+				}
+
+				$this->execQryI($rec_query);
+			}
+		}
+	}
+
+	function getTblData($tbl, $cond)
+	{
+		$qryTblInfo = "Select * from " . $tbl . " where " . $cond;
+		$resTblInfo = $this->execQryI($qryTblInfo);
+		return $this->getSqlAssocI($resTblInfo);
 	}
 }
 

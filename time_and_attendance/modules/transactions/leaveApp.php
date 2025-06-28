@@ -124,25 +124,49 @@ if (isset($_GET['action'])) {
 				if($tkData['empNo'] == $_SESSION['employee_number']) {
 					if($selfApprove) {
 						if($_SESSION['uType'] == "T") {
+							//leave app
 							$qryApp = "Update  tblTK_LeaveApp set dateApproved='".date("Y-m-d")."',userApproved='".$_SESSION["employee_number"]."',lvStat='A' where seqNo='".$chkSeqNo_val."';";
 							$resApp = $leaveAppObj->execQry($qryApp);
+							//advance leave
+							$qryApp = "Update  tbl_leaveapp_template set dateApproved='".date("Y-m-d")."',userApproved='".$_SESSION["employee_number"]."',lvStat='A' where empNo='".$tkData['empNo']."' and dateFiled='".$tkData['dateFiled']."' and refNo='".$tkData['refNo']."';";
+							$resApp = $leaveAppObj->execQry($qryApp);
 						}elseif($_SESSION['uType'] == "TA") {
-							$qryApp = "Update  tblTK_LeaveApp set dateApproved='".date("Y-m-d")."',userApproved='".$_SESSION["employee_number"]."',lvStat='A',mApproverdBy='" . $_SESSION["employee_number"] . "',mStat='A',mDateApproved='".date("Y-m-d")."' where seqNo='".$chkSeqNo_val."';";
+							//leave app
+							$qryApp = "Update  tblTK_LeaveApp set dateApproved='".date("Y-m-d")."',userApproved='".$_SESSION["employee_number"]."',lvStat='A',mApproverdBy='" . $_SESSION["employee_number"] . "',mStat='A',mDateApproved='".date("Y-m-d")."' where empNo='".$tkData['empNo']."' and dateFiled='".$tkData['dateFiled']."' and refNo='".$tkData['refNo']."';";
+							$resApp = $leaveAppObj->execQry($qryApp);
+							//advance leave
+							$qryApp = "Update  tbl_leaveapp_template set dateApproved='".date("Y-m-d")."',userApproved='".$_SESSION["employee_number"]."',lvStat='A',mApproverdBy='" . $_SESSION["employee_number"] . "',mStat='A',mDateApproved='".date("Y-m-d")."' where seqNo='".$chkSeqNo_val."';";
 							$resApp = $leaveAppObj->execQry($qryApp);
 						}else{
+							//leave app
 							$qryApp = "Update  tblTK_LeaveApp set mApproverdBy='" . $_SESSION["employee_number"] . "',mStat='A',mDateApproved='".date("Y-m-d")."' where seqNo='".$chkSeqNo_val."';";
+							$resApp = $leaveAppObj->execQry($qryApp);
+							//advance leave
+							$qryApp = "Update  tbl_leaveapp_template set mApproverdBy='" . $_SESSION["employee_number"] . "',mStat='A',mDateApproved='".date("Y-m-d")."' where empNo='".$tkData['empNo']."' and dateFiled='".$tkData['dateFiled']."' and refNo='".$tkData['refNo']."';";
 							$resApp = $leaveAppObj->execQry($qryApp);
 						}
 					}
 				}else{
 					if($_SESSION['uType'] == "T") {
+						//leave app
 						$qryApp = "Update  tblTK_LeaveApp set dateApproved='".date("Y-m-d")."',userApproved='".$_SESSION["employee_number"]."',lvStat='A' where seqNo='".$chkSeqNo_val."';";
 						$resApp = $leaveAppObj->execQry($qryApp);
+						//advance leave
+						$qryApp = "Update  tbl_leaveapp_template set dateApproved='".date("Y-m-d")."',userApproved='".$_SESSION["employee_number"]."',lvStat='A' where empNo='".$tkData['empNo']."' and dateFiled='".$tkData['dateFiled']."' and refNo='".$tkData['refNo']."';";
+						$resApp = $leaveAppObj->execQry($qryApp);
 					}elseif($_SESSION['uType'] == "TA") {
+						//leave app
 						$qryApp = "Update  tblTK_LeaveApp set dateApproved='".date("Y-m-d")."',userApproved='".$_SESSION["employee_number"]."',lvStat='A',mApproverdBy='" . $_SESSION["employee_number"] . "',mStat='A',mDateApproved='".date("Y-m-d")."' where seqNo='".$chkSeqNo_val."';";
 						$resApp = $leaveAppObj->execQry($qryApp);
+						//advance leave
+						$qryApp = "Update  tbl_leaveapp_template set dateApproved='".date("Y-m-d")."',userApproved='".$_SESSION["employee_number"]."',lvStat='A',mApproverdBy='" . $_SESSION["employee_number"] . "',mStat='A',mDateApproved='".date("Y-m-d")."' where empNo='".$tkData['empNo']."' and dateFiled='".$tkData['dateFiled']."' and refNo='".$tkData['refNo']."';";
+						$resApp = $leaveAppObj->execQry($qryApp);
 					}else{
+						//leave app
 						$qryApp = "Update  tblTK_LeaveApp set mApproverdBy='" . $_SESSION["employee_number"] . "',mStat='A',mDateApproved='".date("Y-m-d")."' where seqNo='".$chkSeqNo_val."';";
+						$resApp = $leaveAppObj->execQry($qryApp);
+						//advance leave
+						$qryApp = "Update  tbl_leaveapp_template set mApproverdBy='" . $_SESSION["employee_number"] . "',mStat='A',mDateApproved='".date("Y-m-d")."' where empNo='".$tkData['empNo']."' and dateFiled='".$tkData['dateFiled']."' and refNo='".$tkData['refNo']."';";
 						$resApp = $leaveAppObj->execQry($qryApp);
 					}
 				}
