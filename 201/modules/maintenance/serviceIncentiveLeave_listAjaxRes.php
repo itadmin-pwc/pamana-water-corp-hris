@@ -115,15 +115,16 @@ $payGrp = $common->getProcGrp();
 							
 						$bgcolor = ($i++ % 2) ? "#FFFFFF" : "#F8F8FF";
 						$on_mouse = ' onmouseover="this.style.backgroundColor=\'' . '#F0F0F0' . '\';"'
-						. ' onmouseout="this.style.backgroundColor=\'' . $bgcolor  . '\';"';						
+						. ' onmouseout="this.style.backgroundColor=\'' . $bgcolor  . '\';"';
+						$red = ($empListVal['credit_previous_expiry_date'] < date('Y-m-d') && $empListVal['credit_previous_year'] > 0) ? 'red' : '';
 					?>
 					<tr  bgcolor="<?php echo $bgcolor; ?>" <?php echo $on_mouse; ?>>
 						<td class="gridDtlVal"><?=$i?></td>
 						<td class="gridDtlVal"><font class="gridDtlLblTxt"><?=$empListVal['empNo']?></font></td>
 						<td class="gridDtlVal"><font class="gridDtlLblTxt"><?=$empListVal['empLastName']. ", " . $empListVal['empFirstName'] ." ". $empListVal['empMidName']?></font></td>
-						<td class="gridDtlVal"><font class="gridDtlLblTxt"><?=$empListVal['credit_previous_year']?></font></td>
-						<td class="gridDtlVal"><font class="gridDtlLblTxt"><?=$empListVal['credit_grant_previous_year']?></font></td>
-                        <td class="gridDtlVal"><font class="gridDtlLblTxt"><?=$empListVal['credit_used_previous_year']?></font></td>
+						<td class="gridDtlVal"><font class="gridDtlLblTxt" color="<?=$red?>"><?=$empListVal['credit_previous_year']?></font></td>
+						<td class="gridDtlVal"><font class="gridDtlLblTxt" color="<?=$red?>"><?=$empListVal['credit_grant_previous_year']?></font></td>
+                        <td class="gridDtlVal"><font class="gridDtlLblTxt" color="<?=$red?>"><?=$empListVal['credit_used_previous_year']?></font></td>
 						<td class="gridDtlVal"><font class="gridDtlLblTxt"><?=$empListVal['credit_current_year']?></font></td>
 						<td class="gridDtlVal"><font class="gridDtlLblTxt"><?=$empListVal['credit_grant_current_year']?></font></td>
                         <td class="gridDtlVal"><font class="gridDtlLblTxt"><?=$empListVal['credit_used_current_year']?></font></td>
