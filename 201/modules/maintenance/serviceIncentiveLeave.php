@@ -18,8 +18,6 @@ include("../../../includes/pager.inc.php");
 		<script type="text/javascript" src="../../../js/extjs/adapter/prototype/window.js"></script>
 		<script type="text/javascript" src="../../../js/extjs/adapter/prototype/window_effects.js"></script>
 		
-		
-
 		<STYLE>@import url('../../../js/themes/default.css');</STYLE>
 		<STYLE>@import url("../../../js/themes/mac_os_x.css");</STYLE>	
 	</HEAD>
@@ -34,9 +32,9 @@ include("../../../includes/pager.inc.php");
 
 <?php
 if (isset($_GET['back']) && $_GET['back'] == 1) {
-	echo "pager('serviceLeaveIncentive_listAjaxRes.php','empMastCont','load',0,1,'','','&brnCd=" . $_GET['brnCd'] . "','','../../../images/');";
+	echo "pager('serviceIncentiveLeave_listAjaxRes.php','empMastCont','load',0,1,'','','&brnCd=" . $_GET['brnCd'] . "','','../../../images/');";
 } else {
-    echo "pager('serviceLeaveIncentive_listAjaxRes.php','empMastCont','load',0,1,'','','&brnCd=999','../../../images/');";
+    echo "pager('serviceIncentiveLeave_listAjaxRes.php','empMastCont','load',0,1,'','','&brnCd=999','../../../images/');";
 }
 ?>  
 	

@@ -1,6 +1,6 @@
 <?php
 
-    class serviceLeaveIncentiveObj extends commonObj {
+    class serviceIncentiveLeaveObj extends commonObj {
         var $get;//method
         var $session;//session variables
         /**
