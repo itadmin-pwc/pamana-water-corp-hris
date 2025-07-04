@@ -122,12 +122,12 @@ $payGrp = $common->getProcGrp();
 						<td class="gridDtlVal"><?=$i?></td>
 						<td class="gridDtlVal"><font class="gridDtlLblTxt"><?=$empListVal['empNo']?></font></td>
 						<td class="gridDtlVal"><font class="gridDtlLblTxt"><?=$empListVal['empLastName']. ", " . $empListVal['empFirstName'] ." ". $empListVal['empMidName']?></font></td>
-						<td class="gridDtlVal"><font class="gridDtlLblTxt" color="<?=$red?>"><?=$empListVal['credit_previous_year']?></font></td>
-						<td class="gridDtlVal"><font class="gridDtlLblTxt" color="<?=$red?>"><?=$empListVal['credit_grant_previous_year']?></font></td>
-                        <td class="gridDtlVal"><font class="gridDtlLblTxt" color="<?=$red?>"><?=$empListVal['credit_used_previous_year']?></font></td>
-						<td class="gridDtlVal"><font class="gridDtlLblTxt"><?=$empListVal['credit_current_year']?></font></td>
-						<td class="gridDtlVal"><font class="gridDtlLblTxt"><?=$empListVal['credit_grant_current_year']?></font></td>
-                        <td class="gridDtlVal"><font class="gridDtlLblTxt"><?=$empListVal['credit_used_current_year']?></font></td>
+						<td class="gridDtlVal" align="center"><font class="gridDtlLblTxt" color="<?=$red?>"><?=$empListVal['credit_previous_year']?></font></td>
+						<td class="gridDtlVal" align="right"><font class="gridDtlLblTxt" color="<?=$red?>"><?=$empListVal['credit_grant_previous_year']?></font></td>
+                        <td class="gridDtlVal" align="right"><font class="gridDtlLblTxt" color="<?=$red?>"><?=$empListVal['credit_used_previous_year']?></font></td>
+						<td class="gridDtlVal" align="center"><font class="gridDtlLblTxt"><?=$empListVal['credit_current_year']?></font></td>
+						<td class="gridDtlVal" align="right"><font class="gridDtlLblTxt"><?=$empListVal['credit_grant_current_year']?></font></td>
+                        <td class="gridDtlVal" align="right"><font class="gridDtlLblTxt"><?=$empListVal['credit_used_current_year']?></font></td>
 					</tr>
 					
 					<?
