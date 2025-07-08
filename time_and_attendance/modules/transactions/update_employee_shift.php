@@ -199,7 +199,9 @@ switch($_GET["action"])
 	}
 	
 	function clearFld(){
+		$('txtAddEmpNo').value='';
 		$('txtEmpName').value='';
+		$('txtDeptPost').value='';
 	}	
 	
 	function newRef(act){

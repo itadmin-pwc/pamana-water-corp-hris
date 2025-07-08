@@ -30,6 +30,9 @@
 				$fld_txtDeptPost = htmlspecialchars(addslashes($deptName["deptDesc"]))." - ".$posName["posDesc"];
 				
 				$arr_EmpTsInfo =  $updateEmpShiftObj->getTblData("tblTK_Timesheet", " and empNo='".$_GET['empNo']."'", " order by tsDate", "");
+				$branch = $updateEmpShiftObj->getInfoBranch($empInfo["empBrnCode"],$empInfo["compCode"]);
+				echo var_dump($arr_EmpTsInfo) . "<br />";
+				echo $_GET['empNo'];
 
 		break;
 	}
@@ -44,6 +47,13 @@
 	<tr>
 		<td colspan="4" class="parentGridHdr">
 			&nbsp;<img src="../../../images/grid.png">&nbsp;Update Employee Shift Application
+			<span style="float:right; font-size:10px; margin: 5px;">
+				<?php
+					if($_GET["action"] == 'getEmpInfo'){
+						echo "BRANCH : <span style='color:#FF0000; font-weight:bold;'>".$branch . " </span>";
+					}
+				?>
+			</span>
 		</td>
 	</tr>
     
@@ -85,7 +95,7 @@
 					</td>
                     
 					<td class="gridDtlVal">
-						<INPUT tabindex="11" class="inputs" type="text" name="txtAddEmpNo" size="15" id="txtAddEmpNo" value="<?=$_GET["empNo"]?>" onkeydown="getEmployee(event,this.value)" readonly>
+						<INPUT tabindex="11" class="inputs" type="text" name="txtAddEmpNo" size="15" id="txtAddEmpNo" value="<?=$_GET["empNo"]?>" onkeydown="getEmployee(event,this.value)">
 					</td>
                     
 					<td class="hdrInputsLvl" width="15%">
@@ -245,7 +255,7 @@
 	</tr>
 </TABLE>
 <br>
-<input type="button" name="btnUpdate" id="btnUpdate" style="background-color: red; color:yellow; float: right;" class="inputs" value="UPDATE ALL EMPLOYEE WITH SAME SHIFT [Bulk Update]" onclick="saveBulkEmpShiftDetail();" />
+<input type="button" name="btnUpdate" id="btnUpdate" style="background-color: red; color:yellow; float: right;" class="inputs" value="UPDATE ALL EMPLOYEE WITH SAME SHIFT [BY BRANCH]" onclick="saveBulkEmpShiftDetail();" />
 <br><br><br>
 <INPUT type="hidden" name="hdnTrnsType" id="hdnTrnsType" value="<?=$hdnTrnsType?>">
 <? $updateEmpShiftObj->disConnect();?>

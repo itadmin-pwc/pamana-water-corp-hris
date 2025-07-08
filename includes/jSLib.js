@@ -138,7 +138,7 @@ function empLookup(fileLkUp){
 		
 	id: "empLukUp",
 	className : 'mac_os_x',
-	width:500, 
+	width:800, 
 	height:365, 
 	zIndex: 100, 
 	resizable: false, 

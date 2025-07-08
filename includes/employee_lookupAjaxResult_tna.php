@@ -15,7 +15,16 @@ if(!empty($_GET['tmpCompCode'])){
 else{
 	$compCode =  $_SESSION['company_code'];
 }
-
+if($brnCode_View ==""){
+	$queryBrnches = "Select empNo,tblUB.brnCode as brnCode, brnDesc from tblUserBranch tblUB, tblBranch as tblbrn
+						where tblUB.brnCode=tblbrn.brnCode and tblUB.compCode='".$_SESSION["company_code"]."' and tblbrn.compCode='".$_SESSION["company_code"]."'
+						and empNo='".$_SESSION['employee_number']."'
+						order by brnDesc";
+	
+	$resBrnches = $common->execQry($queryBrnches);
+	$arrBrnches = $common->getArrRes($resBrnches);
+	$arrBrnch = $common->makeArr($arrBrnches,'brnCode','brnDesc','All');
+}
 if(!empty($_GET['empType'])) {
 	$txtAdd = 'txtAddEmpNo2';
 }else{
@@ -36,52 +45,36 @@ $payperiod = $common->getSqlAssoc($qryPayperiod);
 $arrSrch = array('LAST NAME','FIRST NAME','EMPLOYEE NUMBER');
 
 
-$qryIntMaxRec = "SELECT * FROM tblEmpMast
-				 WHERE compCode = '{$compCode}' 
-					AND empBrnCode IN (SELECT brnCode FROM tblTK_UserBranch 
-						WHERE compCode ='{$_SESSION['company_code']}'and empNo = '{$_SESSION['employee_number']}')
-					AND (empStat='RG')  
-					AND compCode = '{$compCode}'";
-						
-        if($_GET['isSearch'] == 1){
-        	if($_GET['srchType'] == 2){
-        		$qryIntMaxRec .= "AND empNo LIKE '{$_GET['txtSrch']}%' ";
-        	}
-        	if($_GET['srchType'] == 0){
-        		$qryIntMaxRec .= "AND empLastName LIKE '".str_replace("'","''",$_GET['txtSrch'])."%' ";
-        	}
-        	if($_GET['srchType'] == 1){
-        		$qryIntMaxRec .= "AND empFirstName LIKE '".str_replace("'","''",$_GET['txtSrch'])."%' ";
-        	}
-        }
-						
+//new codes
+	$qryEmpList = "SELECT * FROM tblEmpMast
+					WHERE compCode= '{$sessionVars['compCode']}'
+					AND empBrnCode IN (Select brnCode from tblUserBranch where empNo='{$_SESSION['employee_number']}' AND compCode='{$_SESSION['company_code']}')
+					AND (empStat='RG') 
+					AND compCode = '{$compCode}'"; 
 
-	
-$resIntMaxRec = $common->execQry($qryIntMaxRec);
+	if($_GET['isSearch'] == 1){
+		if($_GET['srchType'] == 2){
+			$qryEmpList .= "AND empNo LIKE '{$_GET['txtSrch']}%' ";
+		}
+		if($_GET['srchType'] == 0){
+			$qryEmpList .= "AND empLastName LIKE '".str_replace("'","''",$_GET['txtSrch'])."%' ";
+		}
+		if($_GET['srchType'] == 1){
+			$qryEmpList .= "AND empFirstName LIKE '".str_replace("'","''",$_GET['txtSrch'])."%' ";
+		}
+		
+		if ($_GET['brnCd']!=0) 
+		{
+			$qryEmpList.= " AND empbrnCode='".$_GET["brnCd"]."' ";
+		}
+	}
+
+$resIntMaxRec = $common->execQry($qryEmpList);
 $intMaxRec = $pager->_getMaxRec($resIntMaxRec);
 
 $intLimit = $pager->_limit;
 $intOffset = $pager->_watToDo($_GET['action'],$_GET['offSet'],$_GET['isSearch']);
 
-
-//new codes
-	$qryEmpList = "SELECT * FROM tblEmpMast
-					WHERE compCode= '{$sessionVars['compCode']}'
-					AND empBrnCode IN (SELECT brnCode FROM tblTK_UserBranch 
-							WHERE compCode ='{$_SESSION['company_code']}'and empNo = '{$_SESSION['employee_number']}')
-					AND (empStat='RG') 
-					AND compCode = '{$compCode}'"; 
-        if($_GET['isSearch'] == 1){
-        	if($_GET['srchType'] == 2){
-        		$qryEmpList .= "AND empNo LIKE '".trim($_GET['txtSrch'])."%' ";
-        	}
-        	if($_GET['srchType'] == 0){
-        		$qryEmpList .= "AND empLastName LIKE '".str_replace("'","''",trim($_GET['txtSrch']))."%' ";
-        	}
-        	if($_GET['srchType'] == 1){
-        		$qryEmpList .= "AND empFirstName LIKE '".str_replace("'","''",trim($_GET['txtSrch']))."%' ";
-        	}
-        }
 $qryEmpList .= " ORDER BY empLastName limit $intOffset,$intLimit"; 
 		
 $resEmpList = $common->execQry($qryEmpList);
@@ -92,10 +85,12 @@ $arrEmpList = $common->getArrRes($resEmpList);
 <TABLE border="0" width="100%" cellpadding="1" cellspacing="1" class="childGrid" >
 	<td colspan="7" class="gridToolbar">
 		Search<INPUT type="text" name="txtSrch" id="txtSrch" value="<?=$_GET['txtSrch']?>" class="inputs">In<?=$common->DropDownMenu($arrSrch,'cmbSrch',$_GET['srchType'],'class="inputs"');?>
-		<INPUT class="inputs" type="button" name="btnSrch" id="btnSrch" value="SEARCH" onclick="pager('../../../includes/employee_lookupAjaxResult_tna.php','empLukupCont','Search',0,1,'txtSrch','cmbSrch','','../../../images/')"></td>
+		<?php if($brnCode_View==""){echo  "Branch |";}?> <? if($brnCode_View ==""){echo $common->DropDownMenu($arrBrnch,'brnCd',$_GET['brnCd'],'class="inputs"');}?>
+		<INPUT class="inputs" type="button" name="btnSrch" id="btnSrch" value="SEARCH" onclick="pager('../../../includes/employee_lookupAjaxResult_tna.php','empLukupCont','Search',0,1,'txtSrch','cmbSrch','&brnCd='+document.getElementById('brnCd').value,'','../../../images/')"></td>
 	<tr>
-		<td width="20%" class="gridDtlLbl" align="center">EMPLOYEE NO.</td>
-		<td width="70%" class="gridDtlLbl" align="center">NAME</td>
+		<td class="gridDtlLbl" align="center">EMPLOYEE NO.</td>
+		<td class="gridDtlLbl" align="center">NAME</td>
+		<td class="gridDtlLbl" align="center">Branch</td>
 	</tr>
 	<?
 	if($common->getRecCount($resEmpList) > 0){
@@ -106,9 +101,14 @@ $arrEmpList = $common->getArrRes($resEmpList);
 		$on_mouse = ' onmouseover="this.style.backgroundColor=\'' . '#F0F0F0' . '\';"'
 		. ' onmouseout="this.style.backgroundColor=\'' . $bgcolor  . '\';"';						
 	?>
-	<tr style="cursor:pointer;" bgcolor="<?php echo $bgcolor; ?>" <?php echo $on_mouse; ?> onclick="passEmpNo(<?=$txtAdd?>,'<?=$empListVal['empNo']?>');">
+	<tr style="cursor:pointer;" bgcolor="<?php echo $bgcolor; ?>" <?php echo $on_mouse; ?> onclick="passEmpNo('<?=$txtAdd?>','<?=$empListVal['empNo']?>');">
 		<td class="gridDtlVal"><font class="gridDtlLblTxt"><?=$empListVal['empNo']?></font></td>
 		<td class="gridDtlVal"><font class="gridDtlLblTxt"><?=str_replace('Ñ','&Ntilde;',$empListVal['empLastName']. ", " . $empListVal['empFirstName'] . " " . $empListVal['empMidName'])?></font></td>
+		<td class="gridDtlVal">
+			<font class="gridDtlLblTxt">
+				<?= $brnch['brnDesc'] = $common->getInfoBranch($empListVal['empBrnCode'],$empListVal['compCode']);?>
+			</font>
+		</td>
 	</tr>
 	<?
 		}
