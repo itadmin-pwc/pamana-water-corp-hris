@@ -77,7 +77,7 @@
 				
                 <tr>
 					<td style="height:25px;" class="hdrInputsLvl" width="15%">
-						<a href="#" onclick="empLookup('../../../includes/employee_lookup_tna.php')">Employee  No.</a>
+						<a href="#" onclick="empLookup('../../../includes/employee_lookup_tna.php')">Employee No.</a>
 					</td>
                     
 					<td class="hdrInputsLvl" width="1%">
@@ -85,7 +85,7 @@
 					</td>
                     
 					<td class="gridDtlVal">
-						<INPUT tabindex="11" class="inputs" readonly="readonly" type="text" name="txtAddEmpNo" size="15" id="txtAddEmpNo" value="<?=$_GET["empNo"]?>" onkeydown="getEmployee(event,this.value)" >
+						<INPUT tabindex="11" class="inputs" type="text" name="txtAddEmpNo" size="15" id="txtAddEmpNo" value="<?=$_GET["empNo"]?>" onkeydown="getEmployee(event,this.value)" readonly>
 					</td>
                     
 					<td class="hdrInputsLvl" width="15%">

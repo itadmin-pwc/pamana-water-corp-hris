@@ -22,7 +22,6 @@ if(!empty($_GET['empType'])) {
 	$txtAdd = 'txtAddEmpNo';
 }
 
-
 //$sqlGrp = "Select payGrp from tblProcGrp where compCode='{$_SESSION['company_code']}' and status='A'";
 $sqlGrp = "Select payGrp from tblProcGrp where compCode='{$_SESSION['company_code']}'";
 $res = $common->getSqlAssoc($common->execQry($sqlGrp));		
@@ -42,10 +41,7 @@ $qryIntMaxRec = "SELECT * FROM tblEmpMast
 					AND empBrnCode IN (SELECT brnCode FROM tblTK_UserBranch 
 						WHERE compCode ='{$_SESSION['company_code']}'and empNo = '{$_SESSION['employee_number']}')
 					AND (empStat='RG')  
-					OR (dateResigned between '".date("Y-m-d",strtotime($payperiod['pdFrmDate']))."' 
-						AND '".date("Y-m-d",strtotime($payperiod['pdToDate']))."') 
-					OR (endDate between '".date("Y-m-d",strtotime($payperiod['pdFrmDate']))."' 
-						AND '".date("Y-m-d",strtotime($payperiod['pdToDate']))."')";
+					AND compCode = '{$compCode}'";
 						
         if($_GET['isSearch'] == 1){
         	if($_GET['srchType'] == 2){
@@ -74,10 +70,7 @@ $intOffset = $pager->_watToDo($_GET['action'],$_GET['offSet'],$_GET['isSearch'])
 					AND empBrnCode IN (SELECT brnCode FROM tblTK_UserBranch 
 							WHERE compCode ='{$_SESSION['company_code']}'and empNo = '{$_SESSION['employee_number']}')
 					AND (empStat='RG') 
-					OR (dateResigned between '".date("Y-m-d",strtotime($payperiod['pdFrmDate']))."' 
-						AND '".date("Y-m-d",strtotime($payperiod['pdToDate']))."') 
-					OR (endDate between '".date("Y-m-d",strtotime($payperiod['pdFrmDate']))."' 
-						AND '".date("Y-m-d",strtotime($payperiod['pdToDate']))."') AND compCode = '{$compCode}'"; 
+					AND compCode = '{$compCode}'"; 
         if($_GET['isSearch'] == 1){
         	if($_GET['srchType'] == 2){
         		$qryEmpList .= "AND empNo LIKE '".trim($_GET['txtSrch'])."%' ";
@@ -89,8 +82,7 @@ $intOffset = $pager->_watToDo($_GET['action'],$_GET['offSet'],$_GET['isSearch'])
         		$qryEmpList .= "AND empFirstName LIKE '".str_replace("'","''",trim($_GET['txtSrch']))."%' ";
         	}
         }
-$qryEmpList .= " ORDER BY empLastName limit $intOffset,$intLimit"; 	
-
+$qryEmpList .= " ORDER BY empLastName limit $intOffset,$intLimit"; 
 		
 $resEmpList = $common->execQry($qryEmpList);
 $arrEmpList = $common->getArrRes($resEmpList);

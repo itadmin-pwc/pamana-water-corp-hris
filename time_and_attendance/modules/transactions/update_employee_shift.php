@@ -255,22 +255,19 @@ switch($_GET["action"])
 			parameters : $('frmUpdateEmpShift').serialize(),
 			onComplete : function (req){
 				eval(req.responseText);
-				
 			}	
 		});
 	}
 	
 	function getShiftCodeDetail()
 	{
-		
 		params = 'update_employee_shift.php?action=getShiftCodeDtl';
 				
-		new Ajax.Request(params,{
+		new Ajax.Request(params, {
 			method : 'get',
 			parameters : $('frmUpdateEmpShift').serialize(),
 			onComplete : function (req){
 				eval(req.responseText);
-				
 			}	
 		});
 	}

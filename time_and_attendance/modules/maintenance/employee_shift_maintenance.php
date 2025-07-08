@@ -108,6 +108,40 @@
 		  }
 		  Windows.addObserver(myObserver);
 	}
+
+	function maintShiftCodeByBranch(act,empNo,URL,ele,offset,maxRec,isSearch,txtSrch,cmbSrch,brnCd)
+	{
+		var shift = new Window({
+			id: "editAllw",
+			className : 'mac_os_x',
+			width:750, 
+			height:410, 
+			zIndex: 100, 
+			resizable: false, 
+			minimizable : true,
+			title: act+" Employee Shift", 
+			showEffect:Effect.Appear, 
+			destroyOnClose: true,
+			maximizable: false,
+			hideEffect: Effect.SwitchOff, 
+			draggable:true 
+		})
+		shift.setURL('employee_shift_maintenance_pop.php?&action='+act+'&empNo='+empNo);
+		shift.show(true);
+		shift.showCenter();	
+		
+		  myObserver = {
+		    onDestroy: function(eventName, win) {
+
+		      if (win == shift) {
+		        shift = null;
+		        pager('employee_shift_maintenance_listAjaxResult.php','empMastCont','load',0,1,'txtSrch','cmbSrch','&brnCd='+brnCd,'../../../images/');    
+				Windows.removeObserver(this);
+		      }
+		    }
+		  }
+		  Windows.addObserver(myObserver);
+	}
 	
 	function delEmpShift(act,empNo,URL,ele,offset,maxRec,isSearch,txtSrch,cmbSrch)
 	{
