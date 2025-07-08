@@ -16,8 +16,7 @@ $empShiftMaint->validateSessions('','MODULES');
 
 $arr_Day = array(1=>'Monday', 2=>'Tuesday', 3=>'Wednesday', 4=>'Thursday', 5=>'Friday', 6=>'Saturday', 7=>'Sunday');
 
-$arr_empInfo = $empShiftMaint->getUserInfo($_SESSION["company_code"],$_GET["empNo"],'');
-
+$arr_brnInfo = $empShiftMaint->getBrnchInfo($_GET['brnCd']);
 
 switch($_GET["action"])
 {
@@ -43,60 +42,26 @@ switch($_GET["action"])
 	break;
 	
 	case "Add":
-		
 		$btnName = "Save";
-		$arr_empBioInfo = $empShiftMaint->getShiftInfo("tblBioEmp", " and empNo='".($_GET["empNo"]!=""?$_GET["empNo"]:$_GET["txtEmpNo"])."'", " ");
-		$empBioNum = $arr_empBioInfo["bioNumber"];
-		
-		$arr_chkRankLevelTExempt = $empShiftMaint->getShiftInfo("tblTK_RankLevelTimeExempt", "  and exemptRankCd='".$arr_empInfo["empRank"]."' and exemptLevelCd='".$arr_empInfo["empLevel"]."'", " ");
-		
-		//$chkAbsentExemptTag = $arr_chkRankLevelTExempt["absentExempt"];
-		$chkOtExemptTag = $arr_chkRankLevelTExempt["otExempt"];
-		$chkFlexiExemptTag = $arr_chkRankLevelTExempt["utHrsExempt"];
-		$chkWrkHrsExemptTag = $arr_chkRankLevelTExempt["trdHrsExempt"];
 		$gp = 15;
-		//$chkLunchExemptTag = $arr_chkRankLevelTExempt["lunchHrsExempt"];
-		
-		//echo $arr_chkRankLevelTExempt["utHrsExempt"]."GEN";
 	break;
 	
 	case "Edit":
 		$btnName = "Update";
-		
-		$arr_EmpShiftDtl = $empShiftMaint->getShiftInfo('tblTK_EmpShift', " and empNo='".$_GET["empNo"]."'", $orderBy);
-		$empBioNum = $arr_EmpShiftDtl["bioNo"];
-		$cmbShitCodeStat = $arr_EmpShiftDtl["status"];
-		$shiftcode = $arr_EmpShiftDtl["shiftCode"];
-		//$chkAbsentExemptTag = $arr_EmpShiftDtl["absentExempt"];
-		$chkOtExemptTag = $arr_EmpShiftDtl["otExempt"];
-		$chkFlexiExemptTag = $arr_EmpShiftDtl["utHrsExempt"];
-		$chkWrkHrsExemptTag = $arr_EmpShiftDtl["trdHrsExempt"];
-		$gp = $arr_EmpShiftDtl["gracePeriod"];
-		//$chkLunchExemptTag = $arr_EmpShiftDtl["lunchHrsExempt"];
-		
+		$gp = 15;
 	break;
 	
 	case "Save":
-	
-		//Check if tne Emp. exists in tblTk_EmpShift
-		$chkDuplicate = $empShiftMaint->getShiftInfo("tblTK_EmpShift", " and empNo='".$_GET["txtEmpNo"]."'", " ");
-		
-		if($chkDuplicate["shiftCode"]!="")
-		{
-			echo "alert('Record already Exists.');";
-		}
+		if($empShiftMaint->maint_EmpShiftByBranch("Add",$_GET))
+			echo "alert('Employee Shift Successfully Added.');";
 		else
-		{
-			if($empShiftMaint->maint_EmpShift("Add",$_GET))
-				echo "alert('Employee Shift Successfully Added.');";
-			else
-				echo "alert('Error in Adding Employee Shift.');";
-		}
+			echo "alert('Error in Adding Employee Shift.');";
+		
 		exit();
 	break;
 	
 	case "Update":
-		if($empShiftMaint->maint_EmpShift("Update",$_GET))
+		if($empShiftMaint->maint_EmpShiftByBranch("Update",$_GET))
 			echo "alert('Employee Shift Successfully Updated.');";
 		else
 			echo "alert('Error in Updating Employee Shift.');";
@@ -137,37 +102,16 @@ switch($_GET["action"])
                     </td>  
                 </tr> 
                 
-                 <tr>
-                    <td width='15%' class='gridDtlLbl' align='left'>Employee Name </td>
-                    <td width='1%' class='gridDtlLbl' align='center'>:</td>
-                        
-                    <td  width='25%' class='gridDtlVal'>
-                        <input type='text' class='inputs' name='txtEmpName' id='txtEmpName' style='width:100%;' readonly value='<?=$arr_empInfo["empLastName"].", ".$arr_empInfo["empFirstName"]." ".$arr_empInfo["empMidName"][0]."."?>' >
-                    </td>
-                    
-                    <td width='15%' class='gridDtlLbl' align='left'>Employee No. </td>
-                    <td width='1%' class='gridDtlLbl' align='center'>:</td>
-                        
-                    <td  width='25%' class='gridDtlVal'>
-                       <input type='text' class='inputs' name='txtEmpNo' id='txtEmpNo' style='width:50%;' readonly value='<?=$_GET["empNo"]?>' >
-                    </td>
-                </tr>
-                
                 <tr>
-                    <td width='15%' class='gridDtlLbl' align='left'>Bio - Number </td>
-                    <td width='1%' class='gridDtlLbl' align='center'>:</td>
-                        
-                    <td  width='25%' class='gridDtlVal'>
-                        <input type='text' class='inputs' name='txtEmpBio' id='txtEmpBio' style='width:60%;' value='<?=$empBioNum?>' readonly onKeyDown="javascript:return dFilter (event.keyCode, this, '####');" >
-                    </td>
-                    
                     <td width='25%' class='gridDtlLbl' align='left'>Branch </td>
                     <td width='1%' class='gridDtlLbl' align='center'>:</td>
                         
-                    <td  width='25%' class='gridDtlVal'>
+                    <td  colspan="4" class='gridDtlVal'>
+						<input type="text" name="txtBranch" id="txtBranch" class="inputs" value="Head Office" width="100%" readonly>
                     <?
-                    $empBrn=$empShiftMaint->getShortBranchName($_SESSION["company_code"],$arr_empInfo['empBrnCode']);
-					echo $empBrn;
+						//$empBrn=$empShiftMaint->getShortBranchName($_SESSION["company_code"],$arr_empInfo['empBrnCode']);
+						//echo "Head Office";
+						
 					?>
                     </td>
                </tr>
@@ -180,7 +124,7 @@ switch($_GET["action"])
                     	
                         
 							<? 	
-								if($arr_empInfo['empBrnCode']!=="0001"){
+								if($arr_empInfo['empBrnCode']!=="999"){
 									$shiftHeader = 	$empShiftMaint->getListShift();
 								}
 								else{
@@ -315,7 +259,7 @@ switch($_GET["action"])
 		//document.frmEmpShift.submit();
 		var shiftCode = document.frmEmpShift.shiftcode.value;
 		new Ajax.Request(
-		  'employee_shift_maintenance_pop.php?action=dispShiftDtl&shiftcode='+shiftCode,
+		  'employee_shift_maintenance_pop_by_branch.php?action=dispShiftDtl&shiftcode='+shiftCode,
 		  {
 			 asynchronous : true,     
 			 onComplete   : function (req){
@@ -345,7 +289,7 @@ switch($_GET["action"])
 			return false;
 		}
 		
-		params = 'employee_shift_maintenance_pop.php';
+		params = 'employee_shift_maintenance_pop_by_branch.php';
 		new Ajax.Request(params,{
 			method : 'get',
 			parameters : $('frmEmpShift').serialize(),

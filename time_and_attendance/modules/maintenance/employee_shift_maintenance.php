@@ -109,7 +109,7 @@
 		  Windows.addObserver(myObserver);
 	}
 
-	function maintShiftCodeByBranch(act,empNo,URL,ele,offset,maxRec,isSearch,txtSrch,cmbSrch,brnCd)
+	function maintShiftCodeByBranch(act,brnCd)
 	{
 		var shift = new Window({
 			id: "editAllw",
@@ -126,7 +126,7 @@
 			hideEffect: Effect.SwitchOff, 
 			draggable:true 
 		})
-		shift.setURL('employee_shift_maintenance_pop.php?&action='+act+'&empNo='+empNo);
+		shift.setURL('employee_shift_maintenance_pop_by_branch.php?&action='+act+'&brnCd='+brnCd);
 		shift.show(true);
 		shift.showCenter();	
 		

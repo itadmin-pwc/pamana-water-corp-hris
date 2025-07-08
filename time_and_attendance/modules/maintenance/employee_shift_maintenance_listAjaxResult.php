@@ -180,10 +180,10 @@
 						Search<INPUT type="text" name="txtSrch" id="txtSrch" value="<? if(isset($_GET['txtSrch'])){echo $_GET['txtSrch'];} ?>" class="inputs">In<?=$common->DropDownMenu($arrSrch,'cmbSrch',$_GET['srchType'],'class="inputs"');?>
 						<?php if($brnCode_View==""){echo  "Branch |";}?> <? if($brnCode_View ==""){echo $common->DropDownMenu($arrBrnch,'brnCd',$_GET['brnCd'],'class="inputs"');}?>
 						<INPUT class="inputs" type="button" name="btnSrch" id="btnSrch" value="SEARCH" onClick="pager('employee_shift_maintenance_listAjaxResult.php','empMastCont','Search',0,1,'txtSrch','cmbSrch','&brnCd='+document.getElementById('brnCd').value,'','../../../images/')">
-						<a href="#" class="" style="float: right; margin-top: 3px; color: blue;" onclick="maintShiftCodeByBranch('Add',<?=$_GET['brnCd']?>)"> <b>Add Employee Shift</b></a>
-						<span style="float: right; margin-top: 3px;"> <b>/</b> </span>
-						<a href="#" class="" style="float: right; margin-top: 3px; color: green;" onclick="maintShiftCodeByBranch('Add',<?=$_GET['brnCd']?>)"> <b>Update Employee Shift </b></a>
-						<span style="float: right; margin-top: 3px;"><b>BY BRANCH : </b> </span>
+						<a href="#" class="" style="float: right; margin: 3px; color: blue;" onclick="maintShiftCodeByBranch('Add',<?=$_GET['brnCd']?>)"> [<b>Add Employee Shift</b>]</a>
+						<b style="float: right; margin: 3px;">/</b>
+						<a href="#" class="" style="float: right; margin: 3px; color: green;" onclick="maintShiftCodeByBranch('Add',<?=$_GET['brnCd']?>)"> [<b>Update Employee Shift</b>]</a>
+						<span style="float: right; margin: 3px;"><b>BY BRANCH : </b> </span>
                       <?
 					  $chkEmpShift = $empShiftMaint->getShiftInfo("tblTK_EmpShift", " ", " ");
 					  $chkEmpTS = $empShiftMaint->getShiftInfo("tblTK_Timesheet", " ", " ");

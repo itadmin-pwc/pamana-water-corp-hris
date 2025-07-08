@@ -451,9 +451,199 @@ class maintenanceObj extends commonObj {
 		else{
 			return false;	
 		}
-		
 	}
-	
+
+	function maint_EmpShiftByBranch($action, $array)
+	{
+		$gp = 0;
+		if (!empty($array["gracePeriod"]) && is_numeric($array["gracePeriod"])) {
+			$gp = $array["gracePeriod"];
+		}
+		$ans = 0;
+		switch($action)
+		{
+			case "Add":
+				$Trns = $this->beginTran();
+					$Qry_EmpShift = "Insert tblTK_EmpShift(compCode,empNo, shiftCode, bioNo, trdHrsExempt, utHrsExempt, 
+										otExempt, dateAdded, addedBy, status, CWWTag, gracePeriod) 
+									values('".$_SESSION["company_code"]."','".$array["txtEmpNo"]."','".$array["shiftcode"]."',
+										'".$array["txtEmpBio"]."','".($array["chkWrkHrsExemptTag"]!=""?"Y":"N")."',
+										'".($array["chkFlexiExemptTag"]!=""?"Y":"N")."','".($array["chkOtExemptTag"]!=""?"Y":"N")."',
+										'".date("Y-m-d")."','".$_SESSION['employee_number']."','A',
+										".($array["chkCWWTag"]!=""?"'Y'":"NULL").", " . $gp . ")";
+				if($Trns){
+					$Trns = $this->execQry($Qry_EmpShift);	
+				}				 
+				if(!$Trns){
+					$Trns = $this->rollbackTran();
+					$ans = 0;	
+				}
+				else{
+					$Trns = $this->commitTran();
+					$ans = 1;	
+				}
+			break;
+			
+			case "Update":
+					$Trns = $this->beginTran();
+					//Insert First to tblTk_EmpShiftHist
+						$arr_EmpShiftDtl = $this->getShiftInfo('tblTK_EmpShift', " and empNo='".$array["txtEmpNo"]."'", '');
+					
+						$Qry_EmpShiftHist = "Insert tblTK_EmpShiftHist(compCode,empNo, shiftCode, bioNo, trdHrsExempt, utHrsExempt, 
+												otExempt, dateAdded, addedBy, dateUpdated ,updatedBy, status, CWWTag, gracePeriod)
+											 values('".$arr_EmpShiftDtl["compCode"]."','".$array["txtEmpNo"]."',
+											 	'".$arr_EmpShiftDtl["shiftCode"]."','".$arr_EmpShiftDtl["bioNo"]."',
+												'".$arr_EmpShiftDtl["trdHrsExempt"]."','".$arr_EmpShiftDtl["utHrsExempt"]."',
+												'".$arr_EmpShiftDtl["otExempt"]."',
+												'".date("Y-m-d", strtotime($arr_EmpShiftDtl["dateAdded"]))."',
+												'".$arr_EmpShiftDtl["addedBy"]."','".date("Y-m-d")."',
+												'".$_SESSION['employee_number']."','".$arr_EmpShiftDtl["status"]."',
+												'".$arr_EmpShiftDtl["CWWTag"]."',
+												" . $arr_EmpShiftDtl["gracePeriod"] . ")";
+				
+					/*$Qry_EmpShift.= "Update tblTK_EmpShift set shiftCode='".$array["shiftcode"]."', bioNo='".$array["txtEmpBio"]."', 
+					absentExempt='".($array["chkAbsentExemptTag"]!=""?"Y":"N")."', 
+										trdHrsExempt='".($array["chkWrkHrsExemptTag"]!=""?"Y":"N")."', utHrsExempt='".($array["chkFlexiExemptTag"]!=""?"Y":"N")."', otExempt='".($array["chkOtExemptTag"]!=""?"Y":"N")."', 
+										lunchHrsExempt='".($array["chkLunchExemptTag"]!=""?"Y":"N")."',
+										dateUpdated='".date("m/d/Y")."', updatedBy='".$_SESSION['employee_number']."', status='".$array["cmbShitCodeStat"]."'
+									 where compCode='".$_SESSION["company_code"]."' and empNo='".$array["txtEmpNo"]."'"; 
+			*/
+			
+					$Qry_EmpShift = "Update tblTK_EmpShift set shiftCode='".$array["shiftcode"]."', bioNo='".$array["txtEmpBio"]."', 
+									 dateUpdated='".date("Y-m-d")."', updatedBy='".$_SESSION['employee_number']."', status='A',
+									 CWWTag=".($array["chkCWWTag"]!=""?"'Y'":"NULL").",
+									 gracePeriod=" . $gp . "
+									 where compCode='".$_SESSION["company_code"]."' and empNo='".$array["txtEmpNo"]."'"; 
+					if($Trns){
+						$Trns = $this->execQry($Qry_EmpShiftHist);
+						$Trns = $this->execQry($Qry_EmpShift);	
+					}				 
+					if(!$Trns){
+						$Trns = $this->rollbackTran();
+						$ans = 0;	
+					}
+					else{
+						$Trns = $this->commitTran();
+						$ans = 1;	
+					}
+			
+			break;
+			
+			case "Delete":
+				$Trns = $this->beginTran();
+				//If the Employee is Resigned = Automatically Deleted in the Database, else Set Status = Deleted
+				$userInfo = $this->getUserInfo($_SESSION['company_code'],$array["empNo"],'');
+				
+				$arr_EmpShiftDtl = $this->getShiftInfo('tblTK_EmpShift', " and empNo='".$array["empNo"]."'", '');
+					
+				$Qry_EmpShift = "Insert tblTK_EmpShiftHist(compCode,empNo, shiftCode, bioNo, trdHrsExempt, utHrsExempt, 
+								otExempt, dateAdded, addedBy, dateUpdated ,updatedBy, status, CWWTag) 
+							 	values('".$arr_EmpShiftDtl["compCode"]."','".$array["empNo"]."','".$arr_EmpShiftDtl["shiftCode"]."',
+								'".$arr_EmpShiftDtl["bioNo"]."','".$arr_EmpShiftDtl["utHrsExempt"]."',
+								'".$arr_EmpShiftDtl["utHrsExempt"]."','".$arr_EmpShiftDtl["otExempt"]."',
+								'".date("Y-m-d", strtotime($arr_EmpShiftDtl["dateAdded"]))."',
+								'".$arr_EmpShiftDtl["addedBy"]."','".date("Y-m-d")."','".$_SESSION['employee_number']."', 
+								'".$arr_EmpShiftDtl["status"]."','".$arr_EmpShiftDtl["CWWTag"]."')";
+		
+				if(($userInfo["empStat"]=='RS') || ($userInfo["empPayCat"]=='9'))
+				{
+					$Qry_EmpShiftDelete = "Delete from tblTK_EmpShift where compCode='".$_SESSION["company_code"]."' and empNo='".$array["empNo"]."'";
+				}
+				else
+				{
+					$Qry_EmpShiftUpdate= "Update tblTK_EmpShift set status='D' where compCode='".$_SESSION["company_code"]."' and empNo='".$array["empNo"]."'";
+				}
+				
+				if($Trns){
+					$Trns = $this->execQry($Qry_EmpShift);	
+				}
+				if($Qry_EmpShiftDelete!=""){
+					if($Trns){
+						$Trns = $this->execQry($Qry_EmpShiftDelete);	
+					}	
+				}
+				if($Qry_EmpShiftUpdate!=""){
+					if($Trns){
+						$Trns = $this->execQry($Qry_EmpShiftUpdate);	
+					}	
+				}
+				
+				if(!$Trns){
+					$Trns = $this->rollbackTran();
+					$ans = 0;	
+				}
+				else{
+					$Trns = $this->commitTran();
+					$ans = 1;	
+				}
+				
+			break;
+			
+			case "setToActive":
+				$Trns = $this->beginTran();
+				$userInfo = $this->getUserInfo($_SESSION['company_code'],$array["empNo"],'');
+				
+				$arr_EmpShiftDtl = $this->getShiftInfo('tblTK_EmpShift', " and empNo='".$array["empNo"]."'", '');
+					
+				$Qry_EmpShift = "Insert tblTK_EmpShiftHist(compCode,empNo, shiftCode, bioNo, trdHrsExempt, utHrsExempt, 
+								otExempt, dateAdded, addedBy, dateUpdated ,updatedBy, status, CWWTag) 
+							 	values('".$arr_EmpShiftDtl["compCode"]."','".$array["empNo"]."','".$arr_EmpShiftDtl["shiftCode"]."',
+								'".$arr_EmpShiftDtl["bioNo"]."','".$arr_EmpShiftDtl["wrkHrsExempt"]."',
+								'".$arr_EmpShiftDtl["flexiExempt"]."','".$arr_EmpShiftDtl["otExempt"]."',
+								'".date("Y-m-d", strtotime($arr_EmpShiftDtl["dateAdded"]))."','".$arr_EmpShiftDtl["addedBy"]."',
+								'".date("Y-m-d")."','".$_SESSION['employee_number']."', '".$arr_EmpShiftDtl["status"]."', 
+								'".$arr_EmpShiftDtl["CWWTag"]."')";
+			
+				$Qry_EmpShiftUpdate= "Update tblTK_EmpShift set status='A' where compCode='".$_SESSION["company_code"]."' and empNo='".$array["empNo"]."'";
+				if($Trns){
+					$Trns = $this->execQry($Qry_EmpShift);	
+					$Trns = $this->execQry($Qry_EmpShiftUpdate);	
+				}
+				if(!$Trns){
+					$Trns = $this->rollbackTran();
+					$ans = 0;	
+				}
+				else{
+					$Trns = $this->commitTran();
+					$ans = 1;	
+				}				
+			break;
+			
+			case "clearAllShift":
+				$Trns = $this->beginTran();
+				$userInfo = $this->getUserInfo($_SESSION['company_code'],$array["empNo"],'');
+					
+				$Qry_EmpShift = "Insert tblTK_EmpShiftHist(compCode, empNo, shiftCode, bioNo, trdHrsExempt, utHrsExempt, 
+									otExempt, dateAdded, addedBy, dateUpdated ,updatedBy, status, CWWTag)
+								Select compCode, empNo, shiftCode, bioNo, trdHrsExempt, utHrsExempt,
+									otExempt, dateAdded, addedBy, '".date("Y-m-d")."', '".$_SESSION['employee_number']."', 
+									status, CWWTag
+								from tblTK_EmpShift;"; 	   
+								 
+				$Qry_EmpShiftDelete= "Delete from tblTK_EmpShift where compCode='".$_SESSION["company_code"]."';";
+				if($Trns){
+					$Trns = $this->execQry($Qry_EmpShift);	
+					$Trns = $this->execQry($Qry_EmpShiftDelete);	
+				}
+				if(!$Trns){
+					$Trns = $this->rollbackTran();
+					$ans = 0;	
+				}
+				else{
+					$Trns = $this->commitTran();
+					$ans = 1;	
+				}				
+			break;			
+		}
+		//echo $Qry_EmpShift;
+		//return $this->execQry($Qry_EmpShift);
+		if($ans==1){
+			return true;	
+		}
+		else{
+			return false;	
+		}
+	}
 	
 	//Attendance Application Maintenance
 	function maint_attdn_type($action, $array)
