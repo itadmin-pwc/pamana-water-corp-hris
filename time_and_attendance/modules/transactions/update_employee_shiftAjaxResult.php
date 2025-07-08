@@ -31,8 +31,8 @@
 				
 				$arr_EmpTsInfo =  $updateEmpShiftObj->getTblData("tblTK_Timesheet", " and empNo='".$_GET['empNo']."'", " order by tsDate", "");
 				$branch = $updateEmpShiftObj->getInfoBranch($empInfo["empBrnCode"],$empInfo["compCode"]);
-				echo var_dump($arr_EmpTsInfo) . "<br />";
-				echo $_GET['empNo'];
+				$shiftCode = $updateEmpShiftObj->getTblData("tbltk_empshift", " and empNo='".$_GET['empNo']."'", "", "sqlAssoc");
+				$shiftDesc = $updateEmpShiftObj->getTblData("tbltk_shifthdr", " and shiftCode='".$shiftCode['shiftCode']."'", "", "sqlAssoc");
 
 		break;
 	}
@@ -146,9 +146,10 @@
 					</td>
 
 					<td class="gridDtlVal" colspan="4">
+						<input type="text" class="inputs" name="txtShiftCode" id="txtShiftCode" value="<?=$shiftDesc['shiftDesc']?>" style="width:100%;" readonly="readonly" disabled/>
                     	<?php
-							$arrShifts = $updateEmpShiftObj->makeArr($updateEmpShiftObj->getListShift(),'shiftCode','shiftDesc','');
-                            $updateEmpShiftObj->DropDownMenu($arrShifts,'shiftcode',$shiftcode,'onChange=getShiftCodeDetail(); disabled' );
+							// $arrShifts = $updateEmpShiftObj->makeArr($updateEmpShiftObj->getListShift(),'shiftCode','shiftDesc','');
+                            // $updateEmpShiftObj->DropDownMenu($arrShifts,'shiftcode',$shiftcode,'onChange=getShiftCodeDetail(); disabled' );
 						?>
 					</td>
                     

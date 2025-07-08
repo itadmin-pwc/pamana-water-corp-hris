@@ -335,7 +335,6 @@ switch($_GET["action"])
 		{
 			for(dayCnt=1; dayCnt<=7; dayCnt++)
 			{
-					
 				if((chngeShiftFields[arrayFields[fields]+chngeShiftFields["rdnSelected"]+dayCnt]=="")||(chngeShiftFields[arrayFields[fields]+chngeShiftFields["rdnSelected"]+dayCnt]==":"))
 				{
 					alert(arrayalerts[fields]+" is Required.");

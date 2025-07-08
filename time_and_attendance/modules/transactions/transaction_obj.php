@@ -810,7 +810,7 @@ class transactionObj extends commonObj {
 //			return "Change Employee Shift into Timesheet failed.";
 	}
 
-	/*Module Name : Update Employee Shift [Update all same shift] 08/06/2023 Sunday*/
+	/*Module Name : Update Employee Shift [Update all same shift by branch] 08/06/2023 Sunday*/
 	function tran_BulkChngeEmpShft($qryString,$action, $array)
 	{
 		$Trns = $this->beginTran();
@@ -924,7 +924,7 @@ class transactionObj extends commonObj {
 	/*Module Name : Update Employee Shift [Update all same shift] 08/06/2023 Sunday*/
 	function getAllEmployeeWithSameShift($shiftCode, $branchCode){
 		$qry = "SELECT tblemp.empBrnCode, tblemp.empLastName, tblemp.empFirstName, empShip.* FROM tbltk_empshift empShip
-				LEFT OUTER JOIN tblempmast_new tblemp
+				LEFT OUTER JOIN tblempmast tblemp
 				ON  tblemp.empNo = empShip.empNo
 								WHERE empShip.compCode = '{$_SESSION['company_code']}'
 								AND empShip.shiftCode = '{$shiftCode}'
