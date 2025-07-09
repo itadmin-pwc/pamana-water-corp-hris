@@ -13,7 +13,7 @@ class TSProcessingObj extends dateDiff {
 	var $arrHolidays	 	= array();
 	function ProcessTS() {
 		$Trns = $this->beginTranI();//begin transaction
-		$this->checkLongLeave();
+		//$this->checkLongLeave();
 		$this->resetTKlogs();
 		$this->EmpShiftCode();
 		$this->getOB();

@@ -36,7 +36,7 @@ include("../../../includes/pager.inc.php");
 if (isset($_GET['back']) && $_GET['back'] == 1) {
 	echo "pager('profile_list_ajax.php','empMastCont','load',0,1,'','','&brnCd=" . $_GET['brnCd'] . "','','../../../images/');";
 } else {
-    echo "pager('profile_list_ajax.php','empMastCont','load',0,1,'','','&brnCd=999','../../../images/');";
+    echo "pager('profile_list_ajax.php','empMastCont','load',0,1,'','','&brnCd=0','../../../images/');";
 }
 ?>  
 	function viewPrevEmp(id){
