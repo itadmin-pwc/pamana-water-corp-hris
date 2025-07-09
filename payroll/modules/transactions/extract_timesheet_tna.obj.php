@@ -433,8 +433,8 @@ class extractTNATSObj extends commonObj {
 	}
 
 	function ClearTK_RestDay() {
-		// $sqlRD = "Delete from tblTK_ChangeRDApp where compCode='{$_SESSION['company_code']}' AND cRDStat='A' AND completeTag='C' AND empNo IN ({$this->Emplist})";
-		$sqlRDclr = "Delete from tblTK_ChangeRDApp where compCode='{$_SESSION['company_code']}' AND cRDStat='A'";
+		$sqlRDclr = "Delete from tblTK_ChangeRDApp where compCode='{$_SESSION['company_code']}' AND cRDStat='A' AND completeTag='C' AND empNo IN ({$this->Emplist})";
+		//$sqlRDclr = "Delete from tblTK_ChangeRDApp where compCode='{$_SESSION['company_code']}' AND cRDStat='A'";
 		return $this->execQryI($sqlRDclr);
 	}
 	
@@ -442,12 +442,12 @@ class extractTNATSObj extends commonObj {
 		$sqlCS = "Insert into tblTK_CSApphist (compcode, empNo, refNo, dateFiled, csDateTo, csDateFrom, csShiftFromIn, csShiftFromOut, csShiftToIn, csHiftToOut, csReason, dateApproved, 
                       userApproved, dateAdded, addedBy, csStat, crossDay, mApproverdBy, mStat, mDateApproved, otherDetails)  SELECT     compcode, empNo, refNo, dateFiled, csDateTo, csDateFrom, csShiftFromIn, csShiftFromOut, csShiftToIn, csHiftToOut, csReason, dateApproved, 
                       userApproved, dateAdded, addedBy, csStat, crossDay, mApproverdBy, mStat, mDateApproved, otherDetails
-FROM         tblTK_CSApp where compCode='{$_SESSION['company_code']}' AND csStat='A' AND empNo IN ({$this->Emplist}) ";
+FROM         tblTK_CSApp where compCode='{$_SESSION['company_code']}' AND csStat='A' AND empNo IN ({$this->Emplist}) AND csDateFrom between '{$this->pdFrmDate}' AND '{$this->pdToDate}'";
 		return $this->execQryI($sqlCS);
 	}
 	
 	function ClearTK_ChangeShift() {
-		$sqlCSclr = "Delete FROM tblTK_CSApp where compCode='{$_SESSION['company_code']}' AND csStat='A'";
+		$sqlCSclr = "Delete FROM tblTK_CSApp where compCode='{$_SESSION['company_code']}' AND csStat='A' AND csDateFrom between '{$this->pdFrmDate}' AND '{$this->pdToDate}'";
 		return $this->execQryI($sqlCSclr);	
 	}
 	
@@ -478,8 +478,8 @@ FROM         tblTK_CSApp where compCode='{$_SESSION['company_code']}' AND csStat
 	}
 	
 	function ClearTK_Leaves() {
-		// $sqlLeaves = "Delete FROM tblTK_LeaveApp where compCode='{$_SESSION['company_code']}' AND  lvDateTo<='{$this->pdToDate}' AND lvStat='A' AND empNo IN ({$this->Emplist}) ";
-		$sqlLeavesclr = "Delete FROM tblTK_LeaveApp where compCode='{$_SESSION['company_code']}'  AND lvStat='A' ";
+		$sqlLeavesclr = "Delete FROM tblTK_LeaveApp where compCode='{$_SESSION['company_code']}' AND  lvDateTo<='{$this->pdToDate}' AND lvStat='A' AND empNo IN ({$this->Emplist}) ";
+		//$sqlLeavesclr = "Delete FROM tblTK_LeaveApp where compCode='{$_SESSION['company_code']}'  AND lvStat='A' ";
 		return $this->execQryI($sqlLeavesclr);	
 	}
 	
@@ -489,8 +489,8 @@ FROM         tblTK_CSApp where compCode='{$_SESSION['company_code']}' AND csStat
 	}
 	
 	function ClearTK_OB() {
-		// $sqlOB = "Delete FROM tblTK_OBApp where compCode='{$_SESSION['company_code']}'  AND obStat='A' AND empNo IN ({$this->Emplist}) AND obDate between '{$this->pdFrmDate}' AND '{$this->pdToDate}'";
-		$sqlOBclr = "Delete FROM tblTK_OBApp where compCode='{$_SESSION['company_code']}'  AND obStat='A' ";
+		$sqlOBclr = "Delete FROM tblTK_OBApp where compCode='{$_SESSION['company_code']}'  AND obStat='A' AND empNo IN ({$this->Emplist}) AND obDate between '{$this->pdFrmDate}' AND '{$this->pdToDate}'";
+		//$sqlOBclr = "Delete FROM tblTK_OBApp where compCode='{$_SESSION['company_code']}'  AND obStat='A' ";
 		return $this->execQryI($sqlOBclr);	
 	}
 	
@@ -500,8 +500,8 @@ FROM         tblTK_CSApp where compCode='{$_SESSION['company_code']}' AND csStat
 	}
 	
 	function ClearTK_OTApp() {
-		// $sqlOTApp = "Delete FROM tblTK_OTApp where compCode='{$_SESSION['company_code']}'  AND otStat='A' AND empNo IN ({$this->Emplist}) AND otDate between '{$this->pdFrmDate}' AND '{$this->pdToDate}'";
-			$sqlOTAppclr = "Delete FROM tblTK_OTApp where compCode='{$_SESSION['company_code']}'  AND otStat='A'";
+		$sqlOTApp = "Delete FROM tblTK_OTApp where compCode='{$_SESSION['company_code']}'  AND otStat='A' AND empNo IN ({$this->Emplist}) AND otDate between '{$this->pdFrmDate}' AND '{$this->pdToDate}'";
+		//$sqlOTAppclr = "Delete FROM tblTK_OTApp where compCode='{$_SESSION['company_code']}'  AND otStat='A'";
 		return $this->execQryI($sqlOTAppclr);	
 	}
 	
