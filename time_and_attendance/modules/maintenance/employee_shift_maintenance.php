@@ -111,6 +111,11 @@
 
 	function maintShiftCodeByBranch(act,brnCd)
 	{
+		if(brnCd == "" || brnCd == "0")
+		{
+			alert('Please select a Branch.');
+			return false;
+		}
 		var shift = new Window({
 			id: "editAllw",
 			className : 'mac_os_x',

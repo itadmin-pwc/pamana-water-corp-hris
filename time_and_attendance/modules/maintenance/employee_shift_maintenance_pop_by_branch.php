@@ -31,7 +31,6 @@ switch($_GET["action"])
 			echo "document.frmEmpShift.".$arr_Day[$dayI]."_b_out.value='{$arr_ShiftCode_Dtl['shftBreakOut']}';";
 			echo "document.frmEmpShift.".$arr_Day[$dayI]."_b_in.value='{$arr_ShiftCode_Dtl['shftBreakIn']}';";
 			echo "document.frmEmpShift.".$arr_Day[$dayI]."_t_out.value='{$arr_ShiftCode_Dtl['shftTimeOut']}';";
-			
 		}
 		//
 			exit();    		
@@ -106,8 +105,8 @@ switch($_GET["action"])
                     <td width='25%' class='gridDtlLbl' align='left'>Branch </td>
                     <td width='1%' class='gridDtlLbl' align='center'>:</td>
                         
-                    <td  colspan="4" class='gridDtlVal'>
-						<input type="text" name="txtBranch" id="txtBranch" class="inputs" value="Head Office" width="100%" readonly>
+                    <td  colspan="5" width="500px" class='gridDtlVal'>
+						<input type="text" name="txtBranch" id="txtBranch" class="inputs" value="<?=$arr_brnInfo['brnDesc']?>" width="100%" readonly>
                     <?
 						//$empBrn=$empShiftMaint->getShortBranchName($_SESSION["company_code"],$arr_empInfo['empBrnCode']);
 						//echo "Head Office";
@@ -124,7 +123,7 @@ switch($_GET["action"])
                     	
                         
 							<? 	
-								if($arr_empInfo['empBrnCode']!=="999"){
+								if($arr_empInfo['empBrnCode']!=="0001"){
 									$shiftHeader = 	$empShiftMaint->getListShift();
 								}
 								else{
@@ -137,36 +136,7 @@ switch($_GET["action"])
                     </td>
                     <td width='25%' class='gridDtlLbl' align='left'>CWW Employee </td>
                     <td width='1%' class='gridDtlLbl' align='center'>:</td>
-					<?
-						if($btnName=="Save"){
-							if($arr_empInfo['empBrnCode']!=="0001"){
-									$cwwtag = "Y";
-									$chkStyle = "";
-							}
-							else{
-								$cwwtag = "";
-								$chkStyle = 'disabled="disabled"';
-							}
-						}
-						else{
-							if($arr_empInfo['empBrnCode']!=="0001"){
-								$cwwCheck = $empShiftMaint->getShiftInfo('tblTK_EmpShift', " and empNo='".$arr_empInfo["empNo"]."'", '');
-								if($cwwCheck['CWWTag']=="Y"){					
-									$cwwtag = $cwwCheck['CWWTag'];
-									$chkStyle = "";
-								}
-								else{
-									$cwwtag = "";	
-									$chkStyle = "";	
-								}
-							}
-							else{
-								$cwwtag = "";	
-								$chkStyle = 'disabled="disabled"';
-							}	
-						}
-                    ?>
-                    <td width='25%' class='gridDtlVal'><input type="checkbox" name="chkCWWTag" value="1" <? echo($cwwtag=="Y"?"checked":"");?> <? echo $chkStyle;?>/></td>
+                    <td width='25%' class='gridDtlVal'><input type="checkbox" name="chkCWWTag" value="1" checked></td>
                </tr>
                
                 <tr>
@@ -239,7 +209,7 @@ switch($_GET["action"])
                 
                 <tr>
                 	<td colspan="6"  class='childGridFooter' align="center">
-                    	<input type='button' class= 'inputs' name='btnUserDef' value='<?=$btnName?>' onClick="validation();">
+                    	<input type='button' class= 'inputs' name='btnUserDef' value='<?=$btnName?>' onClick="validation('<?=$_GET['brnCd']?>');">
                         
                     </td>
                 </tr>
@@ -271,16 +241,9 @@ switch($_GET["action"])
 		
 	}
 	
-	function validation()
+	function validation(brnCode)
 	{
 		var empShiftInputs = $('frmEmpShift').serialize(true);
-		
-		if(empShiftInputs["txtEmpBio"]=="")
-		{
-			alert('Bio - Number is required.');
-			$('txtEmpBio').focus();
-			return false;
-		}
 		
 		if(empShiftInputs["shiftcode"]=="0")
 		{
@@ -288,11 +251,14 @@ switch($_GET["action"])
 			$('shiftcode').focus();
 			return false;
 		}
+
+		// Append brnCode to the serialized form inputs
+    	empShiftInputs["brnCode"] = brnCode;
 		
 		params = 'employee_shift_maintenance_pop_by_branch.php';
 		new Ajax.Request(params,{
 			method : 'get',
-			parameters : $('frmEmpShift').serialize(),
+			parameters : empShiftInputs,
 			onComplete : function (req){
 				eval(req.responseText);
 				

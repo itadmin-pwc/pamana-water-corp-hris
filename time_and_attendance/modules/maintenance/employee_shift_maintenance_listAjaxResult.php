@@ -32,20 +32,6 @@
 	{
 		$brnCodelist = " AND empbrnCode IN (Select brnCode from tblTK_UserBranch where empNo='{$_SESSION['employee_number']}' AND compCode='{$_SESSION['company_code']}')";
 	}
-	
-//old codes	
-//	$array_userPayCat = explode(',', $_SESSION['user_payCat']);
-//	
-//	if(in_array(9,$array_userPayCat))
-//	{
-//		$where_empStat = "";
-//	}
-//	else
-//	{
-//		$where_empStat = " AND empStat NOT IN('RS','IN','TR')";
-//	}
-//	
-//	$user_payCat_view = " AND empPayCat IN ({$_SESSION['user_payCat']})";
 
 //new codes
 	//$paygroup = $common->getProcGrp();
@@ -56,22 +42,7 @@
 									  from tblPayPeriod 
 									  where compCode='{$_SESSION['company_code']}' and payGrp='{$paygroup}' 
 									  	and pdYear='".date("Y")."' and pdStat='O'");
-	$payperiod = $common->getSqlAssoc($qryPayperiod);
-	
-//	$qrypayperiodg1 = $common->execQry("Select Select pdFrmDate, pdToDate 
-//									  from tblPayPeriod 
-//									  where compCode='{$_SESSION['company_code']}' and payGrp='1' 
-//									  	and pdYear='".date("Y")."' and pdStat='O' and payCat='3'");
-//	$payperiodg1 = $common->getSqlAssoc($qrypayperiodg1);									
-//
-//	$qrypayperiodg2 = $common->execQry("Select Select pdFrmDate, pdToDate 
-//									  from tblPayPeriod 
-//									  where compCode='{$_SESSION['company_code']}' and payGrp='1' 
-//									  	and pdYear='".date("Y")."' and pdStat='O' and payCat='3'");
-//	$payperiodg2 = $common->getSqlAssoc($qrypayperiodg2);									
-
-	
-	
+	$payperiod = $common->getSqlAssoc($qryPayperiod);								
 
 	//variable declaration 
 	$preEmplyrVal = 0;
@@ -93,38 +64,6 @@
 	}
 	
 //new codes	
-	$qryIntMaxRec = "SELECT * FROM tblEmpMast
-					WHERE compCode= '{$sessionVars['compCode']}'
-					and ((empStat='RG') 
-					OR (dateResigned between '".date("Y-m-d",strtotime($payperiod['pdFrmDate']))."' 
-						AND '".date("Y-m-d",strtotime($payperiod['pdToDate']))."') 
-					OR endDate between '".date("Y-m-d",strtotime($payperiod['pdFrmDate']))."'
-						AND '".date("Y-m-d",strtotime($payperiod['pdToDate']))."') $brnCodelist "; 
-					
-	if($_GET['isSearch'] == 1){
-		if($_GET['srchType'] == 2){
-			$qryIntMaxRec .= "AND empNo LIKE '".trim($_GET['txtSrch'])."%' ";
-		}
-		if($_GET['srchType'] == 0){
-			$qryIntMaxRec .= "AND empLastName LIKE '".str_replace("'","''",trim($_GET['txtSrch']))."%' ";
-		}
-		if($_GET['srchType'] == 1){
-			$qryIntMaxRec .= "AND empFirstName LIKE '".str_replace("'","''",trim($_GET['txtSrch']))."%' ";
-		}
-		
-		if ($_GET['brnCd']!=0) 
-		{
-			$qryEmpList .= " AND empbrnCode='".$_GET["brnCd"]."' ";
-		}
-	}
-			
-	$resIntMaxRec = $common->execQry($qryIntMaxRec);
-	$intMaxRec = $pager->_getMaxRec($resIntMaxRec);
-	
-	$intLimit = $pager->_limit;
-	$intOffset = $pager->_watToDo($_GET['action'],$_GET['offSet'],$_GET['isSearch']);
-
-//new codes
 	$qryEmpList = "SELECT * FROM tblEmpMast
 					WHERE compCode= '{$sessionVars['compCode']}'
 					and ((empStat='RG') 
@@ -149,6 +88,13 @@
 							$qryEmpList .= " AND empbrnCode='".$_GET["brnCd"]."' ";
 						}
 					}
+			
+	$resIntMaxRec = $common->execQry($qryEmpList);
+	$intMaxRec = $pager->_getMaxRec($resIntMaxRec);
+	
+	$intLimit = $pager->_limit;
+	$intOffset = $pager->_watToDo($_GET['action'],$_GET['offSet'],$_GET['isSearch']);
+
 	$qryEmpList .=	"ORDER BY empBrnCode, empLastName limit $intOffset,$intLimit";
 	//echo $qryEmpList;
 	$resEmpList = $common->execQry($qryEmpList);
@@ -171,7 +117,6 @@
                          <FONT class="ToolBarseparator">&nbsp;</font>
 						<?
 							if(isset($_GET['action']) != 'load' || isset($_GET['action']) != 'refresh'){
-								
 								if(isset($_GET['srchType']) ){ 
 									$srchType = $_GET['srchType'];
 								}
@@ -180,9 +125,9 @@
 						Search<INPUT type="text" name="txtSrch" id="txtSrch" value="<? if(isset($_GET['txtSrch'])){echo $_GET['txtSrch'];} ?>" class="inputs">In<?=$common->DropDownMenu($arrSrch,'cmbSrch',$_GET['srchType'],'class="inputs"');?>
 						<?php if($brnCode_View==""){echo  "Branch |";}?> <? if($brnCode_View ==""){echo $common->DropDownMenu($arrBrnch,'brnCd',$_GET['brnCd'],'class="inputs"');}?>
 						<INPUT class="inputs" type="button" name="btnSrch" id="btnSrch" value="SEARCH" onClick="pager('employee_shift_maintenance_listAjaxResult.php','empMastCont','Search',0,1,'txtSrch','cmbSrch','&brnCd='+document.getElementById('brnCd').value,'','../../../images/')">
-						<a href="#" class="" style="float: right; margin: 3px; color: blue;" onclick="maintShiftCodeByBranch('Add',<?=$_GET['brnCd']?>)"> [<b>Add Employee Shift</b>]</a>
+						<a href="#" class="" style="float: right; margin: 3px; color: blue;" onclick="event.preventDefault(); maintShiftCodeByBranch('Add', document.getElementById('brnCd').value)"> [<b>Add Employee Shift</b>]</a>
 						<b style="float: right; margin: 3px;">/</b>
-						<a href="#" class="" style="float: right; margin: 3px; color: green;" onclick="maintShiftCodeByBranch('Add',<?=$_GET['brnCd']?>)"> [<b>Update Employee Shift</b>]</a>
+						<a href="#" class="" style="float: right; margin: 3px; color: green;" onclick="event.preventDefault(); maintShiftCodeByBranch('Edit', document.getElementById('brnCd').value)"> [<b>Update Employee Shift</b>]</a>
 						<span style="float: right; margin: 3px;"><b>BY BRANCH : </b> </span>
                       <?
 					  $chkEmpShift = $empShiftMaint->getShiftInfo("tblTK_EmpShift", " ", " ");
