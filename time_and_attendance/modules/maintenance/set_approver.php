@@ -131,7 +131,6 @@ if (isset($_GET['action'])) {
 
 ?>
 <HTML>
-
 	<HEAD>
 		<TITLE><?=SYS_TITLE?></TITLE>
 		<SCRIPT type="text/javascript" src="../../../js/extjs/adapter/prototype/prototype.js"></SCRIPT>
@@ -147,9 +146,7 @@ if (isset($_GET['action'])) {
 		
 		<script type="text/javascript" src="../../../includes/calendar.js"></script>	
 		<STYLE>@import url('../../../includes/calendar.css');</STYLE>
-		
 	</HEAD>
-	
 <BODY>
 	<FORM name='frmApprover' id="frmApprover" action="<?=$_SERVER['PHP_SELF']?>" method="POST">
 		<div id="approverCont"></div>
