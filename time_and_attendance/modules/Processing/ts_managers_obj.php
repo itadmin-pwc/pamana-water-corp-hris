@@ -27,8 +27,8 @@ class processManagersTimesheet extends commonObj{
 						if ($Trns) {
 							$Trns = $this->execQry($tsmanagers);
 						}
-					}		
-				}		
+					}
+				}	
 			}
 			if(!$Trns){
 				$Trns = $this->rollbackTran();
