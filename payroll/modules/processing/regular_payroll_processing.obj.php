@@ -428,10 +428,18 @@ class regPayrollProcObj extends commonObj {
 			return 2;
 		}	
 	}
+
+	function getEmpAllowance2($compCode,$empNo){
+		$query = "SELECT * FROM tblallowance 
+						   WHERE compCode = '{$compCode}'
+						   AND   empNo    = '".trim($empNo)."'
+						   AND   allowCode in (3,32,33)";
+
+		return $this->getSqlAssocI($this->execQryI($query));
+	}
 	
 	//for allowance   
 	private function getEmpAllowance($table,$empNo,$and){
-		
 			$qryGetEmpAllow = "SELECT $table.compCode, $table.empNo, $table.allowCode, $table.allowAmt, $table.allowSked, $table.allowTaxTag,
 							    $table.allowPayTag, $table.allowStart, $table.allowEnd, $table.allowStat,$table.sprtPS, tblEmpMast.dateHired, 
 							    tblEmpMast.empPayGrp, tblEmpMast.empPayType, tblEmpMast.empPayCat, tblEmpMast.empMrate, tblEmpMast.empDrate, 
@@ -440,14 +448,14 @@ class regPayrollProcObj extends commonObj {
 							   tblAllowType ON $table.compCode = tblAllowType.compCode AND 
 							   $table.allowCode = tblAllowType.allowCode LEFT OUTER JOIN
 							   tblEmpMast ON $table.compCode = tblEmpMast.compCode AND $table.empNo = tblEmpMast.empNo
-							   LEFT JOIN tblPayTransType 
+							   LEFT JOIN tblPayTransType
 							   ON tblAllowType.compCode = tblPayTransType.compCode AND tblAllowType.trnCode = tblPayTransType.trnCode
 						  WHERE ($table.compCode = '{$this->session['company_code']}') 
 						  AND (tblEmpMast.empPayGrp = '{$this->session['pay_group']}') 
-						  AND (tblEmpMast.empPayCat = '{$this->session['pay_category']}') 
+						  AND (tblEmpMast.empPayCat = '{$this->session['pay_category']}')
 						  AND (tblEmpMast.empStat IN ('RG', 'PR', 'CN')) 
 						 AND ($table.allowSked IN ('".$this->getCutOffPeriod()."','3'))
-						  AND ($table.allowStat = 'A') 
+						  AND ($table.allowStat = 'A')
 						  AND (tblAllowType.allowTypeStat = 'A') ";
 		if($empNo != ""){
 			$qryGetEmpAllow .= "AND $table.empNo = '{$empNo}' ";
@@ -2807,30 +2815,19 @@ $qryUpdateEmpLoans = "UPDATE tblEmpLoansDtl SET dedTag = ''
 	}
 
 	private function getGovDedAmntPhic($monthlyGrossEarn){
+		$qryGetGovDed = "SELECT * FROM tblPhicMatrix WHERE ($monthlyGrossEarn BETWEEN  lowLimit AND upLimit)";
+		$resGetGovDed = $this->execQryI($qryGetGovDed) or die('error ph');
+		$res = $this->getSqlAssocI($resGetGovDed);
+		$phicAmt = 0;
+		if ($res['fixTag']=='Y'){
+			$phicAmt = round($res['fixAmt']/2,2);
+		} else {
+			$phicAmt = round(($monthlyGrossEarn*$res['multiplier'])/2,2);
+		}
 
-                                $qryGetGovDed = "SELECT * FROM tblPhicMatrix WHERE ($monthlyGrossEarn BETWEEN  lowLimit AND upLimit)";
-                                $resGetGovDed = $this->execQryI($qryGetGovDed) or die('error ph');
-                                $res = $this->getSqlAssocI($resGetGovDed);
-                                $phicAmt = 0;
-                                if ($res['fixTag']=='Y'){
-                                	$phicAmt = round($res['fixAmt']/2,2);
-                                } else {
-                                	$phicAmt = round(($monthlyGrossEarn*$res['multiplier'])/2,2);
-                                }
-
-                                return $phicAmt;
-
-                }
-	
-	function getEmpAllowance2($compCode,$empNo){
-		$query = "SELECT * FROM tblallowance 
-						   WHERE compCode = '{$compCode}'
-						   AND   empNo    = '".trim($empNo)."'
-						   AND   allowCode=3";
-
-		return $this->getSqlAssocI($this->execQryI($query));
+		return $phicAmt;
 	}
-
+	
 	function getSalaryHist($compCode,$empNo) {
 		$query = "SELECT * FROM tblpaf_payrollrelatedhist 
 						   WHERE compCode = '{$compCode}'
