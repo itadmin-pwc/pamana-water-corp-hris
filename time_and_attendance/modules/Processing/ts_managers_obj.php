@@ -26,8 +26,8 @@ class processManagersTimesheet extends commonObj{
 											'".$_SESSION['employee_number']."','A');";	
 						if ($Trns) {
 							$Trns = $this->execQry($tsmanagers);
-						} 
-					}			
+						}
+					}		
 				}		
 			}
 			if(!$Trns){
