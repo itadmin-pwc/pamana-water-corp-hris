@@ -81,7 +81,6 @@ class extractTNATSObj extends commonObj {
 							   AND   pdYear = '{$this->pdYear}' 
 							   AND	 tnaTag IN ('Y')
 							   ";
-		
 		}
 		
 	}
@@ -433,7 +432,7 @@ class extractTNATSObj extends commonObj {
 	}
 
 	function ClearTK_RestDay() {
-		$sqlRDclr = "Delete from tblTK_ChangeRDApp where compCode='{$_SESSION['company_code']}' AND cRDStat='A' AND completeTag='C' AND empNo IN ({$this->Emplist})";
+		$sqlRDclr = "Delete from tblTK_ChangeRDApp where compCode='{$_SESSION['company_code']}' AND cRDStat='A' AND completeTag='C'";
 		//$sqlRDclr = "Delete from tblTK_ChangeRDApp where compCode='{$_SESSION['company_code']}' AND cRDStat='A'";
 		return $this->execQryI($sqlRDclr);
 	}
@@ -442,7 +441,7 @@ class extractTNATSObj extends commonObj {
 		$sqlCS = "Insert into tblTK_CSApphist (compcode, empNo, refNo, dateFiled, csDateTo, csDateFrom, csShiftFromIn, csShiftFromOut, csShiftToIn, csHiftToOut, csReason, dateApproved, 
                       userApproved, dateAdded, addedBy, csStat, crossDay, mApproverdBy, mStat, mDateApproved, otherDetails)  SELECT     compcode, empNo, refNo, dateFiled, csDateTo, csDateFrom, csShiftFromIn, csShiftFromOut, csShiftToIn, csHiftToOut, csReason, dateApproved, 
                       userApproved, dateAdded, addedBy, csStat, crossDay, mApproverdBy, mStat, mDateApproved, otherDetails
-FROM         tblTK_CSApp where compCode='{$_SESSION['company_code']}' AND csStat='A' AND empNo IN ({$this->Emplist}) AND csDateFrom between '{$this->pdFrmDate}' AND '{$this->pdToDate}'";
+FROM         tblTK_CSApp where compCode='{$_SESSION['company_code']}' AND csStat='A' AND csDateFrom between '{$this->pdFrmDate}' AND '{$this->pdToDate}'";
 		return $this->execQryI($sqlCS);
 	}
 	
@@ -484,23 +483,23 @@ FROM         tblTK_CSApp where compCode='{$_SESSION['company_code']}' AND csStat
 	}
 	
 	function CloseTK_OB() {
-		$sqlOB = "Insert into tblTK_OBApphist (compCode, empNo, refNo, obDate, obDestination, dateFiled, obSchedIn, obSchedOut, obActualTimeIn, obActualTimeOut, obReason, hrs8Deduct, dateApproved, userApproved, dateAdded, addedBy, obStat, mApproverdBy, mStat, mDateApproved, otherDetails)  SELECT compCode, empNo, refNo, obDate, obDestination, dateFiled, obSchedIn, obSchedOut, obActualTimeIn, obActualTimeOut, obReason, hrs8Deduct, dateApproved, userApproved, dateAdded, addedBy, obStat, mApproverdBy, mStat, mDateApproved, otherDetails FROM tblTK_OBApp where compCode='{$_SESSION['company_code']}'  AND obStat='A' AND empNo IN ({$this->Emplist}) AND obDate between '{$this->pdFrmDate}' AND '{$this->pdToDate}'";
+		$sqlOB = "Insert into tblTK_OBApphist (compCode, empNo, refNo, obDate, obDestination, dateFiled, obSchedIn, obSchedOut, obActualTimeIn, obActualTimeOut, obReason, hrs8Deduct, dateApproved, userApproved, dateAdded, addedBy, obStat, mApproverdBy, mStat, mDateApproved, otherDetails)  SELECT compCode, empNo, refNo, obDate, obDestination, dateFiled, obSchedIn, obSchedOut, obActualTimeIn, obActualTimeOut, obReason, hrs8Deduct, dateApproved, userApproved, dateAdded, addedBy, obStat, mApproverdBy, mStat, mDateApproved, otherDetails FROM tblTK_OBApp where compCode='{$_SESSION['company_code']}'  AND obStat='A' AND obDate between '{$this->pdFrmDate}' AND '{$this->pdToDate}'";
 		return $this->execQryI($sqlOB);	
 	}
 	
 	function ClearTK_OB() {
-		$sqlOBclr = "Delete FROM tblTK_OBApp where compCode='{$_SESSION['company_code']}'  AND obStat='A' AND empNo IN ({$this->Emplist}) AND obDate between '{$this->pdFrmDate}' AND '{$this->pdToDate}'";
+		$sqlOBclr = "Delete FROM tblTK_OBApp where compCode='{$_SESSION['company_code']}'  AND obStat='A' AND obDate between '{$this->pdFrmDate}' AND '{$this->pdToDate}'";
 		//$sqlOBclr = "Delete FROM tblTK_OBApp where compCode='{$_SESSION['company_code']}'  AND obStat='A' ";
 		return $this->execQryI($sqlOBclr);	
 	}
 	
 	function CloseTK_OTApp() {
-		$sqlOTApp = "Insert into tblTK_OTApphist (compCode, empNo, otDate, refNo, dateFiled, otReason, otIn, otOut, dateApproved, userApproved, dateAdded, userAdded, otStat, crossTag, mApproverdBy, mStat, mDateApproved, location, otherDetails)  SELECT compCode, empNo, otDate, refNo, dateFiled, otReason, otIn, otOut, dateApproved, userApproved, dateAdded, userAdded, otStat, crossTag, mApproverdBy, mStat, mDateApproved, location, otherDetails FROM tblTK_OTApp where compCode='{$_SESSION['company_code']}'  AND otStat='A' AND empNo IN ({$this->Emplist}) AND otDate between '{$this->pdFrmDate}' AND '{$this->pdToDate}'";
+		$sqlOTApp = "Insert into tblTK_OTApphist (compCode, empNo, otDate, refNo, dateFiled, otReason, otIn, otOut, dateApproved, userApproved, dateAdded, userAdded, otStat, crossTag, mApproverdBy, mStat, mDateApproved, location, otherDetails)  SELECT compCode, empNo, otDate, refNo, dateFiled, otReason, otIn, otOut, dateApproved, userApproved, dateAdded, userAdded, otStat, crossTag, mApproverdBy, mStat, mDateApproved, location, otherDetails FROM tblTK_OTApp where compCode='{$_SESSION['company_code']}'  AND otStat='A' AND  otDate between '{$this->pdFrmDate}' AND '{$this->pdToDate}'";
 		return $this->execQryI($sqlOTApp);	
 	}
 	
 	function ClearTK_OTApp() {
-		$sqlOTApp = "Delete FROM tblTK_OTApp where compCode='{$_SESSION['company_code']}'  AND otStat='A' AND empNo IN ({$this->Emplist}) AND otDate between '{$this->pdFrmDate}' AND '{$this->pdToDate}'";
+		$sqlOTApp = "Delete FROM tblTK_OTApp where compCode='{$_SESSION['company_code']}'  AND otStat='A' AND  otDate between '{$this->pdFrmDate}' AND '{$this->pdToDate}'";
 		//$sqlOTAppclr = "Delete FROM tblTK_OTApp where compCode='{$_SESSION['company_code']}'  AND otStat='A'";
 		return $this->execQryI($sqlOTAppclr);	
 	}
@@ -568,17 +567,17 @@ FROM         tblTK_CSApp where compCode='{$_SESSION['company_code']}' AND csStat
 	}
 	
 	function CloseTK_UT() {
-		$sqlUT = "Insert into tblTK_UTApphist (compCode, empNo, utDate, refNo, dateFiled, offTimeOut, utTimeOut, utReason, dateAdded, userAdded, dateApproved, userApproved, utStat) SELECT compCode, empNo, utDate, refNo, dateFiled, offTimeOut, utTimeOut, utReason, dateAdded, userAdded, dateApproved, userApproved, utStat FROM tblTK_UTApp where compCode='{$_SESSION['company_code']}' AND utStat='A' AND empNo IN ({$this->Emplist}) AND utDate between '{$this->pdFrmDate}' AND '{$this->pdToDate}'";
+		$sqlUT = "Insert into tblTK_UTApphist (compCode, empNo, utDate, refNo, dateFiled, offTimeOut, utTimeOut, utReason, dateAdded, userAdded, dateApproved, userApproved, utStat) SELECT compCode, empNo, utDate, refNo, dateFiled, offTimeOut, utTimeOut, utReason, dateAdded, userAdded, dateApproved, userApproved, utStat FROM tblTK_UTApp where compCode='{$_SESSION['company_code']}' AND utStat='A' AND  utDate between '{$this->pdFrmDate}' AND '{$this->pdToDate}'";
 		return $this->execQryI($sqlUT);
 	}
 	
 	function ClearTK_UT() {
-		$sqlUT = "Delete FROM tblTK_UTApp where compCode='{$_SESSION['company_code']}' AND utStat='A' AND empNo IN ({$this->Emplist}) AND utDate between '{$this->pdFrmDate}' AND '{$this->pdToDate}'";
+		$sqlUT = "Delete FROM tblTK_UTApp where compCode='{$_SESSION['company_code']}' AND utStat='A' AND  utDate between '{$this->pdFrmDate}' AND '{$this->pdToDate}'";
 		return $this->execQryI($sqlUT);
 	}		
 
 	function CloseTK_EventLogs() {
-		$sqlEventLogs = "Insert into tblTK_EventLogshist (cStoreNum, EDATE, ETIME, EDOOR, EFLOOR, ESABUN, ETAG, ENAME, ELNAME, EPART, EDEP, ESTATUS, EFUNCTION, EINOUT) SELECT cStoreNum, EDATE, ETIME, EDOOR, EFLOOR, ESABUN, ETAG, ENAME, ELNAME, EPART, EDEP, ESTATUS, EFUNCTION, EINOUT FROM tblTK_EventLogs INNER JOIN tblTK_Timesheet ON tblTK_EventLogs.cStoreNum = tblTK_Timesheet.brnchCd AND CAST(tblTK_EventLogs.ETAG AS UNSIGNED) = CAST(tblTK_Timesheet.bioNo AS UNSIGNED) where compCode='{$_SESSION['company_code']}' AND empNo IN ({$this->Emplist}) AND cast(EDATE as datetime) between '{$this->pdFrmDate}' AND '{$this->pdToDate}'";
+		$sqlEventLogs = "Insert into tblTK_EventLogshist (cStoreNum, EDATE, ETIME, EDOOR, EFLOOR, ESABUN, ETAG, ENAME, ELNAME, EPART, EDEP, ESTATUS, EFUNCTION, EINOUT) SELECT cStoreNum, EDATE, ETIME, EDOOR, EFLOOR, ESABUN, ETAG, ENAME, ELNAME, EPART, EDEP, ESTATUS, EFUNCTION, EINOUT FROM tblTK_EventLogs INNER JOIN tblTK_Timesheet ON tblTK_EventLogs.cStoreNum = tblTK_Timesheet.brnchCd AND CAST(tblTK_EventLogs.ETAG AS UNSIGNED) = CAST(tblTK_Timesheet.bioNo AS UNSIGNED) where compCode='{$_SESSION['company_code']}' AND  cast(EDATE as datetime) between '{$this->pdFrmDate}' AND '{$this->pdToDate}'";
 		return $this->execQryI($sqlEventLogs);
 	}
 	
@@ -923,11 +922,11 @@ FROM         tblTK_CSApp where compCode='{$_SESSION['company_code']}' AND csStat
 	} 
 	
 	function moveTK_HrsWorkedRepository() {
-		$sqlmoveTK_HrsWorkedRepository = "Insert into tblTK_HrsWorkedRepositoryHist (compCode,empNo,tsDate,dayCode,hrsWorked,satDate) Select compCode,empNo,tsDate,dayCode,hrsWorked,satDate from tblTK_HrsWorkedRepository where satDate is not null and empNo in ({$this->Emplist}) and satDate between '{$this->pdFrmDate}' AND '{$this->pdToDate}'";
+		$sqlmoveTK_HrsWorkedRepository = "Insert into tblTK_HrsWorkedRepositoryHist (compCode,empNo,tsDate,dayCode,hrsWorked,satDate) Select compCode,empNo,tsDate,dayCode,hrsWorked,satDate from tblTK_HrsWorkedRepository where satDate is not null and  satDate between '{$this->pdFrmDate}' AND '{$this->pdToDate}'";
 		return $this->execQryI($sqlmoveTK_HrsWorkedRepository);
 	}
 	function clearTK_HrsWorkedRepository() {
-		$sqlClearTK_HrsWorkedRepository = "Delete from tblTK_HrsWorkedRepository where satDate is not null and empNo in ({$this->Emplist}) and satDate between '{$this->pdFrmDate}' AND '{$this->pdToDate}'";
+		$sqlClearTK_HrsWorkedRepository = "Delete from tblTK_HrsWorkedRepository where satDate is not null and  satDate between '{$this->pdFrmDate}' AND '{$this->pdToDate}'";
 		return $this->execQryI($sqlClearTK_HrsWorkedRepository);
 	}
 	
